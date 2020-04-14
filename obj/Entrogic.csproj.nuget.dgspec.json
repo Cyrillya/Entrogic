@@ -1,0 +1,55 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\94945\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\94945\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\94945\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj",
+        "projectName": "Entrogic",
+        "projectPath": "C:\\Users\\94945\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj",
+        "packagesPath": "C:\\Users\\94945\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\94945\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\94945\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net45"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net45": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net45": {
+          "dependencies": {
+            "EntityFramework": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "EntityFramework.zh-Hans": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            }
+          }
+        }
+      }
+    }
+  }
+}

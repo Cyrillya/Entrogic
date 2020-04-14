@@ -1,0 +1,357 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TELib</name>
+    </assembly>
+    <members>
+        <member name="M:TELib.Buffs.QuickBuff.QuickFriendlyBuff(Terraria.ModLoader.ModBuff,System.Boolean)">
+            <summary>
+            快速设置Buff的属性为一个基础的增益，请将该方法放在SetDefault函数下最优先执行。
+            </summary>
+            <param name="buff">被设置的buff。</param>
+            <param name="timeToSee">时间是否可见？</param>
+        </member>
+        <member name="M:TELib.Items.QuickItem.QuickSword(Terraria.Item,System.Int32)">
+            <summary>
+            快速设置物品的属性为一把基础的剑，请将该方法放在SetDefault函数下最优先执行。
+            </summary>
+            <param name="item">被设置的物品。</param>
+            <param name="rare">用于判定物品强度的等级。</param>
+        </member>
+        <member name="M:TELib.Items.QuickItem.QuickBow(Terraria.Item,System.Int32)">
+            <summary>
+            快速设置物品的属性为一把基础的弓，请将该方法放在SetDefault函数下最优先执行。
+            </summary>
+            <param name="item">被设置的物品。</param>
+            <param name="rare">用于判定物品强度的等级。</param>
+        </member>
+        <member name="M:TELib.Items.QuickItem.QuickAccessories(Terraria.Item,System.Int32)">
+            <summary>
+            快速设置物品的属性为一个基础的饰品，请将该方法放在SetDefault函数下最优先执行。
+            </summary>
+            <param name="item">被设置的物品。</param>
+            <param name="rare">用于判定物品强度的等级。</param>
+        </member>
+        <member name="M:TELib.Items.QuickItem.QuickArmor(Terraria.Item,System.Int32)">
+            <summary>
+            快速设置物品的属性为一个基础的饰品，请将该方法放在SetDefault函数下最优先执行。
+            </summary>
+            <param name="item">被设置的物品。</param>
+            <param name="rare">用于判定物品强度的等级。</param>
+        </member>
+        <member name="M:TELib.Items.QuickItem.QuickDrink(Terraria.Item,System.Int32)">
+            <summary>
+            快速设置物品的属性为一瓶基础的药水，请将该方法放在SetDefault函数下最优先执行。
+            </summary>
+            <param name="item">被设置的物品。</param>
+            <param name="rare">用于判定药水的等级。</param>
+        </member>
+        <member name="M:TELib.Items.QuickItem.QuickMaterial(Terraria.Item,System.Int32)">
+            <summary>
+            快速设置物品的属性为一个基础的物品，请将该方法放在SetDefault函数下最优先执行。
+            </summary>
+            <param name="item">被设置的物品。</param>
+            <param name="rare">用于判定物品的等级。</param>
+        </member>
+        <member name="T:TELib.ModHelper">
+            <summary>
+            包含了一些常用方法和字段。
+            </summary>
+        </member>
+        <member name="M:TELib.ModHelper.ScreenCenter">
+            <summary>
+            返回游戏窗口中心坐标。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TELib.ModHelper.ScreenVerticalAxis">
+            <summary>
+            返回游戏窗口的中轴线的横坐标。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TELib.ModHelper.MouseInRectangle(Microsoft.Xna.Framework.Rectangle)">
+            <summary>
+            判断鼠标是否在某个矩形上。
+            </summary>
+            <param name="rectangle1">矩形</param>
+            <returns></returns>
+        </member>
+        <member name="M:TELib.ModHelper.MouseInRectangle(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            判断鼠标是否在某个矩形上。
+            </summary>
+            <param name="X">矩形横坐标</param>
+            <param name="Y">矩形纵坐标</param>
+            <param name="width">矩形宽度</param>
+            <param name="height">矩形高度</param>
+            <returns></returns>
+        </member>
+        <member name="M:TELib.ModHelper.MouseInRectangle(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            判断鼠标是否在某个矩形上。
+            </summary>
+            <param name="X">矩形横坐标</param>
+            <param name="Y">矩形纵坐标</param>
+            <param name="width">矩形宽度</param>
+            <param name="height">矩形高度</param>
+            <param name="OFFXLeft">向左偏移长度。</param>
+            <param name="OFFYTop">向上偏移长度。</param>
+            <returns></returns>
+        </member>
+        <member name="M:TELib.ModHelper.DrawMouseTextOnRectangle(ReLogic.Graphics.DynamicSpriteFont,System.String,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            鼠标与某矩形重合后绘制鼠标旁的悬浮字
+            </summary>
+            <param name="font">字体</param>
+            <param name="text">文本</param>
+            <param name="X">矩形横坐标</param>
+            <param name="Y">矩形纵坐标</param>
+            <param name="Width">矩形宽</param>
+            <param name="Hegith">矩形高</param>
+        </member>
+        <member name="F:TELib.ModHelper.MouseCenter">
+            <summary>
+            鼠标中心
+            </summary>
+        </member>
+        <member name="F:TELib.ModHelper.MouseHitBox">
+            <summary>
+            鼠标碰撞箱
+            </summary>
+        </member>
+        <member name="M:TELib.ModHelper.DrawAttributeTexture(System.Collections.ObjectModel.ReadOnlyCollection{Terraria.ModLoader.DrawableTooltipLine},Microsoft.Xna.Framework.Graphics.Texture2D)">
+            <summary>
+            绘制物品属性图标
+            </summary>
+            <param name="lines">行数</param>
+            <param name="texture2D">图标</param>
+        </member>
+        <member name="M:TELib.ModHelper.DrawInventory(Terraria.Item,System.Collections.ObjectModel.ReadOnlyCollection{Terraria.ModLoader.TooltipLine},System.Int32@,System.Int32@)">
+            <summary>
+            绘制物品框背景
+            </summary>
+            <param name="item"></param>
+            <param name="lines"></param>
+            <param name="x"></param>
+            <param name="y"></param>
+        </member>
+        <member name="M:TELib.TELib.PostDrawInterface(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            在界面上绘制东西的重写函数。
+            </summary>
+            <param name="spriteBatch"></param>
+        </member>
+        <member name="M:TELib.TELib.LoadInventoryTexture">
+            <summary>
+            加载Mod全局Texture2D静态变量。
+            </summary>
+        </member>
+        <member name="T:TELib.UI.Bars.BarBase">
+            <summary>
+            一个进度条，可以被继承，可以被实例化，启用需要手动调用Start方法。
+            </summary>
+        </member>
+        <member name="F:TELib.UI.Bars.BarBase.canDrag">
+            <summary>
+            指示UI是否可以被拖动，实例化时赋默认值true，可以被赋值。
+            </summary>
+        </member>
+        <member name="F:TELib.UI.Bars.BarBase.barText">
+            <summary>
+            鼠标悬浮至UI上时显示的文字，实例化时赋空字符串，可以被赋值。
+            </summary>
+        </member>
+        <member name="F:TELib.UI.Bars.BarBase.planneValue">
+            <summary>
+            进度值，最大值为100，实例化时赋0，可以被赋值。
+            </summary>
+        </member>
+        <member name="F:TELib.UI.Bars.BarBase.bottomImage">
+            <summary>
+            进度条背景图片，实例化时赋默认值，可以被赋值。
+            </summary>
+        </member>
+        <member name="F:TELib.UI.Bars.BarBase.topFloor">
+            <summary>
+            进度条填充图片，实例化时赋默认值，可以被赋值。
+            </summary>
+        </member>
+        <member name="M:TELib.UI.Bars.BarBase.#ctor(Microsoft.Xna.Framework.Graphics.Texture2D,Microsoft.Xna.Framework.Graphics.Texture2D)">
+            <summary>
+            实例化一个进度条。
+            </summary>
+            <param name="bottomImage">进度条背景图片。</param>
+            <param name="topFloor">进度条填充图片。</param>
+        </member>
+        <member name="T:TELib.UI.Buttons.ButtonBase">
+            <summary>
+            一个按钮基类，不可以被实例化，只能被继承。
+            </summary>
+        </member>
+        <member name="F:TELib.UI.Buttons.ButtonBase.uiSize">
+            <summary>
+            按钮的大小，实例化时赋值，可以被赋值。
+            </summary>
+        </member>
+        <member name="F:TELib.UI.Buttons.ButtonBase.uiCenter">
+            <summary>
+            按钮 本身 的中心坐标，实例化时赋默认值，可以被赋值。
+            </summary>
+        </member>
+        <member name="F:TELib.UI.Buttons.ButtonBase.canUseItem">
+             <summary>
+            鼠标与按钮交互时是否可以使用物品，实例化时赋默认值，可以被赋值。
+             </summary>
+        </member>
+        <member name="M:TELib.UI.Buttons.ButtonBase.#ctor">
+            <summary>
+            ButtonBase的构造函数。
+            </summary>
+        </member>
+        <member name="M:TELib.UI.Buttons.ButtonBase.Start">
+            <summary>
+            启用UI。
+            </summary>
+        </member>
+        <member name="M:TELib.UI.Buttons.ButtonBase.ClickEvent">
+            <summary>
+            鼠标单击UI时触发的函数，顺序在UIEvent之后。
+            </summary>
+        </member>
+        <member name="M:TELib.UI.Buttons.ButtonBase.PressedEvent">
+            <summary>
+            鼠标长按UI时触发的函数，顺序在ClickEvent之后。
+            </summary>
+        </member>
+        <member name="M:TELib.UI.Buttons.ButtonBase.ReleasedEvent">
+            <summary>
+            鼠标悬浮在UI上方时触发的函数，顺序在PressedEvent之后。
+            </summary>
+        </member>
+        <member name="E:TELib.UI.Buttons.ButtonBase.Click">
+            <summary>
+            鼠标单击。
+            </summary>
+        </member>
+        <member name="E:TELib.UI.Buttons.ButtonBase.Pressed">
+            <summary>
+            鼠标长按。
+            </summary>
+        </member>
+        <member name="E:TELib.UI.Buttons.ButtonBase.Released">
+            <summary>
+            鼠标悬浮。
+            </summary>
+        </member>
+        <member name="T:TELib.UI.Buttons.ButtonBase.MouseEvent">
+            <summary>
+            [警告]不建议单独使用。
+            </summary>
+        </member>
+        <member name="T:TELib.UI.Buttons.SpriteButton">
+            <summary>
+            一个图片按钮，可以被继承，可以被实例化，启用需要手动调用Start方法。
+            </summary>
+        </member>
+        <member name="F:TELib.UI.Buttons.SpriteButton.buttonImage">
+            <summary>
+            图片按钮的纹理，实例化时赋值，可以被赋值。
+            </summary>
+        </member>
+        <member name="M:TELib.UI.Buttons.SpriteButton.#ctor(Microsoft.Xna.Framework.Graphics.Texture2D)">
+            <summary>
+            实例化一个图片按钮。
+            </summary>
+            <param name="buttonImage">图片按钮的纹理。</param>
+        </member>
+        <member name="T:TELib.UI.Buttons.TextButton">
+            <summary>
+            一个文字按钮，可以被继承，可以被实例化，启用需要手动调用Start方法。
+            </summary>
+        </member>
+        <member name="F:TELib.UI.Buttons.TextButton.textColor">
+            <summary>
+            文本的颜色。
+            </summary>
+        </member>
+        <member name="F:TELib.UI.Buttons.TextButton.uiText">
+            <summary>
+            按钮的文字，实例化时赋默认值，可以被赋值。
+            </summary>
+        </member>
+        <member name="F:TELib.UI.Buttons.TextButton.uiFont">
+            <summary>
+            按钮文字的字体，实例化时赋默认值，可以被赋值。
+            </summary>
+        </member>
+        <member name="M:TELib.UI.Buttons.TextButton.#ctor(System.String)">
+            <summary>
+            实例化一个文字按钮。
+            </summary>
+            <param name="uiText">文字按钮的文本。</param>
+        </member>
+        <member name="T:TELib.UI.Inventory.InventoryBase">
+            <summary>
+            一个物品框，可以被继承，可以被实例化，启用需要手动调用Start方法。
+            </summary>
+        </member>
+        <member name="F:TELib.UI.Inventory.InventoryBase.inventoryItem">
+            <summary>
+            物品框内物品。
+            </summary>
+        </member>
+        <member name="M:TELib.UI.Inventory.InventoryBase.#ctor(Microsoft.Xna.Framework.Graphics.Texture2D)">
+            <summary>
+            实例化一个物品框。
+            </summary>
+            <param name="inventoryImage">物品框的贴图。</param>
+        </member>
+        <member name="T:TELib.UI.UIBase">
+            <summary>
+            所有UI的基类，不可被实例化，只能被继承。
+            </summary>
+        </member>
+        <member name="F:TELib.UI.UIBase.uiWidth">
+            <summary>
+            UI的宽度。
+            </summary>
+        </member>
+        <member name="F:TELib.UI.UIBase.uiHeight">
+            <summary>
+            UI的高度。
+            </summary>
+        </member>
+        <member name="F:TELib.UI.UIBase.uiColor">
+            <summary>
+            UI的背景颜色。
+            </summary>
+        </member>
+        <member name="F:TELib.UI.UIBase.uiPosition">
+            <summary>
+            UI的位置。
+            </summary>
+        </member>
+        <member name="M:TELib.UI.UIBase.PostEvent">
+            <summary>
+            在Start方法被调用后，最先被调用的函数。
+            </summary>
+        </member>
+        <member name="M:TELib.UI.UIBase.UIEvent">
+            <summary>
+            在Start方法被调用后，第二个被调用的函数。
+            </summary>
+        </member>
+        <member name="M:TELib.UI.UIBase.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+            <summary>
+            在Start方法被调用后，第三个被调用的函数，建议在此编写绘制相关。
+            </summary>
+            <param name="spriteBatch"></param>
+        </member>
+        <member name="M:TELib.UI.UIBase.PreEvent">
+            <summary>
+            在Start方法被调用后，最后一个被调用的函数。
+            </summary>
+        </member>
+    </members>
+</doc>

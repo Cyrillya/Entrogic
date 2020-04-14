@@ -1,0 +1,134 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.5": {
+      "EntityFramework/5.0.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.ComponentModel.DataAnnotations",
+          "System.Data.Entity"
+        ],
+        "compile": {
+          "lib/net45/EntityFramework.dll": {}
+        },
+        "runtime": {
+          "lib/net45/EntityFramework.dll": {}
+        }
+      },
+      "EntityFramework.zh-Hans/5.0.0": {
+        "type": "package",
+        "dependencies": {
+          "EntityFramework": "[5.0.0]"
+        },
+        "resource": {
+          "lib/net45/zh-Hans/EntityFramework.resources.dll": {
+            "locale": "zh-Hans"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "EntityFramework/5.0.0": {
+      "sha512": "WYfgJWKg/RjwU8pzZkImD9DsV+J1nqDcIGp1S0/bdnElKBmAaUC2nmq/QQAcco32KyQQWnLgJNiDzIOz2xWFbQ==",
+      "type": "package",
+      "path": "entityframework/5.0.0",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Content/App.config.transform",
+        "Content/Web.config.transform",
+        "entityframework.5.0.0.nupkg.sha512",
+        "entityframework.nuspec",
+        "lib/net40/EntityFramework.dll",
+        "lib/net40/EntityFramework.xml",
+        "lib/net45/EntityFramework.dll",
+        "lib/net45/EntityFramework.xml",
+        "tools/EntityFramework.PS3.psd1",
+        "tools/EntityFramework.PowerShell.Utility.dll",
+        "tools/EntityFramework.PowerShell.dll",
+        "tools/EntityFramework.psd1",
+        "tools/EntityFramework.psm1",
+        "tools/Redirect.VS11.config",
+        "tools/Redirect.config",
+        "tools/about_EntityFramework.help.txt",
+        "tools/init.ps1",
+        "tools/install.ps1",
+        "tools/migrate.exe"
+      ]
+    },
+    "EntityFramework.zh-Hans/5.0.0": {
+      "sha512": "HlZDdwv8N6s6RFBHc1AO4G/sCO2Vk/FIPFrLOTRbtwgKjgexVzsCRf0NmZdKLAQQ+SBgAR6/gF83zrEOH2jWsw==",
+      "type": "package",
+      "path": "entityframework.zh-hans/5.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "entityframework.zh-hans.5.0.0.nupkg.sha512",
+        "entityframework.zh-hans.nuspec",
+        "lib/net40/zh-Hans/EntityFramework.resources.dll",
+        "lib/net40/zh-Hans/EntityFramework.xml",
+        "lib/net45/zh-Hans/EntityFramework.resources.dll",
+        "lib/net45/zh-Hans/EntityFramework.xml"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.5": [
+      "EntityFramework >= 5.0.0",
+      "EntityFramework.zh-Hans >= 5.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\94945\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\94945\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj",
+      "projectName": "Entrogic",
+      "projectPath": "C:\\Users\\94945\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj",
+      "packagesPath": "C:\\Users\\94945\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\94945\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\94945\\AppData\\Roaming\\NuGet\\NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net45"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net45": {
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net45": {
+        "dependencies": {
+          "EntityFramework": {
+            "target": "Package",
+            "version": "[5.0.0, )"
+          },
+          "EntityFramework.zh-Hans": {
+            "target": "Package",
+            "version": "[5.0.0, )"
+          }
+        }
+      }
+    }
+  }
+}
