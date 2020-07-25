@@ -20,6 +20,7 @@ namespace Entrogic.UI.Cards
 {
     public class CardUI : UIState
     {
+        internal static bool IsActive = false;
         public UIPanel Card;//新建UI
         public Vector2 statPoint = new Vector2(Main.screenWidth * 0.5f, Main.screenHeight * 0.8f);
 
@@ -96,13 +97,6 @@ namespace Entrogic.UI.Cards
             BarFull.Height.Set(bar.Y, 0f);
             Append(BarFull);
 
-            Vector2 eventBar = new Vector2(426f, 60f);
-            EventBar.Left.Set(statPoint.X - eventBar.X / 2f, 0f);
-            EventBar.Top.Set(statPoint.Y - eventBar.Y - 64f, 0f);
-            EventBar.Width.Set(eventBar.X, 0f);
-            EventBar.Height.Set(eventBar.Y, 0f);
-            Append(EventBar);
-
             for (int i = 0; i >= -(ManaCrystal.Length - 1); i--)
             {
                 Vector2 crystal = new Vector2(20f, 20f);
@@ -140,10 +134,10 @@ namespace Entrogic.UI.Cards
             Player player = Main.LocalPlayer;
             EntrogicPlayer entrogicPlayer = EntrogicPlayer.ModPlayer(player);
             bool Active = false;
-            if (player.inventory[player.selectedItem] != null && player.inventory[player.selectedItem].type != 0)
+            if (player.inventory[player.selectedItem] != null && player.inventory[player.selectedItem].type != ItemID.None)
                 if (player.inventory[player.selectedItem].GetGlobalItem<EntrogicItem>().glove)
                     Active = true;
-            if (Main.mouseItem != null && Main.mouseItem.type != 0)
+            if (Main.mouseItem != null && Main.mouseItem.type != ItemID.None)
                 if (Main.mouseItem.GetGlobalItem<EntrogicItem>().glove)
                     Active = true;
             if (!Active)
@@ -171,17 +165,6 @@ namespace Entrogic.UI.Cards
             Bar.Top.Pixels = statPoint.Y - bar.Y / 2f - (CEntrogicCardConfig.Instance.HandSlotSpecial ? 0f : 50f);
             BarFull.Left.Pixels = Bar.Left.Pixels;
             BarFull.Top.Pixels = Bar.Top.Pixels;
-            Vector2 eventBar = new Vector2(426f, 60f);
-            if (!CEntrogicCardConfig.Instance.ShowRecentEvents)
-            {
-                EventBar.Left.Pixels = 114514 + Main.screenWidth;
-                EventBar.Top.Pixels = 114514 + Main.screenHeight;
-            }
-            else
-            {
-                EventBar.Left.Pixels = statPoint.X - eventBar.X / 2f;
-                EventBar.Top.Pixels = statPoint.Y - eventBar.Y - 64f;
-            }
             for (int i = 0; i >= -(ManaCrystal.Length - 1); i--)
             {
                 Vector2 crystal = new Vector2(20f, 20f);
@@ -229,16 +212,6 @@ namespace Entrogic.UI.Cards
             #endregion
 
             base.Draw(spriteBatch);
-            if (!CEntrogicCardConfig.Instance.ShowRecentEvents)
-                return;
-            string eventMessage = entrogicPlayer.CardRecentEvent + (entrogicPlayer.CardRecentEventAdd != "" ? ("\n" + entrogicPlayer.CardRecentEventAdd) : "");
-            int alpha = entrogicPlayer.CardRecentEventAlpha;
-            Vector2 textSize = Main.fontMouseText.MeasureString(eventMessage);
-            float textScaleX = (eventBar.X - 16f) / textSize.X - 0.2f;
-            float textScaleY = (eventBar.Y - 10f) / textSize.Y - 0.2f;
-            float textScale = (textScaleX + textScaleY) / 2f * 0.76f;
-            textScale = MathHelper.Min(1.2f, textScale);
-            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontMouseText, eventMessage, new Vector2(EventBar.Left.Pixels + eventBar.X * 0.5f - textSize.X * 0.5f * textScale, EventBar.Top.Pixels + eventBar.Y * 0.5f - textSize.Y * 0.5f * textScale + 2f), new Color(alpha, alpha, alpha, alpha), 0f, Vector2.Zero, new Vector2(textScale));
         }
         public override void Update(GameTime gameTime)
         {
@@ -480,7 +453,7 @@ namespace Entrogic.UI.Cards
             int type = ePlayer.CardHandType[number];
             Item ContainedItem = new Item();
             ContainedItem.SetDefaults(type);
-            if (ContainedItem.type != 0)
+            if (ContainedItem.type != ItemID.None)
             {
                 Texture2D tex = Main.itemTexture[type];
                 int alpha = 80;
@@ -525,14 +498,14 @@ namespace Entrogic.UI.Cards
                         return;
                     ePlayer.TwoCardsCount_CryptTreasure--;
                 }
-                if (Main.mouseItem != null && Main.mouseItem.type != 0) // 手套使用物品
+                if (Main.mouseItem != null && Main.mouseItem.type != ItemID.None) // 手套使用物品
                 {
                     if (Main.mouseItem.GetGlobalItem<EntrogicItem>().glove)
                     {
                         ((ModCard)Main.mouseItem.modItem).OnGloveUseCard(player);
                     }
                 } // 手套使用物品
-                if (player.inventory[player.selectedItem] != null && player.inventory[player.selectedItem].type != 0) // 手套使用物品
+                if (player.inventory[player.selectedItem] != null && player.inventory[player.selectedItem].type != ItemID.None) // 手套使用物品
                 {
                     if (player.inventory[player.selectedItem].GetGlobalItem<EntrogicItem>().glove)
                     {

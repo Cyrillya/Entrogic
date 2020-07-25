@@ -26,16 +26,16 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             item.useTime = 5;
             item.useAnimation = 5;
             
-            item.useStyle = 5;
+            item.useStyle = ItemUseStyleID.HoldingOut;
 
             item.noMelee = true;
             item.knockBack = 4;
             item.value = Item.sellPrice(0, 3, 0, 0);
-            item.rare = 5;
+            item.rare = ItemRarityID.Pink;
             item.UseSound = SoundID.Item11;
             item.autoReuse = true;
             
-            item.shoot = 10;
+            item.shoot = ProjectileID.PurificationPowder;
             item.shootSpeed = 5f;
             item.useAmmo = AmmoID.Bullet;
         }
@@ -43,13 +43,13 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(548, 18);
-            recipe.AddIngredient(547, 18);
-            recipe.AddIngredient(549, 18);
+            recipe.AddIngredient(ItemID.SoulofMight, 18);
+            recipe.AddIngredient(ItemID.SoulofFright, 18);
+            recipe.AddIngredient(ItemID.SoulofSight, 18);
             recipe.AddIngredient(null,"飞鱼手枪", 1);
-            recipe.AddIngredient(1225, 20);
+            recipe.AddIngredient(ItemID.HallowedBar, 20);
             recipe.AddIngredient(null, "碳钢枪械部件", 1);//碳钢枪械部件
-            recipe.AddTile(134);
+            recipe.AddTile(TileID.MythrilAnvil);
             recipe.SetResult(this);
             recipe.AddRecipe();
         }

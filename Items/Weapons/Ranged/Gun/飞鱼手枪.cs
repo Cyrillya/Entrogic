@@ -1,3 +1,6 @@
+using Entrogic.Items.VoluGels;
+using Entrogic.Tiles;
+
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -25,26 +28,26 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             item.height = 32;
             item.useTime = 20;
             item.useAnimation = 20;
-            item.useStyle = 5;
+            item.useStyle = ItemUseStyleID.HoldingOut;
 
             item.noMelee = true;
             item.knockBack = 4;
             item.value = Item.sellPrice(0, 1, 0, 0);
-            item.rare = 7;
+            item.rare = ItemRarityID.Lime;
             item.UseSound = SoundID.Item11;
             item.autoReuse = true;
-            item.shoot = 358;
+            item.shoot = ProjectileID.WaterGun;
             item.shootSpeed = 10f;
             item.useAmmo = AmmoID.Bullet;
         }
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(2420, 1);//飞鱼宠物
-            recipe.AddIngredient(null,"GelOfLife", 3);
-            recipe.AddIngredient(324, 1);//非法枪械部件
-            recipe.AddIngredient(164,1);
-            recipe.AddTile(mod.TileType("魔力导流台"));
+            recipe.AddIngredient(ItemID.ZephyrFish, 1);//飞鱼宠物
+            recipe.AddIngredient(ItemType<GelOfLife>(), 3);
+            recipe.AddIngredient(ItemID.IllegalGunParts, 1);//非法枪械部件
+            recipe.AddIngredient(ItemID.Handgun,1);
+            recipe.AddTile(TileType<MagicDiversionPlatformTile>());
             recipe.SetResult(this);
             recipe.AddRecipe();
         }

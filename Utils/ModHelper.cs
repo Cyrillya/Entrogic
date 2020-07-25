@@ -2,6 +2,9 @@ using Entrogic.Items.Weapons.Card;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+
+using ReLogic.Graphics;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,16 +21,17 @@ namespace Entrogic
     public static class ModHelper
     {
         #region Properties
-        public static bool ControlShift => Main.keyState.IsKeyDown(Keys.LeftShift) || Main.keyState.IsKeyDown(Keys.RightShift);
-        public static Vector2 MousePos
-        {
-            get { return Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY); }
-        }
 
-        public static Vector2 MouseScreenPos
-        {
-            get { return new Vector2(Main.mouseX, Main.mouseY); }
-        }
+        /// <summary>
+        /// 鼠标碰撞箱
+        /// </summary>
+        public static Rectangle MouseHitBox = new Rectangle(Main.mouseX, Main.mouseY, 0, 0);
+
+        public static bool ControlShift => Main.keyState.IsKeyDown(Keys.LeftShift) || Main.keyState.IsKeyDown(Keys.RightShift);
+
+        public static Vector2 MousePos => Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
+
+        public static Vector2 MouseScreenPos => new Vector2(Main.mouseX, Main.mouseY);
 
         public static Player LocalPlayer
         {
@@ -36,8 +40,81 @@ namespace Entrogic
                 return Main.player[Main.myPlayer];
             }
         }
+        /// <summary>
+        /// 返回游戏窗口中心坐标。
+        /// </summary>
+        /// <returns></returns>
+        public static Vector2 ScreenCenter => new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
+
+        /// <summary>
+        /// 返回游戏窗口的中轴线的横坐标。
+        /// </summary>
+        /// <returns></returns>
+        public static float ScreenVerticalAxis => Main.screenWidth / 2;
         #endregion
 
+        /// <summary>
+        /// 判断鼠标是否在某个矩形上。
+        /// </summary>
+        /// <param name="rectangle1">矩形</param>
+        /// <returns></returns>
+        public static bool MouseInRectangle(Rectangle rectangle1)
+        {
+            return rectangle1.Intersects(new Rectangle(Main.mouseX, Main.mouseY, 1, 1));
+        }
+        /// <summary>
+        /// 判断鼠标是否在某个矩形上。
+        /// </summary>
+        /// <param name="X">矩形横坐标</param>
+        /// <param name="Y">矩形纵坐标</param>
+        /// <param name="width">矩形宽度</param>
+        /// <param name="height">矩形高度</param>
+        /// <returns></returns>
+        public static bool MouseInRectangle(int X, int Y, int width, int height)
+        {
+            return new Rectangle(X, Y, width, height).Intersects(new Rectangle(Main.mouseX, Main.mouseY, 1, 1));
+        }
+        /// <summary>
+        /// 判断鼠标是否在某个矩形上。
+        /// </summary>
+        /// <param name="X">矩形横坐标</param>
+        /// <param name="Y">矩形纵坐标</param>
+        /// <param name="width">矩形宽度</param>
+        /// <param name="height">矩形高度</param>
+        /// <param name="OFFXLeft">向左偏移长度。</param>
+        /// <param name="OFFYTop">向上偏移长度。</param>
+        /// <returns></returns>
+        public static bool MouseInRectangle(int X, int Y, int width, int height, int OFFXLeft = 0, int OFFYTop = 0)
+        {
+            Vector2 mountedCenter = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
+            return new Rectangle((int)mountedCenter.X, (int)mountedCenter.Y, 0, 0).Intersects(new Rectangle((int)(X + Main.screenPosition.X - OFFXLeft), (int)(Y + Main.screenPosition.Y - OFFYTop), width, height));
+        }
+
+        /// <summary>
+        /// 鼠标与某矩形重合后绘制鼠标旁的悬浮字
+        /// </summary>
+        /// <param name="font">字体</param>
+        /// <param name="text">文本</param>
+        /// <param name="X">矩形横坐标</param>
+        /// <param name="Y">矩形纵坐标</param>
+        /// <param name="Width">矩形宽</param>
+        /// <param name="Hegith">矩形高</param>
+        public static void DrawMouseTextOnRectangle(DynamicSpriteFont font, string text, int X, int Y, int Width, int Hegith)
+        {
+            Vector2 mountedCenter = Main.MouseScreen;
+            if (new Rectangle((int)mountedCenter.X, (int)mountedCenter.Y, 0, 0).Intersects(new Rectangle((int)X, (int)Y, Width, Hegith)))
+            {
+                string name = text;
+                Vector2 worldPos = new Vector2(mountedCenter.X + 15, mountedCenter.Y + 15);
+                Vector2 size = font.MeasureString(name);
+                Vector2 texPos = worldPos + new Vector2(-size.X * 0.5f, name.Length);
+                Main.spriteBatch.DrawString(font, name, new Vector2(texPos.X, texPos.Y), Color.White);
+            }
+        }
+        public static double GetLength(this Vector2 v)
+        {
+            return Math.Sqrt(Math.Pow(v.X,2) + Math.Pow(v.Y, 2));
+        }
         public static Vector2 GetFromToVector(Vector2 v1, Vector2 v2)
         {
             Vector2 diff = v2 - v1;
@@ -85,6 +162,10 @@ namespace Entrogic
         public static bool BuffExist(this Player p, int type)
         {
             return p.FindBuffIndex(type) > -1;
+        }
+        public static bool CanHit(Entity source, Entity target)
+        {
+            return Collision.CanHit(source.position, source.width, source.height, target.position, target.width, target.height);
         }
         public static void ShowHitBox(Entity ent, SpriteBatch sb)
         {
@@ -145,27 +226,43 @@ namespace Entrogic
             item.SetDefaults(i);
             return item.Name;
         }
-        public static void SpawnCoins(Player player, long value)
+        public static void SpawnCoins(Vector2 pos, float value)
         {
             while (value >= 1000000)
             {
-                value -= 1000000;
-                player.QuickSpawnItem(ItemID.PlatinumCoin);
+                value -= 1000000; 
+                int number = Item.NewItem(pos, ItemID.PlatinumCoin);
+                if (Main.netMode == NetmodeID.MultiplayerClient && number >= 0)
+                {
+                    NetMessage.SendData(MessageID.SyncItem, -1, -1, null, number);
+                }
             }
             while (value >= 10000)
             {
                 value -= 10000;
-                player.QuickSpawnItem(ItemID.GoldCoin);
+                int number = Item.NewItem(pos, ItemID.GoldCoin);
+                if (Main.netMode == NetmodeID.MultiplayerClient && number >= 0)
+                {
+                    NetMessage.SendData(MessageID.SyncItem, -1, -1, null, number);
+                }
             }
             while (value >= 100)
             {
                 value -= 100;
-                player.QuickSpawnItem(ItemID.SilverCoin);
+                int number = Item.NewItem(pos, ItemID.SilverCoin);
+                if (Main.netMode == NetmodeID.MultiplayerClient && number >= 0)
+                {
+                    NetMessage.SendData(MessageID.SyncItem, -1, -1, null, number);
+                }
             }
             while (value > 0)
             {
                 value -= 1;
-                player.QuickSpawnItem(ItemID.CopperCoin);
+                int number = Item.NewItem(pos, ItemID.CopperCoin);
+                if (Main.netMode == NetmodeID.MultiplayerClient && number >= 0)
+                {
+                    NetMessage.SendData(MessageID.SyncItem, -1, -1, null, number);
+                }
             }
         }
         internal static int FindFirst(int[] array, int find, int startIndex = 0)

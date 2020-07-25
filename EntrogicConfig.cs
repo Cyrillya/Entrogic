@@ -51,10 +51,6 @@ namespace Entrogic
         [DefaultValue(false)]
         [Label("启用癫痫模式")]
         public bool ThatsCrazy;
-
-        [Range(0, 10000)]
-        [Label("超级缩放(百分比)(低于10%即不开启此模式)")]
-        public int SuperZoom;
     }
     [Label("服务器设置")]
     public class BEntrogicConfigServer : ModConfig
@@ -89,10 +85,6 @@ namespace Entrogic
         [DefaultValue(false)]
         [Label("自动补牌")]
         public bool AutoUseCard;
-
-        [DefaultValue(false)]
-        [Label("显示卡牌事件栏")]
-        public bool ShowRecentEvents;
 
     }
     [Label("Debug Settings")]

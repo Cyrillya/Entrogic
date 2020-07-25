@@ -1,39 +1,61 @@
-﻿ItemName.StoneHammer=石锤
+﻿# Usual Items
+ItemName.StoneHammer=石锤
 ItemName.MagicPotion=神奇的药水
 ItemName.ExplodeGraniteChest=爆炸花岗岩箱
 ItemName.CBar=混沌锭
-ItemName.烈风麒麟=烈风麒麟
+ItemName.Galekylin=烈风麒麟
 ItemName.GodStaff=方形法杖
 ItemName.ChaosAccelerator=混沌加速器
 ItemName.ChaosSword=复合意志
 ItemName.CorruCloudStaff=腐雷法杖
-ItemName.碎冰机=碎冰机
+ItemName.IceBreaker=碎冰机
 ItemName.BurningWoodenSword=燃烧木剑
-ItemName.刀=Sword
+ItemName.FuSword=Sword
 ItemName.CastIronBar=铸铁锭
+ItemName.CastIronFlail=铸铁连弩
 ItemName.SoulOfPure=纯净之魂
-ItemName.GelOfLife=生命凝胶
 ItemName.CuteWidget=可爱小部件
+ItemName.CuteLittleStaff=可爱小杖
+ItemName.CuteLittleSword=可爱小剑
+ItemName.CuteLittleBow=可爱小弓
 ItemName.CuteLittleHammer=可爱小锤
 ItemName.CuteLittlePickaxeAxe=可爱小镐斧
 ItemName.EarthElementalAffinityAgent=土元素亲和剂
-ItemName.巨神的旨意=巨神的旨意
-ItemName.魔像头套=衰落魔像面具
-ItemName.岩石猎枪=岩石猎枪
-ItemName.巨石长枪=巨石长枪
-ItemName.ATrophy=衰落魔像纪念章
-ItemName.污染水源=污染水源
-ItemName.污染之魂=污染之魂
-ItemName.污痕长弓=污痕长弓
-ItemName.污秽洋流=污秽洋流
-ItemName.PolluHead=污染之灵头套
-ItemName.污染之冠=污染之冠
-ItemName.污染头盔=污染头盔
-ItemName.污染头饰=污染头饰
-ItemName.污染头饰2=污染头饰
-ItemName.污染面具=污染面具
-ItemName.污染护胫=污染护胫
-ItemName.污染胸甲=污染胸甲
+ItemName.Halle=哈雷
+ItemName.RustySword=生锈的长剑
+ItemName.CastIronSword=铸铁重剑
+
+# Volutio's Items
+ItemName.VolutioMask=凝胶共生体面具
+ItemName.GelAnkh=凝胶安卡
+ItemName.GelCultureFlask=强活性凝胶培养瓶
+ItemName.GelOfLife=生命凝胶
+ItemName.GelCrossbowArrowMachineGun=凝胶弩箭机枪
+
+# Athanasy's Items
+ItemName.TitansOrder=巨神的旨意
+ItemName.AthanasyMask=衰落魔像面具
+ItemName.RockShotgun=岩石猎枪
+ItemName.RockSpear=巨石长枪
+ItemName.EyeofImmortal=衰落之眼
+ItemName.AthanasyTrophy=衰落魔像纪念章
+
+# Contamination Elemental's Items
+ItemName.BottleofStorm=瓶中风暴
+ItemName.ContaminatedLiquor=污染水源
+ItemName.SoulofContamination=污染之魂
+ItemName.ContaminatedLongbow=污痕长弓
+ItemName.ContaminatedCurrent=污秽洋流
+ItemName.WaterElementalStaff=水元素召唤杖
+ItemName.PollutionElementalMask=污染之灵头套
+ItemName.CrownofContamination=污染之冠
+ItemName.HelmetofContamination=污染头盔
+ItemName.HeadgearofContamination=污染头饰
+ItemName.MaskofContamination=污染面具
+ItemName.GreavesofContamination=污染护胫
+ItemName.BreastplateofContamination=污染胸甲
+
+# Cards
 ItemName.ArcaneMissle=奥术飞弹
 ItemName.BetrayerofDarkFlame=暗焰术
 ItemName.Dragoul=龙魂
@@ -62,6 +84,8 @@ ItemName.MagicGatling=魔法加特林
 ItemName.CryptTreasure=地穴的秘宝
 ItemName.LuckyCoin=幸运币
 ItemName.StaticWatch=静止怀表
+
+# Usual Armors
 ItemName.得摩斯头盔=得摩斯头盔
 ItemName.得摩斯胸甲=得摩斯胸甲
 ItemName.得摩斯护胫=得摩斯护胫
@@ -69,30 +93,65 @@ ItemName.福波斯头盔=福波斯头盔
 ItemName.福波斯胸甲=福波斯胸甲
 ItemName.福波斯护胫=福波斯护胫
 
+# Mushrooooms
+ItemName.GrassMushroom=草蘑菇
+ItemName.Fungus=木耳
+ItemName.Ganoderma=灵芝
+ItemName.Flammulina=金针菇
+ItemName.Boletus=牛肝菌
+ItemName.LactariusEdulis=绒边乳菇
+ItemName.UmbrellaMushroom=伞菇
+ItemName.Twinshroom=双生菇
+ItemName.ToxiclessMushroom=无毒蘑菇
+ItemName.Voidshroom=相位蘑菇
+ItemName.Shiitake=香菇
 
-ItemTooltip.ExplodeGraniteChest=炸了炸了！
-ItemTooltip.RandomCard=抽卡！来一张吧！
-ItemTooltip.StaticWatch=过牌数+2，过牌cd缩短4秒，过牌不会重置费用，洗牌重置费用\n我想不会很久的，因为时间一直是在流动的
-ItemTooltip.LuckyCoin=每次过牌时获得一个额外的魔力值或额外抽一张牌\n为了防止作弊，酒馆中往往会有“禁止魔法”的标语，但卡牌本身就是魔法做的。
-ItemTooltip.CryptTreasure=若玩家过牌时仍有未使用的费用，则额外获得2个费用，\n并获得“魔力的诅咒”效果（直到下一次过牌，玩家最多只能使用2张牌），过牌后解除\n“我们要发财啦！等等，这是什么。”
-ItemTooltip.MagicGatling=使伤害减少，初始魔力值-1，初始手牌-1，\n每当你使用一张牌，将一张奥术飞弹置入你的手牌
+
+# Usual Items
+ItemTooltip.ExplodeGraniteChest="Terrorist Win."
 ItemTooltip.BoneGlove=若你的卡牌背包中只有亡灵系列卡牌，\n则初始手牌数+1，初始费用+1
 ItemTooltip.BowOfGod=把木箭转换为混沌之箭\n45%{$Mods.Entrogic.cntca}
 ItemTooltip.ChaosSword=有机会造成神志不清\n<right>可切换形态
 ItemTooltip.StoneHammer=石锤
 ItemTooltip.MagicPotion=不要喝掉它
+ItemTooltip.BurningWoodenSword=“十分的烫手”\n点燃你的敌人
 ItemTooltip.Decompiler=发射出二进制弹幕, 伤害显示为二进制(仅供视觉效果, 非实际伤害)\n“并不会给你的电脑注入病毒”
-ItemTooltip.哈雷=猩空中的浪子
+ItemTooltip.Halle=猩空中的浪子
 ItemTooltip.CuteWidget=[c/7BFFFF:好可爱的简介！awsl]
-ItemTooltip.刀=这把刀可以驱散所有邪恶
+ItemTooltip.CuteLittleStaff=[c/7BFFFF:嗯..挥起来很快，所以释放法术自然也快]
+ItemTooltip.CuteLittleSword=[c/7BFFFF:轻盈小巧的一把短剑]\n[c/7BFFFF:使用时可以格挡部分伤害]
+ItemTooltip.CuteLittleBow=[c/7BFFFF:精致的小弓，用起来格外顺手]\n[c/7BFFFF:“独特的射击风格”]
+ItemTooltip.FuSword=这把刀可以驱散所有邪恶
 ItemTooltip.EarthElementalAffinityAgent=给予你行走在泥土中的能力
-ItemTooltip.巨神的旨意=可能是一块...岩制的肌肉？
-ItenTooltip.魔像头套=让魔像不会攻击你
-ItemTooltip.巨石长枪=“这可能会有点痛”
-ItemTooltip.污染水源=召唤海洋深处强大的怪物
-ItemTooltip.污染之魂=由潮汐之灵的怨念凝结而成
-ItemTooltip.污秽洋流=射弹会跟踪怪物\n只有当周围有怪物时才会发射射弹
-ItemTooltip.污痕长弓=污痕短弓
+ItemTooltip.RustySword=“一把十分古老的剑，它锈迹斑斑”让你的敌人获得破伤风\n小心割到手
+ItemTooltip.CastIronSword=“沉重，但是挥起来却十分轻巧”\n给予你的敌人致命一击
+
+# Cards
+ItemTooltip.RandomCard=抽卡！来一张吧！
+ItemTooltip.StaticWatch=过牌数+2，过牌cd缩短4秒，过牌不会重置费用，洗牌重置费用\n我想不会很久的，因为时间一直是在流动的
+ItemTooltip.LuckyCoin=每次过牌时获得一个额外的魔力值或额外抽一张牌\n为了防止作弊，酒馆中往往会有“禁止魔法”的标语，但卡牌本身就是魔法做的。
+ItemTooltip.CryptTreasure=若玩家过牌时仍有未使用的费用，则额外获得2个费用，\n并获得“魔力的诅咒”效果（直到下一次过牌，玩家最多只能使用2张牌），过牌后解除\n“我们要发财啦！等等，这是什么。”
+ItemTooltip.MagicGatling=使伤害减少，初始魔力值-1，初始手牌-1，\n每当你使用一张牌，将一张奥术飞弹置入你的手牌
+
+# Volutio's Items
+ItemTooltip.GelAnkh=允许你拥有一次满血复活机会，但复活后无法回复血量\n“以自己墓地中的玩家为对象发动。玩家在自己场上特殊召唤”
+ItemTooltip.GelCultureFlask=在一只强大的史莱姆被击败后，你可以用它在地下巨大的生命湖中进行一次凝胶献祭\n召唤一只强大...或者不强大的蓝色史莱姆\n“一个土法制成的容器，谁叫那些实验装置那么贵”
+ItemTooltip.GelCrossbowArrowMachineGun=“没错，一把射箭的机枪”\n小心枪口过热
+
+# Athanasy's Items
+ItemTooltip.TitansOrder=可能是一块...岩制的肌肉？
+ItenTooltip.AthanasyMask=让魔像不会攻击你
+ItemTooltip.RockSpear=“这可能会有点痛”
+
+# Contamination Elemental's Items
+ItemTooltip.BottleofStorm=算作翅膀\n飞行时间会被天气、月相、时间因素影响\n飞行速度由 [i:785] 至 [i:3468] 不等\n“瓶中风暴，可比那些装着一瓶沙子的人厉害多了！”
+ItemTooltip.WaterElementalStaff=召唤一只迅速的水元素为你而战
+ItemTooltip.ContaminatedLiquor=严重污染的水精华\n召唤海洋深处强大的怪物
+ItemTooltip.SoulofContamination=由潮汐之灵的怨念凝结而成
+ItemTooltip.ContaminatedCurrent=射弹会跟踪怪物\n只有当周围有怪物时才会发射射弹
+ItemTooltip.ContaminatedLongbow=污痕短弓
+
+# Usual Armors
 ItemTooltip.得摩斯头盔=远程伤害增加10%\n魔法暴击率增加8%\n远程暴击率增加5%\n增加40法力上限
 ItemTooltip.得摩斯胸甲=魔法伤害和暴击率各增加10%\n远程伤害提高11%\n有15%的几率不消耗弹药
 ItemTooltip.得摩斯护胫=移动速度增加6%\n魔法暴击率增加4%\n远程伤害增加5%
@@ -100,18 +159,39 @@ ItemTooltip.福波斯头盔=近战伤害增加7%\n仆从伤害增加8%\n近战�
 ItemTooltip.福波斯胸甲=仆从伤害10%\n近战伤害提高11%\n提高仆从数量上限
 ItemTooltip.福波斯护胫=移动速度增加8%\n近战攻速增加6%\n提高仆从数量上限
 
+# Mushrooooms
+ItemTooltip.GrassMushroom=“平凡的蘑菇，聊以充饥”
+ItemTooltip.Fungus=“可凉拌可炒菜”
+ItemTooltip.Ganoderma=“请遵医嘱服用”
+ItemTooltip.Flammulina=“细又长”
+ItemTooltip.Boletus=“大又白”
+ItemTooltip.LactariusEdulis=“朴素的毒物”
+ItemTooltip.UmbrellaMushroom=“其实是个陀螺哒”
+ItemTooltip.Twinshroom=“双生法术就是可以用两次的法术，双生蘑菇就是......”
+ItemTooltip.ToxiclessMushroom=“真的无毒”
+ItemTooltip.Voidshroom=“让你永远无法达到虚幻的真实”
+ItemTooltip.Shiitake=“蘑菇人一定想不到他的孩子后来怎么了”
 
+
+# Usual Projectiles
 ProjectileName.CorruCloud=腐化雷云
 ProjectileName.CorruCloudOver=腐化雷云
 ProjectileName.CorruCloudRain=腐化雷雨
 ProjectileName.CorruptionRain=腐化雷雨
 ProjectileName.ProGodArrow=混沌之箭
 ProjectileName.GodBeamFri=混沌剑气
+ProjectileName.CompoundWill=复合意志
 ProjectileName.Gravel=碎石
 ProjectileName.Gravel=碎石
-ProjectileName.叶片proj=叶片
+ProjectileName.Leafblade=叶片
 
+# Volutio's Projectiles
+ProjectileName.SymbioisDeathLaser=共生体死光
+ProjectileName.GelSting=凝胶蜂刺
+ProjectileName.GelSickle=凝胶镰刀
+ProjectileName.GelFeather=凝胶羽毛
 
+# Usual NPCs
 NPCName.StoneSlime=岩石史莱姆
 NPCName.UnknowBoss=你不该见到它
 NPCName.AngryofCorruption=腐化之怒
@@ -120,6 +200,8 @@ NPCName.AngryofCorruptionMinion=腐化雷云仆从
 NPCName.CrimsonSpiritMinion=猩红幽魂仆从
 NPCName.CorruptionEye=腐蚀眼
 NPCName.CardMerchant=卡牌商
+
+# Contamination Elemental's NPCs
 NPCName.污染虫头=成年污染蠕虫
 NPCName.污染虫身=成年污染蠕虫
 NPCName.污染虫尾=成年污染蠕虫
@@ -129,15 +211,24 @@ NPCName.污染虫尾2=少年污染蠕虫
 NPCName.污染虫头3=幼年污染蠕虫
 NPCName.污染虫身3=幼年污染蠕虫
 NPCName.污染虫尾3=幼年污染蠕虫
-NPCName.Antanasy=安达尼希-衰落魔像
 NPCName.Migrant=护卫者
 NPCName.PolluShark=污染鲨
-NPCName.污染之灵=污染之灵
-NPCName.嘉沃顿=凝胶共生体-瓦卢提奥
-NPCName.IREUL细胞=IREUL细胞
-NPCName.IREUL细胞2=IREUL细胞
+NPCName.PollutionElemental=污染之灵
+
+# Athanasy's NPCs
+NPCName.Antanasy=安达尼希-衰落魔像
+
+# Volutio's NPCs
+NPCName.Volutio=凝胶共生体-瓦卢提奥
+NPCName.IREUL=IREUL细胞
+NPCName.IREUL2=IREUL细胞
+NPCName.GelDemon=凝胶恶魔
+NPCName.GelBee=凝胶蜜蜂
+NPCName.GelHarpy=凝胶鸟妖
+NPCName.Embryo=胚胎
 
 
+# Usual Buffs
 BuffName.Unconsciousness=神志不清
 BuffName.MagicCursed=魔力诅咒
 BuffName.Dragoul=龙魂
@@ -145,7 +236,15 @@ BuffDescription.MagicCursed=直到下一次过牌，你最多只能使用2张牌
 BuffDescription.Dragoul=你的身体变得龙一般轻盈！\n获得高速飞行能力
 BuffDescription.Unconsciousness=你晕眩了
 
+# Mushroom Buffs
+BuffName.Boletus=牛肝菌
+BuffName.Flammulina=金针菇
+BuffName.Ganoderma=灵芝
+BuffName.Twinshroom=双生菇
+BuffName.Voidshroom=相位蘑菇
 
+
+# Traslation Key Words
 Magic=魔法
 imr=增加魔力再生速度
 --> More in Entrogic.cs
@@ -158,6 +257,8 @@ mmc=仆从数量上限
 --> More in Entrogic.cs
 eaml=敌人更有可能瞄准你
 
+
+# Miscellaneous
 得摩斯奖励=有几率让部分远程/魔法武器多发射一次
 得摩斯奖励2=被击中敌人有几率获得[恐惧]Debuff
 福波斯奖励=受击后有50%发生爆炸
@@ -177,3 +278,4 @@ CardWeak=弱核
 CardStro=强核
 CardGran=大统一
 Common.Banner=旗帜
+Common.TreasureBag=宝藏袋

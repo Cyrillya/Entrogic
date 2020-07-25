@@ -43,8 +43,8 @@ namespace Entrogic.Items.Weapons.Card.Elements
         public override void CardDefaults()
         {
             item.value = Item.sellPrice(silver: 1);
-            item.rare = 1;
-            item.shoot = mod.ProjectileType("陨星");
+            item.rare = ItemRarityID.Blue;
+            item.shoot = ProjectileType<Projectiles.Arcane.FallenStar>();
             item.damage = 18;
             if (Main.hardMode)
             {
@@ -60,13 +60,13 @@ namespace Entrogic.Items.Weapons.Card.Elements
         }
         public override void AttackEffects(Player player, int type, Vector2 position, Vector2 shootTo, float speedX, float speedY, int damage, float knockBack, float speed)
         {
-            for (int i = 0; i < (Main.rand.Next(4, 13)); i++)
+            for (int i = 0; i < Main.rand.Next(4, 13); i++)
             {
                 Vector2 mouse = shootTo;
                 Vector2 r = new Vector2(Main.rand.Next(380, 700), -1000 + -Main.rand.Next(-50, 51));
                 r = r - new Vector2(Main.rand.Next(370), 0);
                 if (Main.rand.NextBool(2)) r.X = -r.X;
-                Vector2 vec = (mouse + r) - mouse;
+                Vector2 vec = mouse + r - mouse;
                 Vector2 finalVec = (vec.ToRotation() + MathHelper.Pi).ToRotationVector2() * 24;
                 Projectile proj = Main.projectile[Projectile.NewProjectile(mouse + r, finalVec, type, damage, knockBack, Main.myPlayer, Main.MouseWorld.Y - 50, IsShootingStar && ModLoader.GetMod("FallenStar49") != null ? 1f : 0f)];
             }

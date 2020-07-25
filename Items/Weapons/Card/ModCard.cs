@@ -118,7 +118,7 @@ namespace Entrogic.Items.Weapons.Card
                 item.noUseGraphic = true;
                 item.noMelee = true;
                 item.useStyle = ItemUseStyleID.SwingThrow;
-                item.shoot = 10;
+                item.shoot = ProjectileID.PurificationPowder;
                 item.shootSpeed = 3f;
                 item.useTime = item.useAnimation = 20;
             }
@@ -213,7 +213,7 @@ namespace Entrogic.Items.Weapons.Card
             bool hasGlove = false;
             foreach (Item it in Main.LocalPlayer.inventory)
             {
-                if (it.type != 0 && Entrogic.ItemSafe(it) && it.GetGlobalItem<EntrogicItem>().glove)
+                if (it.type != ItemID.None && Entrogic.ItemSafe(it) && it.GetGlobalItem<EntrogicItem>().glove)
                 {
                     hasGlove = true;
                     break;

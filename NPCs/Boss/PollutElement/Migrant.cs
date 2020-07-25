@@ -34,11 +34,12 @@ namespace Entrogic.NPCs.Boss.PollutElement
                 npc.buffImmune[i] = true;
             npc.npcSlots = 1f;
             npc.defense = 10;
+            npc.friendly = false;
         }
         NPC master = null;
         public override void AI()
         {
-            if (NPC.CountNPCS(NPCType<污染之灵>()) < 1)
+            if (NPC.CountNPCS(NPCType<PollutionElemental>()) < 1)
             {
                 npc.active = false;
                 npc.life = -1;
@@ -48,21 +49,7 @@ namespace Entrogic.NPCs.Boss.PollutElement
             }
             npc.defense = 10;
             npc.ai[0]++;
-            foreach (NPC npc in Main.npc)
-            {
-                if (npc.type == NPCType<污染之灵>() && npc.active)
-                {
-                    master = npc;
-                }
-            }
-            if (master == null)
-            {
-                npc.active = false;
-                npc.life = -1;
-                npc.HitEffect();
-                npc.netUpdate = true;
-                return;
-            }
+            master = Main.npc[NPC.FindFirstNPC(NPCType<PollutionElemental>())];
             npc.TargetClosest();
             Player player = Main.player[npc.target];
             npc.velocity = (player.Center - npc.Center).ToRotation().ToRotationVector2() * 2f;
@@ -75,16 +62,16 @@ namespace Entrogic.NPCs.Boss.PollutElement
                     master.life += 100 + npc.life;
                     if (master.life > master.lifeMax)
                         master.life = master.lifeMax;
-                    ((污染之灵)master.modNPC).water += 50;
+                    ((PollutionElemental)master.modNPC).water += 50;
                     npc.active = false;
                 }
                 return;
             }
-            if (npc.ai[0] % 115 == 0 && master.ai[0] != 4f && Main.netMode != 1)
+            if (npc.ai[0] % 115 == 0 && master.ai[0] != 4f && Main.netMode != NetmodeID.MultiplayerClient)
             {
                 for (int i = -1; i <= 1; i++)
                 {
-                    Vector2 velo = ((player.Center + player.velocity * 120) - npc.Center).ToRotation().ToRotationVector2() * 10f + (i * 30f / 360f * MathHelper.TwoPi).ToRotationVector2();
+                    Vector2 velo = (player.Center + player.velocity * 120 - npc.Center).ToRotation().ToRotationVector2() * 10f + (i * 30f / 360f * MathHelper.TwoPi).ToRotationVector2();
                     Projectile shots = Main.projectile[Projectile.NewProjectile(npc.Center, velo, ProjectileType<污染精华>(), (int)(23 * npc.scale), 2f)];
                     shots.scale = 1f + (npc.scale - 1f) * 0.87f;
                     npc.netUpdate = true;

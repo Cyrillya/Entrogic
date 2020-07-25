@@ -34,7 +34,7 @@ namespace Entrogic.NPCs.Enemies
             npc.spriteDirection = -npc.direction;
             if (State != (int)NPCState.Dead && State != (int)NPCState.PlayerDead)
             {
-                npc.velocity = ((player.Center - npc.Center).ToRotation().ToRotationVector2() * 1.8f);
+                npc.velocity = (player.Center - npc.Center).ToRotation().ToRotationVector2() * 1.8f;
             }
             if (!player.active || player.dead)
             {
@@ -70,7 +70,7 @@ namespace Entrogic.NPCs.Enemies
                         // 帧数=计时器/4
                         Timer++;
                         // 第九帧攻击 (也就是此阶段第32帧)
-                        if (Timer == 32 && Main.netMode != 1)
+                        if (Timer == 32 && Main.netMode != NetmodeID.MultiplayerClient)
                         {
                             // 来点二分法
                             Vector2 shootPos = new Vector2(npc.Center.X, npc.Center.Y + npc.height / 2f - 30f);

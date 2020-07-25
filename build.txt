@@ -6,4 +6,3 @@ hideCode = false
 hideResources = false
 weakReferences = CalamityMod@1.4.4
 includePDB = true;
-modReferences = TELib

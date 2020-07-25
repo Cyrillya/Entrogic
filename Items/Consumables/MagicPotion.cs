@@ -13,7 +13,7 @@ namespace Entrogic.Items.Consumables
         {
             item.useAnimation = 30;
             item.useTime = 30;
-            item.useStyle = 4;
+            item.useStyle = ItemUseStyleID.HoldingUp;
             item.noMelee = true;
             item.UseSound = SoundID.Item3;
             item.width = 24;

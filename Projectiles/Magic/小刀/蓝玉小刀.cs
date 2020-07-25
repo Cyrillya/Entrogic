@@ -19,7 +19,7 @@ namespace Entrogic.Projectiles.Magic.小刀
         {
             for (int i = 0; i < 7; i++)
             {
-                int num = Dust.NewDust(new Vector2(base.projectile.position.X, base.projectile.position.Y), base.projectile.width, base.projectile.height, 15, 0f, 0f, 90, default(Color), 0.75f);
+                int num = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 15, 0f, 0f, 90, default(Color), 0.75f);
                 Main.dust[num].velocity *= 0.75f;
                 if (Main.rand.Next(2) == 0)
                 {

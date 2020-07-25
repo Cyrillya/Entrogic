@@ -35,7 +35,7 @@ namespace Entrogic.Items.Weapons.Card.Elements
             item.crit += 20;
             item.UseSound = SoundID.Item20;
             item.value = Item.sellPrice(silver: 15);
-            item.shoot = mod.ProjectileType("诅咒灵体");
+            item.shoot = ProjectileType<Projectiles.Arcane.CursedSpirit>();
         }
         public override void AttackEffects(Player player, int type, Vector2 position, Vector2 shootTo, float speedX, float speedY, int damage, float knockBack, float speed)
         {
@@ -79,7 +79,7 @@ namespace Entrogic.Items.Weapons.Card.Elements
             item.crit += 20;
             item.UseSound = SoundID.Item20;
             item.value = Item.sellPrice(silver: 15);
-            item.shoot = mod.ProjectileType("诅咒灵体");
+            item.shoot = ProjectileType<Projectiles.Arcane.CursedSpirit>();
         }
         public override void AttackEffects(Player player, int type, Vector2 position, Vector2 shootTo, float speedX, float speedY, int damage, float knockBack, float speed)
         {

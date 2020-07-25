@@ -45,7 +45,7 @@ namespace Entrogic.Projectiles.Magic.Books
                 toTarget.Normalize();
                 toTarget *= 6f;
                 toTarget = toTarget.RotatedBy(Main.rand.NextFloatDirection() * 0.3f);
-                Projectile.NewProjectile(projectile.Center + projectile.velocity * 5f, toTarget, mod.ProjectileType("污染水滴"), 25, 0f, projectile.owner, target.whoAmI);
+                Projectile.NewProjectile(projectile.Center + projectile.velocity * 5f, toTarget, ProjectileType<污染水滴>(), 25, 0f, projectile.owner, target.whoAmI);
             }
         }
     }

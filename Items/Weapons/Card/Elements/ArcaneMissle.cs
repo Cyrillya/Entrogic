@@ -21,7 +21,7 @@ namespace Entrogic.Items.Weapons.Card.Elements
         {
             attackCardRemainingTimes = 20;
             item.rare = RareID.LV2;
-            item.shoot = mod.ProjectileType("ArcaneMissle");
+            item.shoot = ProjectileType<Projectiles.Arcane.ArcaneMissle>();
             item.damage = 8;
             item.knockBack = 7f;
             item.UseSound = SoundID.Item20;
@@ -54,7 +54,7 @@ namespace Entrogic.Items.Weapons.Card.Elements
         {
             attackCardRemainingTimes = 25;
             item.rare = RareID.LV5;
-            item.shoot = mod.ProjectileType("ArcaneMissle");
+            item.shoot = ProjectileType<Projectiles.Arcane.ArcaneMissle>();
             item.damage = 28;
             item.knockBack = 7f;
             item.UseSound = SoundID.Item20;

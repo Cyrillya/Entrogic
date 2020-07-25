@@ -157,7 +157,7 @@ namespace Entrogic.NPCs
                     int inventoryMNAmount = 0;
                     for (int j = 0; j < player.inventory.Length; j++)
                     {
-                        if (player.inventory[j].type != 0)
+                        if (player.inventory[j].type != ItemID.None)
                         {
                             if (player.inventory[j].GetGlobalItem<EntrogicItem>().card)
                                 return true;
@@ -364,7 +364,7 @@ namespace Entrogic.NPCs
 
         public override void TownNPCAttackProj(ref int projType, ref int attackDelay)
         {
-            projType = mod.ProjectileType("ArcaneMissle");
+            projType = ProjectileType<Projectiles.Arcane.ArcaneMissle>();
             attackDelay = 3;
         }
 
@@ -454,11 +454,12 @@ namespace Entrogic.NPCs
                         if (questSystem.CheckQuest())//如果在提交时符合任务条件
                         {
                             Main.npcChatText = questSystem.GetCurrentQuest().SayThanks();
+                            // 角落物品先给你整个心心，有需要再改
                             Main.npcChatCornerItem = ItemID.Heart;
-                            Main.PlaySound(12, -1, -1, 1, 1f, 0f);
+                            Main.PlaySound(SoundID.MenuTick, -1, -1, 1, 1f, 0f);
                             questSystem.SpawnReward(npc);
                             questSystem.Complete += "_" + CardMerchantQuest.Quests[questSystem.quest].ID;
-                            if (Main.netMode == 2)
+                            if (Main.netMode == NetmodeID.Server)
                             {
                                 var packet = mod.GetPacket();
                                 packet.Write((byte)EntrogicModMessageType.SendCompletedCardMerchantMissionRequest);
@@ -503,13 +504,17 @@ namespace Entrogic.NPCs
         {
             string[] s = Complete.Split('_');
             Dictionary<string, bool> comp = new Dictionary<string, bool>();
-            for (int i = 0; i < s.Length; i++)
+            foreach (Quest q in Quests) // 先遍历一遍任务列表，添加字典中的所有键值，bool初始值为false（未完成）
+            {
+                comp.Add(q.ID, false);
+            }
+            for (int i = 0; i < s.Length; i++) // 愉快地将指定值设为true
             {
                 comp[s[i]] = true;
             }
             foreach (Quest q in Quests)
             {
-                if (!q.CheckCompletion(player) || !comp[q.ID])
+                if (!q.CheckCompletion(player) || !comp[q.ID]) // 这里就不会找不到键值了
                 {
                     quest = Quests.IndexOf(q);
                     return quest;
@@ -544,8 +549,7 @@ namespace Entrogic.NPCs
                 "方式，完成“任务”我会给你一些奖赏，帮助你更好地完成理想中的大业。现在，请你购买一份新手卡包，阅读卡牌手册，尝试尝试“新事物”吧" +
                 "\n\n（装备卡牌，并试着使用一次！）",
                 entrogicPlayer.CardUseCount >= 1,
-                $"看上去，你完成了。对于其中的不适应，慢慢熟悉吧。作为“奖赏”，这一张标有[i:{ItemID.Heart}]的是你的，这是一张出色的卡牌，希望他能" +
-                "给你帮助");
+                $"你出色地完成了任务！现在让我送你一张卡牌[i:{ItemType<EnergyRecovery>()}]，这是一张出色的卡牌，相信他会发挥伟大的作用的。");
             quest.CornerItem = ItemType<ArcaneMissle>();
             quest.Reward.Add(ItemType<EnergyRecovery>());
             quest.RewardStack.Add(1);
@@ -554,7 +558,7 @@ namespace Entrogic.NPCs
         }
         public void SendQuest(int remoteClient)
         {
-            if (Main.netMode != 2)
+            if (Main.netMode != NetmodeID.Server)
             {
                 return;
             }
@@ -581,7 +585,7 @@ namespace Entrogic.NPCs
             for (int i = 0; i < GetCurrentQuest().Reward.Count; i++)
             {
                 int number = Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, GetCurrentQuest().Reward[i], GetCurrentQuest().RewardStack[i], false, 0, false, false);
-                if (Main.netMode == 1 && number >= 0)
+                if (Main.netMode == NetmodeID.MultiplayerClient && number >= 0)
                 {
                     NetMessage.SendData(MessageID.SyncItem, -1, -1, null, number, 1f, 0f, 0f, 0, 0, 0);
                 }
@@ -589,7 +593,7 @@ namespace Entrogic.NPCs
             if (GetCurrentQuest().RewardMoney.Platinum > 0)
             {
                 int number = Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.PlatinumCoin, GetCurrentQuest().RewardMoney.Platinum);
-                if (Main.netMode == 1 && number >= 0)
+                if (Main.netMode == NetmodeID.MultiplayerClient && number >= 0)
                 {
                     NetMessage.SendData(MessageID.SyncItem, -1, -1, null, number, 1f, 0f, 0f, 0, 0, 0);
                 }
@@ -597,7 +601,7 @@ namespace Entrogic.NPCs
             if (GetCurrentQuest().RewardMoney.Gold > 0)
             {
                 int number = Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.GoldCoin, GetCurrentQuest().RewardMoney.Gold);
-                if (Main.netMode == 1 && number >= 0)
+                if (Main.netMode == NetmodeID.MultiplayerClient && number >= 0)
                 {
                     NetMessage.SendData(MessageID.SyncItem, -1, -1, null, number, 1f, 0f, 0f, 0, 0, 0);
                 }
@@ -605,7 +609,7 @@ namespace Entrogic.NPCs
             if (GetCurrentQuest().RewardMoney.Silver > 0)
             {
                 int number = Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.SilverCoin, GetCurrentQuest().RewardMoney.Silver);
-                if (Main.netMode == 1 && number >= 0)
+                if (Main.netMode == NetmodeID.MultiplayerClient && number >= 0)
                 {
                     NetMessage.SendData(MessageID.SyncItem, -1, -1, null, number, 1f, 0f, 0f, 0, 0, 0);
                 }
@@ -613,7 +617,7 @@ namespace Entrogic.NPCs
             if (GetCurrentQuest().RewardMoney.Copper > 0)
             {
                 int number = Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.CopperCoin, GetCurrentQuest().RewardMoney.Copper);
-                if (Main.netMode == 1 && number >= 0)
+                if (Main.netMode == NetmodeID.MultiplayerClient && number >= 0)
                 {
                     NetMessage.SendData(MessageID.SyncItem, -1, -1, null, number, 1f, 0f, 0f, 0, 0, 0);
                 }
@@ -688,7 +692,7 @@ namespace Entrogic.NPCs
             SpawnReward = delegate (NPC npc)
             {
             };
-            IsAvailable = (() => true);
+            IsAvailable = () => true;
         }
         public bool CheckCompletion(Player player)
         {

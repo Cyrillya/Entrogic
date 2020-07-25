@@ -8,7 +8,6 @@ using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
 using ReLogic.Graphics;
 using Entrogic.UI;
-using TELib.UI.Inventory;
 using Entrogic.Items.Weapons.Card;
 using System.Collections.Generic;
 
@@ -17,8 +16,7 @@ namespace Entrogic.UI.Cards
     public class CardInventoryUI : UIState
     {
         internal bool slotActive = false;
-        internal UIPanel CardInventory;//新建UI
-        internal static bool visible = false;//UI开启的bool
+        internal static bool IsActive = false;//UI开启的bool
         internal Vector2 statPoint = new Vector2(40f, 280f);
         UIHoverImageButton InventoryHighlight = new UIHoverImageButton(GetTexture("Entrogic/UI/Cards/Inventory_Highlight"), "卡牌背包");
         UIHoverImageButton Inventory = new UIHoverImageButton(GetTexture("Entrogic/UI/Cards/Inventory"), "卡牌背包");
@@ -66,7 +64,7 @@ namespace Entrogic.UI.Cards
                 if (Grid[i] == null)
                     continue;
                 Grid[i].uiColor = new Color(215, 215, 215, 215);
-                if (TELib.ModHelper.MouseInRectangle(Grid[i].uiRectangle))
+                if (ModHelper.MouseInRectangle(Grid[i].uiRectangle))
                 {
                     Grid[i].uiColor = Color.White;
                 }
@@ -88,7 +86,7 @@ namespace Entrogic.UI.Cards
         {
             foreach (CardInventoryGridSlot Gri in Grid)
             {
-                if (TELib.ModHelper.MouseInRectangle(Gri.uiRectangle))
+                if (ModHelper.MouseInRectangle(Gri.uiRectangle))
                 {
                     return Grid.IndexOf(Gri);
                 }
@@ -115,7 +113,7 @@ namespace Entrogic.UI.Cards
         }
         public override void ClickEvent()
         {
-            if (ModHelper.ControlShift && inventoryItem.type != 0)
+            if (ModHelper.ControlShift && inventoryItem.type != ItemID.None)
             {
                 if (!Main.LocalPlayer.ItemSpace(inventoryItem))
                     return;
@@ -132,7 +130,7 @@ namespace Entrogic.UI.Cards
             if (!AllowPutin(inventoryItem, Main.mouseItem, Index))
                 return;
             base.RightClickEvent();
-            if (Main.mouseItem.type != 0 && inventoryItem.type != 0 && Main.mouseItem.stack == 1)
+            if (Main.mouseItem.type != ItemID.None && inventoryItem.type != ItemID.None && Main.mouseItem.stack == 1)
             {
                 Item mouItem = Main.mouseItem;
                 Main.mouseItem = inventoryItem;
@@ -147,14 +145,14 @@ namespace Entrogic.UI.Cards
         internal static bool AllowPutin(Item inventoryItem, Item itemToPut, int Index)
         {
             EntrogicPlayer player = Main.LocalPlayer.GetModPlayer<EntrogicPlayer>();
-            if (itemToPut.type != 0)
+            if (itemToPut.type != ItemID.None)
             {
                 if (!itemToPut.GetGlobalItem<EntrogicItem>().card)
                     return false;
             } // 特殊判断：如果手上物品不是卡牌就return
-            if (itemToPut.type == 0 && player.CardType[Index] == 0)
+            if (itemToPut.type == ItemID.None && player.CardType[Index] == 0)
                 return false;
-            if (itemToPut.type != 0)
+            if (itemToPut.type != ItemID.None)
             {
                 if (!itemToPut.GetGlobalItem<EntrogicItem>().card || itemToPut.GetGlobalItem<EntrogicItem>().glove)
                     return false;
@@ -162,7 +160,7 @@ namespace Entrogic.UI.Cards
                 if (card.rare == CardRareID.GrandUnified)
                 {
                     // 如果本框牌也是大统一，让你过
-                    if (inventoryItem.type != 0 && inventoryItem.GetGlobalItem<EntrogicItem>().card && ((ModCard)inventoryItem.modItem).rare == CardRareID.GrandUnified)
+                    if (inventoryItem.type != ItemID.None && inventoryItem.GetGlobalItem<EntrogicItem>().card && ((ModCard)inventoryItem.modItem).rare == CardRareID.GrandUnified)
                     {
                         return true;
                     }

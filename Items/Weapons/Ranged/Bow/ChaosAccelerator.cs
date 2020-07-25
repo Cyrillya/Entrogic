@@ -1,5 +1,7 @@
 using System;
 
+using Entrogic.Projectiles.Ammos;
+
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -18,20 +20,20 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
             item.height = 30;
             item.useTime = 12;
             item.useAnimation = 12;
-            item.useStyle = 5;
+            item.useStyle = ItemUseStyleID.HoldingOut;
             item.noMelee = true;
             item.value = Item.sellPrice(0, 5);
-            item.rare = 5;
+            item.rare = ItemRarityID.Pink;
             item.UseSound = SoundID.Item5;
             item.autoReuse = true;
-            item.shoot = mod.ProjectileType("ProGodArrow");
+            item.shoot = ProjectileType<ProGodArrow>();
             item.shootSpeed = 12f;
             item.useAmmo = AmmoID.Arrow;
             item.ranged = true;
         }
         public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
-            type = mod.ProjectileType("ProGodArrow");
+            type = ProjectileType<ProGodArrow>();
             return true;
         }
         public override void AddRecipes()
@@ -71,7 +73,7 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
         public override void GetWeaponDamage(Player player, ref int damage)
         {
             timeCounter++;
-            Main.itemTexture[mod.ItemType("ChaosAccelerator")] = mod.GetTexture("Items/Weapons/Ranged/Bow/ChaosAccelerator_" + timer);
+            Main.itemTexture[ItemType<ChaosAccelerator>()] = mod.GetTexture("Items/Weapons/Ranged/Bow/ChaosAccelerator_" + timer);
             if (timeCounter >= 6)
             {
                 if (timer >= 4) timer = 0;

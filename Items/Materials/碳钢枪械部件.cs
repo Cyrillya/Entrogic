@@ -18,17 +18,17 @@ namespace Entrogic.Items.Materials
 			item.height = 26;
 			item.maxStack = 5;
             item.value = Item.buyPrice(gold: 1);
-            item.rare = 5;
+            item.rare = ItemRarityID.Pink;
 		}
 
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(1198,4);
-            recipe.AddIngredient(22, 10);
-            recipe.AddIngredient(324, 1);
+			recipe.AddIngredient(ItemID.TitaniumBar,4);
+            recipe.AddIngredient(ItemID.IronBar, 10);
+            recipe.AddIngredient(ItemID.IllegalGunParts, 1);
 			recipe.SetResult(this);
-            recipe.AddTile(134);
+            recipe.AddTile(TileID.MythrilAnvil);
 			recipe.AddRecipe();
 			/*
 			// Start a new Recipe. (Prepend with "ModRecipe " if 1st recipe in code block.)
@@ -52,7 +52,7 @@ namespace Entrogic.Items.Materials
 			recipe.AddIngredient(mod, "EquipMaterial", 3);
 			// an alternate approach to the above.
 			//上述的替代方法
-			recipe.AddIngredient(mod.ItemType("EquipMaterial"), 3);
+			recipe.AddIngredient(ModContent.ItemType<EquipMaterial>(), 3);
 			// RecipeGroups allow you create a recipe that accepts items from a group of similar ingredients. For example, all varieties of Wood are in the vanilla "Wood" Group
 			// RecipeGroups允许您创建一个接受来自一组相似成分的项目的配方。例如，所有品种的木材都在物品“木材”组中
 			recipe.AddRecipeGroup("Wood"); // check here for other vanilla groups(在这里查看其他物品组): https://github.com/bluemagic123/tModLoader/wiki/ModRecipe#public-void-addrecipegroupstring-name-int-stack--1 

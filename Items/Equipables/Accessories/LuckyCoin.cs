@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
+using Terraria.ID;
 
 namespace Entrogic.Items.Equipables.Accessories
 {
@@ -10,7 +11,7 @@ namespace Entrogic.Items.Equipables.Accessories
         public override void SetDefaults()
         {
             item.Size = new Vector2(32, 32);
-            item.rare = 7;
+            item.rare = ItemRarityID.Lime;
             item.accessory = true;
             item.value = Item.buyPrice(0, 3, 0, 0);
         }

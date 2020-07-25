@@ -112,10 +112,10 @@ namespace Entrogic.Projectiles.Arcane
         }
         public override void Kill(int timeLeft)
         {
-            Main.PlaySound(2);
+            Main.PlaySound(SoundID.Item);
             for (int i = 0; i < 10; i++)
             {
-                int num = Dust.NewDust(new Vector2(base.projectile.position.X, base.projectile.position.Y), base.projectile.width, base.projectile.height, MyDustId.GreyPebble, 0, 0, 100, Color.LightBlue, 1.8f);
+                int num = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, MyDustId.GreyPebble, 0, 0, 100, Color.LightBlue, 1.8f);
                 Main.dust[num].noGravity = true;
                 Main.dust[num].velocity *= 2.0f;
                 if (Main.rand.Next(2) == 0)
@@ -132,7 +132,7 @@ namespace Entrogic.Projectiles.Arcane
     }
     public class UndeadHeal : ArcaneProjectile
     {
-        public override string Texture => "Entrogic/Texture/Block";
+        public override string Texture => "Entrogic/Images/Block";
         public override void ArcaneDefaults()
         {
             projectile.width = 8;

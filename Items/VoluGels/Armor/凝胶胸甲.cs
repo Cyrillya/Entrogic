@@ -39,7 +39,7 @@ namespace Entrogic.Items.VoluGels.Armor
         }
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {
-            return head.type == mod.ItemType("凝胶头饰") && legs.type == mod.ItemType("凝胶护胫");
+            return head.type == ItemType<凝胶头饰>() && legs.type == ItemType<凝胶护胫>();
         }
         public override void UpdateArmorSet(Player player)
         {
@@ -97,7 +97,7 @@ namespace Entrogic.Items.VoluGels.Armor
             recipe.AddIngredient(ItemType<CastIronBar>(), 20);
             recipe.AddIngredient(ItemType<GelOfLife>(), 4);
             recipe.SetResult(this);
-            recipe.AddTile(TileType<魔力导流台>());
+            recipe.AddTile(TileType<MagicDiversionPlatformTile>());
             recipe.AddRecipe();
         }
     }

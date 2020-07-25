@@ -24,7 +24,7 @@ namespace Entrogic.Items.Weapons.Card.Elements
         }
         public override void CardDefaults()
         {
-            item.rare = 1;
+            item.rare = ItemRarityID.Blue;
             item.UseSound = SoundID.Item20;
             item.value = Item.sellPrice(silver: 1);
         }

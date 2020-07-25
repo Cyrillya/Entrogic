@@ -54,7 +54,7 @@ namespace Entrogic.UI.Cards
             EntrogicPlayer player = Main.LocalPlayer.GetModPlayer<EntrogicPlayer>();
             Item ContainedItem = new Item();
             ContainedItem.SetDefaults(player.CardType[number]);
-            if (ContainedItem.type != 0)
+            if (ContainedItem.type != ItemID.None)
             {
                 if (ContainsPoint(Main.MouseScreen))
                 {
@@ -70,14 +70,14 @@ namespace Entrogic.UI.Cards
         {
             EntrogicPlayer player = Main.LocalPlayer.GetModPlayer<EntrogicPlayer>();
             Item mouseItem = Main.mouseItem;
-            if (mouseItem.type != 0) // 特殊判断：如果手上物品不是卡牌就return
+            if (mouseItem.type != ItemID.None) // 特殊判断：如果手上物品不是卡牌就return
             {
                 if (!mouseItem.GetGlobalItem<EntrogicItem>().card)
                     return;
             } // 特殊判断：如果手上物品不是卡牌就return
-            if (mouseItem.type == 0 && player.CardType[number] == 0)
+            if (mouseItem.type == ItemID.None && player.CardType[number] == 0)
                 return;
-            if (mouseItem.type != 0)
+            if (mouseItem.type != ItemID.None)
             {
                 ModCard card = (ModCard)mouseItem.modItem;
                 if (card.rare == CardRareID.GrandUnified)
@@ -115,8 +115,8 @@ namespace Entrogic.UI.Cards
                     }
                 }
             }
-            Main.PlaySound(7, -1, -1, 1, 1f, 0.0f);
-            if (player.CardType[number] != 0 && mouseItem.type == 0)
+            Main.PlaySound(SoundID.Grab, -1, -1, 1, 1f, 0.0f);
+            if (player.CardType[number] != 0 && mouseItem.type == ItemID.None)
             {
                 Item item = new Item();
                 item.SetDefaults(player.CardType[number]);

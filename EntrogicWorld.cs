@@ -14,6 +14,10 @@ using Terraria.Localization;
 using Terraria.Graphics.Effects;
 using static Entrogic.Entrogic;
 using Entrogic.Walls;
+using Entrogic.Tiles;
+using Entrogic.Items.AntaGolem;
+using Entrogic.Items.Weapons.Ranged.Gun;
+using Entrogic.Items.Weapons.Melee.Sword;
 
 namespace Entrogic
 {
@@ -119,14 +123,14 @@ namespace Entrogic
         {
             if (!Main.dayTime)
             {
-                if (_oldIsDay && Main.netMode != 1)
+                if (_oldIsDay && Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    if (Main.netMode != 1 && Main.rand.NextBool(15) && NPC.downedBoss1)
+                    if (Main.netMode != NetmodeID.MultiplayerClient && Main.rand.NextBool(15) && NPC.downedBoss1)
                     {
                         ActiveMagicStorm();
                     }
                 }
-                if (Main.netMode != 2)
+                if (Main.netMode != NetmodeID.Server)
                 {
                     CustomSky customSky = SkyManager.Instance["Entrogic:MagicStormScreen"];
                     if (magicStorm)
@@ -149,18 +153,11 @@ namespace Entrogic
                     }
                 }
                 int mimicrySpawnRate = 672;
-                if (Main.netMode != 1 && magicStorm)
+                if (Main.netMode != NetmodeID.MultiplayerClient && magicStorm)
                 {
                     mimicrySpawnRate = 343;
-                    if (Main.netMode == 2)
-                    {
-                        var packet = mod.GetPacket();
-                        packet.Write((byte)EntrogicModMessageType.SendMagicStormRequest);
-                        packet.Write(magicStorm);
-                        packet.Send();
-                    }
                 }
-                if (Main.rand.NextBool(mimicrySpawnRate) && Main.netMode != 1)
+                if (Main.rand.NextBool(mimicrySpawnRate) && Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     foreach (Player player in Main.player)
                     {
@@ -170,29 +167,27 @@ namespace Entrogic
                             Point tilePlrPos = player.position.ToTileCoordinates();
                             if (!SummonMimicryAvailable(new Point(rand.X + (int)tilePlrPos.X, rand.Y + (int)tilePlrPos.Y)))
                                 continue;
-                            DebugModeNewText("Summoned Successfully: [" + rand.X + ',' + rand.Y + ']');
                             int mimicry = Projectile.NewProjectile(player.position + rand.ToWorldCoordinates(), Vector2.Zero, ProjectileType<Projectiles.Miscellaneous.拟态魔能>(), 0, 0f, player.whoAmI);
-                            if (Main.netMode == 2)
-                                NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, mimicry);
+                            NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, mimicry);
                         }
                     }
                 }
             }
             else
             {
-                if (_oldIsNight && Main.netMode != 1)
+                if (_oldIsNight && Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     if (magicStorm)
                     {
                         magicStorm = false;
-                        if (Main.netMode == 2)
+                        if (Main.dedServ)
                         {
                             NetworkText text = NetworkText.FromKey("魔力平静了下来");
                             NetMessage.BroadcastChatMessage(text, new Color(150, 150, 250));
                             var packet = mod.GetPacket();
-                            packet.Write((byte)EntrogicModMessageType.SendMagicStormRequest);
+                            packet.Write((byte)EntrogicModMessageType.ReceiveMagicStormRequest);
                             packet.Write(magicStorm);
-                            packet.Send();
+                            packet.Send(); // 不填发给服务器
                         }
                         else
                         {
@@ -230,17 +225,16 @@ namespace Entrogic
         public void ActiveMagicStorm()
         {
             magicStorm = true;
-            if (Main.netMode != 2)
+            if (Main.netMode != NetmodeID.Server)
             {
-                string text = "魔力开始涌动...";
-                Main.NewText(text, 150, 150, 250);
+                Main.NewText("魔力开始涌动...", 150, 150, 250);
             }
             else
             {
                 NetworkText text = NetworkText.FromKey("魔力开始涌动...");
                 NetMessage.BroadcastChatMessage(text, new Color(150, 150, 250));
                 var packet = mod.GetPacket();
-                packet.Write((byte)EntrogicModMessageType.SendMagicStormRequest);
+                packet.Write((byte)EntrogicModMessageType.ReceiveMagicStormRequest);
                 packet.Write(magicStorm);
                 packet.Send();
             }
@@ -299,9 +293,9 @@ namespace Entrogic
                     {
                         progress.Message = Language.GetTextValue("Mods.Entrogic.GenLifeLiquid");
                         int r = 55;
-                        ModGenHelper.RoundTile(maxX, maxY, r, r, 70, 75, true, mod.TileType("黑陨岩"), 1, 0.2);
+                        ModGenHelper.RoundTile(maxX, maxY, r, r, 70, 75, true, TileType<BlackMeteorite>(), 1, 0.2);
                         progress.Set(0.20f);
-                        ModGenHelper.RoundTile(maxX, maxY, r, r, 0, 24.5, true, mod.TileType("黑陨岩"));
+                        ModGenHelper.RoundTile(maxX, maxY, r, r, 0, 24.5, true, TileType<BlackMeteorite>());
                         progress.Set(0.40f);
                         ModGenHelper.RoundTile(maxX, maxY, r - 7, r - 7, 0, 18, true, 0, 2, 0.5, 1, 180);
                         progress.Set(0.60f);
@@ -310,7 +304,7 @@ namespace Entrogic
                         {
                             for (int i = maxX - WorldGen.genRand.Next(-1, 2) - length; i <= maxX + WorldGen.genRand.Next(-1, 2) + length; i++)
                             {
-                                if (Main.tile[i, j].type == mod.TileType("黑陨岩"))
+                                if (Main.tile[i, j].type == TileType<BlackMeteorite>())
                                     Main.tile[i, j].active(false);
                             }
                         }
@@ -333,7 +327,7 @@ namespace Entrogic
             #region 某烤肉
             // 给地牢箱上魔像召唤物
             bool FirstChest = true;
-            int itemsToPlaceInDungeonChests = mod.ItemType("巨神的旨意");
+            int itemsToPlaceInDungeonChests = ItemType<TitansOrder>();
             for (int chestIndex = 0; chestIndex < 1000; chestIndex++)
             {
                 Chest chest = Main.chest[chestIndex];
@@ -344,7 +338,7 @@ namespace Entrogic
                     {
                         for (int inventoryIndex = 0; inventoryIndex < 40; inventoryIndex++)
                         {
-                            if (chest.item[inventoryIndex].type == 0)
+                            if (chest.item[inventoryIndex].type == ItemID.None)
                             {
                                 chest.item[inventoryIndex].SetDefaults(itemsToPlaceInDungeonChests);
                                 // Alternate approach: Random instead of cyclical: chest.item[inventoryIndex].SetDefaults(Main.rand.Next(itemsToPlaceInIceChests));
@@ -359,7 +353,7 @@ namespace Entrogic
 
             #region 地表木箱子
             bool FirstChest2 = true;
-            int[] itemsToPlaceInWoodenChests = { mod.ItemType("老旧的步枪"), mod.ItemType("生锈的长剑") };
+            int[] itemsToPlaceInWoodenChests = { ItemType<老旧的步枪>(), ItemType<RustySword>() };
             int itemsToPlaceInWoodenChestsChoice = 0;
             for (int chestIndex = 0; chestIndex < 1000; chestIndex++)
             {

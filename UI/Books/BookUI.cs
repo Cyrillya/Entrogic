@@ -20,6 +20,7 @@ namespace Entrogic.UI.Books
     public class BookUI : UIState
     {
         public UIPanel Book;//新建UI
+        internal static bool IsActive = false;
         BookPanel BookPanel = new BookPanel(GetTexture("Entrogic/UI/Books/书本_01"), 1);
         Vector2 bookSize = new Vector2(600f, 480f);
         public override void OnInitialize()
@@ -60,7 +61,7 @@ namespace Entrogic.UI.Books
         private void RightClicked(UIMouseEvent evt, UIElement listeningElement)
         {
             EntrogicPlayer plr = Main.LocalPlayer.GetModPlayer<EntrogicPlayer>();
-            plr.IsActiveBook = false;
+            IsActive = false;
         }
         public Rectangle mouseRect
         {
@@ -77,12 +78,18 @@ namespace Entrogic.UI.Books
             EntrogicPlayer ePlayer = player.GetModPlayer<EntrogicPlayer>();
             if (ePlayer.GetHoldItem() == null)
             {
-                ePlayer.IsActiveBook = false;
+                IsActive = false;
                 return;
             }
             if (!ePlayer.GetHoldItem().GetGlobalItem<EntrogicItem>().book)
             {
-                ePlayer.IsActiveBook = false;
+                IsActive = false;
+                return;
+            }
+            // 开了物品栏就不能让你看书了哦
+            if (Main.playerInventory)
+            {
+                IsActive = false;
                 return;
             }
             BookPanel.num = ePlayer.PageNum;
@@ -101,7 +108,7 @@ namespace Entrogic.UI.Books
         {
             Player player = Main.LocalPlayer;
             EntrogicPlayer ePlayer = player.GetModPlayer<EntrogicPlayer>();
-            if (ePlayer.IsActiveBook)
+            if (IsActive)
             {
                 base.Draw(spriteBatch);
 
@@ -376,7 +383,7 @@ namespace Entrogic.UI.Books
         {
             Player player = Main.LocalPlayer;
             EntrogicPlayer ePlayer = player.GetModPlayer<EntrogicPlayer>();
-            if (!ePlayer.IsActiveBook)
+            if (!BookUI.IsActive)
                 return;
             if (ePlayer.GetHoldItem() != null)
                 if (ePlayer.GetHoldItem().GetGlobalItem<EntrogicItem>().book)
@@ -392,7 +399,7 @@ namespace Entrogic.UI.Books
             Player player = Main.LocalPlayer;
             EntrogicPlayer ePlayer = player.GetModPlayer<EntrogicPlayer>();
             base.Update(gameTime); // don't remove.
-            if (ContainsPoint(Main.MouseScreen) && ePlayer.IsActiveBook)
+            if (ContainsPoint(Main.MouseScreen) && BookUI.IsActive)
             {
                 Main.LocalPlayer.mouseInterface = true;
             }

@@ -1,4 +1,5 @@
 ﻿using Entrogic.Items.AntaGolem;
+using Entrogic.Items.Miscellaneous.Placeable.Trophy;
 using Entrogic.NPCs.Boss.AntaGolem.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -47,7 +48,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
             npc.width = 74;
             npc.height = 104;
             npc.lifeMax = 1640;
-            npc.defense = 8;
+            npc.defense = 15;
             npc.damage = 41;
             if (Entrogic.IsCalamityLoaded)
             {
@@ -79,7 +80,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
             npc.timeLeft = NPC.activeTime * 30;
             music = mod.GetSoundSlot(SoundType.Music, "Sounds/Music/狂気の瞳");
             musicPriority = MusicPriority.BossLow;
-            bossBag = ItemType<衰落魔像宝藏袋>();
+            bossBag = ItemType<AthanasyTreasureBag>();
             npc.alpha = 255;
         }
         public override void NPCLoot()
@@ -90,17 +91,17 @@ namespace Entrogic.NPCs.Boss.AntaGolem
             }
             else
             {
-                if (Main.rand.Next(7) == 0) Item.NewItem(npc.getRect(), mod.ItemType("魔像头套"));
+                if (Main.rand.Next(7) == 0) Item.NewItem(npc.getRect(), ItemType<AthanasyMask>());
                 switch (Main.rand.Next(3))
                 {
                     case 0:
-                        Item.NewItem(npc.getRect(), mod.ItemType("岩石猎枪"));
+                        Item.NewItem(npc.getRect(), ItemType<RockShotgun>());
                         break;
                     case 1:
-                        Item.NewItem(npc.getRect(), mod.ItemType("巨石长枪"));
+                        Item.NewItem(npc.getRect(), ItemType<RockSpear>());
                         break;
                     default:
-                        Item.NewItem(npc.getRect(), mod.ItemType("StoneSlimeStaff"));
+                        Item.NewItem(npc.getRect(), ItemType<StoneSlimeStaff>());
                         break;
                 }
             }
@@ -120,7 +121,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                 Gore.NewGore(npc.Center, npc.velocity, mod.GetGoreSlot("Gores/衰落魔像Gore3"), 1f);
                 if (!EntrogicWorld.downedAthanasy)
                 {
-                    Item.NewItem(npc.getRect(), mod.ItemType("ATrophy"));
+                    Item.NewItem(npc.getRect(), ItemType<AthanasyTrophy>());
                     for (int i = 0; i < 80; i++)
                     {
                         Gore.NewGore(npc.Center, npc.velocity * i / 80, mod.GetGoreSlot("Gores/衰落魔像Gore3"), 1f);
@@ -130,7 +131,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                     return;
                 }
                 if (Main.rand.Next(10) == 0)
-                    Item.NewItem(npc.getRect(), mod.ItemType("ATrophy"));
+                    Item.NewItem(npc.getRect(), ItemType<AthanasyTrophy>());
                 return;
             }
         }
@@ -138,10 +139,10 @@ namespace Entrogic.NPCs.Boss.AntaGolem
         {
             if (Main.expertMode)
                 target.AddBuff(BuffID.Bleeding, 270);
-            if (Entrogic.IsCalamityModDeathMode)
-                target.AddBuff(BuffID.Confused, 180);
             if (!target.stoned && Main.rand.NextBool(2))
                 target.AddBuff(BuffID.Stoned, Main.rand.Next(30, 90));
+            if (Entrogic.IsCalamityLoaded && Entrogic.IsCalamityModDeathMode)
+                    target.AddBuff(BuffID.Confused, 180);
         }
         public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
@@ -153,7 +154,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                 }
                 return;
             }
-            damage = (int)(damage * 1.15f);
+            damage = (int)(damage * 0.95f);
         }
         public override void ScaleExpertStats(int numPlayers, float bossLifeScale)
         {
@@ -161,7 +162,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
             if (numPlayers > 5)
                 numPlayers = 5;
             npc.damage = (int)(npc.damage + (npc.damage * numPlayers * 0.2f));
-            npc.defense += 6;
+            npc.defense += 7;
         }
         public override void AI()
         {
@@ -210,13 +211,13 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                                 npc.alpha -= 255 / 15 + 1;
                             npc.dontTakeDamage = true;
                         }
-                        int findTimer = 95;
+                        int findTimer = 75;
                         if (Entrogic.IsCalamityLoaded)
                         {
-                            findTimer = 80;
+                            findTimer = 60;
                             if (Entrogic.IsCalamityModDeathMode)
                             {
-                                findTimer = 60;
+                                findTimer = 50;
                             }
                         }
                         if (npc.ai[2] != 0f)
@@ -342,7 +343,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                         else
                         {
                             if (Timer == 40)
-                                if (Main.netMode != 1)
+                                if (Main.netMode != NetmodeID.MultiplayerClient)
                                 {
                                     Projectile.NewProjectileDirect(npc.Center, Vector2.Zero, ProjectileType<石子传送门>(), 0, 0f, Main.myPlayer, npc.whoAmI, npc.damage * 0.26f);
                                     npc.netUpdate = true;
@@ -361,7 +362,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                             else
                             {
                                 npc.velocity *= 0.67f;
-                                if (Timer == 90)
+                                if (Timer == 80)
                                 {
                                     SwitchState((int)NPCState.Break);
                                     Timer = 0;
@@ -391,7 +392,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                                 if (Timer == maxTimers)
                                 {
                                     SwitchState((int)NPCState.Break);
-                                    Timer = 0;
+                                    Timer = 30;
                                 }
                             }
                         break;
@@ -631,7 +632,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
         {
             Vector2 vec = ((shotOn - npc.Center).ToRotation() + rad).ToRotationVector2() * speed;
             int damage = (int)((Main.expertMode ? 0.8f : 1f) * (dmg == -1 ? (int)(npc.damage * 0.32) : dmg));
-            int proj = Projectile.NewProjectile(npc.Center, vec, mod.ProjectileType("魔像飞弹"), damage, 0f, Main.myPlayer);
+            int proj = Projectile.NewProjectile(npc.Center, vec, ProjectileType<魔像飞弹>(), damage, 0f, Main.myPlayer);
             Main.projectile[proj].scale = scale;
             npc.netUpdate = true;
         }

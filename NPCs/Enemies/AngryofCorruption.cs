@@ -1,4 +1,8 @@
 using System;
+
+using Entrogic.NPCs.Banners;
+using Entrogic.Projectiles.Enemies;
+
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -25,7 +29,7 @@ namespace Entrogic.NPCs.Enemies
         public override void SetDefaults()
         {
             banner = npc.type;
-            bannerItem = mod.ItemType("AngryofCorruptionBanner");
+            bannerItem = ItemType<AngryofCorruptionBanner>();
             npc.width = 48;
             npc.height = 40;
             npc.npcSlots = 0.5f;
@@ -85,7 +89,7 @@ namespace Entrogic.NPCs.Enemies
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (NPC.CountNPCS(mod.NPCType("AngryofCorruption")) < 1 && !Main.dayTime && spawnInfo.player.ZoneCorrupt && NPC.downedBoss1 && NPC.downedBoss2 && NPC.downedBoss3)
+            if (NPC.CountNPCS(NPCType<AngryofCorruption>()) < 1 && !Main.dayTime && spawnInfo.player.ZoneCorrupt && NPC.downedBoss1 && NPC.downedBoss2 && NPC.downedBoss3)
             {
                 if (spawnInfo.player.ZoneOverworldHeight) return Main.raining ? 0.07f : 0.03f;
                 else return Main.raining ? 0.01f : 0.007f;
@@ -143,7 +147,7 @@ namespace Entrogic.NPCs.Enemies
                 eyetimer++;
                 if (eyetimer % 240 == 0)
                 {
-                    NPC.NewNPC((int)npc.position.X, (int)npc.position.Y + 50, mod.NPCType("CorruptionEye"));
+                    NPC.NewNPC((int)npc.position.X, (int)npc.position.Y + 50, NPCType<CorruptionEye>());
                 }
             }
 
@@ -217,7 +221,7 @@ namespace Entrogic.NPCs.Enemies
                             npc.position.X < Main.player[npc.target].position.X + (float)Main.player[npc.target].width &&
                             npc.position.Y + (float)npc.height < Main.player[npc.target].position.Y &&
                             Collision.CanHit(npc.position, npc.width, npc.height, Main.player[npc.target].position,
-                            Main.player[npc.target].width, Main.player[npc.target].height) && Main.netMode != 1)
+                            Main.player[npc.target].width, Main.player[npc.target].height) && Main.netMode != NetmodeID.MultiplayerClient)
                         {
                             npc.ai[2] += 1f;
                             if (npc.ai[2] > 8f)
@@ -225,8 +229,8 @@ namespace Entrogic.NPCs.Enemies
                                 npc.ai[2] = 0f;
                                 var num728 = (int)(npc.position.X + 10f + (float)Main.rand.Next(npc.width - 20));
                                 var num729 = (int)(npc.position.Y + (float)npc.height + 4f);
-                                Projectile.NewProjectile(((int)npc.Center.X - 3), ((int)npc.Center.Y + 16), 0f, 6f, mod.ProjectileType("CorruptionRain"), 20, 1f, 0, 0f, 0f);
-                                Projectile.NewProjectile(((int)npc.Center.X + 3), ((int)npc.Center.Y + 16), 0f, 6f, mod.ProjectileType("CorruptionRain"), 20, 1f, 0, 0f, 0f);
+                                Projectile.NewProjectile((int)npc.Center.X - 3, (int)npc.Center.Y + 16, 0f, 6f, ProjectileType<CorruptionRain>(), 20, 1f, 0, 0f, 0f);
+                                Projectile.NewProjectile((int)npc.Center.X + 3, (int)npc.Center.Y + 16, 0f, 6f, ProjectileType<CorruptionRain>(), 20, 1f, 0, 0f, 0f);
                             }
                         }
                         if (Main.hardMode)
@@ -234,7 +238,7 @@ namespace Entrogic.NPCs.Enemies
                             if (npc.life < npc.lifeMax / 1.25)
                             {
                                 Timer++;
-                                if (Timer % (Main.rand.Next(300, 600)) == 0 || Timer >= 720)
+                                if (Timer % Main.rand.Next(300, 600) == 0 || Timer >= 720)
                                 {
                                     Timer = 0;
                                     SwitchState((int)NPCState.Defense);
@@ -256,9 +260,9 @@ namespace Entrogic.NPCs.Enemies
                             Timer++;
                             if (Timer % 150 == 0)
                             {
-                                NPC.NewNPC((int)npc.position.X, (int)npc.position.Y + 50, mod.NPCType("AngryofCorruptionMinion"));
+                                NPC.NewNPC((int)npc.position.X, (int)npc.position.Y + 50, NPCType<AngryofCorruptionMinion>());
                             }
-                            if (Timer % (Main.rand.Next(300, 600)) == 0 || Timer >= 720)
+                            if (Timer % Main.rand.Next(300, 600) == 0 || Timer >= 720)
                             {
                                 Timer = 0;
                                 SwitchState((int)NPCState.Attack);

@@ -11,7 +11,7 @@ namespace Entrogic.Projectiles.Ranged.Bows
 {
     public class 污痕射弹 : ModProjectile
     {
-        public override string Texture { get { return "Entrogic/Texture/Block"; } }
+        public override string Texture => "Entrogic/Images/Block";
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[projectile.type] = 10;    //The length of old position to be recorded
@@ -79,7 +79,7 @@ namespace Entrogic.Projectiles.Ranged.Bows
             for (int i = length; i >= 0; i--)
             {
                 Vector2 drawPos = projectile.Center - Main.screenPosition - projectile.oldVelocity * i * 0.5f;
-                float trailOpacity = projectile.Opacity - 0.05f - (0.95f / length) * i;
+                float trailOpacity = projectile.Opacity - 0.05f - 0.95f / length * i;
                 if (i != 0) trailOpacity /= 2f;
                 if (trailOpacity > 0f)
                 {

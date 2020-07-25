@@ -83,10 +83,10 @@ namespace Entrogic.Projectiles.衰落魔像
                 {
                     if (Main.npc[i].CanBeChasedBy(Main.projectile, false) && Main.npc[i].active && !Main.npc[i].friendly)
                     {
-                        if (NPCC.Y == -1 || NPCC.Y > (projectile.Distance(Main.npc[i].position)))
+                        if (NPCC.Y == -1 || NPCC.Y > projectile.Distance(Main.npc[i].position))
                         {
                             NPCC.X = i;
-                            NPCC.Y = (projectile.Distance(Main.npc[i].position));
+                            NPCC.Y = projectile.Distance(Main.npc[i].position);
                         }
                     }
                 }
@@ -101,7 +101,7 @@ namespace Entrogic.Projectiles.衰落魔像
                     num13 = 7f / num13;
                     num11 *= num13;
                     num12 *= num13;
-                    Projectile.NewProjectile(vector3.X, vector3.Y, num11, num12, mod.ProjectileType("GravelFriendly"), projectile.damage, 0f, Main.myPlayer, 0f, 0f);
+                    Projectile.NewProjectile(vector3.X, vector3.Y, num11, num12, ProjectileType<GravelFriendly>(), projectile.damage, 0f, Main.myPlayer, 0f, 0f);
                     timer = 0;
                 }
 

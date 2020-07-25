@@ -76,7 +76,7 @@ namespace Entrogic.Projectiles.Miscellaneous
             for (int i = length; i >= 0; i--)
             {
                 Vector2 drawPos = projectile.Center - Main.screenPosition - projectile.oldVelocity * i * 1.2f;
-                float trailOpacity = projectile.Opacity - 0.05f - (0.95f / length) * i * 0.3f;
+                float trailOpacity = projectile.Opacity - 0.05f - 0.95f / length * i * 0.3f;
                 if (trailOpacity > 0f)
                 {
                     float colMod = 0.4f + 0.6f * trailOpacity;

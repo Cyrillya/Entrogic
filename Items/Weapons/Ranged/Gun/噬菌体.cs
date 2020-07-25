@@ -2,6 +2,7 @@
 using Terraria.ModLoader;
 using Entrogic.Projectiles.Ranged.Bullets;
 using static Terraria.ModLoader.ModContent;
+using Terraria.ID;
 
 namespace Entrogic.Items.Weapons.Ranged.Gun
 {
@@ -15,7 +16,7 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             item.ranged = true;
             item.useTime = 15;
             item.useAnimation = 15;
-            item.useStyle = 5;
+            item.useStyle = ItemUseStyleID.HoldingOut;
             item.shootSpeed = 10f;
             item.noMelee = true;
             item.shoot = Bullet;

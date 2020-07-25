@@ -68,8 +68,8 @@ namespace Entrogic
         {
             EntrogicPlayer ePlayer = player.GetModPlayer<EntrogicPlayer>();
             ePlayer.PickPowerHand = item.pick;
-            if (glove)
-                ePlayer.IsActiveCard = true;
+            if (glove && !Main.dedServ)
+                CardUI.IsActive = true;
         }
         public override bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
@@ -115,9 +115,9 @@ namespace Entrogic
             }
             List<int> presents = new List<int>
             {
-                ItemType<瓦卢提奥宝藏袋>(),
-                ItemType<污染之灵宝藏袋>(),
-                ItemType<衰落魔像宝藏袋>(),
+                ItemType<VolutioTreasureBag>(),
+                ItemType<ContaminatedElementalTreasureBag>(),
+                ItemType<AthanasyTreasureBag>(),
                 ItemType<NoviceCardPack>()
             };
             List<string> textPres = new List<string>

@@ -22,7 +22,7 @@ namespace Entrogic.Items.VoluGels
             item.width = 30;
             item.height = 40;
             item.maxStack = 99;
-            item.rare = 2;
+            item.rare = ItemRarityID.Green;
             item.value = Item.sellPrice(0, 0, 3, 0);
         }
     }

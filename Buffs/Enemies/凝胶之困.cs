@@ -17,7 +17,7 @@ namespace Entrogic.Buffs.Enemies
 
         public override void Update(Player player, ref int buffIndex)
         {
-            player.moveSpeed -= 2f;
+            player.moveSpeed -= 1.4f;
             player.maxRunSpeed -= 1f;
         }
     }

@@ -32,18 +32,18 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             // 3 咸鱼突刺！(像同志短剑一样刺出去)
             // 4 神，赐予我力量吧！！(将物品提起，像使用生命水晶时那样的)
             // 5 手持枪、弓、法杖类武器的动作(这里就是这个)
-            item.useStyle = 5;
+            item.useStyle = ItemUseStyleID.HoldingOut;
 
             item.noMelee = true;
             item.knockBack = 3;
             item.value = Item.sellPrice(0, 8, 0, 0);
-            item.rare = 10;
+            item.rare = ItemRarityID.Red;
             item.UseSound = SoundID.Item11;
             item.autoReuse = true;
 
             // 决定枪射出点什么(item.shoot)和射出抛射物的速度(item.shootSpeed)
             // 这里原作者让枪射出净化粉末，并且以 （16像素 / 帧） 的速度射出去 
-            item.shoot = 10;
+            item.shoot = ProjectileID.PurificationPowder;
             item.shootSpeed = 5f;
 
             //需要使用的特定弹药(此处为所有子弹)
@@ -57,10 +57,10 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(324, 2);//非法枪械部件
+            recipe.AddIngredient(ItemID.IllegalGunParts, 2);//非法枪械部件
             recipe.AddIngredient(null, "飞鱼冲锋枪", 1);//飞鱼冲锋枪
-            recipe.AddIngredient(3456, 18);//星璇碎片
-            recipe.AddIngredient(3467, 20);//夜明锭
+            recipe.AddIngredient(ItemID.FragmentVortex, 18);//星璇碎片
+            recipe.AddIngredient(ItemID.LunarBar, 20);//夜明锭
             recipe.AddIngredient(null, "碳钢枪械部件", 1);//碳钢枪械部件
             recipe.AddTile(TileID.LunarCraftingStation);
             recipe.SetResult(this);
@@ -84,7 +84,7 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
                 for (int i = 0; i < numberProjectiles; i++)
                 {
                     Vector2 perturbedSpeed = new Vector2(speedX, speedY).RotatedByRandom(MathHelper.ToRadians(4));
-                    Projectile.NewProjectile(position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, 242, damage, knockBack, player.whoAmI);
+                    Projectile.NewProjectile(position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, ProjectileID.BulletHighVelocity, damage, knockBack, player.whoAmI);
                 }
             }
             {

@@ -22,16 +22,16 @@ namespace Entrogic.Items.Miscellaneous.Ammo
 			item.consumable = true;
 			item.knockBack = 1.5f;
             item.value = Item.sellPrice(copper: 20);
-            item.rare = 10;
-			item.shoot = mod.ProjectileType("凤凰箭");
+            item.rare = ItemRarityID.Red;
+			item.shoot = ProjectileType<Projectiles.Ammos.凤凰箭>();
 			item.shootSpeed = 6f;
 			item.ammo = AmmoID.Arrow;
 			}
 		public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(3456, 5);
-			recipe.AddIngredient(41, 333);
+			recipe.AddIngredient(ItemID.FragmentVortex, 5);
+			recipe.AddIngredient(ItemID.FlamingArrow, 333);
 			recipe.AddTile(TileID.LunarCraftingStation);
 			recipe.SetResult(this, 333);
 			recipe.AddRecipe();

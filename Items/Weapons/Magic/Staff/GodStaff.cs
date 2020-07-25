@@ -15,7 +15,7 @@ namespace Entrogic.Items.Weapons.Magic.Staff
             item.UseSound = SoundID.Item20;
             item.Size = new Vector2(74, 76);
             item.useTime = item.useAnimation = 30;
-            item.useStyle = 5;
+            item.useStyle = ItemUseStyleID.HoldingOut;
             item.knockBack = 8f;
             item.value = Item.sellPrice(0, 5);
             item.rare = RareID.LV6;
@@ -23,7 +23,7 @@ namespace Entrogic.Items.Weapons.Magic.Staff
             item.damage = 63;
             item.crit += 4;
             item.knockBack = 7f;
-            item.shoot = mod.ProjectileType("GodCrystal");
+            item.shoot = ProjectileType<Projectiles.Magic.Staff.GodCrystal>();
             item.shootSpeed = 20f;
             item.noMelee = true;
             item.mana = 20;
@@ -56,7 +56,7 @@ namespace Entrogic.Items.Weapons.Magic.Staff
             }
             else
             {
-                type = mod.ProjectileType("FC");
+                type = ProjectileType<Projectiles.Magic.Staff.FC>();
                 Projectile.NewProjectile(position.X, position.Y, 0f, 0f, type, damage, knockBack, Main.myPlayer);
             }
             return false;

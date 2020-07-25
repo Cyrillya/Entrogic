@@ -49,7 +49,7 @@ namespace Entrogic.Projectiles.Magic.Books
                 // 目标向量是朝向目标的大小为20的向量
                 targetVec *= 6f;
                 // 朝向npc的单位向量*20 + 3.33%偏移量
-                projectile.velocity = (projectile.velocity * 30f + targetVec) / (31f);
+                projectile.velocity = (projectile.velocity * 30f + targetVec) / 31f;
             }
         }
     }

@@ -7,6 +7,7 @@ using static Terraria.ModLoader.ModContent;
 using Microsoft.Xna.Framework;
 using System;
 using Microsoft.Xna.Framework.Graphics;
+using Entrogic.Items.Consumables.Mushrooms;
 
 namespace Entrogic.NPCs
 {
@@ -99,7 +100,7 @@ namespace Entrogic.NPCs
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             Player player = spawnInfo.player;
-            if ((NPC.CountNPCS(mod.NPCType("蘑菇人")) < 1) && Main.dayTime && ModHelper.NoBiomeNormalSpawn(spawnInfo) && player.ZoneOverworldHeight)
+            if ((NPC.CountNPCS(NPCType<蘑菇人>()) < 1) && Main.dayTime && ModHelper.NoBiomeNormalSpawn(spawnInfo) && player.ZoneOverworldHeight)
             {
                 if (player.ZoneRain)
                     return 0.0028f;
@@ -242,61 +243,7 @@ namespace Entrogic.NPCs
                 }
                 for (int i = 0; i < Main.rand.Next(10, 18 + 1); i++)
                 {
-                    int heyouroomhere = Main.rand.Next(1, 101);
-                    if (heyouroomhere <= 8)//第三类
-                    {
-                        switch (Main.rand.Next(4))
-                        {
-                            case 0:
-                                player.QuickSpawnItem(mod.ItemType("灵芝"));
-                                break;
-                            case 1:
-                                player.QuickSpawnItem(mod.ItemType("无毒蘑菇"));
-                                break;
-                            case 2:
-                                player.QuickSpawnItem(mod.ItemType("香菇"));
-                                break;
-                            default:
-                                player.QuickSpawnItem(mod.ItemType("相位蘑菇"));
-                                break;
-                        }
-                    }
-                    else if (heyouroomhere <= 30)//第二类
-                    {
-                        switch (Main.rand.Next(5))
-                        {
-                            case 0:
-                                player.QuickSpawnItem(mod.ItemType("金针菇"));
-                                break;
-                            case 1:
-                                player.QuickSpawnItem(mod.ItemType("牛肝菌"));
-                                break;
-                            case 2:
-                                player.QuickSpawnItem(mod.ItemType("双生菇"));
-                                break;
-                            case 3:
-                                player.QuickSpawnItem(mod.ItemType("绒边乳菇"));
-                                break;
-                            default:
-                                player.QuickSpawnItem(mod.ItemType("伞菇"));
-                                break;
-                        }
-                    }
-                    else//第一类
-                    {
-                        switch (Main.rand.Next(3))
-                        {
-                            case 0:
-                                player.QuickSpawnItem(mod.ItemType("木耳"));
-                                break;
-                            case 1:
-                                player.QuickSpawnItem(mod.ItemType("草蘑菇"));
-                                break;
-                            default:
-                                player.QuickSpawnItem(mod.ItemType("绒边乳菇"));
-                                break;
-                        }
-                    }
+                    player.QuickSpawnItem(GettingMushrooms());
                 }
                 Main.npcChatText = "这是你的蘑菇，希望你能好好照顾他们！";
                 changed = true;
@@ -328,60 +275,52 @@ namespace Entrogic.NPCs
         {
             for (int i = 0; i < Main.rand.Next(3, 5 + 1); i++)
             {
-                int heyouroomhere = Main.rand.Next(1, 101);
-                if (heyouroomhere <= 8)//第三类
+                Item.NewItem(npc.getRect(), GettingMushrooms());
+            }
+        }
+        private int GettingMushrooms()
+        {
+            int heyouroomhere = Main.rand.Next(1, 101);
+            if (heyouroomhere <= 8)//第三类
+            {
+                switch (Main.rand.Next(4))
                 {
-                    switch (Main.rand.Next(4))
-                    {
-                        case 0:
-                            Item.NewItem(npc.getRect(), mod.ItemType("灵芝"));
-                            break;
-                        case 1:
-                            Item.NewItem(npc.getRect(), mod.ItemType("无毒蘑菇"));
-                            break;
-                        case 2:
-                            Item.NewItem(npc.getRect(), mod.ItemType("香菇"));
-                            break;
-                        default:
-                            Item.NewItem(npc.getRect(), mod.ItemType("相位蘑菇"));
-                            break;
-                    }
+                    case 0:
+                        return ItemType<Ganoderma>();
+                    case 1:
+                        return ItemType<ToxiclessMushroom>();
+                    case 2:
+                        return ItemType<Shiitake>();
+                    default:
+                        return ItemType<Voidshroom>();
                 }
-                else if (heyouroomhere <= 30)//第二类
+            }
+            else if (heyouroomhere <= 30)//第二类
+            {
+                switch (Main.rand.Next(5))
                 {
-                    switch (Main.rand.Next(5))
-                    {
-                        case 0:
-                            Item.NewItem(npc.getRect(), mod.ItemType("金针菇"));
-                            break;
-                        case 1:
-                            Item.NewItem(npc.getRect(), mod.ItemType("牛肝菌"));
-                            break;
-                        case 2:
-                            Item.NewItem(npc.getRect(), mod.ItemType("双生菇"));
-                            break;
-                        case 3:
-                            Item.NewItem(npc.getRect(), mod.ItemType("绒边乳菇"));
-                            break;
-                        default:
-                            Item.NewItem(npc.getRect(), mod.ItemType("伞菇"));
-                            break;
-                    }
+                    case 0:
+                        return ItemType<Flammulina>();
+                    case 1:
+                        return ItemType<Boletus>();
+                    case 2:
+                        return ItemType<Twinshroom>();
+                    case 3:
+                        return ItemType<LactariusEdulis>();
+                    default:
+                        return ItemType<UmbrellaMushroom>();
                 }
-                else//第一类
+            }
+            else//第一类
+            {
+                switch (Main.rand.Next(3))
                 {
-                    switch (Main.rand.Next(3))
-                    {
-                        case 0:
-                            Item.NewItem(npc.getRect(), mod.ItemType("木耳"));
-                            break;
-                        case 1:
-                            Item.NewItem(npc.getRect(), mod.ItemType("草蘑菇"));
-                            break;
-                        default:
-                            Item.NewItem(npc.getRect(), mod.ItemType("绒边乳菇"));
-                            break;
-                    }
+                    case 0:
+                        return ItemType<Fungus>();
+                    case 1:
+                        return ItemType<GrassMushroom>();
+                    default:
+                        return ItemType<LactariusEdulis>();
                 }
             }
         }

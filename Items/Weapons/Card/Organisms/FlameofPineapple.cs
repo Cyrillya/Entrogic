@@ -27,7 +27,7 @@ namespace Entrogic.Items.Weapons.Card.Organisms
             item.rare = RareID.LV7;
             item.UseSound = SoundID.Item20;
             item.value = Item.sellPrice(silver: 20);
-            item.shoot = mod.ProjectileType("菠萝");
+            item.shoot = ProjectileType<Projectiles.Arcane.Pineapple>();
             item.crit += 30;
             item.damage = 17;
             item.knockBack = 5f;

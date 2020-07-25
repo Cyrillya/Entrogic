@@ -21,12 +21,12 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
             item.ranged = true;
             item.useTime = 10;
             item.useAnimation = 30;
-            item.useStyle = 5;
+            item.useStyle = ItemUseStyleID.HoldingOut;
             item.noMelee = true; 
             item.knockBack = 4;
-            item.rare = 2;
+            item.rare = ItemRarityID.Green;
             item.autoReuse = true;
-            item.shoot = 10; 
+            item.shoot = ProjectileID.PurificationPowder; 
             item.shootSpeed = 13;
             item.useAmmo = AmmoID.Arrow;
             item.reuseDelay = 25;

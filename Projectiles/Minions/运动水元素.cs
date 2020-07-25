@@ -38,7 +38,7 @@ namespace Entrogic.Projectiles.Minions
             projectile.tileCollide = false;
             projectile.ignoreWater = true;
             projectile.friendly = true;
-            weaponType = ItemType<Items.PollutElement.水元素召唤杖>();
+            weaponType = ItemType<Items.PollutElement.WaterElementalStaff>();
         }
         public int timer = 0;
         protected float Timer

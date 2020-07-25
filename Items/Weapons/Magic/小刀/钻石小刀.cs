@@ -28,7 +28,7 @@
 //            item.rare = 1;              
 //            item.UseSound = SoundID.Item1;      
 //            item.autoReuse = false;
-//            item.shoot = mod.ProjectileType("钻石小刀");
+//            item.shoot = ModContent.ProjectileType<钻石小刀>();
 //            item.shootSpeed = 14.8f;
 //            item.magic = true;
 //            item.noUseGraphic = true;
@@ -39,7 +39,7 @@
 //            ModRecipe recipe = new ModRecipe(mod);
 //            recipe.AddIngredient(ItemID.Diamond, 10);
 //            recipe.AddRecipeGroup("IronBar", 3);
-//            recipe.AddIngredient(mod.ItemType("SoulOfPure"), 6);
+//            recipe.AddIngredient(ModContent.ItemType<SoulOfPure>(), 6);
 //            recipe.AddTile(TileID.Anvils);
 //            recipe.SetResult(this);
 //            recipe.AddRecipe();

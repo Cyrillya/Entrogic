@@ -55,7 +55,7 @@ namespace Entrogic.Projectiles.Ammos
             for (int i = length; i >= 0; i--)
             {
                 Vector2 drawPos = projectile.Center - Main.screenPosition - projectile.oldVelocity * i * 0.5f;
-                float trailOpacity = projectile.Opacity - 0.05f - (0.95f / length) * i;
+                float trailOpacity = projectile.Opacity - 0.05f - 0.95f / length * i;
                 if (i != 0) trailOpacity /= 2f;
                 if (trailOpacity > 0f)
                 {

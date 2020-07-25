@@ -22,16 +22,16 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         public override void SetDefaults()
         {
             item.damage = 26;
-            item.shoot = 10;
+            item.shoot = ProjectileID.PurificationPowder;
             item.shootSpeed = 13f;
             item.useAmmo = AmmoID.Bullet;
             item.ranged = true;
-            item.useStyle = 5;
+            item.useStyle = ItemUseStyleID.HoldingOut;
             item.useTime = 65;
             item.useAnimation = 65;
             item.maxStack = 1;
             item.value = 10000;
-            item.rare = 1;
+            item.rare = ItemRarityID.Blue;
             item.knockBack = 4f;
             item.crit = 31;
             item.width = 76;
@@ -45,9 +45,9 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         {
             Timer = 0;
             player.direction = 1;
-            player.itemRotation = (float)Math.Atan2(((oldMouse.Y + Main.screenPosition.Y) - player.Center.Y) * player.direction, ((oldMouse.X + Main.screenPosition.X) - player.Center.X) * player.direction);
-            speedX = ((oldMouse.X + Main.screenPosition.X) - player.Center.X) * player.direction;
-            speedY = ((oldMouse.Y + Main.screenPosition.Y) - player.Center.Y) * player.direction;
+            player.itemRotation = (float)Math.Atan2((oldMouse.Y + Main.screenPosition.Y - player.Center.Y) * player.direction, (oldMouse.X + Main.screenPosition.X - player.Center.X) * player.direction);
+            speedX = (oldMouse.X + Main.screenPosition.X - player.Center.X) * player.direction;
+            speedY = (oldMouse.Y + Main.screenPosition.Y - player.Center.Y) * player.direction;
 
             bool flag = false;
             Item ammo = null;
@@ -91,7 +91,7 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             if (player.itemAnimation >= player.itemAnimationMax - 1 && Timer <= 60)
             {
                 player.direction = oldMouse.X + Main.screenPosition.X > player.Center.X ? 1 : -1;
-                player.itemRotation = (float)Math.Atan2(((oldMouse.Y + Main.screenPosition.Y) - player.Center.Y) * player.direction, ((oldMouse.X + Main.screenPosition.X) - player.Center.X) * player.direction);
+                player.itemRotation = (float)Math.Atan2((oldMouse.Y + Main.screenPosition.Y - player.Center.Y) * player.direction, (oldMouse.X + Main.screenPosition.X - player.Center.X) * player.direction);
                 player.itemAnimation = (int)player.itemAnimationMax;
                 player.itemTime = (int)item.useTime;
                 if (Timer == 60)

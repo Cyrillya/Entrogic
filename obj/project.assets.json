@@ -2,107 +2,60 @@
   "version": 3,
   "targets": {
     ".NETFramework,Version=v4.5": {
-      "EntityFramework/5.0.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System.ComponentModel.DataAnnotations",
-          "System.Data.Entity"
-        ],
-        "compile": {
-          "lib/net45/EntityFramework.dll": {}
-        },
-        "runtime": {
-          "lib/net45/EntityFramework.dll": {}
-        }
-      },
-      "EntityFramework.zh-Hans/5.0.0": {
-        "type": "package",
-        "dependencies": {
-          "EntityFramework": "[5.0.0]"
-        },
-        "resource": {
-          "lib/net45/zh-Hans/EntityFramework.resources.dll": {
-            "locale": "zh-Hans"
-          }
-        }
+      "tModLoader.CodeAssist/0.1.1": {
+        "type": "package"
       }
     }
   },
   "libraries": {
-    "EntityFramework/5.0.0": {
-      "sha512": "WYfgJWKg/RjwU8pzZkImD9DsV+J1nqDcIGp1S0/bdnElKBmAaUC2nmq/QQAcco32KyQQWnLgJNiDzIOz2xWFbQ==",
+    "tModLoader.CodeAssist/0.1.1": {
+      "sha512": "bUQ4HAiRYq8Zisms7FI9ffSf4nZHwFFZU5j8Hpc/9rFB16GOGJg2ulHV0ZDErzoAAbXBeRdO8/VbSltBwmDcpA==",
       "type": "package",
-      "path": "entityframework/5.0.0",
+      "path": "tmodloader.codeassist/0.1.1",
       "hasTools": true,
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "Content/App.config.transform",
-        "Content/Web.config.transform",
-        "entityframework.5.0.0.nupkg.sha512",
-        "entityframework.nuspec",
-        "lib/net40/EntityFramework.dll",
-        "lib/net40/EntityFramework.xml",
-        "lib/net45/EntityFramework.dll",
-        "lib/net45/EntityFramework.xml",
-        "tools/EntityFramework.PS3.psd1",
-        "tools/EntityFramework.PowerShell.Utility.dll",
-        "tools/EntityFramework.PowerShell.dll",
-        "tools/EntityFramework.psd1",
-        "tools/EntityFramework.psm1",
-        "tools/Redirect.VS11.config",
-        "tools/Redirect.config",
-        "tools/about_EntityFramework.help.txt",
-        "tools/init.ps1",
+        "NugetIcon.png",
+        "analyzers/dotnet/cs/tModLoader.CodeAssist.dll",
+        "tmodloader.codeassist.0.1.1.nupkg.sha512",
+        "tmodloader.codeassist.nuspec",
         "tools/install.ps1",
-        "tools/migrate.exe"
-      ]
-    },
-    "EntityFramework.zh-Hans/5.0.0": {
-      "sha512": "HlZDdwv8N6s6RFBHc1AO4G/sCO2Vk/FIPFrLOTRbtwgKjgexVzsCRf0NmZdKLAQQ+SBgAR6/gF83zrEOH2jWsw==",
-      "type": "package",
-      "path": "entityframework.zh-hans/5.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "entityframework.zh-hans.5.0.0.nupkg.sha512",
-        "entityframework.zh-hans.nuspec",
-        "lib/net40/zh-Hans/EntityFramework.resources.dll",
-        "lib/net40/zh-Hans/EntityFramework.xml",
-        "lib/net45/zh-Hans/EntityFramework.resources.dll",
-        "lib/net45/zh-Hans/EntityFramework.xml"
+        "tools/uninstall.ps1"
       ]
     }
   },
   "projectFileDependencyGroups": {
     ".NETFramework,Version=v4.5": [
-      "EntityFramework >= 5.0.0",
-      "EntityFramework.zh-Hans >= 5.0.0"
+      "tModLoader.CodeAssist >= 0.1.*"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\94945\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Administrator\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\94945\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj",
+      "projectUniqueName": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj",
       "projectName": "Entrogic",
-      "projectPath": "C:\\Users\\94945\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj",
-      "packagesPath": "C:\\Users\\94945\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\94945\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\obj\\",
+      "projectPath": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj",
+      "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "C:\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\94945\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net45"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -119,15 +72,12 @@
     "frameworks": {
       "net45": {
         "dependencies": {
-          "EntityFramework": {
+          "tModLoader.CodeAssist": {
             "target": "Package",
-            "version": "[5.0.0, )"
-          },
-          "EntityFramework.zh-Hans": {
-            "target": "Package",
-            "version": "[5.0.0, )"
+            "version": "[0.1.*, )"
           }
-        }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
       }
     }
   }

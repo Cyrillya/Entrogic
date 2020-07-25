@@ -56,11 +56,11 @@ namespace Entrogic.NPCs.Boss.AntaGolem.Projectiles
                 projectile.Center = owner.Center + finalVec;
                 Vector2 Center = projectile.Center;
                 Timer++;
-                if (Timer%20==0 && Main.netMode != 1)
+                if (Timer%20==0 && Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     vec = (Main.player[owner.target].Center - Center).ToRotation().ToRotationVector2() * 20;
-                    int proj = Projectile.NewProjectile(Center, vec, mod.ProjectileType("魔像飞弹"), (int)projectile.ai[1], 0f, Main.myPlayer);
-                    Main.projectile[proj].scale = 1.2f;
+                    int proj = Projectile.NewProjectile(Center, vec, ProjectileType<魔像飞弹>(), (int)projectile.ai[1], 0f, Main.myPlayer);
+                    Main.projectile[proj].scale = 1.5f;
                     projectile.netUpdate = true;
                 }
             }
