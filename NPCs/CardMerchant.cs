@@ -326,7 +326,7 @@ namespace Entrogic.NPCs
         }
         public override void SetupShop(Chest shop, ref int nextSlot)
         {
-            shop.item[nextSlot].SetDefaults(ItemType<卡牌入门手册>());
+            shop.item[nextSlot].SetDefaults(ItemType<CardBasicManual>());
             nextSlot++;
             shop.item[nextSlot].SetDefaults(ItemType<RandomCard>());
             shop.item[nextSlot].shopCustomPrice = 15 - (int)(CardWillingness * 10.0);

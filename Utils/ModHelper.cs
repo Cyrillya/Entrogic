@@ -15,6 +15,8 @@ using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
 
+using static Entrogic.Entrogic;
+
 namespace Entrogic
 {
 
@@ -115,6 +117,14 @@ namespace Entrogic
         {
             return Math.Sqrt(Math.Pow(v.X,2) + Math.Pow(v.Y, 2));
         }
+        public static Rectangle CreateFromVector2(Vector2 vec, float width, float height)
+        {
+            return new Rectangle((int)vec.X, (int)vec.Y, (int)width, (int)height);
+        }
+        public static Rectangle CreateFromVector2(Vector2 vec, Vector2 size)
+        {
+            return CreateFromVector2(vec, size.X, size.Y);
+        }
         public static Vector2 GetFromToVector(Vector2 v1, Vector2 v2)
         {
             Vector2 diff = v2 - v1;
@@ -125,6 +135,15 @@ namespace Entrogic
         {
             Vector2 diff = v2 - v1;
             return diff.ToRotation();
+        }
+        /// <summary>
+        /// 给可视化减震
+        /// </summary>
+        /// <param name="vec">被减震的向量</param>
+        /// <returns></returns>
+        public static Vector2 NoShake(this Vector2 vec)
+        {
+            return vec.ToPoint().ToVector2();
         }
         public static Vector2 ToTilePos(this Vector2 vec)
         {
@@ -919,15 +938,6 @@ namespace Entrogic
                     if (Main.tile[r.X + i, r.Y + j].type == tileType)
                         return Main.sign[Sign.ReadSign(r.X + i, r.Y + j)];
             return null;
-        }
-        public static Color QuickAlpha(Color oldColor, float Alpha)
-        {
-            Color result = oldColor;
-            result.R = (byte)((float)(int)result.R * Alpha);
-            result.G = (byte)((float)(int)result.G * Alpha);
-            result.B = (byte)((float)(int)result.B * Alpha);
-            result.A = (byte)((float)(int)result.A * Alpha);
-            return result;
         }
         public static void SafeBegin(this SpriteBatch sb)
         {

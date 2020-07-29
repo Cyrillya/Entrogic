@@ -4,6 +4,7 @@ using Entrogic.Items.VoluGels;
 using Entrogic.Items.VoluGels.Armor;
 using Entrogic.Items.Miscellaneous.Placeable.Trophy;
 using Entrogic.UI.Books;
+using Entrogic.UI.CardGame;
 using Microsoft.Xna.Framework;
 using ReLogic.Graphics;
 using System;
@@ -42,12 +43,13 @@ using Terraria.ObjectData;
 using Terraria.GameContent.Events;
 using Terraria.GameContent;
 using Terraria.GameContent.Tile_Entities;
+using Entrogic.NPCs.CardFightable.CardBullet;
 
 namespace Entrogic
 {
     public class Entrogic : Mod
     {
-        #region Values
+        #region Fields
         internal static int mimicryFrameCounter = 8;
         internal static List<ModItem> ModItems => new List<ModItem>(typeof(ItemLoader).GetFields(BindingFlags.Static | BindingFlags.NonPublic).Where(field => field.Name == "items").First().GetValue(null) as IList<ModItem>);
         internal static List<ModItem> EntrogicItems
@@ -102,7 +104,9 @@ namespace Entrogic
         public static bool IsCalamityModRevengenceMode => CalamityMod.World.CalamityWorld.revenge;
         public static bool IsCalamityModDeathMode => CalamityMod.World.CalamityWorld.death;
 
-        public static Dictionary<string, Texture2D> ModTexturesTable = new Dictionary<string, Texture2D>();
+        internal static Dictionary<string, Texture2D> ModTexturesTable = new Dictionary<string, Texture2D>();
+        [Obsolete]
+        internal static Dictionary<string, CardFightBullet> cfBullets = new Dictionary<string, CardFightBullet>();
         private int foolTexts = 0;
         internal static bool Unloading = false;
         internal static readonly string ModFolder;
@@ -116,6 +120,8 @@ namespace Entrogic
         private UserInterface CardUIE;
         internal CardInventoryUI CardInventoryUI { get; private set; }
         private UserInterface CardInventoryUIE;
+        internal CardGameUI CardGameUI { get; private set; }
+        private UserInterface CardGameUIE;
 
         public static int MimicryCustomCurrencyId;
         #endregion
@@ -294,6 +300,7 @@ namespace Entrogic
                 SkyManager.Instance["Entrogic:GrayScreen"] = new GrayScreen();
                 Filters.Scene["Entrogic:MagicStormScreen"] = new Filter(new ScreenShaderData("FilterBloodMoon").UseColor(-0.4f, -0.2f, 1.6f).UseOpacity(0.6f), EffectPriority.Medium);
                 SkyManager.Instance["Entrogic:MagicStormScreen"] = new MagicStormScreen();
+                GameShaders.Misc["ExampleMod:DeathAnimation"] = new MiscShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffectDeath")), "DeathAnimation").UseImage("Images/Misc/Perlin");
                 // First, you load in your shader file.
                 // You'll have to do this regardless of what kind of shader it is,
                 // and you'll have to do it for every shader file.
@@ -329,6 +336,11 @@ namespace Entrogic
                 CardInventoryUI.Activate();
                 CardInventoryUIE = new UserInterface();
                 CardInventoryUIE.SetState(CardInventoryUI);
+
+                CardGameUI = new CardGameUI();
+                CardGameUI.Activate();
+                CardGameUIE = new UserInterface();
+                CardGameUIE.SetState(CardGameUI);
                 /*SinsBar.visible = true;
                 Sinsbar = new SinsBar();
                 Sinsbar.Activate();
@@ -337,42 +349,14 @@ namespace Entrogic
             }
             Buildings.Cache("Buildings/CardShrine0.ebuiding", "Buildings/CardShrine1.ebuiding");
             #region Armor Translates
-            ModTranslation template = CreateTranslation("mspeed");
-            template.AddTranslation(GameCulture.Chinese, "移动速度");
-            template.SetDefault(" movement speed");
-            AddTranslation(template);
-            template = CreateTranslation("and");
-            template.AddTranslation(GameCulture.Chinese, "与");
-            template.SetDefault(" and");
-            AddTranslation(template);
-            template = CreateTranslation("csc");
-            template.AddTranslation(GameCulture.Chinese, "暴击率");
-            template.SetDefault(" critical strike chance");
-            AddTranslation(template);
-            template = CreateTranslation("csc2");
-            template.AddTranslation(GameCulture.Chinese, " 暴击率");
-            template.SetDefault(" critical strike chance");
-            AddTranslation(template);
-            template = CreateTranslation("knockback");
-            template.AddTranslation(GameCulture.Chinese, "击退");
-            template.SetDefault(" knockback");
-            AddTranslation(template);
-            template = CreateTranslation("damage");
-            template.AddTranslation(GameCulture.Chinese, "伤害");
-            template.SetDefault(" damage");
-            AddTranslation(template);
-            template = CreateTranslation("cntca");
-            template.AddTranslation(GameCulture.Chinese, "的几率不消耗弹药");
-            template.SetDefault(" chance not to consume ammo");
-            AddTranslation(template);
-            template = CreateTranslation("immb");
-            template.AddTranslation(GameCulture.Chinese, "最大魔力值增加");
-            template.SetDefault("Increases maximum mana by ");
-            AddTranslation(template);
-            template = CreateTranslation("rmub");
-            template.AddTranslation(GameCulture.Chinese, "魔力消耗减少");
-            template.SetDefault("Reduces mana usage by ");
-            AddTranslation(template);
+            Translation.RegisterTranslation("mspeed", GameCulture.Chinese, "移动速度", " movement speed");
+            Translation.RegisterTranslation("and", GameCulture.Chinese, "与", " and");
+            Translation.RegisterTranslation("csc", GameCulture.Chinese, "暴击率", " critical strike chance");
+            Translation.RegisterTranslation("knockback", GameCulture.Chinese, "击退", " knockback");
+            Translation.RegisterTranslation("damage", GameCulture.Chinese, "伤害", " damage");
+            Translation.RegisterTranslation("cntca", GameCulture.Chinese, "的几率不消耗弹药", " chance not to consume ammo");
+            Translation.RegisterTranslation("immb", GameCulture.Chinese, "最大魔力值增加", "Increases maximum mana by ");
+            Translation.RegisterTranslation("rmub", GameCulture.Chinese, "魔力消耗减少", "Reduces mana usage by ");
             #endregion
             #region Boss Checklist Translates
             ModTranslation bctext = CreateTranslation("BossSpawnInfo.GelSymb");
@@ -441,9 +425,8 @@ namespace Entrogic
             {
                 Main.OnPostDraw -= Main_OnPostDraw;
                 Main.OnPreDraw -= Main_OnPreDraw;
-                On.Terraria.Player.QuickGrapple -= Player_QuickGrapple;
-                //On.Terraria.Main.DrawTiles -= Main_DrawTiles;
                 ModTexturesTable.Clear();
+                cfBullets.Clear();
                 PassHotkey = null;
                 WashHotkey = null;
                 HookCursorHotKey = null;
@@ -566,16 +549,16 @@ namespace Entrogic
             //    }
             //}
             Main.spriteBatch.SafeEnd();
-            Main.debuff = Debuffs;
+            //Main.debuff = Debuffs;
         }
         private bool[] Debuffs = Main.debuff;
         private void Main_OnPreDraw(GameTime obj)
         {
-            Debuffs = Main.debuff;
-            for(int i = 0; i < Main.debuff.Length; i++)
-            {
-                Main.debuff[i] = false;
-            }
+            //Debuffs = Main.debuff;
+            //for(int i = 0; i < Main.debuff.Length; i++)
+            //{
+            //    Main.debuff[i] = false;
+            //}
         }
 
         /// <summary>
@@ -645,11 +628,12 @@ namespace Entrogic
                 CardUIE.Update(gameTime);
             if (CardInventoryUIE != null && CardInventoryUI.IsActive)
                 CardInventoryUIE.Update(gameTime);
-
+            if (CardGameUIE != null && ePlayer.CardGameActive)
+                CardGameUIE.Update(gameTime);
             //if (Main.netMode != NetmodeID.MultiplayerClient)
             //{
-                int texNum = mimicryFrameCounter / 5;
-                Main.itemTexture[ModContent.ItemType<拟态魔能>()] = ModTexturesTable[$"拟态魔能_{texNum.ToString()}"];
+            int texNum = mimicryFrameCounter / 5;
+            Main.itemTexture[ModContent.ItemType<拟态魔能>()] = ModTexturesTable[$"拟态魔能_{texNum.ToString()}"];
             //}
         }
         public override void ModifyTransformMatrix(ref SpriteViewMatrix Transform)
@@ -661,6 +645,7 @@ namespace Entrogic
         }
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
+            EntrogicPlayer ePlayer = Main.LocalPlayer.GetModPlayer<EntrogicPlayer>();
             int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
             if (MouseTextIndex != -1)
             {
@@ -692,6 +677,18 @@ namespace Entrogic
                         if (CardUI.IsActive)
                         {
                             CardUIE.Draw(Main.spriteBatch, new GameTime());
+                        }
+                        return true;
+                    },
+                    InterfaceScaleType.UI)
+                );
+                layers.Insert(MouseTextIndex, new LegacyGameInterfaceLayer(
+                    "Entrogic: Card Game UI",
+                    delegate
+                    {
+                        if (ePlayer.CardGameActive)
+                        {
+                            CardGameUIE.Draw(Main.spriteBatch, new GameTime());
                         }
                         return true;
                     },
@@ -744,7 +741,7 @@ namespace Entrogic
                     if (Main.dedServ) // 在服务器下
                     {
                         ModPacket packet = GetPacket();
-                        packet.Write((int)EntrogicModMessageType.ReceiveMagicStormMPC);
+                        packet.Write((byte)EntrogicModMessageType.ReceiveMagicStormMPC);
                         packet.Write(EntrogicWorld.magicStorm);
                         // 发回给发送者
                         packet.Send(whoAmI, -1);
@@ -767,18 +764,46 @@ namespace Entrogic
                         }
                         break;
                     }
+                case EntrogicModMessageType.SyncCardGamingInfos:
+                    {
+                        int playernumber = reader.ReadByte();
+                        EntrogicPlayer entrogicPlayer = Main.player[playernumber].GetModPlayer<EntrogicPlayer>();
+                        // 如何传输List？首先传输一个List.Count，然后遍历传输List数值，接收者根据List.Count逐个接收，最后List.Add发给第三方
+                        //entrogicPlayer.IsBookActive = reader.ReadBoolean();
+                        //// Unlike SyncPlayer, here we have to relay/forward these changes to all other connected clients
+                        //if (Main.netMode == NetmodeID.Server)
+                        //{
+                        //    var packet = GetPacket();
+                        //    packet.Write((byte)EntrogicModMessageType.SyncBookBubbleInfo);
+                        //    packet.Write((byte)playernumber);
+                        //    packet.Write(entrogicPlayer.IsBookActive);
+                        //    packet.Send(-1, playernumber);
+                        //}
+                        break;
+                    }
+                case EntrogicModMessageType.SyncBookBubbleInfo:
+                    {
+                        int playernumber = reader.ReadByte();
+                        EntrogicPlayer entrogicPlayer = Main.player[playernumber].GetModPlayer<EntrogicPlayer>();
+                        entrogicPlayer.PageNum = reader.ReadByte();
+                        entrogicPlayer.IsBookActive = reader.ReadBoolean();
+                        // Unlike SyncPlayer, here we have to relay/forward these changes to all other connected clients
+                        if (Main.netMode == NetmodeID.Server)
+                        {
+                            MessageHelper.SendBookInfo(playernumber, entrogicPlayer.PageNum, entrogicPlayer.IsBookActive, -1, playernumber);
+                        }
+                        break;
+                    }
                 case EntrogicModMessageType.MerchantPlayerSyncPlayer:
                     {
                         int playernumber = reader.ReadByte();
                         CardMerchantQuest cardMerchantQuest = Main.player[playernumber].GetModPlayer<CardMerchantQuest>();
                         cardMerchantQuest.Complete = reader.ReadString();
-                        // SyncPlayer will be called automatically, so there is no need to forward this data to other clients.
                         break;
                     }
                 case EntrogicModMessageType.SendCompletedCardMerchantMissionRequest:
                     {
                         int playernumber = reader.ReadByte();
-                        playernumber = reader.ReadByte();
                         CardMerchantQuest cardMerchantQuest = Main.player[playernumber].GetModPlayer<CardMerchantQuest>();
                         cardMerchantQuest.Complete = reader.ReadString();
                         // Unlike SyncPlayer, here we have to relay/forward these changes to all other connected clients
@@ -802,6 +827,8 @@ namespace Entrogic
             ReceiveMagicStormRequest,
             ReceiveMagicStormMPC,
             NPCSpawnOnPlayerAction,
+            SyncBookBubbleInfo,
+            SyncCardGamingInfos,
             MerchantPlayerSyncPlayer,
             SendCompletedCardMerchantMissionRequest
         }

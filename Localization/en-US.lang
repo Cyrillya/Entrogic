@@ -245,20 +245,6 @@ BuffName.Twinshroom=Twinshroom
 BuffName.Voidshroom=Voidshroom
 
 
-# Traslation Key Words
-Magic=magic
-imr=Increases mana regeneration
---> More in Entrogic.cs
-Melee=melee
-mas=melee attack speed
-Throw=throwing
-Ranged=ranged
-Minion=minion
-mmc=maximum minion capacity
---> More in Entrogic.cs
-eaml=Enemies are more likely to attack you
-
-
 # Miscellaneous
 得摩斯奖励=有几率让部分远程/魔法武器多发射一次
 得摩斯奖励2=被击中敌人有几率获得[恐惧]Debuff
@@ -273,25 +259,53 @@ DieByMagic=cannot control the magic that Drarrior gave him.
 DieByMushroom=was tricked by tooltip.
 Instrumen=gets instrumentality.
 JoinGame=Welcome to Entrogic!
-CardGrav=Gravitation
-CardElec=Electromagnetism
-CardWeak=Weak Nuclear
-CardStro=Strong Nuclear
-CardGran=Grand Unified
+Common.SeriesNone=None
+Common.SeriesElement=Elemental
+Common.SeriesOrganism=Organism
+Common.SeriesUndead=Undead
+Common.CardAttack=Attack
+Common.CardMinion=Minion
+Common.CardGrav=Gravitation
+Common.CardElec=Electromagnetism
+Common.CardWeak=Weak Nuclear
+Common.CardStro=Strong Nuclear
+Common.CardGran=Grand Unified
 Common.Banner=Banner
 Common.TreasureBag=Treasure Bag
+Common.Reading=Reading
+Common.Page=Page
+Common.PlayerTurn=Player Turn
+Common.NPCTurn=Enemy Turn
+Common.YouWin=You Win!
+Common.YouLost=You Lost!
+
 
 # English Only
 ItemTooltip.RockShotgun=The Rock Johnson's Shotgun
 ItemTooltip.RockSpear=The Rock Johnson's Spear
+
+
+# Traslation Key Words
+Magic=magic
+imr=Increases mana regeneration
+--> More in Entrogic.cs
+Melee=melee
+mas=melee attack speed
+Throw=throwing
+Ranged=ranged
+Minion=minion
+mmc=maximum minion capacity
+--> More in Entrogic.cs
+eaml=Enemies are more likely to attack you
+
 
 # Translates Automatically
 ItemTooltip.CrownofContamination=+1 {$Mods.Entrogic.mmc}\n+16% {$Mods.Entrogic.Minion}{$Mods.Entrogic.damage}\n+7% {$Mods.Entrogic.Minion}{$Mods.Entrogic.knockback}
 ItemTooltip.HelmetofContamination=+7% {$Mods.Entrogic.Ranged}{$Mods.Entrogic.csc}\n+17% {$Mods.Entrogic.Ranged}{$Mods.Entrogic.damage}\n10%{$Mods.Entrogic.cntca}
 ItemTooltip.HeadgearofContamination={$Mods.Entrogic.immb}40%\n{$Mods.Entrogic.imr}\n{$Mods.Entrogic.rmub}20%\n+10% {$Mods.Entrogic.Magic}{$Mods.Entrogic.damage}{$Mods.Entrogic.and}{$Mods.Entrogic.csc}
 ItemTooltip.MaskofContamination=+8 {$Mods.Entrogic.mas}\n+12% {$Mods.Entrogic.Melee}{$Mods.Entrogic.csc}\n+10% {$Mods.Entrogic.Melee}{$Mods.Entrogic.damage}
-ItemTooltip.GreavesofContamination=6%{$Mods.Entrogic.csc2}\n+10%{$Mods.Entrogic.mspeed}
-ItemTooltip.BreastplateofContamination=13%{$Mods.Entrogic.csc2}
+ItemTooltip.GreavesofContamination=+6%{$Mods.Entrogic.csc}\n+10%{$Mods.Entrogic.mspeed}
+ItemTooltip.BreastplateofContamination=+13%{$Mods.Entrogic.csc}
 
 ItemName.StoneSlimeBanner={$Mods.Entrogic.NPCName.StoneSlime}{$Mods.Entrogic.Common.Banner}
 ItemName.AngryofCorruptionBanner={$Mods.Entrogic.NPCName.AngryofCorruption}{$Mods.Entrogic.Common.Banner}

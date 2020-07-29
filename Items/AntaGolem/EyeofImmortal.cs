@@ -25,7 +25,7 @@ namespace Entrogic.Items.AntaGolem
     }
     public class AthanasyEye : ModProjectile
     {
-        public override string Texture { get { return "Entrogic/Items/AntaGolem/衰落之眼"; } }
+        public override string Texture { get { return "Entrogic/Items/AntaGolem/EyeofImmortal"; } }
         public override void SetDefaults()
         {
             projectile.CloneDefaults(ProjectileID.MedusaHead);

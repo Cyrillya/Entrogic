@@ -572,7 +572,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                 Vector2 drawCenter = npc.Center - new Vector2(0f, 8f) + -(npc.velocity * 0.5f * i);
                 int alpha = 40 - 40 / (npc.oldPos.Length - 1) * i - (255 - npc.alpha);
                 alpha = Math.Max(0, alpha);
-                Color drawOn = ModHelper.QuickAlpha(drawColor, (float)alpha / 255f);
+                Color drawOn = drawColor * (float)(alpha / 255f);
                 Main.spriteBatch.Draw(texture, drawCenter - Main.screenPosition, new Rectangle?(npc.frame), npc.GetAlpha(drawOn), 0f, origin, npc.scale, effects, 0f);
             }
             return false;
@@ -603,7 +603,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                 case NPCState.StrongCycle:
                     int alpha = 255 / 90 * Timer;
                     alpha = Math.Max(0, alpha);
-                    Color onDrawColor = ModHelper.QuickAlpha(drawColor, (float)alpha / 255f);
+                    Color onDrawColor = drawColor * (float)(alpha / 255f);
                     spriteBatch.Draw(Entrogic.Instance.GetTexture("NPCs/Boss/AntaGolem/Antanasy_Shadow"), npc.Center - Main.screenPosition + new Vector2(0f, -8f), null, npc.GetAlpha(onDrawColor), 0f, texture.Size() * 0.5f, npc.scale, effects, 0f);
                     break;
                 case NPCState.Dash_Strong:
@@ -622,7 +622,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                     texture = Entrogic.Instance.GetTexture("NPCs/Boss/AntaGolem/Antanasy_Shadow");
                     break;
             }
-            drawColor = ModHelper.QuickAlpha(drawColor, (float)npc.alpha / 255f);
+            drawColor = drawColor * (float)(npc.alpha / 255f);
             spriteBatch.Draw(texture, npc.Center - Main.screenPosition + new Vector2(0f, -8f), null, npc.GetAlpha(drawColor), npc.rotation, texture.Size() * 0.5f, npc.scale, effects, 0f);
             Texture2D tex = Entrogic.Instance.GetTexture("NPCs/Boss/AntaGolem/Antanasy_HighLight_SD");
             if (drawHighLight)

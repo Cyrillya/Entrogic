@@ -8,18 +8,13 @@ using Microsoft.Xna.Framework;
 using System;
 using Microsoft.Xna.Framework.Graphics;
 using Entrogic.Items.Consumables.Mushrooms;
+using Entrogic.NPCs.CardFightable.CardBullet;
 
-namespace Entrogic.NPCs
+namespace Entrogic.NPCs.CardFightable
 {
-    public class 蘑菇人 : ModNPC
+    public class Mushman : CardFightableNPC
     {
-        public override bool Autoload(ref string name)
-        {
-            name = "蘑菇人";
-            return mod.Properties.Autoload;
-        }
-
-        public override void SetStaticDefaults()
+        public override void SetupDefaults()
         {
             Main.npcFrameCount[npc.type] = 16;
         }
@@ -100,7 +95,7 @@ namespace Entrogic.NPCs
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             Player player = spawnInfo.player;
-            if ((NPC.CountNPCS(NPCType<蘑菇人>()) < 1) && Main.dayTime && ModHelper.NoBiomeNormalSpawn(spawnInfo) && player.ZoneOverworldHeight)
+            if ((NPC.CountNPCS(NPCType<Mushman>()) < 1) && Main.dayTime && ModHelper.NoBiomeNormalSpawn(spawnInfo) && player.ZoneOverworldHeight)
             {
                 if (player.ZoneRain)
                     return 0.0028f;
@@ -162,57 +157,109 @@ namespace Entrogic.NPCs
                     return "你上过菌特网吗？哦，我忘记你是个人类了。";
             }
         }
+        public override void SetupContents(ref string ImgPath, ref Vector2 ImgPosition)
+        {
+            ImgPath = "Entrogic/NPCs/CardFightable/Mushman";
+            ImgPosition = new Vector2(274f, 12f);
+            base.SetupContents(ref ImgPath, ref ImgPosition);
+        }
 
-        public override void OnChatButtonClicked(bool firstButton, ref bool shop)
+        public override void OnSecondButtonClicked(ref bool shop)
+        {
+            if (Main.dedServ) return;
+            Player clienPlayer = Main.LocalPlayer;
+            EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(clienPlayer);
+            clientModPlayer.CardGameActive = true;
+            clientModPlayer.CardGameNPCIndex = npc.whoAmI;
+            clientModPlayer.CardGaming = true;
+            Main.npcChatText = "";
+            CardGaming = true;
+            StartAttacking();
+        }
+
+        public override void StartAttacking()
+        {
+            CardGameHealthMax = 1000;
+
+            base.StartAttacking();
+
+            Player clientPlayer = Main.LocalPlayer;
+            EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(clientPlayer);
+            clientModPlayer.CardGameNPCLastHealth = CardGameHealth;
+        }
+
+        public override void OnAttacking()
+        {
+            Player clientPlayer = Main.LocalPlayer;
+            EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(clientPlayer);
+            if (RoundDuration >= 1.2f && Main.rand.NextBool(2))
+            {
+                CardFightBullet bullet = new MushroomBullet()
+                {
+                    Position = new Vector2(Main.rand.Next((int)PlaygroundSize.X), Main.rand.Next((int)PlaygroundSize.Y)),
+                    UIPosition = this.PanelPosition
+                };
+                clientModPlayer._bullets.Add(bullet);
+            }
+
+            base.OnAttacking();
+        }
+
+        public override void PreStartRound(bool playerTurn)
+        {
+            if (!playerTurn)
+            {
+                RoundDuration = 3f;
+            }
+        }
+
+        public override void OnFirstButtonClicked(ref bool shop)
         {
             Player player = Main.player[Main.myPlayer];
-            if (firstButton)
+            Main.PlaySound(SoundID.Item35);
+            if (!changed)
             {
-                Main.PlaySound(SoundID.Item35);
-                if (!changed)
+                int LifeC = 0;
+                int GoldC = 0;
+                int FallenS = 0;
+                int LightningB = 0;
+                int GlowingM = 0;
+                int Glass = 0;
+                for (int i = 0; i < 59; i++)
                 {
-                    int LifeC = 0;
-                    int GoldC = 0;
-                    int FallenS = 0;
-                    int LightningB = 0;
-                    int GlowingM = 0;
-                    int Glass = 0;
-                    for (int i = 0; i < 59; i++)
+                    Item item = player.inventory[i];
+                    if (item != null)
                     {
-                        Item item = player.inventory[i];
-                        if (item != null)
-                        {
-                            if (item.type == ItemID.LifeCrystal)
-                                LifeC += item.stack;
-                            if (item.type == ItemID.GoldCoin)
-                                GoldC += item.stack;
-                            if (item.type == ItemID.FallenStar)
-                                FallenS += item.stack;
-                            if (item.type == ItemID.Blinkroot)
-                                LightningB += item.stack;
-                            if (item.type == ItemID.GlowingMushroom)
-                                GlowingM += item.stack;
-                            if (item.type == ItemID.Glass)
-                                Glass += item.stack;
-                        }
+                        if (item.type == ItemID.LifeCrystal)
+                            LifeC += item.stack;
+                        if (item.type == ItemID.GoldCoin)
+                            GoldC += item.stack;
+                        if (item.type == ItemID.FallenStar)
+                            FallenS += item.stack;
+                        if (item.type == ItemID.Blinkroot)
+                            LightningB += item.stack;
+                        if (item.type == ItemID.GlowingMushroom)
+                            GlowingM += item.stack;
+                        if (item.type == ItemID.Glass)
+                            Glass += item.stack;
                     }
-
-                    if (changeID == ItemID.LifeCrystal)
-                        LetsChange(ItemID.LifeCrystal, LifeC, player);
-                    if (changeID == ItemID.GoldCoin)
-                        LetsChange(ItemID.GoldCoin, GoldC, player);
-                    if (changeID == ItemID.FallenStar)
-                        LetsChange(ItemID.FallenStar, FallenS, player);
-                    if (changeID == ItemID.Blinkroot)
-                        LetsChange(ItemID.Blinkroot, LightningB, player);
-                    if (changeID == ItemID.GlowingMushroom)
-                        LetsChange(ItemID.GlowingMushroom, GlowingM, player);
-                    if (changeID == ItemID.Glass)
-                        LetsChange(ItemID.Glass, Glass, player);
                 }
-                else
-                    Main.npcChatText = "蘑菇人也没蘑菇了。";
+
+                if (changeID == ItemID.LifeCrystal)
+                    LetsChange(ItemID.LifeCrystal, LifeC, player);
+                if (changeID == ItemID.GoldCoin)
+                    LetsChange(ItemID.GoldCoin, GoldC, player);
+                if (changeID == ItemID.FallenStar)
+                    LetsChange(ItemID.FallenStar, FallenS, player);
+                if (changeID == ItemID.Blinkroot)
+                    LetsChange(ItemID.Blinkroot, LightningB, player);
+                if (changeID == ItemID.GlowingMushroom)
+                    LetsChange(ItemID.GlowingMushroom, GlowingM, player);
+                if (changeID == ItemID.Glass)
+                    LetsChange(ItemID.Glass, Glass, player);
             }
+            else
+                Main.npcChatText = "蘑菇人也没蘑菇了。";
         }
 
         public void LetsChange(int findID, int findInt32, Player player)
@@ -264,6 +311,8 @@ namespace Entrogic.NPCs
                 button = "交换（不可用）";
             else
                 button = "交换（" + changeAmount + "个" + Lang.GetItemNameValue(changeID) + "）";
+
+            button2 = "对局";
         }
 
         public override bool CanChat()

@@ -430,7 +430,6 @@ namespace Entrogic.UI.Cards
                     } // 抽牌
                 } // 幸运币效果
             }
-            ePlayer.NewRecentCardMessage(Language.GetTextValue("Mods.Entrogic.NormalPassCard", cardDrawed, manaRegrew));
             ePlayer.CardPassDelay = ePlayer.CardPassStatDelay;
         }
     }

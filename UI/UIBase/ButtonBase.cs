@@ -42,7 +42,7 @@ namespace Entrogic.UI
             RightClick += RightClickEvent;
             Pressed += PressedEvent;
             Released += ReleasedEvent;
-            if(ModHelper.MouseInRectangle( new Rectangle( (int)uiPosition.X , (int)uiPosition.Y , (int)uiWidth , (int)uiHeight ) ))
+            if(ModHelper.MouseInRectangle( uiRectangle ))
             {
                 if (!canUseItem)
                 {

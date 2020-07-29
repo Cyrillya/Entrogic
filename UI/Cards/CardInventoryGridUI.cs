@@ -66,6 +66,14 @@ namespace Entrogic.UI.Cards
                 spriteBatch.Draw(tex, position + Size * 0.5f - tex.Size() * 0.5f + new Vector2(2f, -1f), new Rectangle?(frame), Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
             }
         }
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime); // don't remove.
+            if (ContainsPoint(Main.MouseScreen))
+            {
+                Main.LocalPlayer.mouseInterface = true;
+            }
+        }
         public override void Click(UIMouseEvent evt)
         {
             EntrogicPlayer player = Main.LocalPlayer.GetModPlayer<EntrogicPlayer>();
@@ -146,14 +154,6 @@ namespace Entrogic.UI.Cards
             {
                 Main.mouseItem.stack--;
                 player.CardType[number] = mouseItem.type;
-            }
-        }
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime); // don't remove.
-            if (ContainsPoint(Main.MouseScreen))
-            {
-                Main.LocalPlayer.mouseInterface = true;
             }
         }
     }

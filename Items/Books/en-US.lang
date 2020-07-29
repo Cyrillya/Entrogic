@@ -1,0 +1,17 @@
+ItemName.TheGuide=TheGuide
+ItemTooltip.TheGuide=[c/FF7200:The Guide]\n[c/D5BB84:Description：It had hundreds of masters and also guided them the way forward]\n[c/F7DDA8:----------------------------------]\n[c/D5BB84:Classification：Miscellaneous]\n[c/D4B169:Auther：Unknow]\n
+Common.PageText1.TheGuide=笔者注释：翻书时记得[c/409940:用你的手提起书页的一角]，轻轻的翻页；文明人都需要学习用手翻书，而不是血迹斑斑的武器。\n\n如果你想要合上书，只需要打开你的库存，书页会自行合上，用右手触碰书页也可将书合上，切换到其他物品也会合书
+Common.PageText2.TheGuide=创造者，现在你需要学习一些关于生存与创造的不同寻常的知识。\n\n关于这个“现象”的世界我觉得无须多向你解释，想必远道而来的你已经历过无数的冒险，而今不过是想从零开始以期获得一段[c/404099:新的体验]而已。
+Common.PageText3.TheGuide=我们以脑中的幻想为蓝本编织了一个新世界，这是一个尚充满魔力的世界，魔力将一切推向巅峰，又使一切从峰顶跌落。因此这也是个充满[c/994040:机遇与危险]的世界。你可以从我们撰写的书籍中了解他。
+Common.PageText4.TheGuide=不同的魔力催化出了不同的、新式的敌人，更多友善的朋友和奇妙的道具，这将又是一个你没体验过的新世界。\n\n现在以任意你喜欢的方式开启这段探索吧。
+
+ItemName.CardBasicManual=卡牌入门手册
+ItemTooltip.CardBasicManual=[c/FF7200:卡牌从初学到入门]\n[c/D5BB84:简介：初学者必读的卡牌速成手册！]\n[c/F7DDA8:—————————————————]\n[c/D5BB84:分类：教学类]\n[c/D4B169:作者：Drarrior]\n
+Common.PageText1.CardBasicManual=\n   想象一下，在一段漫长的跋涉之后踱步进入一间酒馆，点一杯最爱的饮料，拿出你珍藏的套牌，和牌友们来一局，实在是再惬意不过了。但前提是，你要学会驾驭这些火焰和雷电的化身，从这里开启你的[c/0000AA:牌王之路]！
+Common.PageText2.CardBasicManual=卡牌分为[c/333333:引力]、[c/858585:电磁]、[c/8f7a0d:弱核]、[c/eba329:强核]、[c/420399:大统一]五种品质，一个卡组中最多只能携带6张相同的[c/333333:引力]、3张相同的[c/858585:电磁]、2张相同的[c/8f7a0d:弱核]、1张相同的[c/eba329:强核]和1张[c/BB0000:独一无二]的[c/420399:大统一]
+Common.PageText3.CardBasicManual=\n[c/0039AA:卡牌背包]是你打造和升级你的套牌船坞，一个卡组只能携带9张牌，巧妙的卡牌搭配是你致胜的关键。你可在背包的下方见到[c/0039AA:卡牌背包]
+Common.PageText4.CardBasicManual=优秀的牌手应当有优雅的操作，一双洁净的[c/125623:手套]很适合你！\n\n\n\n\n\n\n\n你使用的每一张牌都需要一定的[c/125623:费用]，费用的合理规划是关键。
+Common.PageText5.CardBasicManual=卡牌被使用后会被置入[c/125623:墓地]\n\n过牌会将全部手牌置入墓地并抽取一定牌，[c/AA1212:重置魔力]\n\n洗牌会重置你的牌库并[c/AA1212:清空墓地]，卡牌背包的牌要经过[c/125623:洗牌]进入[c/125623:牌库]
+Common.PageText6.CardBasicManual=卡牌分为[c/AA5619:攻击牌]和[c/1256AA:效果牌]，攻击牌可使你的手套可施放攻击性魔法（即便你不会魔法！），但有次数限制\n\n\n\n\n\n\n效果牌使用后会立即见效，可以用于应对一些突发状况或保持卡组的持久运行
+Common.PageText7.CardBasicManual=术语\n\n\n抽牌：将牌库中的牌置入手牌\n\n弃牌：将手牌中的牌置入墓地\n\n移除：将任意位置某张牌移出，并不进入墓地
+Common.PageText8.CardBasicManual=你初始手牌数为三张，费用数也为三个，但可以通过饰品的穿戴来改变

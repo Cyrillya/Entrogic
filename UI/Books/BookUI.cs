@@ -14,6 +14,7 @@ using static Terraria.ModLoader.ModContent;
 using Entrogic.Items.Books;
 using Terraria.UI.Chat;
 using System.Linq;
+using static Entrogic.Entrogic;
 
 namespace Entrogic.UI.Books
 {
@@ -47,6 +48,7 @@ namespace Entrogic.UI.Books
             {
                 Main.PlaySound(SoundID.MenuOpen);
                 ePlayer.PageNum -= 1;
+                MessageHelper.SendBookInfo(Main.LocalPlayer.whoAmI, ePlayer.PageNum, ePlayer.IsBookActive);
             }
             int MaxPage = 1;
             if (ePlayer.GetHoldItem() != null)
@@ -56,12 +58,15 @@ namespace Entrogic.UI.Books
             {
                 Main.PlaySound(SoundID.MenuOpen);
                 ePlayer.PageNum += 1;
+                MessageHelper.SendBookInfo(Main.LocalPlayer.whoAmI, ePlayer.PageNum, ePlayer.IsBookActive);
             }
         }
         private void RightClicked(UIMouseEvent evt, UIElement listeningElement)
         {
             EntrogicPlayer plr = Main.LocalPlayer.GetModPlayer<EntrogicPlayer>();
             IsActive = false;
+            plr.IsBookActive = IsActive;
+            MessageHelper.SendBookInfo(Main.LocalPlayer.whoAmI, plr.PageNum, plr.IsBookActive);
         }
         public Rectangle mouseRect
         {
@@ -79,17 +84,23 @@ namespace Entrogic.UI.Books
             if (ePlayer.GetHoldItem() == null)
             {
                 IsActive = false;
+                ePlayer.IsBookActive = IsActive;
+                MessageHelper.SendBookInfo(Main.LocalPlayer.whoAmI, ePlayer.PageNum, ePlayer.IsBookActive);
                 return;
             }
             if (!ePlayer.GetHoldItem().GetGlobalItem<EntrogicItem>().book)
             {
                 IsActive = false;
+                ePlayer.IsBookActive = IsActive;
+                MessageHelper.SendBookInfo(Main.LocalPlayer.whoAmI, ePlayer.PageNum, ePlayer.IsBookActive);
                 return;
             }
             // 开了物品栏就不能让你看书了哦
             if (Main.playerInventory)
             {
                 IsActive = false;
+                ePlayer.IsBookActive = IsActive;
+                MessageHelper.SendBookInfo(Main.LocalPlayer.whoAmI, ePlayer.PageNum, ePlayer.IsBookActive);
                 return;
             }
             BookPanel.num = ePlayer.PageNum;
@@ -97,7 +108,7 @@ namespace Entrogic.UI.Books
             BookPanel.Left.Pixels = bookPos.X;//UI距离左边
             BookPanel.Top.Pixels = bookPos.Y;//UI距离上面
 
-            int MaxPage = 1;
+            byte MaxPage = 1;
             if (ePlayer.GetHoldItem() != null)
                 if (ePlayer.GetHoldItem().GetGlobalItem<EntrogicItem>().book)
                     MaxPage = ((ModBook)ePlayer.GetHoldItem().modItem).MaxPage;
@@ -291,7 +302,7 @@ namespace Entrogic.UI.Books
                             int index = 0;
                             while (index < currentLine[l].Text.Length && !filled)
                             {
-                                if (currentLine[l].Text[index] == ' ' || isChinese(currentLine[l].Text[index])) // 这里写换行条件
+                                if (currentLine[l].Text[index] == ' ' || IsChinese(currentLine[l].Text[index])) // 这里写换行条件
                                 {
                                     if (ChatManager.GetStringSize(font, currentLine[l].Text.Substring(0, index), new Vector2(scale)).X < toFill)
                                         successfulIndex = index;
@@ -365,7 +376,7 @@ namespace Entrogic.UI.Books
             }
             return finalList;
         }
-        public static bool isChinese(char a)
+        public static bool IsChinese(char a)
         {
             return a >= 0x4E00 && a <= 0x9FA5;
         }

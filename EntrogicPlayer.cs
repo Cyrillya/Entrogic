@@ -31,6 +31,8 @@ using Entrogic.NPCs;
 using Entrogic.Buffs.Enemies;
 using Entrogic.Projectiles.Miscellaneous;
 using Entrogic.NPCs.Enemies;
+using Microsoft.Xna.Framework.Input;
+using Entrogic.NPCs.CardFightable.CardBullet;
 //using Entrogic.UI;
 
 namespace Entrogic
@@ -39,6 +41,9 @@ namespace Entrogic
     {
         internal string PlayerFolder => Main.PlayerPath + "/" + player.name + "/sysfile.ent/";
         internal string ServerPlayerFolder => Main.PlayerPath + "/" + player.name + "/sysfile.ent/";
+
+        private KeyboardState _currentKey;
+        private KeyboardState _previousKey;
 
         internal int PickPowerHand = 0;
         internal bool ProjectieHasArmorPenetration = false;
@@ -97,7 +102,31 @@ namespace Entrogic
         public int CardRecentEventAlpha = 255;
         public int CardUseCount;
 
-        internal int PageNum = 1;
+        internal int[] CardGameType = new int[3];
+        internal bool CardGameActive;
+        internal bool CardGaming;
+        internal float CardGameHealthAlpha;
+        internal float CardGameNPCHealthAlpha;
+        internal int CardGameNPCIndex = -1;
+        internal int CardGamePlayerMaxHealth = 1000;
+        internal int CardGamePlayerHealth;
+        internal int CardGamePlayerLastHealth;
+        internal int CardGameNPCMaxHealth;
+        internal int CardGameNPCHealth;
+        internal int CardGameNPCLastHealth;
+        internal bool CardGamePlayerTurn;
+        internal List<CardFightBullet> _bullets = new List<CardFightBullet>(); // 用List存储
+
+        internal bool IsBookActive;
+        internal bool IsClosingBook;
+        internal bool UseBookBubble;
+        internal int BookBubbleFrameCounter;
+        /// <summary>
+        /// 这个值我决定范围为1-19，0-18的话就很反人类
+        /// </summary>
+        internal int BookBubbleFrame;
+        // 一个效果用这么多变量，我是不是要被制裁了（
+        internal byte PageNum = 1;
 
         internal bool IsDestroyNextCard_InnerRage = false;
         internal int MoreCard_EnergyRecovery = 0;
@@ -392,7 +421,7 @@ namespace Entrogic
         public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath)
         {
             Item item = new Item();
-            item.SetDefaults(ItemType<指引之书>());//开局获得物品
+            item.SetDefaults(ItemType<TheGuide>());//开局获得物品
             items.Add(item);
         }
 
@@ -601,7 +630,27 @@ namespace Entrogic
             CardWashDelay = Math.Max(0, CardWashDelay);
             CardWashDelay = Math.Min(CardWashStatDelay, CardWashDelay);
 
-
+            _previousKey = _currentKey;
+            _currentKey = Keyboard.GetState();
+            if (_currentKey.IsKeyUp(Keys.Z) && _previousKey.IsKeyDown(Keys.Z))
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    CardGameType[i] = ItemType<Items.Weapons.Card.Elements.ArcaneMissle>();
+                }
+            }
+            if (_currentKey.IsKeyUp(Keys.N) && _previousKey.IsKeyDown(Keys.N))
+            {
+                CardGaming = false;
+            }
+            if (_currentKey.IsKeyDown(Keys.X))
+            {
+                CardGamePlayerHealth+=3;
+            }
+            if (_currentKey.IsKeyDown(Keys.C))
+            {
+                CardGamePlayerHealth-=3;
+            }
 
             if (player.ZoneUnderworldHeight && !EntrogicWorld.beArrivedAtUnderworld)
             {
@@ -1181,17 +1230,125 @@ namespace Entrogic
                 }
             }
         }
+        int AnkhAlpha = 255;
+        float AnkhScale = 0f;
+        public static readonly PlayerLayer GelAnkhEffect = new PlayerLayer("Entrogic", "Gel Ankh", PlayerLayer.MiscEffectsFront, delegate (PlayerDrawInfo drawInfo)
+        {
+            if (drawInfo.shadow != 0f)
+            {
+                return;
+            }
+            Player drawPlayer = drawInfo.drawPlayer;
+            EntrogicPlayer modPlayer = drawPlayer.GetModPlayer<EntrogicPlayer>();
+            if (modPlayer.RebornEffectTime > 0)
+            {
+                modPlayer.RebornEffectTime--;
+                if (modPlayer.RebornEffectTime > 80)
+                    modPlayer.AnkhScale += 0.08f;
+                if (modPlayer.RebornEffectTime <= 25)
+                    modPlayer.AnkhAlpha -= 11;
+                if (modPlayer.AnkhAlpha > 255)
+                    modPlayer.AnkhAlpha = 255;
+                Texture2D texture = ModTexturesTable["凝胶安卡"];
+                int drawX = (int)(drawInfo.position.X + drawPlayer.width / 2f - Main.screenPosition.X);
+                int drawY = (int)(drawInfo.position.Y + drawPlayer.height / 2f - Main.screenPosition.Y);
 
+                DrawData data = new DrawData(texture, new Vector2(drawX, drawY), null, new Color(modPlayer.AnkhAlpha, modPlayer.AnkhAlpha, modPlayer.AnkhAlpha, modPlayer.AnkhAlpha), 0f, texture.Size() * 0.5f, modPlayer.AnkhScale, SpriteEffects.None, 0);
+                Main.playerDrawData.Add(data);
+            }
+            else
+            {
+                modPlayer.AnkhScale = 0f;
+                modPlayer.AnkhAlpha = 255;
+            }
+        });
+        public static readonly PlayerLayer BookBubbleEffect = new PlayerLayer("Entrogic", "Book Bubble", PlayerLayer.MiscEffectsFront, delegate (PlayerDrawInfo drawInfo)
+        {
+            if (drawInfo.shadow != 0f)
+            {
+                return;
+            }
+            Player drawPlayer = drawInfo.drawPlayer;
+            Texture2D t = ModTexturesTable["ReadingBubble"];
+            EntrogicPlayer entrogicPlayer = drawPlayer.GetModPlayer<EntrogicPlayer>();
+            if (entrogicPlayer.IsBookActive) entrogicPlayer.UseBookBubble = true;
+            if (entrogicPlayer.UseBookBubble)
+            {
+                if (!entrogicPlayer.IsClosingBook)
+                {
+                    entrogicPlayer.BookBubbleFrameCounter++;
+                    if (entrogicPlayer.BookBubbleFrameCounter >= 6)
+                    {
+                        entrogicPlayer.BookBubbleFrameCounter = 0;
+                        entrogicPlayer.BookBubbleFrame++;
+                    }
+                    if (entrogicPlayer.BookBubbleFrame >= 19) // 共19帧
+                    {
+                        entrogicPlayer.BookBubbleFrame = 4;
+                    }
+                }
+                else
+                {
+                    entrogicPlayer.BookBubbleFrameCounter++;
+                    if (entrogicPlayer.BookBubbleFrameCounter >= 6)
+                    {
+                        entrogicPlayer.BookBubbleFrameCounter = 0;
+                        entrogicPlayer.BookBubbleFrame--;
+                    }
+                    if (entrogicPlayer.BookBubbleFrame == 0)
+                    {
+                        entrogicPlayer.BookBubbleFrame = 1;
+                        entrogicPlayer.IsClosingBook = false;
+                        entrogicPlayer.UseBookBubble = false;
+                    }
+                }
+                // 帧切换结束
+                if (!entrogicPlayer.IsBookActive) // 停止后并非立刻结束，而是有一个过渡动画
+                {
+                    int frame = entrogicPlayer.BookBubbleFrame;
+                    bool IsOpeningBook = frame >= 1 && frame <= 3; // 前三帧是开书动画
+                    bool IsTurningPage = frame >= 8 && frame <= 11 || frame >= 16 && frame <= 19;
+                    bool IsStopping = !IsOpeningBook && !IsTurningPage;
+
+                    if (IsStopping)
+                    {
+                        entrogicPlayer.IsClosingBook = true;
+                    }
+                }
+                int totalFrames = 19;
+                int frameHeight = t.Height / totalFrames; // 除出来应为64
+                Rectangle _frame = new Rectangle(0, (entrogicPlayer.BookBubbleFrame - 1) * frameHeight, frameHeight, t.Width);
+                Vector2 drawPosition = drawPlayer.Center - Main.screenPosition;
+                drawPosition.Y -= 20f + frameHeight * 0.5f;
+                Vector2 origin = new Vector2(t.Width / 2, frameHeight / 2);
+                DrawData data = new DrawData(t,
+                    drawPosition.NoShake(),
+                    (Rectangle?)_frame,
+                    Color.White,
+                    0f,
+                    origin,
+                    1f,
+                    SpriteEffects.None,
+                    0);
+                Main.playerDrawData.Add(data);
+
+                if (ModHelper.MouseInRectangle(ModHelper.CreateFromVector2(drawPosition - origin, t.Width, frameHeight)) && drawPlayer.whoAmI != Main.myPlayer)
+                {
+                    Main.instance.MouseText($"{Language.GetTextValue("Mods.Entrogic.Common.Reading")}: {drawPlayer.HeldItem.Name}\n" +
+                    $"{Language.GetTextValue("Mods.Entrogic.Common.Page")}: {entrogicPlayer.PageNum * 2 - 1} ~ {entrogicPlayer.PageNum * 2}");
+                }
+            }
+        });
         /// <summary>
         /// Allows you to modify the drawing of the player. This is done by removing from, adding to, or rearranging the list, by setting some of the layers' visible field to false, etc.
         /// </summary>
         /// <param name="layers"></param>
         public override void ModifyDrawLayers(List<PlayerLayer> layers)
         {
-            MiscEffects.visible = true;
-            layers.Add(MiscEffects);
-            MiscBookEffects.visible = true;
-            layers.Add(MiscBookEffects);
+            GelAnkhEffect.visible = true;
+            layers.Add(GelAnkhEffect);
+            BookBubbleEffect.visible = true;
+            layers.Add(BookBubbleEffect);
         }
 
         /// <summary>
@@ -1212,8 +1369,8 @@ namespace Entrogic
             {
                 // 创建一个属于这个Mod的ModPacket
                 ModPacket packet = mod.GetPacket();
-                // 往里面写入一个封包ID，类型为int，占用4个字节
-                packet.Write((int)EntrogicModMessageType.ReceiveMagicStormMPC);
+                // 往里面写入一个封包ID，类型为byte
+                packet.Write((byte)EntrogicModMessageType.ReceiveMagicStormMPC);
                 // 发送出去
                 packet.Send(-1, -1);
             }
@@ -1409,61 +1566,5 @@ namespace Entrogic
         {
             CardRecentEventAdd = text;
         }
-        int AnkhAlpha = 255;
-        float AnkhScale = 0f;
-        public static readonly PlayerLayer MiscEffects = new PlayerLayer("Entrogic", "GelAnkh", PlayerLayer.MiscEffectsFront, delegate (PlayerDrawInfo drawInfo)
-        {
-            if (drawInfo.shadow != 0f)
-            {
-                return;
-            }
-            Player drawPlayer = drawInfo.drawPlayer;
-            Mod mod = ModLoader.GetMod("Entrogic");
-            EntrogicPlayer modPlayer = drawPlayer.GetModPlayer<EntrogicPlayer>();
-            if (modPlayer.RebornEffectTime > 0)
-            {
-                modPlayer.RebornEffectTime--;
-                if (modPlayer.RebornEffectTime > 80)
-                    modPlayer.AnkhScale += 0.08f;
-                if (modPlayer.RebornEffectTime <= 25)
-                    modPlayer.AnkhAlpha -= 11;
-                if (modPlayer.AnkhAlpha > 255)
-                    modPlayer.AnkhAlpha = 255;
-                Texture2D texture = ModTexturesTable["凝胶安卡"];
-                int drawX = (int)(drawInfo.position.X + drawPlayer.width / 2f - Main.screenPosition.X);
-                int drawY = (int)(drawInfo.position.Y + drawPlayer.height / 2f - Main.screenPosition.Y);
-                
-                DrawData data = new DrawData(texture, new Vector2(drawX, drawY), null, new Color(modPlayer.AnkhAlpha, modPlayer.AnkhAlpha, modPlayer.AnkhAlpha, modPlayer.AnkhAlpha), 0f, texture.Size() * 0.5f, modPlayer.AnkhScale, SpriteEffects.None, 0);
-                Main.playerDrawData.Add(data);
-            }
-            else
-            {
-                modPlayer.AnkhScale = 0f;
-                modPlayer.AnkhAlpha = 255;
-            }
-        });
-
-        public static readonly PlayerLayer MiscBookEffects = new PlayerLayer("Entrogic", "Book", PlayerLayer.MiscEffectsFront, delegate (PlayerDrawInfo drawInfo)
-        {
-            if (drawInfo.shadow != 0f)
-            {
-                return;
-            }
-            Player drawPlayer = drawInfo.drawPlayer;
-            EntrogicPlayer modPlayer = drawPlayer.GetModPlayer<EntrogicPlayer>();
-            Item heldItem = drawPlayer.HeldItem;
-            if (BookUI.IsActive && ItemSafe(heldItem))
-            {
-                if (!modPlayer.GetHoldItem().GetGlobalItem<EntrogicItem>().book)
-                    return;
-                Texture2D texture = Main.itemTexture[modPlayer.GetHoldItem().type];
-                int drawX = (int)(drawInfo.position.X + drawPlayer.width / 2f - Main.screenPosition.X);
-                int drawY = (int)(drawInfo.position.Y + drawPlayer.height / 2f - drawPlayer.height - Main.screenPosition.Y);
-                float scale = 0.5f;
-
-                DrawData data = new DrawData(texture, new Vector2(drawX, drawY), null, Color.White, 0f, texture.Size() * 0.5f, scale, SpriteEffects.None, 0);
-                Main.playerDrawData.Add(data);
-            }
-        });
     }
 }

@@ -45,22 +45,22 @@ namespace Entrogic.Items.Weapons.Card
                 };
                 List<string> rareText = new List<string>
                 {
-                    "品质：" + "{$Mods.Entrogic.CardGrav}",
-                    "品质：" + "{$Mods.Entrogic.CardElec}",
-                    "品质：" + "{$Mods.Entrogic.CardWeak}",
-                    "品质：" + "{$Mods.Entrogic.CardStro}",
-                    "品质：" + "{$Mods.Entrogic.CardGran}"
+                    "品质：" + "{$Mods.Entrogic.Common.CardGrav}",
+                    "品质：" + "{$Mods.Entrogic.Common.CardElec}",
+                    "品质：" + "{$Mods.Entrogic.Common.CardWeak}",
+                    "品质：" + "{$Mods.Entrogic.Common.CardStro}",
+                    "品质：" + "{$Mods.Entrogic.Common.CardGran}"
                 };
                 List<string> seriesText = new List<string>
                 {
-                    "{$Mods.Entrogic.SeriesNone}",
-                    "{$Mods.Entrogic.SeriesElement}",
-                    "{$Mods.Entrogic.SeriesOrganism}",
-                    "{$Mods.Entrogic.SeriesUndead}"
+                    "{$Mods.Entrogic.Common.SeriesNone}",
+                    "{$Mods.Entrogic.Common.SeriesElement}",
+                    "{$Mods.Entrogic.Common.SeriesOrganism}",
+                    "{$Mods.Entrogic.Common.SeriesUndead}"
                 };
-                string styleText = "{$Mods.Entrogic.CardMinion}";
+                string styleText = "{$Mods.Entrogic.Common.CardMinion}";
                 if (!minion && !special)
-                    styleText = "{$Mods.Entrogic.CardAttack}";
+                    styleText = "{$Mods.Entrogic.Common.CardAttack}";
                 string toolTip = "[c/EE4000:" + tooltip + "]\r\n";
                 if (!activeTooltip)
                     toolTip = "";

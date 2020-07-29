@@ -16,7 +16,7 @@ namespace Entrogic.Items.Weapons.Card
         {
             ItemType<ArcaneMissle>(),
             ItemType<Glove>(),
-            ItemType<卡牌入门手册>()
+            ItemType<CardBasicManual>()
         };
         public List<int> GetCardStack = new List<int>() { 3, 1, 1 };
 
@@ -44,7 +44,7 @@ namespace Entrogic.Items.Weapons.Card
         {
             player.QuickSpawnItem(ItemType<ArcaneMissle>(), 3);
             player.QuickSpawnItem(ItemType<Glove>());
-            player.QuickSpawnItem(ItemType<卡牌入门手册>());
+            player.QuickSpawnItem(ItemType<CardBasicManual>());
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)

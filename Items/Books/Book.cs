@@ -16,7 +16,7 @@ namespace Entrogic.Items.Books
     {
         public Texture2D[] PageTexture = new Texture2D[129];
         public string[] PageText = new string[257];
-        public int MaxPage = 2;
+        public byte MaxPage = 2;
         public bool bold = false;
         public float[] textScale = new float[257];
         public float[] lineDistance = new float[257];
@@ -66,6 +66,8 @@ namespace Entrogic.Items.Books
                     return false;
                 }
                 BookUI.IsActive = !BookUI.IsActive;
+                plr.IsBookActive = BookUI.IsActive;
+                MessageHelper.SendBookInfo(player.whoAmI, plr.PageNum, plr.IsBookActive);
             }
             return UseBook(player);
         }

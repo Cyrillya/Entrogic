@@ -187,7 +187,7 @@ namespace Entrogic
                             var packet = mod.GetPacket();
                             packet.Write((byte)EntrogicModMessageType.ReceiveMagicStormRequest);
                             packet.Write(magicStorm);
-                            packet.Send(); // 不填发给服务器
+                            packet.Send(); // 不填即为发给服务器
                         }
                         else
                         {

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
+using Entrogic.Items.Equipables.Accessories;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -115,7 +117,20 @@ namespace Entrogic.NPCs.Enemies
 
         public override void NPCLoot()
         {
-            Item.NewItem
+            if (Main.rand.NextBool(10))
+            {
+                Item.NewItem(npc.getRect(), ItemType<EarthElementalAffinityAgent>());
+            }
+        }
+
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            Player player = spawnInfo.player;
+            if (ModHelper.NormalSpawn(spawnInfo) && player.ZoneDirtLayerHeight)
+            {
+                return 0.05f;
+            }
+            return base.SpawnChance(spawnInfo);
         }
 
         private void Copied_AI_003_Fighters_Type_430()

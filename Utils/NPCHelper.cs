@@ -60,7 +60,7 @@ namespace Entrogic
             float alphamu = (float)npc.alpha / 255f; // 转换成百分比形式，直接乘就行
             // 再Draw一遍原来的NPC（因为一般都是在PreDraw里return false）
             spriteBatch.Draw(texture,
-                (npc.Center - Main.screenPosition).ToPoint().ToVector2(),
+                (npc.Center - Main.screenPosition).NoShake(),
                 (Rectangle?)npc.frame,
                 lightColor * alphamu,
                 npc.rotation,
