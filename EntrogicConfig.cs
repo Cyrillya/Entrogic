@@ -94,6 +94,10 @@ namespace Entrogic
 
         public static DEntrogicDebugClient Instance;
 
+        [DefaultValue(false)]
+        [Label("启用作者模式")]
+        public bool AuthorMode;
+
         [Range(0, 216000)]
         [DefaultValue(1150)]
         [Label("Change custom wash delay time")]

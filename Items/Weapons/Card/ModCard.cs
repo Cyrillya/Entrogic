@@ -1,5 +1,7 @@
 ﻿
 using Entrogic.NPCs;
+using Entrogic.NPCs.CardMerchantSystem;
+
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;

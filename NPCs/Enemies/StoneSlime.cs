@@ -114,7 +114,7 @@ namespace Entrogic.NPCs.Enemies
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             if (spawnInfo.player.ZoneRockLayerHeight)
-                return 0.225f;
+                return 0.085f;
             return 0f;
         }
 
@@ -135,7 +135,7 @@ namespace Entrogic.NPCs.Enemies
         }
         public override void NPCLoot()
         {
-            int num = Main.rand.Next(5, 11);
+            int num = Main.rand.Next(20, 50 + 1); // 20 - 50¸ö
             if (!Main.hardMode)
             {
                 int i = Main.rand.Next(39);

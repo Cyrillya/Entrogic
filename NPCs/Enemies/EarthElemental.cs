@@ -302,7 +302,7 @@ namespace Entrogic.NPCs.Enemies
             Player player = spawnInfo.player;
             if (ModHelper.NormalSpawn(spawnInfo) && player.ZoneOverworldHeight)
             {
-                return 0.005f;
+                return 0.001f;
             }
             return base.SpawnChance(spawnInfo);
         }

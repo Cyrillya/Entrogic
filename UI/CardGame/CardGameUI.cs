@@ -38,6 +38,11 @@ namespace Entrogic.UI.CardGame
         private Color TurnTextColor = Color.White;
         private int Deathing; // 0:非死亡状态、1:玩家死、2:NPC死
         private int DeathTimer;
+        public bool IsUseBiggerTexture;
+        private float DelayHealthPercentPlayer;
+        private float DelayHealthPercentNPC;
+        private int LastRecordHealthPlayer;
+        private int LastRecordHealthNPC;
         public override void OnInitialize()
         {
             GamePanel.Left.Set(PanelPos.X, 0f);//UI距离左边
@@ -64,6 +69,25 @@ namespace Entrogic.UI.CardGame
             HandCardSlots.Add(slot1);
             HandCardSlots.Add(slot2);
             HandCardSlots.Add(slot3);
+        }
+        public void StartGame()
+        {
+            Player clientPlayer = Main.LocalPlayer;
+            EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(clientPlayer);
+            NPC npc = Main.npc[clientModPlayer.CardGameNPCIndex];
+            CardFightableNPC fightNPC = (CardFightableNPC)npc.modNPC;
+
+            clientModPlayer.CardGamePlayerHealth = clientModPlayer.CardGamePlayerMaxHealth;
+            clientModPlayer.CardGameActive = true;
+            clientModPlayer.CardGaming = true;
+            fightNPC.CardGameHealth = fightNPC.CardGameHealthMax;
+            fightNPC.CardGaming = true;
+            Main.npcChatText = "";
+
+            Main.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGChangeTurn"));
+            TimerCountdown = 0;
+            AnimationTimer = 0;
+            TurnText = Language.GetTextValue("Mods.Entrogic.Common.PlayerTurn");
         }
         public override void Update(GameTime gameTime)
         {
@@ -135,6 +159,7 @@ namespace Entrogic.UI.CardGame
                             slot.PlayerTurn = true;
                             if (slot.Clicked) // 转NPC局
                             {
+                                IsUseBiggerTexture = false;
                                 clientModPlayer.CardGamePlayerTurn = false;
                                 fightNPC.PreStartRound(false);
                                 slot.Clicked = false;
@@ -172,6 +197,7 @@ namespace Entrogic.UI.CardGame
                         fightNPC.RoundDuration -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                         if (fightNPC.RoundDuration <= 0)
                         {
+                            IsUseBiggerTexture = false;
                             clientModPlayer.CardGamePlayerTurn = true;
                             fightNPC.PreStartRound(true);
                             Main.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGChangeTurn"));
@@ -199,10 +225,14 @@ namespace Entrogic.UI.CardGame
                     if (clientModPlayer.CardGamePlayerLastHealth != clientModPlayer.CardGamePlayerHealth)
                     {
                         clientModPlayer.CardGameHealthAlpha = -2; // 这样就不用再搞Delay变量了
+                        DelayHealthPercentPlayer = 0f;
+                        LastRecordHealthPlayer = clientModPlayer.CardGamePlayerLastHealth;
                     }
                     if (clientModPlayer.CardGameNPCLastHealth != clientModPlayer.CardGameNPCHealth)
                     {
                         clientModPlayer.CardGameNPCHealthAlpha = -2; // 这样就不用再搞Delay变量了
+                        DelayHealthPercentNPC = 0f;
+                        LastRecordHealthNPC = clientModPlayer.CardGameNPCLastHealth;
                     }
                     clientModPlayer.CardGamePlayerLastHealth = clientModPlayer.CardGamePlayerHealth;
                     clientModPlayer.CardGameNPCLastHealth = clientModPlayer.CardGameNPCHealth;
@@ -268,7 +298,7 @@ namespace Entrogic.UI.CardGame
             TurnText = " ";
             Deathing = 0;
             DeathTimer = 0;
-
+            IsUseBiggerTexture = false;
         }
         private void PlayerWin()
         {
@@ -290,12 +320,21 @@ namespace Entrogic.UI.CardGame
             foreach (var bullet in clientModPlayer._bullets.ToArray())
             {
                 if (bullet.IsRemoved) continue;
-                if (bullet.Position.X + bullet.Size.X < -30f || bullet.Position.Y + bullet.Size.Y < -30f || 
-                    bullet.Position.X > PanelSize.X || bullet.Position.Y > PanelSize.Y) continue;
+                if (bullet.Position.X + bullet.Size.X < -108f || bullet.Position.Y + bullet.Size.Y < -62f ||
+                    bullet.Position.X > 432f || bullet.Position.Y > 316f) continue;
                 bullet.Draw(spriteBatch);
             }
             // 再Draw一个透明板子
-            spriteBatch.Draw(GetTexture("Entrogic/UI/CardGame/CardGamePanel_Front"), PanelPos, Color.White);
+            switch (IsUseBiggerTexture)
+            {
+                case false:
+                    spriteBatch.Draw(GetTexture("Entrogic/UI/CardGame/CardGamePanel_Front"), PanelPos, Color.White);
+                    break;
+                case true:
+                    spriteBatch.Draw(GetTexture("Entrogic/UI/CardGame/CardGamePanel_FrontBig"), PanelPos, Color.White);
+                    break;
+
+            }
             // 板子Draw完了再Draw槽，不然会被盖住
             foreach (var slot in HandCardSlots)
             {
@@ -331,7 +370,9 @@ namespace Entrogic.UI.CardGame
                 int maxhealth = Math.Max(1000, clientModPlayer.CardGamePlayerMaxHealth); // 防止除以0
                 float tpercentone = (float)(Surface_Player.Height - 4) / (float)maxhealth; // -4去掉上下的光边面积
                 // 这个值跑满了是(Surface_Player.Height - 4)
-                int tdrawHeight = (int)(tpercentone * clientModPlayer.CardGamePlayerHealth); 
+                int varhealth = LastRecordHealthPlayer - clientModPlayer.CardGamePlayerHealth;
+                DelayHealthPercentPlayer = Math.Min(DelayHealthPercentPlayer + 0.05f, 1f);
+                int tdrawHeight = (int)(tpercentone * (LastRecordHealthPlayer - (varhealth * DelayHealthPercentPlayer))); 
                 // 所以这里-2，X值纠正到跑满了是2，刚好是丢掉光边的顶端X值。Height+1把光边补上来，1px玩家不会在意的
                 Rectangle tPerRectangle = new Rectangle(0, Surface_Player.Height - 2 - tdrawHeight, Surface_Player.Width, tdrawHeight + 1);
                 Vector2 drawPos = PanelPos + drawPosition;
@@ -357,8 +398,10 @@ namespace Entrogic.UI.CardGame
                 // 计算出1所占的像素
                 maxhealth = Math.Max(1000, clientModPlayer.CardGameNPCMaxHealth); // 防止除以0
                 tpercentone = (float)(Surface_NPC.Height - 4) / (float)maxhealth; // -4去掉上下的光边面积
-                // 这个值跑满了是(Surface_Player.Height - 4)
-                tdrawHeight = (int)(tpercentone * clientModPlayer.CardGameNPCHealth);
+                // 这个值跑满了是(Surface_NPC.Height - 4)
+                varhealth = LastRecordHealthNPC - clientModPlayer.CardGameNPCHealth;
+                DelayHealthPercentNPC = Math.Min(DelayHealthPercentNPC + 0.05f, 1f);
+                tdrawHeight = (int)(tpercentone * (LastRecordHealthNPC - (varhealth * DelayHealthPercentNPC)));
                 // 所以这里-2，X值纠正到跑满了是2，刚好是丢掉光边的顶端X值。Height+1把光边补上来，1px玩家不会在意的
                 tPerRectangle = new Rectangle(0, Surface_NPC.Height - 2 - tdrawHeight, Surface_NPC.Width, tdrawHeight + 1);
                 drawPos = PanelPos + ImgPosition;

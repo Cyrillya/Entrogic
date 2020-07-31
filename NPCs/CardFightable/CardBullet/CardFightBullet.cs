@@ -21,7 +21,7 @@ namespace Entrogic.NPCs.CardFightable.CardBullet
         public byte SpriteDirection;
         protected float _rotation;
         protected Vector2 RectangleOffset;
-        public Rectangle Rectangle => new Rectangle((int)(Position.X + RectangleOffset.X), (int)(Position.Y + RectangleOffset.Y), (int)(Size.X + RectangleOffset.X), (int)(Size.Y + RectangleOffset.Y));
+        public Rectangle Rectangle => new Rectangle((int)(Position.X + RectangleOffset.X), (int)(Position.Y + RectangleOffset.Y), (int)Size.X, (int)Size.Y);
 
         public int Damage = 0;
         public Color Color = Color.White;

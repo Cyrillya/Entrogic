@@ -29,8 +29,8 @@ namespace Entrogic.UI.CardGame
             _texture = Entrogic.ModTexturesTable["CardFightPlayer_Icon_Default"];
             LifeSpan = 0.2f;
             IsFriendly = true;
-            RectangleOffset = new Vector2(_texture.Width, _texture.Height) / 2f;
-            Size = Vector2.Zero;
+            RectangleOffset = new Vector2((int)(_texture.Width / 2f - 1f), (int)(_texture.Height / 2f - 1f));
+            Size = Vector2.One * 2f;
         }
         public override void Update(GameTime gameTime, Player attackPlayer, NPC attackNPC)
         {

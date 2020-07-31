@@ -27,11 +27,7 @@ namespace Entrogic.NPCs.CardFightable
         public virtual void SetupContents(ref string ImgPath, ref Vector2 ImgPosition) { }
         public virtual void StartAttacking()
         {
-            Player clientPlayer = Main.LocalPlayer;
-            EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(clientPlayer);
-            clientModPlayer.CardGamePlayerHealth = clientModPlayer.CardGamePlayerMaxHealth;
-            clientModPlayer.CardGamePlayerLastHealth = clientModPlayer.CardGamePlayerHealth;
-            CardGameHealth = CardGameHealthMax;
+            Entrogic.Instance.CardGameUI.StartGame();
         }
         public virtual void OnAttacking() 
         {

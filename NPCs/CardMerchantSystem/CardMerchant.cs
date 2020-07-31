@@ -17,7 +17,7 @@ using static Entrogic.Entrogic;
 using Entrogic.Items.Weapons.Card.Organisms;
 using Entrogic.Items.Weapons.Card.Elements;
 
-namespace Entrogic.NPCs
+namespace Entrogic.NPCs.CardMerchantSystem
 {
     [AutoloadHead]
     public class CardMerchant : ModNPC
@@ -413,14 +413,15 @@ namespace Entrogic.NPCs
                 if (player.active && player.talkNPC == npc.whoAmI)
                 {
                     CardMerchantQuest questSystem = player.GetModPlayer<CardMerchantQuest>();
-                    EndMission:
-                    if (questSystem.quest >= CardMerchantQuest.Quests.Count) // 如果完成了所有任务
+                EndMission:
+                    Main.NewText($"Count:{Entrogic.CardQuests.Count}, quest:{questSystem.quest}");
+                    if (questSystem.quest >= Entrogic.CardQuests.Count) // 如果完成了所有任务
                     {
-                        questSystem.quest = Math.Min(questSystem.quest, CardMerchantQuest.Quests.Count);
+                        questSystem.quest = Math.Min(questSystem.quest, Entrogic.CardQuests.Count);
                         int NewQuest = questSystem.ChooseNewQuest();
-                        if (NewQuest < CardMerchantQuest.Quests.Count)
+                        if (NewQuest < Entrogic.CardQuests.Count)
                         {
-                            Main.npcChatText = CardMerchantQuest.Quests[NewQuest].ToString();
+                            Main.npcChatText = Entrogic.CardQuests[NewQuest].ToString();
                             questSystem.quest = NewQuest;
                             return;
                         }
@@ -439,15 +440,15 @@ namespace Entrogic.NPCs
                     }
                     else
                     {
-                        if (questSystem.quest == -1) // 如果今日布置任务/已完成任务
+                        if (questSystem.quest == -1) // 如果未布置任务/已完成任务
                         {
                             int NewQuest = questSystem.ChooseNewQuest();
-                            if (NewQuest >= CardMerchantQuest.Quests.Count)
+                            if (NewQuest >= Entrogic.CardQuests.Count)
                             {
                                 goto EndMission;
                             }
-                            Main.npcChatText = CardMerchantQuest.Quests[NewQuest].ToString();
-                            Main.npcChatCornerItem = CardMerchantQuest.Quests[NewQuest].CornerItem;
+                            Main.npcChatText = Entrogic.CardQuests[NewQuest].ToString();
+                            Main.npcChatCornerItem = Entrogic.CardQuests[NewQuest].CornerItem;
                             questSystem.quest = NewQuest;
                             break;
                         }
@@ -458,19 +459,15 @@ namespace Entrogic.NPCs
                             Main.npcChatCornerItem = ItemID.Heart;
                             Main.PlaySound(SoundID.MenuTick, -1, -1, 1, 1f, 0f);
                             questSystem.SpawnReward(npc);
-                            questSystem.Complete += "_" + CardMerchantQuest.Quests[questSystem.quest].ID;
+                            questSystem.Complete += "_" + Entrogic.CardQuests[questSystem.quest].ID;
                             if (Main.netMode == NetmodeID.Server)
                             {
-                                var packet = mod.GetPacket();
-                                packet.Write((byte)EntrogicModMessageType.SendCompletedCardMerchantMissionRequest);
-                                packet.Write((byte)player.whoAmI);
-                                packet.Write(questSystem.Complete);
-                                packet.Send();
+                                MessageHelper.SendCardMission((byte)player.whoAmI, questSystem.Complete);
                             }
                             questSystem.quest = -1;
                             break;
                         }
-                        if (questSystem.quest == -1 || questSystem.quest >= CardMerchantQuest.Quests.Count)
+                        if (questSystem.quest == -1 || questSystem.quest >= Entrogic.CardQuests.Count)
                         {
                             goto EndMission;
                         }
@@ -484,27 +481,26 @@ namespace Entrogic.NPCs
     public class CardMerchantQuest : ModPlayer
     {
         public string Complete = "";
-        public static List<Quest> Quests = new List<Quest>();
         public int quest = -1;
         private EntrogicPlayer entrogicPlayer => player.GetModPlayer<EntrogicPlayer>();
         public Quest GetCurrentQuest() // 获取任务
         {
-            return Quests[quest];
+            return Entrogic.CardQuests[quest];
         }
         public bool CheckQuest() // 任务未完成即为true，已完成或未布置为false
         {
-            if (quest == -1 || quest >= Quests.Count)
+            if (quest == -1 || quest >= Entrogic.CardQuests.Count)
             {
                 return false;
             }
-            Quest q = Quests[quest];
+            Quest q = Entrogic.CardQuests[quest];
             return q.CheckCompletion(Main.player[Main.myPlayer]);
         }
         public int ChooseNewQuest()//选择任务
         {
             string[] s = Complete.Split('_');
             Dictionary<string, bool> comp = new Dictionary<string, bool>();
-            foreach (Quest q in Quests) // 先遍历一遍任务列表，添加字典中的所有键值，bool初始值为false（未完成）
+            foreach (Quest q in Entrogic.CardQuests) // 先遍历一遍任务列表，添加字典中的所有键值，bool初始值为false（未完成）
             {
                 comp.Add(q.ID, false);
             }
@@ -512,49 +508,21 @@ namespace Entrogic.NPCs
             {
                 comp[s[i]] = true;
             }
-            foreach (Quest q in Quests)
+            foreach (Quest q in Entrogic.CardQuests)
             {
                 if (!q.CheckCompletion(player) || !comp[q.ID]) // 这里就不会找不到键值了
                 {
-                    quest = Quests.IndexOf(q);
+                    quest = Entrogic.CardQuests.IndexOf(q);
                     return quest;
                 }
             }
-            quest = Quests.Count;
+            quest = Entrogic.CardQuests.Count;
             return quest;
         }
         public override void PostUpdate()
         {
             SendQuest(-1);
             //Complete = "";
-        }
-        public override void Initialize()
-        {
-            Quests.Clear();
-        }
-        public override void OnEnterWorld(Player player)
-        {
-            // 下面这行参数从左到右分别是：任务文本, 相关Boolean, 感谢词
-            Quest quest = new Quest(
-                "0",
-                "（再次点击“任务”按钮领取第一个任务！）",
-                true,
-                "（再次点击“任务”按钮领取第一个任务！）");
-            quest.RewardMoney.Gold = 30;
-            Quests.Add(quest);
-
-            quest = new Quest(
-                "NoviceCard",
-                "...你看上去十分迷惑，当然，你是第一次见到这些“新事物”，疑惑是难免的，现在，我将一步一步引导你深入这个世界。“任务”是" +
-                "方式，完成“任务”我会给你一些奖赏，帮助你更好地完成理想中的大业。现在，请你购买一份新手卡包，阅读卡牌手册，尝试尝试“新事物”吧" +
-                "\n\n（装备卡牌，并试着使用一次！）",
-                entrogicPlayer.CardUseCount >= 1,
-                $"你出色地完成了任务！现在让我送你一张卡牌[i:{ItemType<EnergyRecovery>()}]，这是一张出色的卡牌，相信他会发挥伟大的作用的。");
-            quest.CornerItem = ItemType<ArcaneMissle>();
-            quest.Reward.Add(ItemType<EnergyRecovery>());
-            quest.RewardStack.Add(1);
-            Quests.Add(quest);
-            base.OnEnterWorld(player);
         }
         public void SendQuest(int remoteClient)
         {
@@ -582,14 +550,7 @@ namespace Entrogic.NPCs
         public void SpawnReward(NPC npc)
         {
             Main.PlaySound(SoundID.Chat, -1, -1, 1, 1f, 0f);
-            for (int i = 0; i < GetCurrentQuest().Reward.Count; i++)
-            {
-                int number = Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, GetCurrentQuest().Reward[i], GetCurrentQuest().RewardStack[i], false, 0, false, false);
-                if (Main.netMode == NetmodeID.MultiplayerClient && number >= 0)
-                {
-                    NetMessage.SendData(MessageID.SyncItem, -1, -1, null, number, 1f, 0f, 0f, 0, 0, 0);
-                }
-            }
+            GetCurrentQuest().SpawnReward(player, npc);
             if (GetCurrentQuest().RewardMoney.Platinum > 0)
             {
                 int number = Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.PlatinumCoin, GetCurrentQuest().RewardMoney.Platinum);
@@ -623,37 +584,6 @@ namespace Entrogic.NPCs
                 }
             }
         }
-        public override void clientClone(ModPlayer clientClone)
-        {
-            CardMerchantQuest clone = clientClone as CardMerchantQuest;
-            // Here we would make a backup clone of values that are only correct on the local players Player instance.
-            // Some examples would be RPG stats from a GUI, Hotkey states, and Extra Item Slots
-            clone.Complete = Complete;
-        }
-
-        public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
-        {
-            ModPacket packet = mod.GetPacket();
-            packet.Write((byte)EntrogicModMessageType.MerchantPlayerSyncPlayer);
-            packet.Write((byte)player.whoAmI);
-            packet.Write(Complete); // While we sync nonStopParty in SendClientChanges, we still need to send it here as well so newly joining players will receive the correct value.
-            packet.Send(toWho, fromWho);
-        }
-
-        public override void SendClientChanges(ModPlayer clientPlayer)
-        {
-            // Here we would sync something like an RPG stat whenever the player changes it.
-            CardMerchantQuest clone = clientPlayer as CardMerchantQuest;
-            if (clone.Complete != Complete)
-            {
-                // Send a Mod Packet with the changes.
-                var packet = mod.GetPacket();
-                packet.Write((byte)EntrogicModMessageType.SendCompletedCardMerchantMissionRequest);
-                packet.Write((byte)player.whoAmI);
-                packet.Write(Complete);
-                packet.Send();
-            }
-        }
         public override TagCompound Save()
         {
             TagCompound tagCompound = new TagCompound();
@@ -666,45 +596,32 @@ namespace Entrogic.NPCs
             //quest = tag.GetInt("quest");
             Complete = tag.GetString("Complete");
         }
-        public override void LoadLegacy(BinaryReader reader)
-        {
-            quest = reader.ReadInt32();
-        }
     }
-    public class Quest
+    public abstract class Quest
     {
         internal int CornerItem;
-        public Func<bool> IsAvailable;
         public string ID;
-        public string Name;
-        public List<int> Reward = new List<int>();
-        public List<int> RewardStack = new List<int>();
-        public Money RewardMoney = new Money(0, 0, 0, 0);
-        public Action<NPC> SpawnReward;
+        public string MissionText;
         public string ThanksMessage;
-        public bool CheckBoolean;
-        public Quest(string id, string name, bool checkBoolean, string specialThanks = "真谢谢你！")
+        public Money RewardMoney = new Money(0, 0, 0, 0);
+        public Quest()
         {
-            ID = id;
-            Name = name;
-            CheckBoolean = checkBoolean;
-            ThanksMessage = specialThanks;
-            SpawnReward = delegate (NPC npc)
-            {
-            };
-            IsAvailable = () => true;
         }
-        public bool CheckCompletion(Player player)
+        public virtual bool CheckCompletion(Player player)
         {
-            return CheckBoolean;
+            return true;
         }
         public override string ToString()
         {
-            return Language.GetTextValue(Name, Main.LocalPlayer.name);
+            return Language.GetTextValue(MissionText, Main.LocalPlayer.name);
         }
-        public string SayThanks()
+        public virtual string SayThanks()
         {
             return Language.GetTextValue(ThanksMessage, Main.LocalPlayer.name);
+        }
+        public virtual void SpawnReward(Player player, NPC npc)
+        {
+
         }
     }
 }

@@ -57,6 +57,7 @@ ItemName.BreastplateofContamination=Breastplate of Contamination
 
 # Cards
 ItemName.ArcaneMissle=Arcane Missle
+ItemName.Fireball=Fireball
 ItemName.BetrayerofDarkFlame=Dark Flame
 ItemName.Dragoul=Dragoul
 ItemName.FlameofPineapple=Flame of Pineapple
@@ -315,6 +316,9 @@ ItemTooltip.AngryofCorruptionBanner={$CommonItemTooltip.BannerBonus}{$Mods.Entro
 ItemTooltip.CrimsonSpiritBanner={$CommonItemTooltip.BannerBonus}{$Mods.Entrogic.NPCName.CrimsonSpirit}
 
 ItemName.ArcaneMissle_Electromagnetism={$Mods.Entrogic.ItemName.ArcaneMissle}
+ItemName.Fireball_Electromagnetism={$Mods.Entrogic.ItemName.Fireball}
+ItemName.Fireball_StrongNuclear={$Mods.Entrogic.ItemName.Fireball}
+ItemName.Fireball_StrongNuclear={$Mods.Entrogic.ItemName.Fireball}
 ItemName.BetrayerofDarkFlame_Strong={$Mods.Entrogic.ItemName.BetrayerofDarkFlame}
 ItemName.TheWalkingDead_Strong={$Mods.Entrogic.ItemName.TheWalkingDead}
 ItemName.UndeadGrudge_Electromagnetism={$Mods.Entrogic.ItemName.UndeadGrudge}

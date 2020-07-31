@@ -33,6 +33,7 @@ using Entrogic.Projectiles.Miscellaneous;
 using Entrogic.NPCs.Enemies;
 using Microsoft.Xna.Framework.Input;
 using Entrogic.NPCs.CardFightable.CardBullet;
+using Entrogic.NPCs.CardMerchantSystem;
 //using Entrogic.UI;
 
 namespace Entrogic

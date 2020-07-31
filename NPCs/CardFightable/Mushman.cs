@@ -169,34 +169,26 @@ namespace Entrogic.NPCs.CardFightable
             if (Main.dedServ) return;
             Player clienPlayer = Main.LocalPlayer;
             EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(clienPlayer);
-            clientModPlayer.CardGameActive = true;
             clientModPlayer.CardGameNPCIndex = npc.whoAmI;
-            clientModPlayer.CardGaming = true;
-            Main.npcChatText = "";
-            CardGaming = true;
             StartAttacking();
         }
 
         public override void StartAttacking()
         {
             CardGameHealthMax = 1000;
-
             base.StartAttacking();
-
-            Player clientPlayer = Main.LocalPlayer;
-            EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(clientPlayer);
-            clientModPlayer.CardGameNPCLastHealth = CardGameHealth;
         }
 
         public override void OnAttacking()
         {
             Player clientPlayer = Main.LocalPlayer;
             EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(clientPlayer);
-            if (RoundDuration >= 1.2f && Main.rand.NextBool(2))
+            if (RoundDuration >= 3.2f && Main.rand.NextBool(3))
             {
                 CardFightBullet bullet = new MushroomBullet()
                 {
-                    Position = new Vector2(Main.rand.Next((int)PlaygroundSize.X), Main.rand.Next((int)PlaygroundSize.Y)),
+                    Velocity = new Vector2(0f, Main.rand.NextFloat(1f, 3f)),
+                    Position = new Vector2(Main.rand.Next((int)PlaygroundSize.X), -50f),
                     UIPosition = this.PanelPosition
                 };
                 clientModPlayer._bullets.Add(bullet);
@@ -207,9 +199,10 @@ namespace Entrogic.NPCs.CardFightable
 
         public override void PreStartRound(bool playerTurn)
         {
+            Entrogic.Instance.CardGameUI.IsUseBiggerTexture = false;
             if (!playerTurn)
             {
-                RoundDuration = 3f;
+                RoundDuration = 7.5f;
             }
         }
 

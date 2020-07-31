@@ -128,7 +128,7 @@ namespace Entrogic.NPCs.Enemies
             Player player = spawnInfo.player;
             if (ModHelper.NormalSpawn(spawnInfo) && player.ZoneDirtLayerHeight)
             {
-                return 0.05f;
+                return 0.1f;
             }
             return base.SpawnChance(spawnInfo);
         }

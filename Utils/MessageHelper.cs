@@ -26,5 +26,19 @@ namespace Entrogic
             packet.Write(isOpen);
             packet.Send(toClient, ignoreClient);
         }
+        /// <summary>
+        /// 发送卡牌任务完成的包
+        /// </summary>
+        /// <param name="playernum">第一个传入，表示发送/接收者的player.whoAmI</param>
+        /// <param name="Complete">第二个传入，表示发送/接收者当前完成的任务的字符串</param>
+        public static void SendCardMission(byte playernum, string Complete, int toClient = -1, int ignoreClient = -1)
+        {
+            if (Main.netMode == NetmodeID.SinglePlayer) return;
+            var packet = Instance.GetPacket();
+            packet.Write((byte)EntrogicModMessageType.SendCompletedCardMerchantMissionRequest);
+            packet.Write((byte)playernum);
+            packet.Write(Complete);
+            packet.Send(toClient, ignoreClient);
+        }
     }
 }

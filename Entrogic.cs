@@ -44,6 +44,7 @@ using Terraria.GameContent.Events;
 using Terraria.GameContent;
 using Terraria.GameContent.Tile_Entities;
 using Entrogic.NPCs.CardFightable.CardBullet;
+using Entrogic.NPCs.CardMerchantSystem;
 
 namespace Entrogic
 {
@@ -107,6 +108,7 @@ namespace Entrogic
         internal static Dictionary<string, Texture2D> ModTexturesTable = new Dictionary<string, Texture2D>();
         [Obsolete]
         internal static Dictionary<string, CardFightBullet> cfBullets = new Dictionary<string, CardFightBullet>();
+        public static List<Quest> CardQuests = new List<Quest>();
         private int foolTexts = 0;
         internal static bool Unloading = false;
         internal static readonly string ModFolder;
@@ -280,6 +282,7 @@ namespace Entrogic
             if (!Main.dedServ)
             {
                 ResourceLoader.LoadAllTextures();
+                ResourceLoader.LoadAllCardMissions();
 
                 AddEquipTexture(new PollutionElementalMask1(), null, EquipType.Head, "PollutionElementalMask1", "Entrogic/Items/PollutElement/PollutionElementalMask1_Head");
                 AddEquipTexture(new PollutionElementalMask2(), null, EquipType.Head, "PollutionElementalMask2", "Entrogic/Items/PollutElement/PollutionElementalMask2_Head");
@@ -347,7 +350,7 @@ namespace Entrogic
                 SinsBarInterface = new UserInterface();
                 SinsBarInterface.SetState(Sinsbar);*/
             }
-            Buildings.Cache("Buildings/CardShrine0.ebuiding", "Buildings/CardShrine1.ebuiding");
+            Buildings.Cache("Buildings/CardShrine0.ebuilding", "Buildings/CardShrine1.ebuilding");
             #region Armor Translates
             Translation.RegisterTranslation("mspeed", GameCulture.Chinese, "移动速度", " movement speed");
             Translation.RegisterTranslation("and", GameCulture.Chinese, "与", " and");
@@ -426,7 +429,6 @@ namespace Entrogic
                 Main.OnPostDraw -= Main_OnPostDraw;
                 Main.OnPreDraw -= Main_OnPreDraw;
                 ModTexturesTable.Clear();
-                cfBullets.Clear();
                 PassHotkey = null;
                 WashHotkey = null;
                 HookCursorHotKey = null;
@@ -619,7 +621,8 @@ namespace Entrogic
         }
         public override void UpdateUI(GameTime gameTime)
         {
-            EntrogicPlayer ePlayer = Main.LocalPlayer.GetModPlayer<EntrogicPlayer>();
+            Player player = Main.LocalPlayer;
+            EntrogicPlayer ePlayer = player.GetModPlayer<EntrogicPlayer>();
             if (BookUIE != null && BookUI.IsActive)
                 BookUIE.Update(gameTime);
             //if (BookPageUIE != null && Main.LocalPlayer.GetModPlayer<EntrogicPlayer>().ActiveBook)
@@ -720,11 +723,17 @@ namespace Entrogic
             {
                 return;
             }
+            EntrogicPlayer modPlayer = EntrogicPlayer.ModPlayer(player);
             bool magicStorm = EntrogicWorld.magicStorm;
             if (magicStorm && player.ZoneOverworldHeight)
             {
                 music = GetSoundSlot(SoundType.Music, "Sounds/Music/MagicStorm");
                 priority = MusicPriority.Environment;
+            }
+            if (modPlayer.CardGaming)
+            {
+                music = GetSoundSlot(SoundType.Music, "Sounds/Music/Toby Fox - Rude Buster");
+                priority = MusicPriority.BossHigh;
             }
         }
         public override void HandlePacket(BinaryReader reader, int whoAmI)
@@ -794,26 +803,15 @@ namespace Entrogic
                         }
                         break;
                     }
-                case EntrogicModMessageType.MerchantPlayerSyncPlayer:
-                    {
-                        int playernumber = reader.ReadByte();
-                        CardMerchantQuest cardMerchantQuest = Main.player[playernumber].GetModPlayer<CardMerchantQuest>();
-                        cardMerchantQuest.Complete = reader.ReadString();
-                        break;
-                    }
                 case EntrogicModMessageType.SendCompletedCardMerchantMissionRequest:
                     {
-                        int playernumber = reader.ReadByte();
+                        byte playernumber = reader.ReadByte();
                         CardMerchantQuest cardMerchantQuest = Main.player[playernumber].GetModPlayer<CardMerchantQuest>();
                         cardMerchantQuest.Complete = reader.ReadString();
                         // Unlike SyncPlayer, here we have to relay/forward these changes to all other connected clients
                         if (Main.netMode == NetmodeID.Server)
                         {
-                            var packet = GetPacket();
-                            packet.Write((byte)EntrogicModMessageType.SendCompletedCardMerchantMissionRequest);
-                            packet.Write(playernumber);
-                            packet.Write(cardMerchantQuest.Complete);
-                            packet.Send(-1, playernumber);
+                            MessageHelper.SendCardMission(playernumber, cardMerchantQuest.Complete, -1, playernumber);
                         }
                         break;
                     }
@@ -829,7 +827,6 @@ namespace Entrogic
             NPCSpawnOnPlayerAction,
             SyncBookBubbleInfo,
             SyncCardGamingInfos,
-            MerchantPlayerSyncPlayer,
             SendCompletedCardMerchantMissionRequest
         }
         public static void DebugModeNewText(string message, bool debug = false)

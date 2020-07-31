@@ -271,11 +271,8 @@ namespace Entrogic
                                 Chest c = ModHelper.FindAndCreateChest(r, TileType<Tiles.ExplodeGraniteChest>());
                                 int index = 0;
                                 c.AddItem(ModHelper.GetRandomCard(Main.LocalPlayer, WorldGen.genRand, CardRareID.GrandUnified, -1, false).type, 1, ref index);
-                                for (int i = 1; i <= WorldGen.genRand.Next(1, 2 + 1); i++)
-                                {
-                                    Item item = ModHelper.GetRandomCard(Main.LocalPlayer, WorldGen.genRand);
-                                    c.AddItem(item.type, Math.Max(WorldGen.genRand.Next(item.maxStack) + 1 - 2, 1), ref index);
-                                }
+                                Item item = ModHelper.GetRandomCard(Main.LocalPlayer, WorldGen.genRand);
+                                c.AddItem(item.type, Math.Max(WorldGen.genRand.Next(item.maxStack) + 1 - 2, 1), ref index);
                                 c.AddNormalChestItem(psw.Y, index);
                             }
                         }

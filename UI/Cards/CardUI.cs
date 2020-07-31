@@ -133,6 +133,7 @@ namespace Entrogic.UI.Cards
         {
             Player player = Main.LocalPlayer;
             EntrogicPlayer entrogicPlayer = EntrogicPlayer.ModPlayer(player);
+
             bool Active = false;
             if (player.inventory[player.selectedItem] != null && player.inventory[player.selectedItem].type != ItemID.None)
                 if (player.inventory[player.selectedItem].GetGlobalItem<EntrogicItem>().glove)
@@ -140,11 +141,8 @@ namespace Entrogic.UI.Cards
             if (Main.mouseItem != null && Main.mouseItem.type != ItemID.None)
                 if (Main.mouseItem.GetGlobalItem<EntrogicItem>().glove)
                     Active = true;
-            if (!Active)
-                return;
+            if (!Active) return;
 
-            if (Entrogic.PassHotkey.JustPressed) CardPass();
-            if (Entrogic.WashHotkey.JustPressed) CardWash();
             #region 实时调整位置
             statPoint = new Vector2(Main.screenWidth * 0.5f, Main.screenHeight * 0.8f);
             Vector2 grave = new Vector2(48f, 30f);
@@ -219,6 +217,17 @@ namespace Entrogic.UI.Cards
 
             Player player = Main.LocalPlayer;
             EntrogicPlayer ePlayer = player.GetModPlayer<EntrogicPlayer>();
+            bool Active = false;
+            if (player.inventory[player.selectedItem] != null && player.inventory[player.selectedItem].type != ItemID.None)
+                if (player.inventory[player.selectedItem].GetGlobalItem<EntrogicItem>().glove)
+                    Active = true;
+            if (Main.mouseItem != null && Main.mouseItem.type != ItemID.None)
+                if (Main.mouseItem.GetGlobalItem<EntrogicItem>().glove)
+                    Active = true;
+            if (!Active) return;
+
+            if (Entrogic.PassHotkey.JustPressed) CardPass();
+            if (Entrogic.WashHotkey.JustPressed) CardWash();
             Libraries.Text = ePlayer.LibNum.ToString();
             GraveyardDelay.maxValue = Main.LocalPlayer.GetModPlayer<EntrogicPlayer>().CardWashStatDelay;
             GraveyardDelay.delayValue = ePlayer.CardWashDelay;
@@ -262,6 +271,14 @@ namespace Entrogic.UI.Cards
             EntrogicPlayer player = Main.LocalPlayer.GetModPlayer<EntrogicPlayer>();
             if (player.CardWashDelay > 0)
                 return;
+            bool Active = false;
+            if (Main.LocalPlayer.inventory[Main.LocalPlayer.selectedItem] != null && Main.LocalPlayer.inventory[Main.LocalPlayer.selectedItem].type != ItemID.None)
+                if (Main.LocalPlayer.inventory[Main.LocalPlayer.selectedItem].GetGlobalItem<EntrogicItem>().glove)
+                    Active = true;
+            if (Main.mouseItem != null && Main.mouseItem.type != ItemID.None)
+                if (Main.mouseItem.GetGlobalItem<EntrogicItem>().glove)
+                    Active = true;
+            if (!Active) return;
             int cardGot = 0;
             Main.PlaySound(SoundID.MenuOpen);
             bool ButWeStillHaveCards = false;
@@ -290,7 +307,6 @@ namespace Entrogic.UI.Cards
                 player.CardReadyType[i] = 0;
                 player.CardReadyCost[i] = 0;
             }
-            player.NewRecentCardMessage(Language.GetTextValue("Mods.Entrogic.NormalDrawCard", cardGot));
             if (player.IsDelayCycle_StaticWatch)
             {
                 int manaGot = 0;
@@ -314,7 +330,6 @@ namespace Entrogic.UI.Cards
                     manaGot += player.ManaMax - player.ManaLeft;
                     player.ManaLeft = player.ManaMax;
                 }
-                player.NewRecentCardMessage(Language.GetTextValue("Mods.Entrogic.StaticWatchDrawCard", cardGot, manaGot));
             }
             player.CardWashDelay = player.CardWashStatDelay;
         }
@@ -323,6 +338,14 @@ namespace Entrogic.UI.Cards
             EntrogicPlayer ePlayer = Main.LocalPlayer.GetModPlayer<EntrogicPlayer>();
             if (ePlayer.CardPassDelay > 0)
                 return;
+            bool Active = false;
+            if (Main.LocalPlayer.inventory[Main.LocalPlayer.selectedItem] != null && Main.LocalPlayer.inventory[Main.LocalPlayer.selectedItem].type != ItemID.None)
+                if (Main.LocalPlayer.inventory[Main.LocalPlayer.selectedItem].GetGlobalItem<EntrogicItem>().glove)
+                    Active = true;
+            if (Main.mouseItem != null && Main.mouseItem.type != ItemID.None)
+                if (Main.mouseItem.GetGlobalItem<EntrogicItem>().glove)
+                    Active = true;
+            if (!Active) return;
             int cardDrawed = 0;
             int manaRegrew = 0;
             Main.PlaySound(SoundID.MenuOpen);
@@ -478,6 +501,14 @@ namespace Entrogic.UI.Cards
         }
         internal void UseThisCard()
         {
+            bool Active = false;
+            if (Main.LocalPlayer.inventory[Main.LocalPlayer.selectedItem] != null && Main.LocalPlayer.inventory[Main.LocalPlayer.selectedItem].type != ItemID.None)
+                if (Main.LocalPlayer.inventory[Main.LocalPlayer.selectedItem].GetGlobalItem<EntrogicItem>().glove)
+                    Active = true;
+            if (Main.mouseItem != null && Main.mouseItem.type != ItemID.None)
+                if (Main.mouseItem.GetGlobalItem<EntrogicItem>().glove)
+                    Active = true;
+            if (!Active) return;
             Player player = Main.LocalPlayer;
             EntrogicPlayer ePlayer = player.GetModPlayer<EntrogicPlayer>();
             CardBuffPlayer cPlayer = player.GetModPlayer<CardBuffPlayer>();
@@ -522,7 +553,6 @@ namespace Entrogic.UI.Cards
                 cPlayer.attackCardRemainingTimesMax = card.attackCardRemainingTimes;
                 cPlayer.card = item;
                 cPlayer.mCard = card;
-                ePlayer.NewRecentCardMessage($"你使用了{card.DisplayName}作为攻击手段！", true);
             End:
                 ePlayer.CardUseCount++;
                 if (item.buffType != -1)
@@ -698,9 +728,6 @@ namespace Entrogic.UI.Cards
                     ePlayer.CardReadyCost[elementCardNumber[chooseCard]] = 0;
                     return false;
                 }
-                Item item1 = new Item();
-                item1.SetDefaults(ItemType<InnerRage>());
-                ePlayer.NewRecentCardMessage(Language.GetTextValue("Mods.Entrogic.CardBurnAndDrawCard", item1.Name, 1, Language.GetTextValue("Mods.Entrogic.All"), ""), true);
                 return true;
             }
             return true;
