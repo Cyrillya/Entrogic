@@ -27,7 +27,7 @@
 //            item.rare = 1;              
 //            item.UseSound = SoundID.Item1;      
 //            item.autoReuse = false;
-//            item.shoot = mod.ProjectileType("红玉小刀");
+//            item.shoot = ModContent.ProjectileType<红玉小刀>();
 //            item.shootSpeed = 14.5f;
 //            item.magic = true;
 //            item.noUseGraphic = true;
@@ -45,7 +45,7 @@
 //            ModRecipe recipe = new ModRecipe(mod);
 //            recipe.AddIngredient(ItemID.Ruby, 10);
 //            recipe.AddRecipeGroup("IronBar", 3);
-//            recipe.AddIngredient(mod.ItemType("SoulOfPure"), 6);
+//            recipe.AddIngredient(ModContent.ItemType<SoulOfPure>(), 6);
 //            recipe.AddTile(TileID.Anvils);
 //            recipe.SetResult(this);
 //            recipe.AddRecipe();

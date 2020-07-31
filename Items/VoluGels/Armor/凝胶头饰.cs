@@ -36,7 +36,7 @@ namespace Entrogic.Items.VoluGels.Armor
             recipe.AddIngredient(ItemType<CastIronBar>(), 10);
             recipe.AddIngredient(ItemType<GelOfLife>(), 3);
             recipe.SetResult(this);
-            recipe.AddTile(TileType<魔力导流台>());
+            recipe.AddTile(TileType<MagicDiversionPlatformTile>());
             recipe.AddRecipe();
         }
     }

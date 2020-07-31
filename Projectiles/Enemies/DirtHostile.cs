@@ -30,7 +30,7 @@ namespace Entrogic.Projectiles.Enemies
         }
         public override void Kill(int timeLeft)
         {
-            Main.PlaySound(0, (int)projectile.position.X, (int)projectile.position.Y);
+            Main.PlaySound(SoundID.Dig, (int)projectile.position.X, (int)projectile.position.Y);
             for (int num590 = 0; num590 < 5; num590++)
             {
                 Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 0);
@@ -62,14 +62,14 @@ namespace Entrogic.Projectiles.Enemies
                         if (Main.tile[num833, num834 + 1].halfBrick() || Main.tile[num833, num834 + 1].slope() != 0)
                         {
                             WorldGen.SlopeTile(num833, num834 + 1);
-                            if (Main.netMode == 2)
+                            if (Main.netMode == NetmodeID.Server)
                             {
-                                NetMessage.SendData(17, -1, -1, null, 14, num833, num834 + 1);
+                                NetMessage.SendData(MessageID.TileChange, -1, -1, null, 14, num833, num834 + 1);
                             }
                         }
-                        if (Main.netMode != 0)
+                        if (Main.netMode != NetmodeID.SinglePlayer)
                         {
-                            NetMessage.SendData(17, -1, -1, null, 1, num833, num834, num835);
+                            NetMessage.SendData(MessageID.TileChange, -1, -1, null, 1, num833, num834, num835);
                         }
                     }
                     else if (num836 > 0)
@@ -81,9 +81,9 @@ namespace Entrogic.Projectiles.Enemies
                 {
                     num832 = Item.NewItem((int)projectile.position.X, (int)projectile.position.Y, projectile.width, projectile.height, num836);
                 }
-                if (Main.netMode == 1 && num832 >= 0)
+                if (Main.netMode == NetmodeID.MultiplayerClient && num832 >= 0)
                 {
-                    NetMessage.SendData(21, -1, -1, null, num832, 1f);
+                    NetMessage.SendData(MessageID.SyncItem, -1, -1, null, num832, 1f);
                 }
             }
         }

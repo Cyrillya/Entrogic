@@ -2,6 +2,7 @@
 using Terraria.Localization;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
+using Terraria.ID;
 
 namespace Entrogic.NPCs.Banners
 {
@@ -16,11 +17,11 @@ namespace Entrogic.NPCs.Banners
             item.autoReuse = true;
             item.useAnimation = 15;
             item.useTime = 10;
-            item.useStyle = 1;
+            item.useStyle = ItemUseStyleID.SwingThrow;
             item.consumable = true;
-            item.rare = 1;
+            item.rare = ItemRarityID.Blue;
             item.value = Item.sellPrice(0, 0, 10, 0);
-            item.createTile = mod.TileType("MonsterBanner");
+            item.createTile = TileType<MonsterBanner>();
             item.placeStyle = 2;
         }
     }

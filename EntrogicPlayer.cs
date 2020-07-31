@@ -27,8 +27,13 @@ using Entrogic.NPCs.Boss.AntaGolem;
 using System.Text;
 using System.Diagnostics;
 using Terraria.Graphics.Effects;
-using System.Windows.Forms;
 using Entrogic.NPCs;
+using Entrogic.Buffs.Enemies;
+using Entrogic.Projectiles.Miscellaneous;
+using Entrogic.NPCs.Enemies;
+using Microsoft.Xna.Framework.Input;
+using Entrogic.NPCs.CardFightable.CardBullet;
+using Entrogic.NPCs.CardMerchantSystem;
 //using Entrogic.UI;
 
 namespace Entrogic
@@ -37,6 +42,9 @@ namespace Entrogic
     {
         internal string PlayerFolder => Main.PlayerPath + "/" + player.name + "/sysfile.ent/";
         internal string ServerPlayerFolder => Main.PlayerPath + "/" + player.name + "/sysfile.ent/";
+
+        private KeyboardState _currentKey;
+        private KeyboardState _previousKey;
 
         internal int PickPowerHand = 0;
         internal bool ProjectieHasArmorPenetration = false;
@@ -90,14 +98,36 @@ namespace Entrogic
         public int CardPassStatDelay = 600;
         public int CardWashDelay = 0;
         public int CardWashStatDelay = 1150;
-        public bool IsActiveCard = false;
         public string CardRecentEvent = "No recent event";
         public string CardRecentEventAdd = "";
         public int CardRecentEventAlpha = 255;
         public int CardUseCount;
 
-        internal int PageNum = 1;
-        internal bool IsActiveBook = false;
+        internal int[] CardGameType = new int[3];
+        internal bool CardGameActive;
+        internal bool CardGaming;
+        internal float CardGameHealthAlpha;
+        internal float CardGameNPCHealthAlpha;
+        internal int CardGameNPCIndex = -1;
+        internal int CardGamePlayerMaxHealth = 1000;
+        internal int CardGamePlayerHealth;
+        internal int CardGamePlayerLastHealth;
+        internal int CardGameNPCMaxHealth;
+        internal int CardGameNPCHealth;
+        internal int CardGameNPCLastHealth;
+        internal bool CardGamePlayerTurn;
+        internal List<CardFightBullet> _bullets = new List<CardFightBullet>(); // 用List存储
+
+        internal bool IsBookActive;
+        internal bool IsClosingBook;
+        internal bool UseBookBubble;
+        internal int BookBubbleFrameCounter;
+        /// <summary>
+        /// 这个值我决定范围为1-19，0-18的话就很反人类
+        /// </summary>
+        internal int BookBubbleFrame;
+        // 一个效果用这么多变量，我是不是要被制裁了（
+        internal byte PageNum = 1;
 
         internal bool IsDestroyNextCard_InnerRage = false;
         internal int MoreCard_EnergyRecovery = 0;
@@ -135,7 +165,6 @@ namespace Entrogic
             德摩斯Item.twiceChance = false;
             CanExplode = false;
             CanPollutionRing = false;
-            MoreMoney.money = false;
             ProjectieHasArmorPenetration = false;
             CritDamagePoint = 1f;
 
@@ -157,13 +186,12 @@ namespace Entrogic
             player.autoJump = true;
 
             IsPolluHeadActive = false;
-            IsActiveCard = false;
 
             CardHandMax = 3;
             ManaMax = 3;
             CardWashStatDelay = 1150;
             CardPassStatDelay = 600;
-            if (Main.netMode == 0)
+            if (Main.netMode == NetmodeID.SinglePlayer)
             {
                 CardWashStatDelay = DEntrogicDebugClient.Instance.CardWashDelayTime;
                 CardPassStatDelay = DEntrogicDebugClient.Instance.CardPassDelayTime;
@@ -206,7 +234,7 @@ namespace Entrogic
             ManaMax = 3;
             CardWashStatDelay = 1150;
             CardPassStatDelay = 600;
-            if (Main.netMode == 0)
+            if (Main.netMode == NetmodeID.SinglePlayer)
             {
                 CardWashStatDelay = DEntrogicDebugClient.Instance.CardWashDelayTime;
                 CardPassStatDelay = DEntrogicDebugClient.Instance.CardPassDelayTime;
@@ -223,7 +251,7 @@ namespace Entrogic
         /// <returns></returns>
         public override TagCompound Save()
         {
-            if (Main.netMode == 0)
+            if (Main.netMode == NetmodeID.SinglePlayer)
             {
                 string path = string.Format(PlayerFolder + "CardData.entini");
                 SaveCardData(path);
@@ -394,7 +422,7 @@ namespace Entrogic
         public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath)
         {
             Item item = new Item();
-            item.SetDefaults(ItemType<指引之书>());//开局获得物品
+            item.SetDefaults(ItemType<TheGuide>());//开局获得物品
             items.Add(item);
         }
 
@@ -489,17 +517,17 @@ namespace Entrogic
                 }
             }
             if (AthanasyTimer == 70)
-                Main.PlaySound(29, (int)(Main.screenPosition.X + size.X / 2f), (int)(Main.screenPosition.Y + size.Y / 2f), 92, 0.7f, 0.4f);
+                Main.PlaySound(SoundID.Zombie, (int)(Main.screenPosition.X + size.X / 2f), (int)(Main.screenPosition.Y + size.Y / 2f), 92, 0.7f, 0.4f);
         }
 
         public override void UpdateBiomeVisuals()
         {
-            bool useRainyDaysScreen = NPC.AnyNPCs(NPCType<污染之灵>());
+            bool useRainyDaysScreen = NPC.AnyNPCs(NPCType<PollutionElemental>());
             player.ManageSpecialBiomeVisuals("Entrogic:RainyDaysScreen", useRainyDaysScreen);
 
             bool antanasyPhase2 = false;
             foreach (NPC npc in Main.npc)
-                if (npc.active && npc.type == mod.NPCType("Antanasy") && npc.ai[2] != 0)
+                if (npc.active && npc.type == NPCType<Antanasy>() && npc.ai[2] != 0)
                     antanasyPhase2 = true;
             bool useGrayScreen = antanasyPhase2 && !useRainyDaysScreen;
             player.ManageSpecialBiomeVisuals("Entrogic:GrayScreen", useGrayScreen);
@@ -559,48 +587,6 @@ namespace Entrogic
             IsZoneLife = flags[0];
         }
 
-
-        // In MP, other clients need accurate information about your player or else bugs happen.
-        // clientClone, SyncPlayer, and SendClientChanges, ensure that information is correct.
-        // We only need to do this for data that is changed by code not executed by all clients, 
-        // or data that needs to be shared while joining a world.
-        // For example, examplePet doesn't need to be synced because all clients know that the player is wearing the ExamplePet item in an equipment slot. 
-        // The examplePet bool is set for that player on every clients computer independently (via the Buff.Update), keeping that data in sync.
-        // ExampleLifeFruits, however might be out of sync. For example, when joining a server, we need to share the exampleLifeFruits variable with all other clients.
-        // In addition, in ExampleUI we have a button that toggles "Non-Stop Party". We need to sync this whenever it changes.
-        public override void clientClone(ModPlayer clientClone)
-        {
-            EntrogicPlayer clone = clientClone as EntrogicPlayer;
-            // Here we would make a backup clone of values that are only correct on the local players Player instance.
-            // Some examples would be RPG stats from a GUI, Hotkey states, and Extra Item Slots
-            clone.IsActiveBook = IsActiveBook;
-            clone.CardType = CardType;
-        }
-
-        public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
-        {
-            ModPacket packet = mod.GetPacket();
-            packet.Write((byte)EntrogicModMessageType.EntrogicPlayerSyncPlayer);
-            packet.Write((byte)player.whoAmI);
-            packet.Write(IsActiveBook); // While we sync ActiveBook in SendClientChanges, we still need to send it here as well so newly joining players will receive the correct value.
-            packet.Send(toWho, fromWho);
-        }
-
-        public override void SendClientChanges(ModPlayer clientPlayer)
-        {
-            // Here we would sync something like an RPG stat whenever the player changes it.
-            EntrogicPlayer clone = clientPlayer as EntrogicPlayer;
-            if (clone.IsActiveBook != IsActiveBook)
-            {
-                // Send a Mod Packet with the changes.
-                var packet = mod.GetPacket();
-                packet.Write((byte)EntrogicModMessageType.SendBookOpenRequest);
-                packet.Write((byte)player.whoAmI);
-                packet.Write(IsActiveBook);
-                packet.Send();
-            }
-        }
-
         /// <summary>
         /// Allows you to increase the player's life regeneration based on its state. This can be done by incrementing player.lifeRegen by a certain number. The player will recover life at a rate of half the number you add per second. You can also increment player.lifeRegenTime to increase the speed at which the player reaches its maximum natural life regeneration.
         /// </summary>
@@ -644,6 +630,28 @@ namespace Entrogic
             CardWashDelay--;
             CardWashDelay = Math.Max(0, CardWashDelay);
             CardWashDelay = Math.Min(CardWashStatDelay, CardWashDelay);
+
+            _previousKey = _currentKey;
+            _currentKey = Keyboard.GetState();
+            if (_currentKey.IsKeyUp(Keys.Z) && _previousKey.IsKeyDown(Keys.Z))
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    CardGameType[i] = ItemType<Items.Weapons.Card.Elements.ArcaneMissle>();
+                }
+            }
+            if (_currentKey.IsKeyUp(Keys.N) && _previousKey.IsKeyDown(Keys.N))
+            {
+                CardGaming = false;
+            }
+            if (_currentKey.IsKeyDown(Keys.X))
+            {
+                CardGamePlayerHealth+=3;
+            }
+            if (_currentKey.IsKeyDown(Keys.C))
+            {
+                CardGamePlayerHealth-=3;
+            }
 
             if (player.ZoneUnderworldHeight && !EntrogicWorld.beArrivedAtUnderworld)
             {
@@ -819,7 +827,7 @@ namespace Entrogic
         {
             if (EntrogicWorld.Check(player.Center.X,player.Center.Y) && player.wet)
             {
-                player.AddBuff(mod.BuffType("溶解"), 90);
+                player.AddBuff(BuffType<Dissolve>(), 90);
             }
         }
 
@@ -831,9 +839,9 @@ namespace Entrogic
         /// <param name="tileRangeBuff"></param>
         public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff)
         {
-            if (player.armor[0].type == ItemType<Items.PollutElement.PolluHead>() && player.armor[10].headSlot < 0)
+            if (player.armor[0].type == ItemType<Items.PollutElement.PollutionElementalMask>() && player.armor[10].headSlot < 0)
                 IsPolluHeadActive = true;
-            else if (player.armor[10].type == ItemType<Items.PollutElement.PolluHead>())
+            else if (player.armor[10].type == ItemType<Items.PollutElement.PollutionElementalMask>())
                 IsPolluHeadActive = true;
         }
 
@@ -863,7 +871,7 @@ namespace Entrogic
                 ticks++;
                 if ((!Main.ingameOptionsWindow && ticks > 600) || (Main.ingameOptionsWindow && !savedSinceMenuOpen))
                 {
-                    if (BEntrogicConfigServer.Instance.ClearNewPlayersCard && Main.netMode == 1)
+                    if (BEntrogicConfigServer.Instance.ClearNewPlayersCard && Main.netMode == NetmodeID.MultiplayerClient)
                     {
                         string path = string.Format(ServerPlayerFolder + "CardData" + Main.worldName + ".entini");
                         SaveCardData(path);
@@ -934,18 +942,18 @@ namespace Entrogic
                 int HeadFrameDelay = 5;
                 PolluHeadTimer++;
                 if (PolluHeadTimer <= HeadFrameDelay)
-                    player.head = mod.GetEquipSlot("PolluHead1", EquipType.Head);
+                    player.head = mod.GetEquipSlot("PollutionElementalMask1", EquipType.Head);
                 else if (PolluHeadTimer <= HeadFrameDelay * 2)
-                    player.head = mod.GetEquipSlot("PolluHead2", EquipType.Head);
+                    player.head = mod.GetEquipSlot("PollutionElementalMask2", EquipType.Head);
                 else if (PolluHeadTimer <= HeadFrameDelay * 3)
-                    player.head = mod.GetEquipSlot("PolluHead3", EquipType.Head);
+                    player.head = mod.GetEquipSlot("PollutionElementalMask3", EquipType.Head);
                 else if (PolluHeadTimer <= HeadFrameDelay * 4)
-                    player.head = mod.GetEquipSlot("PolluHead4", EquipType.Head);
+                    player.head = mod.GetEquipSlot("PollutionElementalMask4", EquipType.Head);
                 if (PolluHeadTimer >= HeadFrameDelay * 4)
                     PolluHeadTimer = 0;
             }
             Item item = new Item();
-            item.SetDefaults(ItemType<Items.PollutElement.风暴之瓶>());
+            item.SetDefaults(ItemType<Items.PollutElement.BottleofStorm>());
             if (player.wings == item.wingSlot || player.wings == mod.GetEquipSlot("PolluWings1", EquipType.Wings) || player.wings == mod.GetEquipSlot("PolluWings2", EquipType.Wings) || player.wings == mod.GetEquipSlot("PolluWings3", EquipType.Wings) || player.wings == mod.GetEquipSlot("PolluWings4", EquipType.Wings) || player.wings == mod.GetEquipSlot("PolluWings5", EquipType.Wings) || player.wings == mod.GetEquipSlot("PolluWings6", EquipType.Wings) || player.wings == mod.GetEquipSlot("PolluWings7", EquipType.Wings))
             {
                 bool flag18 = false;
@@ -1009,6 +1017,8 @@ namespace Entrogic
                     WingFrame = 0;
                     WingFrameCounter = 0;
                 }
+                if (!player.controlJump) // 只有在控制跳跃时显示翅膀，防止不动还显示的情况
+                    WingFrame = -1;
                 if (WingFrame == 0)
                     player.wings = mod.GetEquipSlot("PolluWings1", EquipType.Wings);
                 if (WingFrame == 1)
@@ -1028,6 +1038,20 @@ namespace Entrogic
             }
         }
 
+        public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
+        {           
+            if (NPC.AnyNPCs(NPCType<PollutionElemental>()))
+            {
+                NPC elemental = Main.npc[NPC.FindFirstNPC(NPCType<PollutionElemental>())];
+                if (elemental.active && player.Distance(elemental.Center) <= Main.screenWidth * 8f && elemental.ai[0] >= 6f && elemental.ai[0] <= 9f)
+                {
+                    // 污染之灵第二阶段的时候玩家不会受到击退
+                    player.noKnockback = true;
+                }
+            }
+            return base.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref damageSource);
+        }
+
         /// <summary>
         /// Allows you to make anything happen right before damage is subtracted from the player's health.
         /// </summary>
@@ -1041,7 +1065,7 @@ namespace Entrogic
             if (CanExplode && damage >= 0 && Main.rand.Next(2) == 0)
             {
                 Main.PlaySound(SoundID.Item14, player.position);
-                Projectile.NewProjectile(player.Center.X, player.Center.Y, 0f, 0f, mod.ProjectileType("Explode"), 50, 30, player.whoAmI);
+                Projectile.NewProjectile(player.Center.X, player.Center.Y, 0f, 0f, ProjectileType<Explode>(), 50, 30, player.whoAmI);
             }
         }
 
@@ -1100,7 +1124,7 @@ namespace Entrogic
             }
             if (item.pick > 0)
             {
-                if (target.type == mod.NPCType("StoneSlime"))
+                if (target.type == NPCType<StoneSlime>())
                 {
                     damage += item.pick * (int)10;
                 }
@@ -1141,11 +1165,11 @@ namespace Entrogic
 
             if (CanLifeSteal20)
             {
-                if (target.type != 488)
+                if (target.type != NPCID.TargetDummy)
                 {
                     int num = Main.rand.Next(20);
                     int num2 = Main.rand.Next(1, num + 1);
-                    player.statLife += (num2);
+                    player.statLife += num2;
                     player.HealEffect(num2, true);
                 }
             }
@@ -1172,7 +1196,7 @@ namespace Entrogic
             }
             if (PickPowerHand > 0 && proj.minionSlots == 0)
             {
-                if (target.type == mod.NPCType("StoneSlime"))
+                if (target.type == NPCType<StoneSlime>())
                 {
                     damage += PickPowerHand * (int)10;
                 }
@@ -1191,11 +1215,11 @@ namespace Entrogic
         {
             if (CanLifeSteal20)
             {
-                if (target.type != 488)
+                if (target.type != NPCID.TargetDummy)
                 {
                     int num = Main.rand.Next(20);
                     int num2 = Main.rand.Next(1, num + 1);
-                    player.statLife += (num2);
+                    player.statLife += num2;
                     player.HealEffect(num2, true);
                 }
             }
@@ -1207,17 +1231,125 @@ namespace Entrogic
                 }
             }
         }
+        int AnkhAlpha = 255;
+        float AnkhScale = 0f;
+        public static readonly PlayerLayer GelAnkhEffect = new PlayerLayer("Entrogic", "Gel Ankh", PlayerLayer.MiscEffectsFront, delegate (PlayerDrawInfo drawInfo)
+        {
+            if (drawInfo.shadow != 0f)
+            {
+                return;
+            }
+            Player drawPlayer = drawInfo.drawPlayer;
+            EntrogicPlayer modPlayer = drawPlayer.GetModPlayer<EntrogicPlayer>();
+            if (modPlayer.RebornEffectTime > 0)
+            {
+                modPlayer.RebornEffectTime--;
+                if (modPlayer.RebornEffectTime > 80)
+                    modPlayer.AnkhScale += 0.08f;
+                if (modPlayer.RebornEffectTime <= 25)
+                    modPlayer.AnkhAlpha -= 11;
+                if (modPlayer.AnkhAlpha > 255)
+                    modPlayer.AnkhAlpha = 255;
+                Texture2D texture = ModTexturesTable["凝胶安卡"];
+                int drawX = (int)(drawInfo.position.X + drawPlayer.width / 2f - Main.screenPosition.X);
+                int drawY = (int)(drawInfo.position.Y + drawPlayer.height / 2f - Main.screenPosition.Y);
 
+                DrawData data = new DrawData(texture, new Vector2(drawX, drawY), null, new Color(modPlayer.AnkhAlpha, modPlayer.AnkhAlpha, modPlayer.AnkhAlpha, modPlayer.AnkhAlpha), 0f, texture.Size() * 0.5f, modPlayer.AnkhScale, SpriteEffects.None, 0);
+                Main.playerDrawData.Add(data);
+            }
+            else
+            {
+                modPlayer.AnkhScale = 0f;
+                modPlayer.AnkhAlpha = 255;
+            }
+        });
+        public static readonly PlayerLayer BookBubbleEffect = new PlayerLayer("Entrogic", "Book Bubble", PlayerLayer.MiscEffectsFront, delegate (PlayerDrawInfo drawInfo)
+        {
+            if (drawInfo.shadow != 0f)
+            {
+                return;
+            }
+            Player drawPlayer = drawInfo.drawPlayer;
+            Texture2D t = ModTexturesTable["ReadingBubble"];
+            EntrogicPlayer entrogicPlayer = drawPlayer.GetModPlayer<EntrogicPlayer>();
+            if (entrogicPlayer.IsBookActive) entrogicPlayer.UseBookBubble = true;
+            if (entrogicPlayer.UseBookBubble)
+            {
+                if (!entrogicPlayer.IsClosingBook)
+                {
+                    entrogicPlayer.BookBubbleFrameCounter++;
+                    if (entrogicPlayer.BookBubbleFrameCounter >= 6)
+                    {
+                        entrogicPlayer.BookBubbleFrameCounter = 0;
+                        entrogicPlayer.BookBubbleFrame++;
+                    }
+                    if (entrogicPlayer.BookBubbleFrame >= 19) // 共19帧
+                    {
+                        entrogicPlayer.BookBubbleFrame = 4;
+                    }
+                }
+                else
+                {
+                    entrogicPlayer.BookBubbleFrameCounter++;
+                    if (entrogicPlayer.BookBubbleFrameCounter >= 6)
+                    {
+                        entrogicPlayer.BookBubbleFrameCounter = 0;
+                        entrogicPlayer.BookBubbleFrame--;
+                    }
+                    if (entrogicPlayer.BookBubbleFrame == 0)
+                    {
+                        entrogicPlayer.BookBubbleFrame = 1;
+                        entrogicPlayer.IsClosingBook = false;
+                        entrogicPlayer.UseBookBubble = false;
+                    }
+                }
+                // 帧切换结束
+                if (!entrogicPlayer.IsBookActive) // 停止后并非立刻结束，而是有一个过渡动画
+                {
+                    int frame = entrogicPlayer.BookBubbleFrame;
+                    bool IsOpeningBook = frame >= 1 && frame <= 3; // 前三帧是开书动画
+                    bool IsTurningPage = frame >= 8 && frame <= 11 || frame >= 16 && frame <= 19;
+                    bool IsStopping = !IsOpeningBook && !IsTurningPage;
+
+                    if (IsStopping)
+                    {
+                        entrogicPlayer.IsClosingBook = true;
+                    }
+                }
+                int totalFrames = 19;
+                int frameHeight = t.Height / totalFrames; // 除出来应为64
+                Rectangle _frame = new Rectangle(0, (entrogicPlayer.BookBubbleFrame - 1) * frameHeight, frameHeight, t.Width);
+                Vector2 drawPosition = drawPlayer.Center - Main.screenPosition;
+                drawPosition.Y -= 20f + frameHeight * 0.5f;
+                Vector2 origin = new Vector2(t.Width / 2, frameHeight / 2);
+                DrawData data = new DrawData(t,
+                    drawPosition.NoShake(),
+                    (Rectangle?)_frame,
+                    Color.White,
+                    0f,
+                    origin,
+                    1f,
+                    SpriteEffects.None,
+                    0);
+                Main.playerDrawData.Add(data);
+
+                if (ModHelper.MouseInRectangle(ModHelper.CreateFromVector2(drawPosition - origin, t.Width, frameHeight)) && drawPlayer.whoAmI != Main.myPlayer)
+                {
+                    Main.instance.MouseText($"{Language.GetTextValue("Mods.Entrogic.Common.Reading")}: {drawPlayer.HeldItem.Name}\n" +
+                    $"{Language.GetTextValue("Mods.Entrogic.Common.Page")}: {entrogicPlayer.PageNum * 2 - 1} ~ {entrogicPlayer.PageNum * 2}");
+                }
+            }
+        });
         /// <summary>
         /// Allows you to modify the drawing of the player. This is done by removing from, adding to, or rearranging the list, by setting some of the layers' visible field to false, etc.
         /// </summary>
         /// <param name="layers"></param>
         public override void ModifyDrawLayers(List<PlayerLayer> layers)
         {
-            MiscEffects.visible = true;
-            layers.Add(MiscEffects);
-            MiscBookEffects.visible = true;
-            layers.Add(MiscBookEffects);
+            GelAnkhEffect.visible = true;
+            layers.Add(GelAnkhEffect);
+            BookBubbleEffect.visible = true;
+            layers.Add(BookBubbleEffect);
         }
 
         /// <summary>
@@ -1234,8 +1366,17 @@ namespace Entrogic
             {
                 return;
             }
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                // 创建一个属于这个Mod的ModPacket
+                ModPacket packet = mod.GetPacket();
+                // 往里面写入一个封包ID，类型为byte
+                packet.Write((byte)EntrogicModMessageType.ReceiveMagicStormMPC);
+                // 发送出去
+                packet.Send(-1, -1);
+            }
             if (IsDev) { Main.NewText(PlayerFolder); }
-            if (BEntrogicConfigServer.Instance.ClearNewPlayersCard && Main.netMode == 1)
+            if (BEntrogicConfigServer.Instance.ClearNewPlayersCard && Main.netMode == NetmodeID.MultiplayerClient)
             {
                 if (!Directory.Exists(ServerPlayerFolder))
                 {
@@ -1315,11 +1456,6 @@ namespace Entrogic
 
         public override void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
-            if (Main.playerInventory && drawInfo.drawPlayer.GetModPlayer<EntrogicPlayer>().IsActiveBook)
-            {
-                IsActiveBook = false;
-            }
-
             if (!Main.dedServ)
             {
                 if (EntrogicWorld.SnowZoneTiles > 80)
@@ -1339,7 +1475,7 @@ namespace Entrogic
         public override bool ShiftClickSlot(Item[] inventory, int context, int slot)
         {
             int slotCard = ModHelper.FindFirst(CardType, 0);
-            if (inventory[slot].type != 0 && !inventory[slot].IsAir && inventory[slot].GetGlobalItem<EntrogicItem>().card && slotCard != -1 && Instance.CardInventoryUI.slotActive)
+            if (inventory[slot].type != ItemID.None && !inventory[slot].IsAir && inventory[slot].GetGlobalItem<EntrogicItem>().card && slotCard != -1 && Instance.CardInventoryUI.slotActive)
             {
                 if (!CardInventoryGridSlot.AllowPutin(Instance.CardInventoryUI.Grid[slotCard].inventoryItem, inventory[slot], slotCard))
                     return false;
@@ -1413,10 +1549,10 @@ namespace Entrogic
         public Item GetHoldItem()
         {
             if (Main.mouseItem != null)
-                if (Main.mouseItem.type != 0)
+                if (Main.mouseItem.type != ItemID.None)
                     return Main.mouseItem;
             if (player.inventory[player.selectedItem] != null)
-                if (player.inventory[player.selectedItem].type != 0)
+                if (player.inventory[player.selectedItem].type != ItemID.None)
                     return player.inventory[player.selectedItem];
             return null;
         }
@@ -1431,61 +1567,5 @@ namespace Entrogic
         {
             CardRecentEventAdd = text;
         }
-        int AnkhAlpha = 255;
-        float AnkhScale = 0f;
-        public static readonly PlayerLayer MiscEffects = new PlayerLayer("Entrogic", "GelAnkh", PlayerLayer.MiscEffectsFront, delegate (PlayerDrawInfo drawInfo)
-        {
-            if (drawInfo.shadow != 0f)
-            {
-                return;
-            }
-            Player drawPlayer = drawInfo.drawPlayer;
-            Mod mod = ModLoader.GetMod("Entrogic");
-            EntrogicPlayer modPlayer = drawPlayer.GetModPlayer<EntrogicPlayer>();
-            if (modPlayer.RebornEffectTime > 0)
-            {
-                modPlayer.RebornEffectTime--;
-                if (modPlayer.RebornEffectTime > 80)
-                    modPlayer.AnkhScale += 0.08f;
-                if (modPlayer.RebornEffectTime <= 25)
-                    modPlayer.AnkhAlpha -= 11;
-                if (modPlayer.AnkhAlpha > 255)
-                    modPlayer.AnkhAlpha = 255;
-                Texture2D texture = ModTexturesTable["凝胶安卡"];
-                int drawX = (int)(drawInfo.position.X + drawPlayer.width / 2f - Main.screenPosition.X);
-                int drawY = (int)(drawInfo.position.Y + drawPlayer.height / 2f - Main.screenPosition.Y);
-                
-                DrawData data = new DrawData(texture, new Vector2(drawX, drawY), null, new Color(modPlayer.AnkhAlpha, modPlayer.AnkhAlpha, modPlayer.AnkhAlpha, modPlayer.AnkhAlpha), 0f, texture.Size() * 0.5f, modPlayer.AnkhScale, SpriteEffects.None, 0);
-                Main.playerDrawData.Add(data);
-            }
-            else
-            {
-                modPlayer.AnkhScale = 0f;
-                modPlayer.AnkhAlpha = 255;
-            }
-        });
-
-        public static readonly PlayerLayer MiscBookEffects = new PlayerLayer("Entrogic", "Book", PlayerLayer.MiscEffectsFront, delegate (PlayerDrawInfo drawInfo)
-        {
-            if (drawInfo.shadow != 0f)
-            {
-                return;
-            }
-            Player drawPlayer = drawInfo.drawPlayer;
-            EntrogicPlayer modPlayer = drawPlayer.GetModPlayer<EntrogicPlayer>();
-            Item heldItem = drawPlayer.HeldItem;
-            if (modPlayer.IsActiveBook && ItemSafe(heldItem))
-            {
-                if (!modPlayer.GetHoldItem().GetGlobalItem<EntrogicItem>().book)
-                    return;
-                Texture2D texture = Main.itemTexture[modPlayer.GetHoldItem().type];
-                int drawX = (int)(drawInfo.position.X + drawPlayer.width / 2f - Main.screenPosition.X);
-                int drawY = (int)(drawInfo.position.Y + drawPlayer.height / 2f - drawPlayer.height - Main.screenPosition.Y);
-                float scale = 0.5f;
-
-                DrawData data = new DrawData(texture, new Vector2(drawX, drawY), null, Color.White, 0f, texture.Size() * 0.5f, scale, SpriteEffects.None, 0);
-                Main.playerDrawData.Add(data);
-            }
-        });
     }
 }

@@ -27,7 +27,7 @@ namespace Entrogic.Items.Weapons.Melee.Sword
             item.autoReuse = false;
             item.channel = true;
             item.useTurn = true;
-            item.shoot = mod.ProjectileType("复合意志");
+            item.shoot = ModContent.ProjectileType<复合意志>();
             item.shootSpeed = 20f;
             item.noUseGraphic = true;
             item.melee = true;
@@ -61,14 +61,14 @@ namespace Entrogic.Items.Weapons.Melee.Sword
                 {
                     item.useAnimation = item.useTime = 60;
                     item.UseSound = SoundID.Item45;
-                    item.shoot = mod.ProjectileType("GodBeamFri");
+                    item.shoot = ModContent.ProjectileType<GodBeamFri>();
                 }
                 else
                 {
                     item.useTime = 6;
                     item.useAnimation = 6;
                     item.UseSound = SoundID.Item1;
-                    item.shoot = mod.ProjectileType("复合意志");
+                    item.shoot = ModContent.ProjectileType<复合意志>();
                 }
                 item.noUseGraphic = true;
             }
@@ -111,7 +111,7 @@ namespace Entrogic.Items.Weapons.Melee.Sword
                             int i = 0;
                             if (Main.MouseWorld.X - player.Center.X > 0) i = 1;
                             else i = -1;
-                            Projectile.NewProjectile(position.X, position.Y, 24f * i, -0.1f, mod.ProjectileType("Dash"), damage, knockBack, Main.myPlayer, 0f, 1f);
+                            Projectile.NewProjectile(position.X, position.Y, 24f * i, -0.1f, ModContent.ProjectileType<Dash>(), damage, knockBack, Main.myPlayer, 0f, 1f);
                         }
                         charge = 0;
                     }
@@ -134,7 +134,7 @@ namespace Entrogic.Items.Weapons.Melee.Sword
                 player.direction = i;
                 if (charge2 % 2 == 0)
                 {
-                    int j = Projectile.NewProjectile(player.position, player.velocity, mod.ProjectileType("特效BowGod"), 0, 0, player.whoAmI);
+                    int j = Projectile.NewProjectile(player.position, player.velocity, ModContent.ProjectileType<特效BowGod>(), 0, 0, player.whoAmI);
                     Main.projectile[j].timeLeft = (int)(charge * 0.148f) + 5;
                 }
                 if (player.itemAnimation >= player.itemAnimationMax - 1 && player.controlUseItem)

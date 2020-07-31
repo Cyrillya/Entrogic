@@ -22,7 +22,7 @@ namespace Entrogic.Items.Weapons.Summon
         {
             item.mana = 10;
             item.damage = 140;
-            item.useStyle = 1;
+            item.useStyle = ItemUseStyleID.SwingThrow;
             item.width = 52;
             item.height = 50;
             item.useTime = 50;
@@ -33,7 +33,7 @@ namespace Entrogic.Items.Weapons.Summon
             item.rare = 15;
             item.UseSound = SoundID.Item113;
             item.autoReuse = true;
-            item.shoot = mod.ProjectileType("DeadlySphere");
+            item.shoot = ProjectileType<Projectiles.Minions.DeadlySphere>();
             item.shootSpeed = 8f;
             item.summon = true;
             item.buffType = BuffType<Buffs.Minions.DeadlySphere>();

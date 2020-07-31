@@ -57,7 +57,7 @@ namespace Entrogic.NPCs.Enemies
         }
         public override void AI()
         {
-            if (NPC.CountNPCS(mod.NPCType("AngryofCorruption")) < 1)
+            if (NPC.CountNPCS(NPCType<AngryofCorruption>()) < 1)
             {
                 npc.life = 0;
                 int num5;

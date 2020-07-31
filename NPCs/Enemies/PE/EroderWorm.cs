@@ -144,7 +144,7 @@ namespace Entrogic.NPCs.Enemies.PE
 
         public override void CustomBehavior()
         {
-            if (Main.netMode != 1)
+            if (Main.netMode != NetmodeID.MultiplayerClient)
             {
                 if (attackCounter > 0)
                 {

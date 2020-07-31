@@ -1,4 +1,8 @@
 using System;
+
+using Entrogic.Items.Materials;
+using Entrogic.Projectiles.Arcane;
+
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -27,7 +31,7 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             item.height = 36;
             item.useTime = 7;
             item.useAnimation = 28;
-            item.useStyle = 5;
+            item.useStyle = ItemUseStyleID.HoldingOut;
 
             item.noMelee = true;
             item.knockBack = 4;
@@ -35,7 +39,7 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             item.rare = 12;
             item.UseSound = SoundID.Item40;
             item.autoReuse = true;     
-            item.shoot = 10;
+            item.shoot = ProjectileID.PurificationPowder;
             item.shootSpeed = 6f;
             item.reuseDelay = 20;
             item.useAmmo = AmmoID.Bullet;
@@ -54,7 +58,7 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
                 for (int i = 0; i < numberProjectiles; i++)
                 {
                     Vector2 perturbedSpeed = new Vector2(speedX, speedY).RotatedByRandom(MathHelper.ToRadians(9));
-                    Projectile.NewProjectile(position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, mod.ProjectileType("ArcaneMissle"), damage, knockBack, player.whoAmI);
+                    Projectile.NewProjectile(position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, ProjectileType<ArcaneMissle>(), damage, knockBack, player.whoAmI);
                 }
             }
             {
@@ -67,9 +71,9 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(533,1);//巨兽鲨
+            recipe.AddIngredient(ItemID.Megashark,1);//巨兽鲨
             recipe.AddRecipeGroup("Entrogic:AdamantiteBar", 12);
-            recipe.AddIngredient(null, "碳钢枪械部件", 1);
+            recipe.AddIngredient(ItemType<碳钢枪械部件>(), 1);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.SetResult(this);
             recipe.AddRecipe();

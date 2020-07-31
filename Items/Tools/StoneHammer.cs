@@ -13,13 +13,13 @@ namespace Entrogic.Items.Tools
             item.knockBack = 3;
             item.scale = 1.1f;
             item.crit -= 2;
-            item.rare = 1;
+            item.rare = ItemRarityID.Blue;
             item.useTurn = false;
             item.autoReuse = true;
             item.melee = true;
             item.value = Item.sellPrice(0, 0, 0, 50);
             item.UseSound = SoundID.Item1;
-            item.useStyle = 1;
+            item.useStyle = ItemUseStyleID.SwingThrow;
             item.width = 40;
             item.height = 40;
             item.maxStack = 1;

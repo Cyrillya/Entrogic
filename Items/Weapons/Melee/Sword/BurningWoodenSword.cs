@@ -18,10 +18,10 @@ namespace Entrogic.Items.Weapons.Melee.Sword
             item.damage = 8;
             item.knockBack = 2f;
             item.crit += 9;
-            item.rare = 0;
+            item.rare = ItemRarityID.White;
             item.useTime = 30;
             item.useAnimation = 30;
-            item.useStyle = 1;
+            item.useStyle = ItemUseStyleID.SwingThrow;
             item.autoReuse = true;
             item.melee = true;
             item.value = Item.sellPrice(0, 0, 60, 0);
@@ -35,8 +35,8 @@ namespace Entrogic.Items.Weapons.Melee.Sword
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(24, 1);//木剑
-            recipe.AddIngredient(8, 8);//火把
+            recipe.AddIngredient(ItemID.WoodenSword, 1);//木剑
+            recipe.AddIngredient(ItemID.Torch, 8);//火把
             recipe.AddTile(TileID.WorkBenches);//工作台
             recipe.SetResult(this);
             recipe.AddRecipe();

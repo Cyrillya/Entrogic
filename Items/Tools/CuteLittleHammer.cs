@@ -22,10 +22,10 @@ namespace Entrogic.Items.Tools
 			item.useTime = 16;
 			item.useAnimation = 20;
             item.hammer = 70;
-            item.useStyle = 1;
+            item.useStyle = ItemUseStyleID.SwingThrow;
 			item.knockBack = 5;
 			item.value = 30000;
-			item.rare = 6;
+			item.rare = ItemRarityID.LightPurple;
 			item.UseSound = SoundID.Item1;
 			item.autoReuse = true;
             item.crit += 6;

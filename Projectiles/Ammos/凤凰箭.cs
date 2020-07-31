@@ -37,20 +37,20 @@ namespace Entrogic.Projectiles.Ammos
         }
         public override void Kill(int timeLeft)
         {
-            if (base.projectile.owner == Main.myPlayer)
+            if (projectile.owner == Main.myPlayer)
             {
-                Projectile.NewProjectile(base.projectile.Center.X, base.projectile.Center.Y, 0f, 0f, base.mod.ProjectileType("MiniRocketExplosion"), base.projectile.damage, 0f, base.projectile.owner, 0f, 0f);
+                //Projectile.NewProjectile(base.projectile.Center.X, base.projectile.Center.Y, 0f, 0f, ModContent.ProjectileType<MiniRocketExplosion>(), base.projectile.damage, 0f, base.projectile.owner, 0f, 0f);
             }
-            Main.PlaySound(2, (int)base.projectile.position.X, (int)base.projectile.position.Y, 14, 1f, 0f);
-            base.projectile.position.X = base.projectile.position.X + (float)(base.projectile.width / 2);
-            base.projectile.position.Y = base.projectile.position.Y + (float)(base.projectile.height / 2);
-            base.projectile.width = 20;
-            base.projectile.height = 20;
-            base.projectile.position.X = base.projectile.position.X - (float)(base.projectile.width / 2);
-            base.projectile.position.Y = base.projectile.position.Y - (float)(base.projectile.height / 2);
+            Main.PlaySound(SoundID.Item, (int)projectile.position.X, (int)projectile.position.Y, 14, 1f, 0f);
+            projectile.position.X = projectile.position.X + (float)(projectile.width / 2);
+            projectile.position.Y = projectile.position.Y + (float)(projectile.height / 2);
+            projectile.width = 20;
+            projectile.height = 20;
+            projectile.position.X = projectile.position.X - (float)(projectile.width / 2);
+            projectile.position.Y = projectile.position.Y - (float)(projectile.height / 2);
             for (int i = 0; i < 20; i++)
             {
-                int num = Dust.NewDust(new Vector2(base.projectile.position.X, base.projectile.position.Y), base.projectile.width, base.projectile.height, 31, 0f, 0f, 100, default(Color), 2f);
+                int num = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 31, 0f, 0f, 100, default(Color), 2f);
                 Main.dust[num].velocity *= 3f;
                 if (Main.rand.Next(2) == 0)
                 {
@@ -60,10 +60,10 @@ namespace Entrogic.Projectiles.Ammos
             }
             for (int j = 0; j < 30; j++)
             {
-                int num2 = Dust.NewDust(new Vector2(base.projectile.position.X, base.projectile.position.Y), base.projectile.width, base.projectile.height, 6, 0f, 0f, 100, default(Color), 3f);
+                int num2 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 6, 0f, 0f, 100, default(Color), 3f);
                 Main.dust[num2].noGravity = true;
                 Main.dust[num2].velocity *= 5f;
-                num2 = Dust.NewDust(new Vector2(base.projectile.position.X, base.projectile.position.Y), base.projectile.width, base.projectile.height, 6, 0f, 0f, 100, default(Color), 2f);
+                num2 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 6, 0f, 0f, 100, default(Color), 2f);
                 Main.dust[num2].velocity *= 2f;
             }
             for (int k = 0; k < 3; k++)
@@ -77,25 +77,25 @@ namespace Entrogic.Projectiles.Ammos
                 {
                     scaleFactor = 1f;
                 }
-                int num3 = Gore.NewGore(new Vector2(base.projectile.position.X + (float)(base.projectile.width / 2) - 24f, base.projectile.position.Y + (float)(base.projectile.height / 2) - 24f), default(Vector2), Main.rand.Next(61, 64), 1f);
+                int num3 = Gore.NewGore(new Vector2(projectile.position.X + (float)(projectile.width / 2) - 24f, projectile.position.Y + (float)(projectile.height / 2) - 24f), default(Vector2), Main.rand.Next(61, 64), 1f);
                 Main.gore[num3].velocity *= scaleFactor;
                 Gore gore = Main.gore[num3];
                 gore.velocity.X = gore.velocity.X + 1f;
                 Gore gore2 = Main.gore[num3];
                 gore2.velocity.Y = gore2.velocity.Y + 1f;
-                num3 = Gore.NewGore(new Vector2(base.projectile.position.X + (float)(base.projectile.width / 2) - 24f, base.projectile.position.Y + (float)(base.projectile.height / 2) - 24f), default(Vector2), Main.rand.Next(61, 64), 1f);
+                num3 = Gore.NewGore(new Vector2(projectile.position.X + (float)(projectile.width / 2) - 24f, projectile.position.Y + (float)(projectile.height / 2) - 24f), default(Vector2), Main.rand.Next(61, 64), 1f);
                 Main.gore[num3].velocity *= scaleFactor;
                 Gore gore3 = Main.gore[num3];
                 gore3.velocity.X = gore3.velocity.X - 1f;
                 Gore gore4 = Main.gore[num3];
                 gore4.velocity.Y = gore4.velocity.Y + 1f;
-                num3 = Gore.NewGore(new Vector2(base.projectile.position.X + (float)(base.projectile.width / 2) - 24f, base.projectile.position.Y + (float)(base.projectile.height / 2) - 24f), default(Vector2), Main.rand.Next(61, 64), 1f);
+                num3 = Gore.NewGore(new Vector2(projectile.position.X + (float)(projectile.width / 2) - 24f, projectile.position.Y + (float)(projectile.height / 2) - 24f), default(Vector2), Main.rand.Next(61, 64), 1f);
                 Main.gore[num3].velocity *= scaleFactor;
                 Gore gore5 = Main.gore[num3];
                 gore5.velocity.X = gore5.velocity.X + 1f;
                 Gore gore6 = Main.gore[num3];
                 gore6.velocity.Y = gore6.velocity.Y - 1f;
-                num3 = Gore.NewGore(new Vector2(base.projectile.position.X + (float)(base.projectile.width / 2) - 24f, base.projectile.position.Y + (float)(base.projectile.height / 2) - 24f), default(Vector2), Main.rand.Next(61, 64), 1f);
+                num3 = Gore.NewGore(new Vector2(projectile.position.X + (float)(projectile.width / 2) - 24f, projectile.position.Y + (float)(projectile.height / 2) - 24f), default(Vector2), Main.rand.Next(61, 64), 1f);
                 Main.gore[num3].velocity *= scaleFactor;
                 Gore gore7 = Main.gore[num3];
                 gore7.velocity.X = gore7.velocity.X - 1f;

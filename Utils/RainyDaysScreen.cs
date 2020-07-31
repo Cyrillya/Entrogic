@@ -26,7 +26,11 @@ namespace Entrogic
 
         public override Color OnTileColor(Color inColor)
         {
-            float light = Main.dayTime ? 1.5f : 1.2f;
+            if (!Main.dayTime)
+            {
+                return inColor;
+            }
+            float light = 1.2f;
             return new Color(light - intensity, light - intensity, light - intensity);
         }
 
@@ -36,7 +40,7 @@ namespace Entrogic
             {
                 int color = 0;
                 spriteBatch.Draw(Main.blackTileTexture, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), new Color(color, color, color, 60f) * intensity);
-                Main.numClouds = 160;
+                Main.numClouds = 172;
                 Main.windSpeed = 0.3f + 3f * (intensity * 2f);
             }
         }

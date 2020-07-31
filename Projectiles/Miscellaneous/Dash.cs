@@ -1,4 +1,7 @@
 ﻿using System;
+
+using Entrogic.Projectiles.Ranged.Bows;
+
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
@@ -119,7 +122,7 @@ namespace Entrogic.Projectiles.Miscellaneous
                     for (int i = 0; i < 2; i++)
                     {
                         float speed = i * 10 - 5;
-                        Projectile.NewProjectile(player.position, new Vector2(0f, speed * 8f), mod.ProjectileType("GodBeamFri"), projectile.damage, projectile.knockBack, projectile.owner);
+                        Projectile.NewProjectile(player.position, new Vector2(0f, speed * 8f), ProjectileType<GodBeamFri>(), projectile.damage, projectile.knockBack, projectile.owner);
                     }
                 }
             }

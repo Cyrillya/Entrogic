@@ -1,4 +1,6 @@
 ﻿using Entrogic;
+using Entrogic.Dusts;
+
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
@@ -20,7 +22,7 @@ namespace Entrogic.Waters
 
         public override int GetSplashDust()
         {
-            return mod.DustType("LifeWaterSplash");
+            return DustType<LifeWaterSplash>();
         }
 
         public override int GetDropletGore()

@@ -23,7 +23,7 @@ namespace Entrogic.Items.AntaGolem
         {
             item.mana = 10;
             item.damage = 20;
-            item.useStyle = 1;
+            item.useStyle = ItemUseStyleID.SwingThrow;
             item.width = 48;
             item.height = 46;
             item.useTime = 30;

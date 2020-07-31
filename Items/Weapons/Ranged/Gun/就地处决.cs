@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Entrogic.Items.Materials;
+
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -21,15 +23,15 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             item.height = 20;
             item.useTime = 50;
             item.useAnimation = 50;
-            item.useStyle = 5;
+            item.useStyle = ItemUseStyleID.HoldingOut;
             item.noMelee = true;
             item.knockBack = 18;
             item.value = Item.sellPrice(gold:1, silver:80);
-            item.rare = 6;
+            item.rare = ItemRarityID.LightPurple;
             item.UseSound = SoundID.Item40;
             item.autoReuse = true;
             item.crit += 21;
-            item.shoot = 10;
+            item.shoot = ProjectileID.PurificationPowder;
             item.shootSpeed = 18f;
             item.useAmmo = AmmoID.Bullet;
         }
@@ -46,7 +48,7 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(null, "污染之魂", 7);
+            recipe.AddIngredient(ItemType<SoulofContamination>(), 7);
             recipe.AddIngredient(ItemID.HallowedBar, 18);
             recipe.AddIngredient(ItemID.Shotgun);
             recipe.AddTile(TileID.MythrilAnvil);

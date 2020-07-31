@@ -25,7 +25,7 @@ namespace Entrogic.Items.Materials
 			item.height = 24;
 			item.maxStack = 99;
             item.value = Item.sellPrice(silver: 30);
-            item.rare = 3;
+            item.rare = ItemRarityID.Orange;
 		}
 
 		public override void AddRecipes()

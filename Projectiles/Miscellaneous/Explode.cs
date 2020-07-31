@@ -51,16 +51,16 @@ namespace Entrogic.Projectiles.Miscellaneous
                 dust.noGravity = true;
             }
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
-        {            
-            target.AddBuff(mod.BuffType(""), damage);
-        }
+        //public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        //{            
+        //    target.AddBuff(mod.BuffType(""), damage);
+        //}
     }
     public class 破防 : ModPlayer
     {
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
-            if (proj.type == mod.ProjectileType("Explode")) player.armorPenetration += 2147483647 / 2 + 2;
+            if (proj.type == ProjectileType<Explode>()) player.armorPenetration += 2147483647 / 2 + 2;
         }
     }
 }

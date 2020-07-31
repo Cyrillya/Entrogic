@@ -27,6 +27,7 @@ namespace Entrogic.NPCs.Boss.PollutElement
             npc.HitSound = SoundID.NPCHit1;
             npc.DeathSound = SoundID.NPCDeath1;
             npc.knockBackResist = 0f;
+            npc.friendly = false;
         }
 
         public override void AI()

@@ -37,7 +37,7 @@ namespace Entrogic.Projectiles.Arcane
             Main.PlaySound(SoundID.Item10);
             for (int i = 0; i < 22; i++)
             {
-                int num = Dust.NewDust(new Vector2(base.projectile.position.X, base.projectile.position.Y), base.projectile.width, base.projectile.height, 272, 0f, 0f, 100, default(Color), 2f);
+                int num = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 272, 0f, 0f, 100, default(Color), 2f);
                 Main.dust[num].noGravity = true;
                 Main.dust[num].velocity *= 3f;
                 if (Main.rand.Next(2) == 0)
@@ -61,7 +61,7 @@ namespace Entrogic.Projectiles.Arcane
             for (int i = length; i >= 0; i--)
             {
                 Vector2 drawPos = projectile.Center - Main.screenPosition - projectile.oldVelocity * i * 0.5f;
-                float trailOpacity = projectile.Opacity - 0.05f - (0.95f / length) * i;
+                float trailOpacity = projectile.Opacity - 0.05f - 0.95f / length * i;
                 if (i != 0) trailOpacity /= 2f;
                 if (trailOpacity > 0f)
                 {

@@ -51,7 +51,7 @@ namespace Entrogic.Projectiles.Magic.Staff
                     {
                         int num419 = (int)(projectile.position.X + 14f + (float)Main.rand.Next(projectile.width - 28));
                         int num420 = (int)(projectile.position.Y + (float)projectile.height + 4f);
-                        Projectile.NewProjectile((float)num419, (float)num420, 0f, 5f, mod.ProjectileType("CorruCloudRain"), projectile.damage, 0f, projectile.owner, 0f, 0f);
+                        Projectile.NewProjectile((float)num419, (float)num420, 0f, 5f, ProjectileType<CorruCloudRain>(), projectile.damage, 0f, projectile.owner, 0f, 0f);
                     }
                 }
             }

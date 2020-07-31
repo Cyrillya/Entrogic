@@ -1,6 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
+using Terraria.ID;
 
 namespace Entrogic.Items.Equipables.Armor
 {
@@ -18,7 +19,7 @@ namespace Entrogic.Items.Equipables.Armor
             item.width = 32;
             item.height = 20;
             item.value = Item.sellPrice(0, 4, 50);
-            item.rare = 2;
+            item.rare = ItemRarityID.Green;
             item.defense = 13;
         }
 

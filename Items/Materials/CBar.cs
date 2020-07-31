@@ -19,8 +19,8 @@ namespace Entrogic.Items.Materials
             item.height = 20;
             item.maxStack = 99;
             item.value = Item.sellPrice(silver: 55);
-            item.rare = 5;
-            item.useStyle = 5;
+            item.rare = ItemRarityID.Pink;
+            item.useStyle = ItemUseStyleID.HoldingOut;
             item.useAnimation = 15;
             item.useTime = 10;
             item.noUseGraphic = true;

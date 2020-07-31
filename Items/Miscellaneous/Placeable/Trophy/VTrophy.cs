@@ -5,6 +5,7 @@ using Terraria.ID;
 using System.Text;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
+using Entrogic.Tiles;
 
 namespace Entrogic.Items.Miscellaneous.Placeable.Trophy
 {
@@ -17,13 +18,13 @@ namespace Entrogic.Items.Miscellaneous.Placeable.Trophy
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("{$Mods.Entrogic.NPCName.嘉沃顿} " + "{$MapObject.Trophy}");
+            DisplayName.SetDefault("{$Mods.Entrogic.NPCName.Volutio} " + "{$MapObject.Trophy}");
             DisplayName.AddTranslation(GameCulture.Chinese, "凝胶共生体纪念章");
         }
         public override void SetDefaults()
         {
             item.CloneDefaults(ItemID.EyeofCthulhuTrophy);
-            item.createTile = mod.TileType("BossTrophy");
+            item.createTile = TileType<BossTrophy>();
             item.placeStyle = 2;
         }
     }

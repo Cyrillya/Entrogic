@@ -21,7 +21,7 @@ namespace Entrogic.Buffs.Minions
         public override void Update(Player player, ref int buffIndex)
         {
             EntrogicPlayer modPlayer = player.GetModPlayer<EntrogicPlayer>();
-            if (player.ownedProjectileCounts[mod.ProjectileType("DeadlySphere")] > 0)
+            if (player.ownedProjectileCounts[ProjectileType<Projectiles.Minions.DeadlySphere>()] > 0)
             {
                 modPlayer.HasDeadlySphere = true;
             }

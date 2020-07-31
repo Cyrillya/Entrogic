@@ -25,7 +25,7 @@ namespace Entrogic
             {
                 if (useProgress)
                 {
-                    int truex = k - (StartX);
+                    int truex = k - StartX;
                     float value = (float)truex / 160;
                     progress.Set(value);
                 }

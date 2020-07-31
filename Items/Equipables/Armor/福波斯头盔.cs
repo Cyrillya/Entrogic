@@ -21,13 +21,13 @@ namespace Entrogic.Items.Equipables.Armor
             item.width = 32;
             item.height = 30;
             item.value = Item.sellPrice(0, 7, 50);
-            item.rare = 2;
+            item.rare = ItemRarityID.Green;
             item.defense = 30;
             
         }
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {
-            return body.type == mod.ItemType("福波斯胸甲") && legs.type == mod.ItemType("福波斯护胫");
+            return body.type == ItemType<福波斯胸甲>() && legs.type == ItemType<福波斯护胫>();
         }
         public override void UpdateEquip(Player player)
         {

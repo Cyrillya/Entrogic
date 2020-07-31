@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria.ObjectData;
+using Entrogic.Items.Miscellaneous.Placeable.Trophy;
 
 namespace Entrogic.Tiles
 {
@@ -29,13 +30,13 @@ namespace Entrogic.Tiles
             switch (frameX / 54)
             {
                 case 0:
-                    item = mod.ItemType("PETrophy");
+                    item = ItemType<PETrophy>();
                     break;
                 case 1:
-                    item = mod.ItemType("ATrophy");
+                    item = ItemType<AthanasyTrophy>();
                     break;
                 case 2:
-                    item = mod.ItemType("VTrophy");
+                    item = ItemType<VTrophy>();
                     break;
             }
             if (item > 0)

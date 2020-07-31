@@ -94,7 +94,7 @@ namespace Entrogic.Buffs.Weapons
                 if (npc.type != NPCID.TargetDummy)
                     npc.life -= amount;
                 int life = CombatText.NewText(new Rectangle((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height), CombatText.LifeRegenNegative, amount, false, true);
-                if (Main.netMode == 2 && life != 100)
+                if (Main.netMode == NetmodeID.Server && life != 100)
                 {
                     CombatText combatText = Main.combatText[life];
                     NetMessage.SendData(MessageID.CombatTextInt, -1, -1, null, (int)combatText.color.PackedValue, combatText.position.X, combatText.position.Y, amount);
@@ -111,10 +111,10 @@ namespace Entrogic.Buffs.Weapons
                     return;
                 }
                 npc.life = 1;
-                if (Main.netMode != 1)
+                if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     npc.StrikeNPCNoInteraction(9999, 0f, 0);
-                    if (Main.netMode == 2)
+                    if (Main.netMode == NetmodeID.Server)
                     {
                         NetMessage.SendData(MessageID.StrikeNPC, -1, -1, null, npc.whoAmI, 9999f);
                     }

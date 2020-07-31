@@ -39,7 +39,7 @@ namespace Entrogic.Projectiles.Ammos
         {
             for (int i = 0; i < 15; i++)
             {
-                int num = Dust.NewDust(new Vector2(base.projectile.position.X, base.projectile.position.Y), base.projectile.width, base.projectile.height, 6, 0f, 0f, 100, default(Color), 1f);
+                int num = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 6, 0f, 0f, 100, default(Color), 1f);
                 Main.dust[num].velocity *= 7f;
                 if (Main.rand.Next(2) == 0)
                 {
@@ -50,7 +50,7 @@ namespace Entrogic.Projectiles.Ammos
             }
             for (int j = 0; j < 15; j++)
             {
-                int num2 = Dust.NewDust(new Vector2(base.projectile.position.X, base.projectile.position.Y), base.projectile.width, base.projectile.height, 6, 0f, 0f, 100, default(Color), 1f);
+                int num2 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 6, 0f, 0f, 100, default(Color), 1f);
                 Main.dust[num2].noGravity = true;
                 Main.dust[num2].velocity *= 3f;
                 Main.dust[num2].fadeIn = 10f + (float)Main.rand.Next(10) * 0.1f;

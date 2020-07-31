@@ -65,7 +65,7 @@ namespace Entrogic.Projectiles.Magic.Staff
         {
             if (projectile.owner == Main.myPlayer)
             {
-                Projectile.NewProjectile(projectile.Center.X, projectile.Center.Y, 0.0f, 0.0f, mod.ProjectileType("CorruCloudOver"), projectile.damage, projectile.knockBack, projectile.owner, 0.0f, 0.0f);
+                Projectile.NewProjectile(projectile.Center.X, projectile.Center.Y, 0.0f, 0.0f, ProjectileType<CorruCloudOver>(), projectile.damage, projectile.knockBack, projectile.owner, 0.0f, 0.0f);
             }
         }
     }

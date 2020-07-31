@@ -78,7 +78,7 @@ namespace Entrogic.Projectiles.Minions
             float num8 = 0.05f;
             for (int j = 0; j < 1000; j++)
             {
-                bool flag2 = Main.projectile[j].type == mod.ProjectileType("DeadlySphere");
+                bool flag2 = Main.projectile[j].type == ProjectileType<DeadlySphere>();
                 if (j != projectile.whoAmI && Main.projectile[j].active && Main.projectile[j].owner == projectile.owner && flag2 && Math.Abs(projectile.position.X - Main.projectile[j].position.X) + Math.Abs(projectile.position.Y - Main.projectile[j].position.Y) < (float)projectile.width)
                 {
                     if (projectile.position.X < Main.projectile[j].position.X)
@@ -180,7 +180,7 @@ namespace Entrogic.Projectiles.Minions
                 bool flag5 = false;
                 if (!flag5)
                 {
-                    flag5 = (projectile.ai[0] == 1f);
+                    flag5 = projectile.ai[0] == 1f;
                 }
                 float num13 = 6f;
                 if (flag5)
@@ -241,7 +241,7 @@ namespace Entrogic.Projectiles.Minions
                     projectile.velocity = value * 8f;
                     projectile.netUpdate = true;
                 }
-                //Projectile.NewProjectile(projectile.Center.X, projectile.Center.Y, 0f, 0f, mod.ProjectileType("能量体"), projectile.damage, projectile.knockBack, projectile.owner, 0f, 0f);
+                //Projectile.NewProjectile(projectile.Center.X, projectile.Center.Y, 0f, 0f, ModContent.ProjectileType<能量体>(), projectile.damage, projectile.knockBack, projectile.owner, 0f, 0f);
             }
         }
 

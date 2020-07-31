@@ -27,7 +27,7 @@ namespace Entrogic.Items.Materials
             item.height = 24;
             item.maxStack = 999;
             item.value = Item.sellPrice(silver: 20);
-            item.rare = 3;
+            item.rare = ItemRarityID.Orange;
         }
 
         public override void GrabRange(Player player, ref int grabRange)

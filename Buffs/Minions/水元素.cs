@@ -26,7 +26,7 @@ namespace Entrogic.Buffs.Minions
         public override void Update(Player player, ref int buffIndex)
         {
             EntrogicPlayer modPlayer = player.GetModPlayer<EntrogicPlayer>();
-            if (player.ownedProjectileCounts[mod.ProjectileType("运动水元素")] > 0)
+            if (player.ownedProjectileCounts[ProjectileType<Projectiles.Minions.运动水元素>()] > 0)
             {
                 modPlayer.HasMovementWaterElemental = true;
             }

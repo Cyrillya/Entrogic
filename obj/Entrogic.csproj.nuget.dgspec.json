@@ -1,28 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\94945\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj": {}
+    "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj": {}
   },
   "projects": {
-    "C:\\Users\\94945\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj": {
+    "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\94945\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj",
+        "projectUniqueName": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj",
         "projectName": "Entrogic",
-        "projectPath": "C:\\Users\\94945\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj",
-        "packagesPath": "C:\\Users\\94945\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\94945\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\obj\\",
+        "projectPath": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj",
+        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\94945\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net45"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -39,15 +42,12 @@
       "frameworks": {
         "net45": {
           "dependencies": {
-            "EntityFramework": {
+            "tModLoader.CodeAssist": {
               "target": "Package",
-              "version": "[5.0.0, )"
-            },
-            "EntityFramework.zh-Hans": {
-              "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[0.1.*, )"
             }
-          }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
         }
       }
     }

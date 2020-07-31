@@ -53,18 +53,18 @@ namespace Entrogic.NPCs.Enemies.PE
                     int num2;
                     if (i >= 0 && i < s - 1)
                     {
-                        num2 = NPC.NewNPC((int)npc.position.X + npc.width / 2, (int)npc.position.Y + npc.height / 2, mod.NPCType("污染虫身"), npc.whoAmI, 0f, 0f, 0f, 0f, 255);
+                        num2 = NPC.NewNPC((int)npc.position.X + npc.width / 2, (int)npc.position.Y + npc.height / 2, NPCType<污染虫身>(), npc.whoAmI, 0f, 0f, 0f, 0f, 255);
                     }
                     else
                     {
-                        num2 = NPC.NewNPC((int)npc.position.X + npc.width / 2, (int)npc.position.Y + npc.height / 2, mod.NPCType("污染虫尾"), npc.whoAmI, 0f, 0f, 0f, 0f, 255);
+                        num2 = NPC.NewNPC((int)npc.position.X + npc.width / 2, (int)npc.position.Y + npc.height / 2, NPCType<污染虫尾>(), npc.whoAmI, 0f, 0f, 0f, 0f, 255);
                     }
                     Main.npc[num2].realLife = npc.whoAmI;
                     Main.npc[num2].ai[3] = npc.ai[3];
                     Main.npc[num2].ai[2] = (float)npc.whoAmI;
                     Main.npc[num2].ai[1] = (float)num;
                     Main.npc[num].ai[0] = (float)num2;
-                    NetMessage.SendData(23, -1, -1, null, num2, 0f, 0f, 0f, 0, 0, 0);
+                    NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, num2, 0f, 0f, 0f, 0, 0, 0);
                     num = num2;
                 }
                 TailSpawned = true;
@@ -126,18 +126,18 @@ namespace Entrogic.NPCs.Enemies.PE
                     int num2;
                     if (i >= 0 && i < s - 1)
                     {
-                        num2 = NPC.NewNPC((int)npc.position.X + npc.width / 2, (int)npc.position.Y + npc.height / 2, mod.NPCType("污染虫身2"), npc.whoAmI, 0f, 0f, 0f, 0f, 255);
+                        num2 = NPC.NewNPC((int)npc.position.X + npc.width / 2, (int)npc.position.Y + npc.height / 2, NPCType<污染虫身2>(), npc.whoAmI, 0f, 0f, 0f, 0f, 255);
                     }
                     else
                     {
-                        num2 = NPC.NewNPC((int)npc.position.X + npc.width / 2, (int)npc.position.Y + npc.height / 2, mod.NPCType("污染虫尾2"), npc.whoAmI, 0f, 0f, 0f, 0f, 255);
+                        num2 = NPC.NewNPC((int)npc.position.X + npc.width / 2, (int)npc.position.Y + npc.height / 2, NPCType<污染虫尾2>(), npc.whoAmI, 0f, 0f, 0f, 0f, 255);
                     }
                     Main.npc[num2].realLife = npc.whoAmI;
                     Main.npc[num2].ai[3] = npc.ai[3];
                     Main.npc[num2].ai[2] = (float)npc.whoAmI;
                     Main.npc[num2].ai[1] = (float)num;
                     Main.npc[num].ai[0] = (float)num2;
-                    NetMessage.SendData(23, -1, -1, null, num2, 0f, 0f, 0f, 0, 0, 0);
+                    NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, num2, 0f, 0f, 0f, 0, 0, 0);
                     num = num2;
                 }
                 TailSpawned = true;
@@ -199,18 +199,18 @@ namespace Entrogic.NPCs.Enemies.PE
                     int num2;
                     if (i >= 0 && i < s - 1)
                     {
-                        num2 = NPC.NewNPC((int)npc.position.X + npc.width / 2, (int)npc.position.Y + npc.height / 2, mod.NPCType("污染虫身3"), npc.whoAmI, 0f, 0f, 0f, 0f, 255);
+                        num2 = NPC.NewNPC((int)npc.position.X + npc.width / 2, (int)npc.position.Y + npc.height / 2, NPCType<污染虫身3>(), npc.whoAmI, 0f, 0f, 0f, 0f, 255);
                     }
                     else
                     {
-                        num2 = NPC.NewNPC((int)npc.position.X + npc.width / 2, (int)npc.position.Y + npc.height / 2, mod.NPCType("污染虫尾3"), npc.whoAmI, 0f, 0f, 0f, 0f, 255);
+                        num2 = NPC.NewNPC((int)npc.position.X + npc.width / 2, (int)npc.position.Y + npc.height / 2, NPCType<污染虫尾3>(), npc.whoAmI, 0f, 0f, 0f, 0f, 255);
                     }
                     Main.npc[num2].realLife = npc.whoAmI;
                     Main.npc[num2].ai[3] = npc.ai[3];
                     Main.npc[num2].ai[2] = (float)npc.whoAmI;
                     Main.npc[num2].ai[1] = (float)num;
                     Main.npc[num].ai[0] = (float)num2;
-                    NetMessage.SendData(23, -1, -1, null, num2, 0f, 0f, 0f, 0, 0, 0);
+                    NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, num2, 0f, 0f, 0f, 0, 0, 0);
                     num = num2;
                 }
                 TailSpawned = true;

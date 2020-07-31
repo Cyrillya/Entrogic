@@ -12,7 +12,7 @@ namespace Entrogic.Items.Materials
 			item.height = 14;
 			item.maxStack = 30;
 			item.value = 10000;
-			item.rare = 6;
+			item.rare = ItemRarityID.LightPurple;
 		}
     }
 }

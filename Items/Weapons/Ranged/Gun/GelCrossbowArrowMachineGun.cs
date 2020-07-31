@@ -1,4 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Entrogic.Items.Materials;
+using Entrogic.Items.VoluGels;
+using Entrogic.Tiles;
+
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -26,12 +30,12 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             item.ranged = true;
             item.useTime = 5;
             item.useAnimation = 5;
-            item.useStyle = 5;
+            item.useStyle = ItemUseStyleID.HoldingOut;
             item.noMelee = true; 
             item.knockBack = 4;
-            item.rare = 6;
+            item.rare = ItemRarityID.LightPurple;
             item.autoReuse = true;
-            item.shoot = 10; 
+            item.shoot = ProjectileID.PurificationPowder; 
             item.shootSpeed = 20f;
             item.useAmmo = AmmoID.Arrow;
             item.width = 58;
@@ -67,10 +71,10 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(ItemID.IllegalGunParts, 1);
             recipe.AddIngredient(ItemID.Gel, 30);
-            recipe.AddIngredient(null,"CastIronBar", 5);
-            recipe.AddIngredient(null, "GelOfLife", 7);
+            recipe.AddIngredient(ItemType<CastIronBar>(), 5);
+            recipe.AddIngredient(ItemType<GelOfLife>(), 7);
             recipe.AddRecipeGroup("IronBar", 10);
-            recipe.AddTile(mod.TileType("魔力导流台"));
+            recipe.AddTile(TileType<MagicDiversionPlatformTile>());
             recipe.SetResult(this);
             recipe.AddRecipe();
         }

@@ -128,7 +128,7 @@ namespace Entrogic.Projectiles.Magic.Staff
             for (int i = length; i >= 0; i--)
             {
                 Vector2 drawPos = projectile.Center - Main.screenPosition - projectile.oldVelocity * i * 0.5f;
-                float trailOpacity = projectile.Opacity - 0.05f - (0.95f / length) * i;
+                float trailOpacity = projectile.Opacity - 0.05f - 0.95f / length * i;
                 if (i != 0) trailOpacity /= 2f;
                 if (trailOpacity > 0f)
                 {
@@ -142,7 +142,7 @@ namespace Entrogic.Projectiles.Magic.Staff
     }
     public class FC : ModProjectile
     {
-        public override string Texture { get { return "Entrogic/Texture/Block"; } }
+        public override string Texture => "Entrogic/Images/Block";
         public override void SetDefaults()
         {
             projectile.Size = new Vector2(64);
@@ -157,16 +157,16 @@ namespace Entrogic.Projectiles.Magic.Staff
         }
         public override void AI()
         {
-            for (int i = 0; i < (Main.rand.Next(5, 11)); i++)
+            for (int i = 0; i < Main.rand.Next(5, 11); i++)
             {
                 Vector2 r = new Vector2(Main.rand.Next(580, 800), Main.rand.Next(580, 800));
                 r = r - new Vector2(Main.rand.Next(570), Main.rand.Next(570));
                 if (Main.rand.NextBool(2)) r.X = -r.X;
                 if (Main.rand.NextBool(2)) r.Y = -r.Y;
                 Vector2 v = new Vector2(12f, 12f);
-                Vector2 vec = (projectile.Center + r) - projectile.Center;
+                Vector2 vec = projectile.Center + r - projectile.Center;
                 Vector2 finalVec = (vec.ToRotation() + MathHelper.Pi).ToRotationVector2() * v;
-                int ci =Projectile.NewProjectile(projectile.Center + r, finalVec, mod.ProjectileType("NFC"), projectile.damage, projectile.knockBack, Main.myPlayer);
+                int ci =Projectile.NewProjectile(projectile.Center + r, finalVec, ProjectileType<NFC>(), projectile.damage, projectile.knockBack, Main.myPlayer);
                 Projectile c = Main.projectile[ci];
                 c.localAI[0] = projectile.position.X;
                 c.localAI[1] = projectile.position.Y;
@@ -183,7 +183,7 @@ namespace Entrogic.Projectiles.Magic.Staff
         public override string Texture { get { return "Entrogic/Projectiles/Magic/Staff/GodCrystal"; } }
         public override void SetDefaults()
         {
-            projectile.CloneDefaults(mod.ProjectileType("GodCrystal"));
+            projectile.CloneDefaults(ProjectileType<GodCrystal>());
             projectile.penetrate = -1;
             projectile.tileCollide = false;
         }
@@ -271,7 +271,7 @@ namespace Entrogic.Projectiles.Magic.Staff
             for (int i = length; i >= 0; i--)
             {
                 Vector2 drawPos = projectile.Center - Main.screenPosition - projectile.oldVelocity * i * 0.5f;
-                float trailOpacity = projectile.Opacity - 0.05f - (0.95f / length) * i;
+                float trailOpacity = projectile.Opacity - 0.05f - 0.95f / length * i;
                 if (i != 0) trailOpacity /= 2f;
                 if (trailOpacity > 0f)
                 {

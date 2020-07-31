@@ -87,7 +87,7 @@ namespace Entrogic.NPCs.Enemies
             npc.rotation = (float)Math.Atan2((double)num792, (double)num791) - 1.57f;
             npc.velocity.X = (npc.velocity.X * 140f + num791) / 140f;
             npc.velocity.Y = (npc.velocity.Y * 140f + num792) / 140f;
-            if (NPC.CountNPCS(mod.NPCType("AngryofCorruption")) < 1)
+            if (NPC.CountNPCS(NPCType<AngryofCorruption>()) < 1)
             {
                 npc.life = 0;
                 int num5;

@@ -8,25 +8,18 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
 {
     public class CuteLittleBow : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("可爱小弓");
-            Tooltip.SetDefault("[c/7BFFFF:精致的小弓，用起来格外顺手]\n" +
-                "[c/7BFFFF:“独特的射击风格”]");
-        }
-
         public override void SetDefaults()
         {
             item.damage = 43;
             item.ranged = true;
             item.useTime = 20;
             item.useAnimation = 20;
-            item.useStyle = 5;
+            item.useStyle = ItemUseStyleID.HoldingOut;
             item.noMelee = true; 
             item.knockBack = 4;
-            item.rare = 6;
+            item.rare = ItemRarityID.LightPurple;
             item.autoReuse = true;
-            item.shoot = 10; 
+            item.shoot = ProjectileID.PurificationPowder; 
             item.shootSpeed = 13;
             item.useAmmo = AmmoID.Arrow;
             item.width = 58;

@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
+using Entrogic.NPCs.Banners;
 
 namespace Entrogic.NPCs.Enemies
 {
@@ -16,7 +17,7 @@ namespace Entrogic.NPCs.Enemies
         public override void SetDefaults()
         {
             banner = npc.type;
-            bannerItem = mod.ItemType("CrimsonSpiritBanner");
+            bannerItem = ItemType<CrimsonSpiritBanner>();
             npc.aiStyle = -1;
             npc.noGravity = true;
             npc.noTileCollide = true;
@@ -91,7 +92,7 @@ namespace Entrogic.NPCs.Enemies
             Main.dust[num795].noGravity = true;
             if (Main.rand.Next(450) == 0)
             {
-                NPC.NewNPC((int)npc.position.X, (int)npc.position.Y + 50, mod.NPCType("CrimsonSpiritMinion"));
+                NPC.NewNPC((int)npc.position.X, (int)npc.position.Y + 50, NPCType<CrimsonSpiritMinion>());
             }
         }
 

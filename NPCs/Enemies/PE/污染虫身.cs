@@ -55,7 +55,7 @@ namespace Entrogic.NPCs.Enemies.PE
                 npc.HitEffect(0, 10.0);
                 npc.active = false;
             }
-            if (Main.netMode != 1)
+            if (Main.netMode != NetmodeID.MultiplayerClient)
             {
                 npc.localAI[0] += Main.rand.Next(4);
                 if (npc.localAI[0] >= Main.rand.Next(1, 500000))
@@ -65,7 +65,7 @@ namespace Entrogic.NPCs.Enemies.PE
                     if (Collision.CanHit(npc.position, npc.width, npc.height, Main.player[npc.target].position, Main.player[npc.target].width, Main.player[npc.target].height))
                     {
                         Vector2 vec = ModHelper.GetFromToVector(npc.Center, Main.player[npc.target].Center) * 4f;
-                        Projectile.NewProjectile(npc.Center.X, npc.Center.Y, vec.X, vec.Y, mod.ProjectileType("污染之虫弹幕"), 18, 0f, Main.myPlayer, 0f, 0f);
+                        Projectile.NewProjectile(npc.Center.X, npc.Center.Y, vec.X, vec.Y, ProjectileType<污染之虫射弹>(), 18, 0f, Main.myPlayer, 0f, 0f);
                         npc.netUpdate = true;
                     }
                 }
@@ -120,7 +120,7 @@ namespace Entrogic.NPCs.Enemies.PE
                 npc.HitEffect(0, 10.0);
                 npc.active = false;
             }
-            if (Main.netMode != 1)
+            if (Main.netMode != NetmodeID.MultiplayerClient)
             {
                 npc.localAI[0] += Main.rand.Next(4);
                 if (npc.localAI[0] >= Main.rand.Next(1, 500000))
@@ -130,7 +130,7 @@ namespace Entrogic.NPCs.Enemies.PE
                     if (Collision.CanHit(npc.position, npc.width, npc.height, Main.player[npc.target].position, Main.player[npc.target].width, Main.player[npc.target].height))
                     {
                         Vector2 vec = ModHelper.GetFromToVector(npc.Center, Main.player[npc.target].Center) * 4f;
-                        Projectile.NewProjectile(npc.Center.X, npc.Center.Y, vec.X, vec.Y, mod.ProjectileType("污染之虫弹幕"), 18, 0f, Main.myPlayer, 0f, 0f);
+                        Projectile.NewProjectile(npc.Center.X, npc.Center.Y, vec.X, vec.Y, ProjectileType<污染之虫射弹>(), 18, 0f, Main.myPlayer, 0f, 0f);
                         npc.netUpdate = true;
                     }
                 }
@@ -185,7 +185,7 @@ namespace Entrogic.NPCs.Enemies.PE
                 npc.HitEffect(0, 10.0);
                 npc.active = false;
             }
-            if (Main.netMode != 1)
+            if (Main.netMode != NetmodeID.MultiplayerClient)
             {
                 npc.localAI[0] += Main.rand.Next(4);
                 if (npc.localAI[0] >= Main.rand.Next(1, 500000))
@@ -195,17 +195,16 @@ namespace Entrogic.NPCs.Enemies.PE
                     if (Collision.CanHit(npc.position, npc.width, npc.height, Main.player[npc.target].position, Main.player[npc.target].width, Main.player[npc.target].height))
                     {
                         Vector2 vec = ModHelper.GetFromToVector(npc.Center, Main.player[npc.target].Center) * 4f;
-                        Projectile.NewProjectile(npc.Center.X, npc.Center.Y, vec.X, vec.Y, mod.ProjectileType("污染之虫弹幕"), 18, 0f, Main.myPlayer, 0f, 0f);
+                        Projectile.NewProjectile(npc.Center.X, npc.Center.Y, vec.X, vec.Y, ProjectileType<污染之虫射弹>(), 18, 0f, Main.myPlayer, 0f, 0f);
                         npc.netUpdate = true;
                     }
                 }
             }
         }
     }
-    public class 污染之虫弹幕 : ModProjectile
+    public class 污染之虫射弹 : ModProjectile
     {
-        public override string Texture { get { return "Entrogic/Texture/Block"; } }
-
+        public override string Texture => "Entrogic/Images/Block";
         public override void SetDefaults()
         {
             projectile.hostile = true;

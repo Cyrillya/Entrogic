@@ -20,7 +20,7 @@ namespace Entrogic.Buffs.Minions
         public override void Update(Player player, ref int buffIndex)
         {
             EntrogicPlayer modPlayer = player.GetModPlayer<EntrogicPlayer>();
-            if (player.ownedProjectileCounts[mod.ProjectileType("Stoneslime")] > 0)
+            if (player.ownedProjectileCounts[ProjectileType<Projectiles.衰落魔像.Stoneslime>()] > 0)
             {
                 modPlayer.HasStoneSlime = true;
             }

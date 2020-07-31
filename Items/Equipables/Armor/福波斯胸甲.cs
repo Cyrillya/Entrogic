@@ -18,7 +18,7 @@ namespace Entrogic.Items.Equipables.Armor
             item.width = 32;
             item.height = 24;
             item.value = Item.sellPrice(gold: 6);
-            item.rare = 2;
+            item.rare = ItemRarityID.Green;
             item.defense = 60;
         }
         public override void UpdateEquip(Player player)

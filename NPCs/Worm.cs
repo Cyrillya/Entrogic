@@ -55,7 +55,7 @@ namespace Entrogic.NPCs
             {
                 npc.timeLeft = 300;
             }
-            if (Main.netMode != 1)
+            if (Main.netMode != NetmodeID.MultiplayerClient)
             {
                 if (!tail && npc.ai[0] == 0f)
                 {
@@ -226,9 +226,9 @@ namespace Entrogic.NPCs
                         }
                     }
                 }
-                if (!npc.active && Main.netMode == 2)
+                if (!npc.active && Main.netMode == NetmodeID.Server)
                 {
-                    NetMessage.SendData(28, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
+                    NetMessage.SendData(MessageID.StrikeNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
                 }
             }
             int num180 = (int)(npc.position.X / 16f) - 1;
@@ -270,7 +270,7 @@ namespace Entrogic.NPCs
                                 {
                                     WorldGen.KillTile(num184, num185, true, true, false);
                                 }
-                                if (Main.netMode != 1 && Main.tile[num184, num185].type == 2)
+                                if (Main.netMode != NetmodeID.MultiplayerClient && Main.tile[num184, num185].type == 2)
                                 {
                                     ushort arg_BFCA_0 = Main.tile[num184, num185 - 1].type;
                                 }
@@ -323,7 +323,7 @@ namespace Entrogic.NPCs
             vector18.Y = (float)((int)(vector18.Y / 16f) * 16);
             num191 -= vector18.X;
             num192 -= vector18.Y;
-            float num193 = (float)System.Math.Sqrt((double)(num191 * num191 + num192 * num192));
+            float num193 = (float)Math.Sqrt((double)(num191 * num191 + num192 * num192));
             if (npc.ai[1] > 0f && npc.ai[1] < (float)Main.npc.Length)
             {
                 try
@@ -335,8 +335,8 @@ namespace Entrogic.NPCs
                 catch
                 {
                 }
-                npc.rotation = (float)System.Math.Atan2((double)num192, (double)num191) + 1.57f;
-                num193 = (float)System.Math.Sqrt((double)(num191 * num191 + num192 * num192));
+                npc.rotation = (float)Math.Atan2((double)num192, (double)num191) + 1.57f;
+                num193 = (float)Math.Sqrt((double)(num191 * num191 + num192 * num192));
                 int num194 = npc.width;
                 num193 = (num193 - (float)num194) / num193;
                 num191 *= num193;
@@ -366,7 +366,7 @@ namespace Entrogic.NPCs
                     {
                         npc.velocity.Y = num188;
                     }
-                    if ((double)(System.Math.Abs(npc.velocity.X) + System.Math.Abs(npc.velocity.Y)) < (double)num188 * 0.4)
+                    if ((double)(Math.Abs(npc.velocity.X) + Math.Abs(npc.velocity.Y)) < (double)num188 * 0.4)
                     {
                         if (npc.velocity.X < 0f)
                         {
@@ -416,9 +416,9 @@ namespace Entrogic.NPCs
                         npc.soundDelay = (int)num195;
                         Main.PlaySound(SoundID.Roar, npc.position, 1);
                     }
-                    num193 = (float)System.Math.Sqrt((double)(num191 * num191 + num192 * num192));
-                    float num196 = System.Math.Abs(num191);
-                    float num197 = System.Math.Abs(num192);
+                    num193 = (float)Math.Sqrt((double)(num191 * num191 + num192 * num192));
+                    float num196 = Math.Abs(num191);
+                    float num197 = Math.Abs(num192);
                     float num198 = num188 / num193;
                     num191 *= num198;
                     num192 *= num198;
@@ -434,7 +434,7 @@ namespace Entrogic.NPCs
                         }
                         if (flag20)
                         {
-                            if (Main.netMode != 1 && (double)(npc.position.Y / 16f) > (Main.rockLayer + (double)Main.maxTilesY) / 2.0)
+                            if (Main.netMode != NetmodeID.MultiplayerClient && (double)(npc.position.Y / 16f) > (Main.rockLayer + (double)Main.maxTilesY) / 2.0)
                             {
                                 npc.active = false;
                                 int num200 = (int)npc.ai[0];
@@ -443,15 +443,15 @@ namespace Entrogic.NPCs
                                     int num201 = (int)Main.npc[num200].ai[0];
                                     Main.npc[num200].active = false;
                                     npc.life = 0;
-                                    if (Main.netMode == 2)
+                                    if (Main.netMode == NetmodeID.Server)
                                     {
-                                        NetMessage.SendData(23, -1, -1, null, num200, 0f, 0f, 0f, 0, 0, 0);
+                                        NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, num200, 0f, 0f, 0f, 0, 0, 0);
                                     }
                                     num200 = num201;
                                 }
-                                if (Main.netMode == 2)
+                                if (Main.netMode == NetmodeID.Server)
                                 {
-                                    NetMessage.SendData(23, -1, -1, null, npc.whoAmI, 0f, 0f, 0f, 0, 0, 0);
+                                    NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, npc.whoAmI, 0f, 0f, 0f, 0, 0, 0);
                                 }
                             }
                             num191 = 0f;
@@ -459,12 +459,12 @@ namespace Entrogic.NPCs
                         }
                     }
                     bool flag21 = false;
-                    if (npc.type == 87)
+                    if (npc.type == NPCID.WyvernHead)
                     {
-                        if ((npc.velocity.X > 0f && num191 < 0f || npc.velocity.X < 0f && num191 > 0f || npc.velocity.Y > 0f && num192 < 0f || npc.velocity.Y < 0f && num192 > 0f) && System.Math.Abs(npc.velocity.X) + System.Math.Abs(npc.velocity.Y) > num189 / 2f && num193 < 300f)
+                        if ((npc.velocity.X > 0f && num191 < 0f || npc.velocity.X < 0f && num191 > 0f || npc.velocity.Y > 0f && num192 < 0f || npc.velocity.Y < 0f && num192 > 0f) && Math.Abs(npc.velocity.X) + Math.Abs(npc.velocity.Y) > num189 / 2f && num193 < 300f)
                         {
                             flag21 = true;
-                            if (System.Math.Abs(npc.velocity.X) + System.Math.Abs(npc.velocity.Y) < num188)
+                            if (Math.Abs(npc.velocity.X) + Math.Abs(npc.velocity.Y) < num188)
                             {
                                 npc.velocity *= 1.1f;
                             }
@@ -472,7 +472,7 @@ namespace Entrogic.NPCs
                         if (npc.position.Y > Main.player[npc.target].position.Y || (double)(Main.player[npc.target].position.Y / 16f) > Main.worldSurface || Main.player[npc.target].dead)
                         {
                             flag21 = true;
-                            if (System.Math.Abs(npc.velocity.X) < num188 / 2f)
+                            if (Math.Abs(npc.velocity.X) < num188 / 2f)
                             {
                                 if (npc.velocity.X == 0f)
                                 {
@@ -515,7 +515,7 @@ namespace Entrogic.NPCs
                                     npc.velocity.Y = npc.velocity.Y - num189;
                                 }
                             }
-                            if ((double)System.Math.Abs(num192) < (double)num188 * 0.2 && (npc.velocity.X > 0f && num191 < 0f || npc.velocity.X < 0f && num191 > 0f))
+                            if ((double)Math.Abs(num192) < (double)num188 * 0.2 && (npc.velocity.X > 0f && num191 < 0f || npc.velocity.X < 0f && num191 > 0f))
                             {
                                 if (npc.velocity.Y > 0f)
                                 {
@@ -526,7 +526,7 @@ namespace Entrogic.NPCs
                                     npc.velocity.Y = npc.velocity.Y - num189 * 2f;
                                 }
                             }
-                            if ((double)System.Math.Abs(num191) < (double)num188 * 0.2 && (npc.velocity.Y > 0f && num192 < 0f || npc.velocity.Y < 0f && num192 > 0f))
+                            if ((double)Math.Abs(num191) < (double)num188 * 0.2 && (npc.velocity.Y > 0f && num192 < 0f || npc.velocity.Y < 0f && num192 > 0f))
                             {
                                 if (npc.velocity.X > 0f)
                                 {
@@ -550,7 +550,7 @@ namespace Entrogic.NPCs
                                 {
                                     npc.velocity.X = npc.velocity.X - num189 * 1.1f;
                                 }
-                                if ((double)(System.Math.Abs(npc.velocity.X) + System.Math.Abs(npc.velocity.Y)) < (double)num188 * 0.5)
+                                if ((double)(Math.Abs(npc.velocity.X) + Math.Abs(npc.velocity.Y)) < (double)num188 * 0.5)
                                 {
                                     if (npc.velocity.Y > 0f)
                                     {
@@ -572,7 +572,7 @@ namespace Entrogic.NPCs
                                 {
                                     npc.velocity.Y = npc.velocity.Y - num189 * 1.1f;
                                 }
-                                if ((double)(System.Math.Abs(npc.velocity.X) + System.Math.Abs(npc.velocity.Y)) < (double)num188 * 0.5)
+                                if ((double)(Math.Abs(npc.velocity.X) + Math.Abs(npc.velocity.Y)) < (double)num188 * 0.5)
                                 {
                                     if (npc.velocity.X > 0f)
                                     {
@@ -587,7 +587,7 @@ namespace Entrogic.NPCs
                         }
                     }
                 }
-                npc.rotation = (float)System.Math.Atan2((double)npc.velocity.Y, (double)npc.velocity.X) + 1.57f;
+                npc.rotation = (float)Math.Atan2((double)npc.velocity.Y, (double)npc.velocity.X) + 1.57f;
                 if (head)
                 {
                     if (flag18)

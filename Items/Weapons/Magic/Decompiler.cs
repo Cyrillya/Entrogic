@@ -20,15 +20,15 @@ namespace Entrogic.Items.Weapons.Magic
             item.height = 26;
             item.useTime = 90;
             item.useAnimation = 90;
-            item.useStyle = 5;
+            item.useStyle = ItemUseStyleID.HoldingOut;
             item.noMelee = true;
             item.crit = 0;
             item.mana = 15;
             item.value = Item.sellPrice(0, 5, 10, 0);
-            item.rare = 6;
+            item.rare = ItemRarityID.LightPurple;
             item.UseSound = SoundID.Item75;
             item.autoReuse = false;
-            item.shoot = mod.ProjectileType("Binary");
+            item.shoot = ProjectileType<Binary>();
             item.shootSpeed = 8f;
             item.scale = 0.8f;
         }
@@ -60,7 +60,7 @@ namespace Entrogic.Items.Weapons.Magic
                             {
                                 proj.rotation = vec.ToRotation() - MathHelper.Pi;
                             }
-                            if (Main.netMode == 2)
+                            if (Main.netMode == NetmodeID.Server)
                                 NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, i);
                         }
                         break;
@@ -75,7 +75,7 @@ namespace Entrogic.Items.Weapons.Magic
                                 proj.rotation = vec.ToRotation() - MathHelper.Pi;
                             }
                             proj.frame = 1;
-                            if (Main.netMode == 2)
+                            if (Main.netMode == NetmodeID.Server)
                                 NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, i);
                         }
                         break;

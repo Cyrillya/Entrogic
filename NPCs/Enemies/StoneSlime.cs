@@ -1,4 +1,7 @@
 
+using Entrogic.NPCs.Banners;
+using Entrogic.Projectiles.Enemies;
+
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -18,7 +21,7 @@ namespace Entrogic.NPCs.Enemies
         public override void SetDefaults()
         {
             banner = npc.type;
-            bannerItem = mod.ItemType("StoneSlimeBanner");
+            bannerItem = ItemType<StoneSlimeBanner>();
             Player player = Main.player[Main.myPlayer];
             npc.width = 30;
             npc.height = 24;
@@ -70,7 +73,7 @@ namespace Entrogic.NPCs.Enemies
                     {
                         npc.velocity.X = npc.velocity.X * 0.9f;
                     }
-                    if (Main.netMode != 1 && npc.localAI[0] == 0f)
+                    if (Main.netMode != NetmodeID.MultiplayerClient && npc.localAI[0] == 0f)
                     {
                         num12 = Main.player[npc.target].position.Y - vector3.Y - (float)Main.rand.Next(0, 180);
                         num13 = (float)Math.Sqrt((double)(num11 * num11 + num12 * num12));
@@ -86,22 +89,22 @@ namespace Entrogic.NPCs.Enemies
                         float num15 = Main.rand.Next(0, 30) * 0.1f;
                         float num16 = Main.rand.Next(0, 45) * 0.1f;
                         float num17 = Main.rand.Next(0, 15) * 0.1f;
-                        Projectile.NewProjectile(vector3.X, vector3.Y, num11, num12, mod.ProjectileType("Gravel"), 9, 0f, Main.myPlayer, 0f, 0f);
+                        Projectile.NewProjectile(vector3.X, vector3.Y, num11, num12, ProjectileType<Gravel>(), 9, 0f, Main.myPlayer, 0f, 0f);
                         npc.life -= Main.hardMode && Main.expertMode ? 1 : Main.expertMode || Main.hardMode ? 3 : 5;
                         if (Main.expertMode || Main.hardMode)
                         {
-                            Projectile.NewProjectile(vector3.X, vector3.Y, num11 - num14, num12 + num15, mod.ProjectileType("Gravel"), 9, 0f, Main.myPlayer, 0f, 0f);
+                            Projectile.NewProjectile(vector3.X, vector3.Y, num11 - num14, num12 + num15, ProjectileType<Gravel>(), 9, 0f, Main.myPlayer, 0f, 0f);
                             npc.life -= Main.hardMode && Main.expertMode ? 1 : 3;
                             if (Main.hardMode && Main.expertMode)
                             {
-                                Projectile.NewProjectile(vector3.X, vector3.Y, num11 - num16, num12 + num17, mod.ProjectileType("Gravel"), 9, 0f, Main.myPlayer, 0f, 0f);
+                                Projectile.NewProjectile(vector3.X, vector3.Y, num11 - num16, num12 + num17, ProjectileType<Gravel>(), 9, 0f, Main.myPlayer, 0f, 0f);
                                 npc.life -= 1;
                             }
                         }
                         /*if (ModLoader.GetMod("CalamityMod") != null)
                         {
-                            Projectile.NewProjectile(vector3.X, vector3.Y, num11 + num16, num12 - num17, mod.ProjectileType("Gravel"), 9, 0f, Main.myPlayer, 0f, 0f);
-                            Projectile.NewProjectile(vector3.X, vector3.Y, num11 + num14, num12 - num15, mod.ProjectileType("Gravel"), 9, 0f, Main.myPlayer, 0f, 0f);
+                            Projectile.NewProjectile(vector3.X, vector3.Y, num11 + num16, num12 - num17, ModContent.ProjectileType<Gravel>(), 9, 0f, Main.myPlayer, 0f, 0f);
+                            Projectile.NewProjectile(vector3.X, vector3.Y, num11 + num14, num12 - num15, ModContent.ProjectileType<Gravel>(), 9, 0f, Main.myPlayer, 0f, 0f);
                         }*/
                     }
                 }
@@ -111,7 +114,7 @@ namespace Entrogic.NPCs.Enemies
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             if (spawnInfo.player.ZoneRockLayerHeight)
-                return 0.225f;
+                return 0.085f;
             return 0f;
         }
 
@@ -132,7 +135,7 @@ namespace Entrogic.NPCs.Enemies
         }
         public override void NPCLoot()
         {
-            int num = Main.rand.Next(5, 11);
+            int num = Main.rand.Next(20, 50 + 1); // 20 - 50¸ö
             if (!Main.hardMode)
             {
                 int i = Main.rand.Next(39);

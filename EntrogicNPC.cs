@@ -1,4 +1,5 @@
 ﻿using Entrogic.Buffs.Weapons;
+using Entrogic.Items.AntaGolem;
 using Entrogic.Items.Equipables.Accessories;
 using Entrogic.Items.Materials;
 using Entrogic.Items.Weapons.Card;
@@ -6,6 +7,8 @@ using Entrogic.Items.Weapons.Card.Elements;
 using Entrogic.Items.Weapons.Card.Nones;
 using Entrogic.Items.Weapons.Card.Organisms;
 using Entrogic.Items.Weapons.Card.Undeads;
+using Entrogic.Items.Weapons.Melee.Sword;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -46,7 +49,7 @@ namespace Entrogic
         {
             foreach (NPC npc in Main.npc)
             {
-                if (npc.active && (npc.boss || npc.type == 13))
+                if (npc.active && (npc.boss || npc.type == NPCID.EaterofWorldsHead))
                 {
                     return true;
                 }
@@ -82,9 +85,9 @@ namespace Entrogic
         {
             if (EntrogicWorld.Check(npc.position.X, npc.position.Y) && npc.wet && IsPreHardmodeSlime(npc))
             {
-                NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, mod.NPCType("胚胎"));
+                NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, NPCType<NPCs.Boss.凝胶Java盾.Volutio>());
                 npc.StrikeNPC(9999, 0, 0);
-                if (Main.netMode == 2)
+                if (Main.netMode == NetmodeID.Server)
                 {
                     NetMessage.SendData(MessageID.StrikeNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
                 }
@@ -135,23 +138,23 @@ namespace Entrogic
 
             int num = EntrogicWorld.downedAthanasy ? 240 : 120;
             if (Main.rand.NextBool(num) && (IsPostPlanteraDungeonEnemies(npc) || IsPrePlanteraDungeonEnemies(npc)))
-                Item.NewItem(npc.getRect(), mod.ItemType("巨神的旨意"));
+                Item.NewItem(npc.getRect(), ItemType<TitansOrder>());
 
-            if (EntrogicWorld.downedAthanasy && Main.rand.NextBool(50) && ((npc.type == NPCID.Antlion) || (npc.type == NPCID.FlyingAntlion) || (npc.type == NPCID.WalkingAntlion)
+            if (EntrogicWorld.downedAthanasy && Main.rand.NextBool(30) && ((npc.type == NPCID.Antlion) || (npc.type == NPCID.FlyingAntlion) || (npc.type == NPCID.WalkingAntlion)
                  || (npc.type == NPCID.Vulture) || (npc.type == NPCID.SandSlime) || (npc.type == NPCID.Mummy) || (npc.type == NPCID.LightMummy)
                   || (npc.type == NPCID.DarkMummy) || (npc.type == NPCID.TombCrawlerHead) || (npc.type == NPCID.DuneSplicerHead) || (npc.type == NPCID.DesertLamiaDark)
                    || (npc.type == NPCID.DesertScorpionWalk) || (npc.type == NPCID.DesertScorpionWall) || (npc.type == NPCID.DesertBeast) || (npc.type == NPCID.DesertLamiaLight)
                     || (npc.type == NPCID.DesertGhoulHallow) || (npc.type == NPCID.DesertGhoulCrimson) || (npc.type == NPCID.DesertGhoulCorruption) || (npc.type == NPCID.DesertGhoul) || (npc.type == NPCID.DesertDjinn)))
-                Item.NewItem(npc.getRect(), mod.ItemType("金麦穗"));
-            //if (Main.eclipse && Main.rand.NextBool(100)) Item.NewItem(npc.getRect(), mod.ItemType("衰变立场"));
+                Item.NewItem(npc.getRect(), ItemType<GoldenHarvest>());
+            //if (Main.eclipse && Main.rand.NextBool(100)) Item.NewItem(npc.getRect(), ModContent.ItemType<衰变立场>());
 
             if (Main.rand.NextBool(8) && IsSeaEnemies(npc))
                 if (!EntrogicWorld.IsDownedPollutionElemental)
-                    Item.NewItem(npc.getRect(), mod.ItemType("SoulOfPure"), Main.rand.Next(1, 2 + 1));
+                    Item.NewItem(npc.getRect(), ItemType<SoulOfPure>(), Main.rand.Next(1, 2 + 1));
                 else
-                    Item.NewItem(npc.getRect(), mod.ItemType("污染之魂"), Main.rand.Next(1, 2 + 1));
+                    Item.NewItem(npc.getRect(), ItemType<SoulofContamination>(), Main.rand.Next(1, 2 + 1));
             if (Main.rand.NextBool(6) && IsPreHardmodeSlime(npc))
-                Item.NewItem(npc.getRect(), mod.ItemType("SoulOfPure"), Main.rand.Next(1, 2 + 1));
+                Item.NewItem(npc.getRect(), ItemType<SoulOfPure>(), Main.rand.Next(1, 2 + 1));
 
             if (lootPlayer.ZoneUnderworldHeight && Main.rand.Next(1, 1001) <= 6) // 0.6 %
                 Item.NewItem(npc.getRect(), ItemType<BetrayerofDarkFlame>());
@@ -202,11 +205,11 @@ namespace Entrogic
             if (bossLootMsg)
             {
                 string typeName = npc.TypeName;
-                if (Main.netMode == 0)
+                if (Main.netMode == NetmodeID.SinglePlayer)
                 {
                     Main.NewText(Language.GetTextValue("Announcement.HasBeenDefeated_Single", typeName), 175, 75, byte.MaxValue, false);
                 }
-                else if (Main.netMode == 2)
+                else if (Main.netMode == NetmodeID.Server)
                 {
                     NetMessage.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasBeenDefeated_Single", new object[]
                     {
@@ -247,7 +250,7 @@ namespace Entrogic
             {
                 if (DateTime.Now.Month == 2 || DateTime.Now.Month == 1)
                 {
-                    shop.item[nextSlot].SetDefaults(ItemType<Items.Weapons.Melee.Sword.刀>());
+                    shop.item[nextSlot].SetDefaults(ItemType<Items.Weapons.Melee.Sword.FuSword>());
                     nextSlot++;
                 }
                 if (EntrogicWorld.magicStorm)
