@@ -41,6 +41,7 @@ namespace Entrogic.Tiles
             adjTiles = new int[] { TileID.Containers };
             chest = "Granite Chest";
             chestDrop = ItemType<Items.Miscellaneous.Placeable.Tiles.ExplodeGraniteChest>();
+            minPick = 0;
         }
 
         public override ushort GetMapOption(int i, int j) => (ushort)(Main.tile[i, j].frameX / 36);
@@ -131,6 +132,7 @@ namespace Entrogic.Tiles
                 {
                     NetMessage.SendData(MessageID.RequestChestOpen, -1, -1, null, left, (float)top, 0f, 0f, 0, 0, 0);
                     Main.stackSplit = 600;
+                    MessageHelper.SendExplode(new Vector2(left, top) * 16f, new Vector2(80f), 300, -1, -1, 2, 3);
                 }
             }
             else
@@ -152,7 +154,7 @@ namespace Entrogic.Tiles
                         player.chestX = left;
                         player.chestY = top;
                         Main.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
-                        Entrogic.Explode(new Vector2(i, j).ToWorldCoordinates(8f, 8f), new Vector2(96f), 300, false, 3);
+                        Entrogic.Explode(new Vector2(left, top) * 16f, new Vector2(80f), 300, 2, 3);
                     }
                     Recipe.FindRecipes();
                 }

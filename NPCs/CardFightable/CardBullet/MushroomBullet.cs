@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Entrogic.NPCs.CardFightable.Particles;
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using System;

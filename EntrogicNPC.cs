@@ -83,9 +83,9 @@ namespace Entrogic
         public int disapperer = 0;
         public override bool PreAI(NPC npc)
         {
-            if (EntrogicWorld.Check(npc.position.X, npc.position.Y) && npc.wet && IsPreHardmodeSlime(npc))
+            if (EntrogicWorld.Check(npc.position.X, npc.position.Y) && npc.wet && IsPreHardmodeSlime(npc) && Main.netMode != NetmodeID.MultiplayerClient)
             {
-                NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, NPCType<NPCs.Boss.凝胶Java盾.Volutio>());
+                NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, NPCType<NPCs.Boss.凝胶Java盾.Embryo>());
                 npc.StrikeNPC(9999, 0, 0);
                 if (Main.netMode == NetmodeID.Server)
                 {
@@ -198,7 +198,7 @@ namespace Entrogic
             if (EntrogicWorld.magicStorm)
                 dropMimicry = 0.045f; // 4.5%
             if (Main.rand.NextFloat() < dropMimicry)
-                Projectile.NewProjectile(npc.Center, Vector2.Zero, ProjectileType<Projectiles.Miscellaneous.拟态魔能>(), 0, 0f, lootPlayer.whoAmI, Main.rand.Next(2));
+                Projectile.NewProjectile(npc.Center, Vector2.Zero, ProjectileType<Projectiles.Miscellaneous.Arcana>(), 0, 0f, lootPlayer.whoAmI, Main.rand.Next(2));
             if (Main.rand.Next(1, 101) <= 2 && (lootPlayer.ZoneRockLayerHeight || lootPlayer.ZoneDirtLayerHeight) && EntrogicWorld.magicStorm) // 2 %
                 Item.NewItem(npc.getRect(), ItemType<CryptTreasure>());
 
@@ -265,7 +265,16 @@ namespace Entrogic
                 if (Main.hardMode)
                 {
                     shop.item[nextSlot].SetDefaults(ItemType<CuteWidget>());
-                    shop.item[nextSlot].shopCustomPrice = Item.sellPrice(0, 0, 60, 0);
+                    shop.item[nextSlot].shopCustomPrice = Item.buyPrice(0, 1, 0, 0);
+                    nextSlot++;
+                }
+            }
+            if (type == NPCID.Demolitionist)
+            {
+                if (NPC.downedMoonlord)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.DrillContainmentUnit);
+                    shop.item[nextSlot].shopCustomPrice = Item.buyPrice(platinum: 30);
                     nextSlot++;
                 }
             }

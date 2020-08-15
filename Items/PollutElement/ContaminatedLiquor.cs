@@ -24,10 +24,7 @@ namespace Entrogic.Items.PollutElement
             item.consumable = true;
             item.value = Item.sellPrice(0, 0, 20);
         }
-        public override bool CanUseItem(Player player)
-        {
-            return player.ZoneBeach && !NPC.AnyNPCs(NPCType<PollutionElemental>());
-        }
+        public override bool CanUseItem(Player player) => (player.ZoneBeach || EntrogicWorld.IsDownedPollutionElemental) && !NPC.AnyNPCs(NPCType<PollutionElemental>());
 
         public override bool UseItem(Player player)
         {
@@ -55,15 +52,33 @@ namespace Entrogic.Items.PollutElement
 
         public override void AddRecipes()
         {
-            ModRecipe modRecipe = new ModRecipe(mod);
-            modRecipe.AddIngredient(ItemID.SharkFin, 3);
-            modRecipe.AddIngredient(ItemID.BottledWater, 10);
-            modRecipe.AddIngredient(ItemID.SoulofSight, 5);
-            modRecipe.AddIngredient(ItemID.SoulofFright, 5);
-            modRecipe.AddIngredient(ItemID.SoulofMight, 5);
+            ModRecipe modRecipe = BasicIngredient;
+            modRecipe.AddIngredient(ItemID.Starfish, 3);
             modRecipe.AddTile(TileID.AlchemyTable);
             modRecipe.SetResult(this);
             modRecipe.AddRecipe();
+
+            modRecipe = BasicIngredient;
+            modRecipe.AddIngredient(ItemID.Seashell, 3);
+            modRecipe.AddTile(TileID.AlchemyTable);
+            modRecipe.SetResult(this);
+            modRecipe.AddRecipe();
+
+            modRecipe = BasicIngredient;
+            modRecipe.AddIngredient(ItemID.Coral, 3);
+            modRecipe.AddTile(TileID.AlchemyTable);
+            modRecipe.SetResult(this);
+            modRecipe.AddRecipe();
+        }
+        private ModRecipe BasicIngredient
+        {
+            get
+            {
+                ModRecipe modRecipe = new ModRecipe(mod);
+                modRecipe.AddIngredient(ItemID.SharkFin, 3);
+                modRecipe.AddIngredient(ItemID.BottledWater, 5);
+                return modRecipe;
+            }
         }
     }
 }

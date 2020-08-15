@@ -22,6 +22,10 @@ namespace Entrogic.NPCs
             Silver = silver;
             Copper = copper;
         }
+        public int ToInt()
+        {
+            return Copper + Silver * 100 + Gold * 10000 + Platinum * 1000000;
+        }
         public override string ToString()
         {
             CultureInfo currentCulture = CultureInfo.CurrentCulture;

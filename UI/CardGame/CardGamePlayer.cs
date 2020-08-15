@@ -29,7 +29,7 @@ namespace Entrogic.UI.CardGame
             _texture = Entrogic.ModTexturesTable["CardFightPlayer_Icon_Default"];
             LifeSpan = 0.2f;
             IsFriendly = true;
-            RectangleOffset = new Vector2((int)(_texture.Width / 2f - 1f), (int)(_texture.Height / 2f - 1f));
+            HitboxOffset = new Vector2((int)(_texture.Width / 2f - 1f), (int)(_texture.Height / 2f - 1f));
             Size = Vector2.One * 2f;
         }
         public override void Update(GameTime gameTime, Player attackPlayer, NPC attackNPC)
@@ -46,16 +46,19 @@ namespace Entrogic.UI.CardGame
                 foreach (var bullet in clientModPlayer._bullets)
                 {
                     if (bullet == this)
-                        continue;
-
-                    if (GetCollided(bullet) && !bullet.IsFriendly)
                     {
+                        continue; 
+                    }
+
+                    if (!bullet.IsFriendly && bullet.GetDamage(bullet.Damage) > 0 && Hitbox.Intersects(bullet.Hitbox))
+                    {
+                        Main.NewText(ImmuneTime);
+                        Main.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGHurt"));
                         clientModPlayer.CardGamePlayerHealth -= bullet.GetDamage(bullet.Damage);
                         ImmuneTime = 1f;
-                        Main.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGHurt"));
+                        break;
                     }
                 }
-
             ImmuneTime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             ImmuneTime = Math.Max(ImmuneTime, 0f);
             if (clientModPlayer.CardGamePlayerTurn) IsRemoved = true; // 玩家局就不需要你了
@@ -65,6 +68,7 @@ namespace Entrogic.UI.CardGame
             Position.X = Math.Min(Position.X, PlaygroundSize.X - _texture.Width);
             Position.Y = Math.Max(Position.Y, 0);
             Position.Y = Math.Min(Position.Y, PlaygroundSize.Y - _texture.Height);
+            clientModPlayer.CardGamePlayerCenter = Center;
         }
         public override void Draw(SpriteBatch spriteBatch)
         {

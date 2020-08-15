@@ -242,7 +242,7 @@ namespace Entrogic.NPCs.Boss.PollutElement
                             {
                                 SwitchState((int)NPCState.FindingWaters);
                             }
-                            if ((NPCState)State == NPCState.Dash && Main.rand.NextBool(2))
+                            if ((NPCState)State == NPCState.Dash) // 冲刺Biss
                             {
                                 switch (Main.rand.Next(2))
                                 {

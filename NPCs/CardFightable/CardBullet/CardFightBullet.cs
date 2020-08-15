@@ -17,11 +17,19 @@ namespace Entrogic.NPCs.CardFightable.CardBullet
         public Vector2 Velocity;
         public Vector2 RotateDirection;
         public Vector2 Size;
+        public Vector2 Center
+        {
+            get => Position + new Vector2(_texture.Width, _texture.Height) / 2f;
+            set => Position = value - new Vector2(_texture.Width, _texture.Height) / 2f;
+        }
+        protected float Scale = 1f;
         public byte Direction;
         public byte SpriteDirection;
         protected float _rotation;
-        protected Vector2 RectangleOffset;
-        public Rectangle Rectangle => new Rectangle((int)(Position.X + RectangleOffset.X), (int)(Position.Y + RectangleOffset.Y), (int)Size.X, (int)Size.Y);
+        protected float drawOffsetY;
+        protected float gfxOffY;
+        protected Vector2 HitboxOffset;
+        public Rectangle Hitbox => new Rectangle((int)(Position.X + HitboxOffset.X), (int)(Position.Y + HitboxOffset.Y), (int)Size.X, (int)Size.Y);
 
         public int Damage = 0;
         public Color Color = Color.White;
@@ -47,7 +55,25 @@ namespace Entrogic.NPCs.CardFightable.CardBullet
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, Position + PlaygroundPos, null, Color, _rotation, Vector2.Zero, 1f, SpriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0f);
+            spriteBatch.Draw(_texture, 
+                Position + new Vector2(_texture.Width, _texture.Height) / 2f + new Vector2(0f, drawOffsetY) + PlaygroundPos, 
+                null, 
+                GetAlpha(Color), 
+                _rotation, 
+                _texture.Size() * 0.5f,
+                Scale,
+                SpriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally,
+                0f);
+        }
+
+        public virtual Color GetAlpha(Color drawColor)
+        {
+            return drawColor;
+        }
+
+        public virtual void Kill(Player attackPlayer)
+        {
+
         }
 
         public object Clone()
@@ -83,34 +109,34 @@ namespace Entrogic.NPCs.CardFightable.CardBullet
         #region Colloision
         protected bool IsTouchingLeft(CardFightBullet bullet)
         {
-            return this.Rectangle.Right + this.Velocity.X > bullet.Rectangle.Left &&
-              this.Rectangle.Left < bullet.Rectangle.Left &&
-              this.Rectangle.Bottom > bullet.Rectangle.Top &&
-              this.Rectangle.Top < bullet.Rectangle.Bottom;
+            return this.Hitbox.Right + this.Velocity.X > bullet.Hitbox.Left &&
+              this.Hitbox.Left < bullet.Hitbox.Left &&
+              this.Hitbox.Bottom > bullet.Hitbox.Top &&
+              this.Hitbox.Top < bullet.Hitbox.Bottom;
         }
 
         protected bool IsTouchingRight(CardFightBullet bullet)
         {
-            return this.Rectangle.Left + this.Velocity.X < bullet.Rectangle.Right &&
-              this.Rectangle.Right > bullet.Rectangle.Right &&
-              this.Rectangle.Bottom > bullet.Rectangle.Top &&
-              this.Rectangle.Top < bullet.Rectangle.Bottom;
+            return this.Hitbox.Left + this.Velocity.X < bullet.Hitbox.Right &&
+              this.Hitbox.Right > bullet.Hitbox.Right &&
+              this.Hitbox.Bottom > bullet.Hitbox.Top &&
+              this.Hitbox.Top < bullet.Hitbox.Bottom;
         }
 
         protected bool IsTouchingTop(CardFightBullet bullet)
         {
-            return this.Rectangle.Bottom + this.Velocity.Y > bullet.Rectangle.Top &&
-              this.Rectangle.Top < bullet.Rectangle.Top &&
-              this.Rectangle.Right > bullet.Rectangle.Left &&
-              this.Rectangle.Left < bullet.Rectangle.Right;
+            return this.Hitbox.Bottom + this.Velocity.Y > bullet.Hitbox.Top &&
+              this.Hitbox.Top < bullet.Hitbox.Top &&
+              this.Hitbox.Right > bullet.Hitbox.Left &&
+              this.Hitbox.Left < bullet.Hitbox.Right;
         }
 
         protected bool IsTouchingBottom(CardFightBullet bullet)
         {
-            return this.Rectangle.Top + this.Velocity.Y < bullet.Rectangle.Bottom &&
-              this.Rectangle.Bottom > bullet.Rectangle.Bottom &&
-              this.Rectangle.Right > bullet.Rectangle.Left &&
-              this.Rectangle.Left < bullet.Rectangle.Right;
+            return this.Hitbox.Top + this.Velocity.Y < bullet.Hitbox.Bottom &&
+              this.Hitbox.Bottom > bullet.Hitbox.Bottom &&
+              this.Hitbox.Right > bullet.Hitbox.Left &&
+              this.Hitbox.Left < bullet.Hitbox.Right;
         }
 
         protected bool GetCollided(CardFightBullet bullet)

@@ -29,6 +29,7 @@ namespace Entrogic.NPCs
         public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
         {
             Main.NewText(drawColor);
+            npc.rotation += 0.1f;
             spriteBatch.Draw(Main.npcTexture[npc.type], npc.Center - Main.screenPosition, null, new Color(drawColor.R, drawColor.G, drawColor.B, npc.alpha), npc.rotation, Main.npcTexture[npc.type].Size() * 0.5f, 1f, SpriteEffects.None, 0f);
             return false;
         }

@@ -131,7 +131,7 @@ namespace Entrogic
             diff.Normalize();
             return diff;
         }
-        public static float GetFromToRadius(Vector2 v1, Vector2 v2)
+        public static float GetFromToRadians(Vector2 v1, Vector2 v2)
         {
             Vector2 diff = v2 - v1;
             return diff.ToRotation();

@@ -27,7 +27,7 @@ namespace Entrogic.NPCs.Enemies
             npc.height = 24;
             npc.damage = 25;
             npc.defense = 15;
-            npc.lifeMax = 1000;
+            npc.lifeMax = 600;
             npc.HitSound = SoundID.NPCHit3;
             npc.DeathSound = SoundID.NPCDeath37;
             npc.value = 10f;
@@ -51,9 +51,9 @@ namespace Entrogic.NPCs.Enemies
             if (_Life)
             {
                 _Life = false;
-                npc.life = 800;
+                npc.life = 600;
             }
-            npc.lifeMax = 800;
+            npc.lifeMax = 600;
 
             if (npc.localAI[0] > 0f)
             {
@@ -101,6 +101,12 @@ namespace Entrogic.NPCs.Enemies
                                 npc.life -= 1;
                             }
                         }
+                        if (npc.life <= 0)
+                        {
+                            npc.HitEffect();
+                            npc.active = false;
+                            npc.NPCLoot();
+                        }
                         /*if (ModLoader.GetMod("CalamityMod") != null)
                         {
                             Projectile.NewProjectile(vector3.X, vector3.Y, num11 + num16, num12 - num17, ModContent.ProjectileType<Gravel>(), 9, 0f, Main.myPlayer, 0f, 0f);
@@ -141,22 +147,22 @@ namespace Entrogic.NPCs.Enemies
                 int i = Main.rand.Next(39);
                 if (i >= 0 && i <= 12)
                 {
-                    if (Main.rand.Next(1) == 0) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.CopperOre, num);
+                    if (Main.rand.NextBool(2)) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.CopperOre, num);
                     else Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.TinOre, num);
                 }
                 else if (i >= 13 && i <= 23)
                 {
-                    if (Main.rand.Next(1) == 0) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.IronOre, num);
+                    if (Main.rand.NextBool(2)) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.IronOre, num);
                     else Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.LeadOre, num);
                 }
                 else if (i >= 24 && i <= 32)
                 {
-                    if (Main.rand.Next(1) == 0) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.TungstenOre, num);
+                    if (Main.rand.NextBool(2)) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.TungstenOre, num);
                     else Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.SilverOre, num);
                 }
                 else
                 {
-                    if (Main.rand.Next(1) == 0) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.GoldOre, num);
+                    if (Main.rand.NextBool(2)) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.GoldOre, num);
                     else Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.PalladiumOre, num);
                 }
             }
@@ -165,37 +171,37 @@ namespace Entrogic.NPCs.Enemies
                 int i = Main.rand.Next(99);
                 if (i >= 0 && i <= 20)
                 {
-                    if (Main.rand.Next(1) == 0) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.CopperOre, num);
+                    if (Main.rand.NextBool(2)) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.CopperOre, num);
                     else Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.TinOre, num);
                 }
                 else if (i >= 21 && i <= 39)
                 {
-                    if (Main.rand.Next(1) == 0) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.IronOre, num);
+                    if (Main.rand.NextBool(2)) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.IronOre, num);
                     else Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.LeadOre, num);
                 }
                 else if (i >= 40 && i <= 55)
                 {
-                    if (Main.rand.Next(1) == 0) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.TungstenOre, num);
+                    if (Main.rand.NextBool(2)) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.TungstenOre, num);
                     else Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.SilverOre, num);
                 }
                 else if (i >= 56 && i <= 69)
                 {
-                    if (Main.rand.Next(1) == 0) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.GoldOre, num);
+                    if (Main.rand.NextBool(2)) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.GoldOre, num);
                     else Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.PlatinumOre, num);
                 }
                 else if (i >= 70 && i <= 82)
                 {
-                    if (Main.rand.Next(1) == 0) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.CobaltOre, num);
+                    if (Main.rand.NextBool(2)) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.CobaltOre, num);
                     else Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.PalladiumOre, num);
                 }
                 else if (i >= 83 && i <= 91)
                 {
-                    if (Main.rand.Next(1) == 0) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.MythrilOre, num);
+                    if (Main.rand.NextBool(2)) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.MythrilOre, num);
                     else Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.OrichalcumOre, num);
                 }
                 else
                 {
-                    if (Main.rand.Next(1) == 0) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.AdamantiteOre, num);
+                    if (Main.rand.NextBool(2)) Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.AdamantiteOre, num);
                     else Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, ItemID.TitaniumOre, num);
                 }
             }

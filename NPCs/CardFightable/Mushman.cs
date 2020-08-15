@@ -9,6 +9,7 @@ using System;
 using Microsoft.Xna.Framework.Graphics;
 using Entrogic.Items.Consumables.Mushrooms;
 using Entrogic.NPCs.CardFightable.CardBullet;
+using Entrogic.Items.Weapons.Card.Organisms;
 
 namespace Entrogic.NPCs.CardFightable
 {
@@ -29,6 +30,7 @@ namespace Entrogic.NPCs.CardFightable
             npc.width = 32;
             npc.height = 62;
             npc.townNPC = false;
+            drawOffsetY = -2;
         }
         public bool STARTCHANGE = false;
         public bool changed = false;
@@ -98,9 +100,9 @@ namespace Entrogic.NPCs.CardFightable
             if ((NPC.CountNPCS(NPCType<Mushman>()) < 1) && Main.dayTime && ModHelper.NoBiomeNormalSpawn(spawnInfo) && player.ZoneOverworldHeight)
             {
                 if (player.ZoneRain)
-                    return 0.0028f;
+                    return 0.0078f;
                 else
-                    return 0.001f;
+                    return 0.005f;
             }
             return 0f;
         }
@@ -179,30 +181,27 @@ namespace Entrogic.NPCs.CardFightable
             base.StartAttacking();
         }
 
-        public override void OnAttacking()
+        public override void Initialize()
         {
-            Player clientPlayer = Main.LocalPlayer;
-            EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(clientPlayer);
-            if (RoundDuration >= 3.2f && Main.rand.NextBool(3))
-            {
-                CardFightBullet bullet = new MushroomBullet()
-                {
-                    Velocity = new Vector2(0f, Main.rand.NextFloat(1f, 3f)),
-                    Position = new Vector2(Main.rand.Next((int)PlaygroundSize.X), -50f),
-                    UIPosition = this.PanelPosition
-                };
-                clientModPlayer._bullets.Add(bullet);
-            }
-
-            base.OnAttacking();
+            RegisterState(new RainingSpore());
+            RegisterState(new FungusCannon());
         }
 
         public override void PreStartRound(bool playerTurn)
         {
-            Entrogic.Instance.CardGameUI.IsUseBiggerTexture = false;
             if (!playerTurn)
             {
-                RoundDuration = 7.5f;
+                Entrogic.Instance.CardGameUI.IsUseBiggerTexture = false;
+                int AttackMode = Main.rand.Next(2);
+                switch (AttackMode)
+                {
+                    case 0:
+                        SetState<RainingSpore>();
+                        break;
+                    case 1:
+                        SetState<FungusCannon>();
+                        break;
+                }
             }
         }
 

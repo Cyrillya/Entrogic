@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria.ObjectData;
+using Entrogic.NPCs.Enemies;
 
 namespace Entrogic.NPCs.Banners
 {
@@ -30,25 +31,20 @@ namespace Entrogic.NPCs.Banners
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
             int style = frameX / 18;
-            string item;
             switch (style)
             {
                 case 0:
-                    item = "ZombieOfficerBanner";
+                    Item.NewItem(i * 16, j * 16, 16, 48, ItemType<CrimsonSpiritBanner>());
                     break;
                 case 1:
-                    item = "CrimsonSpiritBanner";
+                    Item.NewItem(i * 16, j * 16, 16, 48, ItemType<AngryofCorruptionBanner>());
                     break;
                 case 2:
-                    item = "AngryofCorruptionBanner";
-                    break;
-                case 3:
-                    item = "StoneSlimeBanner";
+                    Item.NewItem(i * 16, j * 16, 16, 48, ItemType<StoneSlimeBanner>());
                     break;
                 default:
                     return;
             }
-            Item.NewItem(i * 16, j * 16, 16, 48, mod.ItemType(item));
         }
 
         public override void NearbyEffects(int i, int j, bool closer)
@@ -57,25 +53,20 @@ namespace Entrogic.NPCs.Banners
             {
                 Player player = Main.LocalPlayer;
                 int style = Main.tile[i, j].frameX / 18;
-                string type;
                 switch (style)
                 {
                     case 0:
-                        type = "ZombieOfficer";
+                        player.NPCBannerBuff[NPCType<CrimsonSpirit>()] = true;
                         break;
                     case 1:
-                        type = "CrimsonSpirit";
+                        player.NPCBannerBuff[NPCType<AngryofCorruption>()] = true;
                         break;
                     case 2:
-                        type = "AngryofCorruption";
-                        break;
-                    case 3:
-                        type = "StoneSlime";
+                        player.NPCBannerBuff[NPCType<StoneSlime>()] = true;
                         break;
                     default:
                         return;
                 }
-                player.NPCBannerBuff[mod.NPCType(type)] = true;
                 player.hasBanner = true;
             }
         }

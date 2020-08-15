@@ -152,22 +152,23 @@ namespace Entrogic
                         });
                     }
                 }
-                int mimicrySpawnRate = 672;
+                int mimicrySpawnRate = 962;
                 if (Main.netMode != NetmodeID.MultiplayerClient && magicStorm)
                 {
-                    mimicrySpawnRate = 343;
+                    mimicrySpawnRate = 565;
                 }
+                if (Main.hardMode) mimicrySpawnRate -= 182;
                 if (Main.rand.NextBool(mimicrySpawnRate) && Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     foreach (Player player in Main.player)
                     {
-                        if (player.ZoneOverworldHeight)
+                        if (player.ZoneOverworldHeight && player.active && !player.dead)
                         {
                             Point rand = new Point(Main.rand.Next(-80, 81), Main.rand.Next(-60, 61));
                             Point tilePlrPos = player.position.ToTileCoordinates();
                             if (!SummonMimicryAvailable(new Point(rand.X + (int)tilePlrPos.X, rand.Y + (int)tilePlrPos.Y)))
                                 continue;
-                            int mimicry = Projectile.NewProjectile(player.position + rand.ToWorldCoordinates(), Vector2.Zero, ProjectileType<Projectiles.Miscellaneous.拟态魔能>(), 0, 0f, player.whoAmI);
+                            int mimicry = Projectile.NewProjectile(player.position + rand.ToWorldCoordinates(), Vector2.Zero, ProjectileType<Projectiles.Miscellaneous.Arcana>(), 0, 0f, player.whoAmI);
                             NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, mimicry);
                         }
                     }
@@ -251,7 +252,7 @@ namespace Entrogic
                     progress.Message = Language.GetTextValue("Mods.Entrogic.GenCardShrine");
                     try
                     {
-                        for (int l = 0; l < (int)((double)(MaxTilesX * MaxTilesY) * 0.00004); l++)
+                        for (int l = 0; l < (int)((double)(MaxTilesX * MaxTilesY) * 0.00003); l++)
                         {
                             Point psw = new Point(WorldGen.genRand.Next(50, MaxTilesX - 50), WorldGen.genRand.Next((int)((float)MaxTilesY * 0.35f), (int)((float)MaxTilesY * 0.85f)));
                             bool goodPlace = true;
@@ -266,7 +267,7 @@ namespace Entrogic
                             }
                             if (goodPlace && WorldGen.InWorld(psw.X, psw.Y) && WorldGen.InWorld(psw.X + 8, psw.Y + 16) && Main.tile[psw.X, psw.Y].active() && Main.tile[psw.X, psw.Y].type == TileID.Stone && Main.tile[psw.X + 5, psw.Y].active() && Main.tile[psw.X + 5, psw.Y].type == TileID.Stone)
                             {
-                                Rectangle r = Buildings.Build($"Buildings/CardShrine{WorldGen.genRand.Next(2)}.ebuiding", psw.ToWorldCoordinates());
+                                Rectangle r = Buildings.Build($"Buildings/CardShrine{WorldGen.genRand.Next(2)}.ebuilding", psw.ToWorldCoordinates());
                                 ModHelper.FindAndReplaceWall(r, (ushort)WallType<黑陨岩墙>());
                                 Chest c = ModHelper.FindAndCreateChest(r, TileType<Tiles.ExplodeGraniteChest>());
                                 int index = 0;
@@ -294,7 +295,7 @@ namespace Entrogic
                         progress.Set(0.20f);
                         ModGenHelper.RoundTile(maxX, maxY, r, r, 0, 24.5, true, TileType<BlackMeteorite>());
                         progress.Set(0.40f);
-                        ModGenHelper.RoundTile(maxX, maxY, r - 7, r - 7, 0, 18, true, 0, 2, 0.5, 1, 180);
+                        ModGenHelper.RoundTile(maxX, maxY, r - 7, r - 7, 0, 18, true, 0, 2, 0.5, 1, 140);
                         progress.Set(0.60f);
                         int length = 15;
                         for (int j = maxY - 46; j >= maxY - 80; j--)

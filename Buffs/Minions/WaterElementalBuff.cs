@@ -13,7 +13,7 @@ namespace Entrogic.Buffs.Minions
     /// 创建人机器名：DESKTOP-QDVG7GB
     /// 创建时间：2019/8/9 21:28:52
     /// </summary>
-    public class 水元素 :ModBuff
+    public class WaterElementalBuff :ModBuff
     {
         public override void SetDefaults()
         {
@@ -26,7 +26,7 @@ namespace Entrogic.Buffs.Minions
         public override void Update(Player player, ref int buffIndex)
         {
             EntrogicPlayer modPlayer = player.GetModPlayer<EntrogicPlayer>();
-            if (player.ownedProjectileCounts[ProjectileType<Projectiles.Minions.运动水元素>()] > 0)
+            if (player.ownedProjectileCounts[ProjectileType<Projectiles.Minions.WaterElemental>()] > 0)
             {
                 modPlayer.HasMovementWaterElemental = true;
             }

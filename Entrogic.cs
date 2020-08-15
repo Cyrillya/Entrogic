@@ -45,6 +45,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.Tile_Entities;
 using Entrogic.NPCs.CardFightable.CardBullet;
 using Entrogic.NPCs.CardMerchantSystem;
+using Entrogic.Projectiles.Miscellaneous;
 
 namespace Entrogic
 {
@@ -140,7 +141,7 @@ namespace Entrogic
         {
             Main.OnPostDraw += Main_OnPostDraw;
             Main.OnPreDraw += Main_OnPreDraw;
-            IL.Terraria.Main.DrawMenu += UpdateExtraWorldDiff;
+            //IL.Terraria.Main.DrawMenu += UpdateExtraWorldDiff;
 
             Mod bossChecklist = ModLoader.GetMod("BossChecklist");
             if (bossChecklist != null)
@@ -150,11 +151,11 @@ namespace Entrogic
             2.7f,
             new List<int>() { ModContent.NPCType<Volutio>(), ModContent.NPCType<Embryo>() },// Boss ID
             this, // Mod
-            "$Mods.Entrogic.NPCName.嘉沃顿", // Boss Name
+            "$Mods.Entrogic.NPCName.Volutio", // Boss Name
             (Func<bool>)(() => EntrogicWorld.downedGelSymbiosis),
             ModContent.ItemType<GelCultureFlask>(), // Summon Items
             new List<int> { ModContent.ItemType<VolutioMask>(), ModContent.ItemType<VTrophy>() }, // Collections
-            new List<int> { ModContent.ItemType<GelAnkh>(), ModContent.ItemType<GelOfLife>() }, // Normal Loots
+            new List<int> { ModContent.ItemType<VolutioTreasureBag>(), ModContent.ItemType<GelAnkh>(), ModContent.ItemType<GelOfLife>() }, // Normal Loots
             "$Mods.Entrogic.BossSpawnInfo.GelSymb", // Spawn Info
             "", // Despawn Info
             "Entrogic/Images/GelSym_Textures");// 这里切记别用ModTexturesTable，不然服务器会炸
@@ -168,22 +169,32 @@ namespace Entrogic
             (Func<bool>)(() => EntrogicWorld.downedAthanasy),
             ModContent.ItemType<TitansOrder>(),
             new List<int> { ModContent.ItemType<AthanasyMask>(), ModContent.ItemType<AthanasyTrophy>() },
-            new List<int> { ModContent.ItemType<RockSpear>(), ModContent.ItemType<RockShotgun>(), ModContent.ItemType<EyeofImmortal>(), ModContent.ItemType<StoneSlimeStaff>() },
+            new List<int> { ModContent.ItemType<AthanasyTreasureBag>(), ModContent.ItemType<RockSpear>(), ModContent.ItemType<RockShotgun>(), ModContent.ItemType<EyeofImmortal>(), ModContent.ItemType<StoneSlimeStaff>() },
             "$Mods.Entrogic.BossSpawnInfo.Athanasy");
 
                 bossChecklist.Call(
             "AddBoss",
-            10.3f,
+            6.8f,
             ModContent.NPCType<PollutionElemental>(), // Boss ID
             this, // Mod
-            "$Mods.Entrogic.NPCName.污染之灵", // Boss Name
+            "$Mods.Entrogic.NPCName.PollutionElemental", // Boss Name
             (Func<bool>)(() => EntrogicWorld.IsDownedPollutionElemental),
             ModContent.ItemType<ContaminatedLiquor>(),
             new List<int> { ModContent.ItemType<PollutionElementalMask>(), ModContent.ItemType<PETrophy>() },
-            new List<int> { ModContent.ItemType<BottleofStorm>(), ModContent.ItemType<WaterElementalStaff>(), ModContent.ItemType<ContaminatedLongbow>(), ModContent.ItemType<ContaminatedCurrent>(),
+            new List<int> { ModContent.ItemType<ContaminatedElementalTreasureBag>(),  ModContent.ItemType<BottleofStorm>(), ModContent.ItemType<WaterElementalStaff>(), ModContent.ItemType<ContaminatedLongbow>(), ModContent.ItemType<ContaminatedCurrent>(),
                 ModContent.ItemType<HelmetofContamination>(), ModContent.ItemType<HeadgearofContamination>(), ModContent.ItemType<MaskofContamination>(), ModContent.ItemType<BreastplateofContamination>(), ModContent.ItemType<GreavesofContamination>() },
             "$Mods.Entrogic.BossSpawnInfo.PollutionElement",
             " 在大海中继续沉睡...");
+            }
+            Mod fargos = ModLoader.GetMod("Fargowiltas");
+            if (fargos != null)
+            {
+                // AddSummon, order or value in terms of vanilla bosses, your mod internal name, summon  
+                // item internal name, inline method for retrieving downed value, price to sell for in copper
+                fargos.Call("AddSummon", 2.7f, "Entrogic", "EmbryoCultureFlask", (Func<bool>)(() => EntrogicWorld.downedGelSymbiosis), new Money(gold: 9).ToInt());
+                fargos.Call("AddSummon", 5.7f, "Entrogic", "TitansOrder", (Func<bool>)(() => EntrogicWorld.downedAthanasy), new Money(gold: 18).ToInt());
+                fargos.Call("AddSummon", 6.8f, "Entrogic", "ContaminatedLiquor", (Func<bool>)(() => EntrogicWorld.IsDownedPollutionElemental), new Money(gold: 32).ToInt());
+
             }
         }
 
@@ -304,6 +315,7 @@ namespace Entrogic
                 Filters.Scene["Entrogic:MagicStormScreen"] = new Filter(new ScreenShaderData("FilterBloodMoon").UseColor(-0.4f, -0.2f, 1.6f).UseOpacity(0.6f), EffectPriority.Medium);
                 SkyManager.Instance["Entrogic:MagicStormScreen"] = new MagicStormScreen();
                 GameShaders.Misc["ExampleMod:DeathAnimation"] = new MiscShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffectDeath")), "DeathAnimation").UseImage("Images/Misc/Perlin");
+                GameShaders.Misc["Entrogic:WhiteBlur"] = new MiscShaderData(new Ref<Effect>(GetEffect("Effects/WhiteBlur")), "WhiteBlur");
                 // First, you load in your shader file.
                 // You'll have to do this regardless of what kind of shader it is,
                 // and you'll have to do it for every shader file.
@@ -363,16 +375,16 @@ namespace Entrogic
             #endregion
             #region Boss Checklist Translates
             ModTranslation bctext = CreateTranslation("BossSpawnInfo.GelSymb");
-            bctext.AddTranslation(GameCulture.Chinese, "在地下原汤湖使用 [i:" + ItemType("凝胶培养瓶") + "] 召唤一只史莱姆, 并将其掷于地下原汤湖中召唤");
-            bctext.SetDefault("Use [i:" + ItemType("凝胶培养瓶") + "] in the underground pool to summon a slime, and thorw it into the pool to summon.");
+            bctext.AddTranslation(GameCulture.Chinese, "在地下原汤湖使用 [i:" + ModContent.ItemType<GelCultureFlask>() + "] 召唤一只史莱姆, 并将其掷于地下原汤湖中召唤");
+            bctext.SetDefault("Use [i:" + ModContent.ItemType<GelCultureFlask>() + "] in the underground pool to summon a slime, and thorw it into the pool to summon.");
             AddTranslation(bctext);
             bctext = CreateTranslation("BossSpawnInfo.Athanasy");
-            bctext.AddTranslation(GameCulture.Chinese, "使用 [i:" + ItemType("巨神的旨意") + "] 召唤（由地牢怪物掉落或在上锁的金箱中找到）");
-            bctext.SetDefault("Use [i:" + ItemType("巨神的旨意") + "] to spawn, you can find it from locked chests or drop from dungeon monsters");
+            bctext.AddTranslation(GameCulture.Chinese, "使用 [i:" + ModContent.ItemType<TitansOrder>() + "] 召唤（由地牢怪物掉落或在上锁的金箱中找到）");
+            bctext.SetDefault("Use [i:" + ModContent.ItemType<TitansOrder>() + "] to spawn, you can find it from locked chests or drop from dungeon monsters");
             AddTranslation(bctext);
             bctext = CreateTranslation("BossSpawnInfo.PollutionElement");
-            bctext.AddTranslation(GameCulture.Chinese, "在海边使用 [i:" + ItemType("污染水源") + "] 召唤");
-            bctext.SetDefault("Use [i:" + ItemType("污染水源") + "] in ocean to spawn");
+            bctext.AddTranslation(GameCulture.Chinese, "在海边使用 [i:" + ModContent.ItemType<ContaminatedLiquor>() + "] 召唤");
+            bctext.SetDefault("Use [i:" + ModContent.ItemType<ContaminatedLiquor>() + "] in ocean to spawn");
             AddTranslation(bctext);
             #endregion
             #region Another Translates
@@ -773,6 +785,49 @@ namespace Entrogic
                         }
                         break;
                     }
+                case EntrogicModMessageType.NPCSpawn:
+                    {
+                        if (Main.netMode == NetmodeID.MultiplayerClient) break;
+                        int plr = (int)reader.ReadByte();
+                        int type = (int)reader.ReadInt16();
+                        bool showSpawnText = reader.ReadBoolean();
+                        float posx = reader.ReadSingle();
+                        float posy = reader.ReadSingle();
+                        Main.PlaySound(SoundID.Roar, Main.player[plr].Center, 0);
+                        int npc = NPC.NewNPC((int)posx, (int)posy, type, 1);
+                        if (npc == 200)
+                            break;
+                        Main.npc[npc].target = plr;
+                        Main.npc[npc].timeLeft *= 20;
+                        if (npc < 200)
+                        {
+                            NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, npc);
+                        }
+                        if (showSpawnText == true)
+                        {
+                            NetMessage.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasAwoken", Main.npc[npc].GetTypeNetName()), new Color(175, 75, 255));
+                        }
+                        break;
+                    }
+                case EntrogicModMessageType.SyncExplode:
+                    {
+                        if (Main.netMode == NetmodeID.MultiplayerClient)
+                            Explode(reader.ReadPackedVector2(), reader.ReadPackedVector2(), reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32(), reader.ReadBoolean());
+                        else
+                        {
+                            MessageHelper.SendExplode(reader.ReadPackedVector2(), reader.ReadPackedVector2(), reader.ReadInt32(), whoAmI, -1, reader.ReadInt32(), reader.ReadInt32(), reader.ReadBoolean());
+                        }
+                        if (Main.dedServ) // 在服务器下
+                        {
+                            ModPacket packet = GetPacket();
+                            packet.Write((byte)EntrogicModMessageType.ReceiveMagicStormMPC);
+                            packet.Write(EntrogicWorld.magicStorm);
+                            // 发回给发送者
+                            packet.Send(whoAmI, -1);
+                            break;
+                        }
+                        break;
+                    }
                 case EntrogicModMessageType.SyncCardGamingInfos:
                     {
                         int playernumber = reader.ReadByte();
@@ -825,6 +880,8 @@ namespace Entrogic
             ReceiveMagicStormRequest,
             ReceiveMagicStormMPC,
             NPCSpawnOnPlayerAction,
+            NPCSpawn,
+            SyncExplode,
             SyncBookBubbleInfo,
             SyncCardGamingInfos,
             SendCompletedCardMerchantMissionRequest
@@ -876,86 +933,40 @@ namespace Entrogic
             }
             return false;
         }
-        internal static void Explode(Vector2 position, Vector2 size, int damage, bool friendly = false, int goreTimes = 1, bool useSomke = true)
+        /// <param name="friendly">0为敌对，1为友好，2为全部伤害</param>
+        internal static void Explode(Vector2 position, Vector2 size, int damage, int friendly = 0, int goreTimes = 1, bool useSomke = true)
         {
             Main.PlaySound(SoundID.Item14, position);
-            position.X = position.X - (float)(size.X / 2);
-            position.Y = position.Y - (float)(size.Y / 2);
-            Rectangle hitbox = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
-            damage = Main.DamageVar(damage);
-            foreach (NPC npc in Main.npc)
+            if (friendly == 2)
             {
-                if (npc != null && npc.type != NPCID.None && npc.friendly != friendly && npc.getRect().Intersects(hitbox))
-                {
-                    npc.StrikeNPC(damage, 3f, (npc.Center.X - hitbox.Center.X) > 0 ? 1 : -1);
-                    if (Main.dedServ)
-                    {
-                        NetMessage.SendData(MessageID.StrikeNPC, -1, -1, null, npc.whoAmI);
-                    }
-                }
+                int explode = Projectile.NewProjectile(position, Vector2.Zero, ModContent.ProjectileType<SimpleExplode>(), damage, 2f);
+                Main.projectile[explode].friendly = true;
+                Main.projectile[explode].hostile = false;
+                Main.projectile[explode].width = (int)size.X;
+                Main.projectile[explode].height = (int)size.Y;
+                Main.projectile[explode].position = position - size / 2f;
+                ((SimpleExplode)Main.projectile[explode].modProjectile).goreTimes = goreTimes;
+                ((SimpleExplode)Main.projectile[explode].modProjectile).useSmoke = useSomke;
+
+                int explode2 = Projectile.NewProjectile(position, Vector2.Zero, ModContent.ProjectileType<SimpleExplode>(), damage, 2f, Main.myPlayer);
+                Main.projectile[explode2].friendly = false;
+                Main.projectile[explode2].hostile = true;
+                Main.projectile[explode2].width = (int)size.X;
+                Main.projectile[explode2].height = (int)size.Y;
+                Main.projectile[explode2].position = position - size / 2f;
+                ((SimpleExplode)Main.projectile[explode2].modProjectile).goreTimes = goreTimes;
+                ((SimpleExplode)Main.projectile[explode2].modProjectile).useSmoke = false;
             }
-            if (!friendly)
+            else
             {
-                foreach (Player player in Main.player)
-                {
-                    if (player.active && !player.dead && player.getRect().Intersects(hitbox))
-                    {
-                        player.Hurt(PlayerDeathReason.ByOther(3), damage, (player.Center.X - hitbox.Center.X) > 0 ? 1 : -1);
-                        if (Main.dedServ)
-                        {
-                            NetMessage.SendData(MessageID.PlayerHurtV2, -1, -1, null, player.whoAmI);
-                        }
-                    }
-                }
-            }
-            if (!useSomke)
-                return;
-            for (int num762 = 0; num762 < 20; num762++)
-            {
-                int num763 = Dust.NewDust(new Vector2(position.X, position.Y), (int)size.X, (int)size.Y, 31, 0f, 0f, 100, default(Color), 1.5f);
-                Dust dust = Main.dust[num763];
-                dust.velocity *= 1.4f;
-            }
-            for (int num764 = 0; num764 < 10; num764++)
-            {
-                int num765 = Dust.NewDust(new Vector2(position.X, position.Y), (int)size.X, (int)size.Y, 6, 0f, 0f, 100, default(Color), 2.5f);
-                Main.dust[num765].noGravity = true;
-                Dust dust = Main.dust[num765];
-                dust.velocity *= 5f;
-                num765 = Dust.NewDust(new Vector2(position.X, position.Y), (int)size.X, (int)size.Y, 6, 0f, 0f, 100, default(Color), 1.5f);
-                dust = Main.dust[num765];
-                dust.velocity *= 3f;
-            }
-            for (int i = 0; i < goreTimes; i++)
-            {
-                int num766 = Gore.NewGore(new Vector2(hitbox.Center.X, hitbox.Center.Y) + new Vector2(Main.rand.NextFloat(-size.X, size.X), Main.rand.NextFloat(-size.Y, size.Y)), default(Vector2), Main.rand.Next(61, 64));
-                Gore gore = Main.gore[num766];
-                gore.velocity *= 0.4f;
-                Gore gore138 = Main.gore[num766];
-                gore138.velocity.X = gore138.velocity.X + 1f;
-                Gore gore139 = Main.gore[num766];
-                gore139.velocity.Y = gore139.velocity.Y + 1f;
-                num766 = Gore.NewGore(new Vector2(hitbox.Center.X, hitbox.Center.Y) + new Vector2(Main.rand.NextFloat(-size.X, size.X), Main.rand.NextFloat(-size.Y, size.Y)), default(Vector2), Main.rand.Next(61, 64));
-                gore = Main.gore[num766];
-                gore.velocity *= 0.4f;
-                Gore gore140 = Main.gore[num766];
-                gore140.velocity.X = gore140.velocity.X - 1f;
-                Gore gore141 = Main.gore[num766];
-                gore141.velocity.Y = gore141.velocity.Y + 1f;
-                num766 = Gore.NewGore(new Vector2(hitbox.Center.X, hitbox.Center.Y) + new Vector2(Main.rand.NextFloat(-size.X, size.X), Main.rand.NextFloat(-size.Y, size.Y)), default(Vector2), Main.rand.Next(61, 64));
-                gore = Main.gore[num766];
-                gore.velocity *= 0.4f;
-                Gore gore142 = Main.gore[num766];
-                gore142.velocity.X = gore142.velocity.X + 1f;
-                Gore gore143 = Main.gore[num766];
-                gore143.velocity.Y = gore143.velocity.Y - 1f;
-                num766 = Gore.NewGore(new Vector2(hitbox.Center.X, hitbox.Center.Y) + new Vector2(Main.rand.NextFloat(-size.X, size.X), Main.rand.NextFloat(-size.Y, size.Y)), default(Vector2), Main.rand.Next(61, 64));
-                gore = Main.gore[num766];
-                gore.velocity *= 0.4f;
-                Gore gore144 = Main.gore[num766];
-                gore144.velocity.X = gore144.velocity.X - 1f;
-                Gore gore145 = Main.gore[num766];
-                gore145.velocity.Y = gore145.velocity.Y - 1f;
+                int explode = Projectile.NewProjectile(position, Vector2.Zero, ModContent.ProjectileType<SimpleExplode>(), damage, 2f, (friendly == 1 ? Main.myPlayer : 255));
+                Main.projectile[explode].friendly = friendly == 1;
+                Main.projectile[explode].hostile = friendly == 0;
+                Main.projectile[explode].width = (int)size.X;
+                Main.projectile[explode].height = (int)size.Y;
+                Main.projectile[explode].position = position - size / 2f;
+                ((SimpleExplode)Main.projectile[explode].modProjectile).goreTimes = goreTimes;
+                ((SimpleExplode)Main.projectile[explode].modProjectile).useSmoke = useSomke;
             }
         }
 

@@ -109,7 +109,7 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
             for (int i = 0; i < 200; i++)
             {
                 NPC master = Main.npc[i];
-                if (master.active && npc.ai[3] < 240 && master.type == NPCType<Volutio>())
+                if (master.active && npc.ai[3] < 240 && master.type == NPCType<Embryo>())
                 {
                     Vector2 vector = new Vector2(npc.Center.X, npc.Center.Y);
                     float num = master.Center.X - vector.X;

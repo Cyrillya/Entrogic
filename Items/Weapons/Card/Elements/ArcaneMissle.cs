@@ -1,4 +1,7 @@
 ﻿
+using Entrogic.NPCs.CardFightable.CardBullet;
+using Entrogic.NPCs.CardFightable.CardBullet.PlayerBullets;
+
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -38,6 +41,21 @@ namespace Entrogic.Items.Weapons.Card.Elements
                 Vector2 perturbedSpeed = new Vector2(speedX, speedY).RotatedByRandom(MathHelper.ToRadians(10));
                 Projectile.NewProjectile(position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, knockBack, player.whoAmI);
             }
+        }
+        public override void CardGameAttack(Player attackPlayer, NPC attackNPC, Vector2 playerDrawPosition, Vector2 NPCDrawPosition, Vector2 panelPos)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(attackPlayer);
+                CardFightBullet bullet = new ArcaneMissleBullet(NPCDrawPosition + new Vector2(0, -10f), i * 0.2f)
+                {
+                    Velocity = new Vector2(Main.rand.Next(-8, 9) + (Main.rand.NextBool(2) ? 6f : -6f), Main.rand.Next(-8, 9) + (Main.rand.NextBool(2) ? 6f : -6f)),
+                    Position = playerDrawPosition + new Vector2(0F, -6F),
+                    UIPosition = panelPos
+                };
+                clientModPlayer._bullets.Add(bullet); 
+            }
+            base.CardGameAttack(attackPlayer, attackNPC, playerDrawPosition, NPCDrawPosition, panelPos);
         }
     }
     public class ArcaneMissle_Electromagnetism : ModCard

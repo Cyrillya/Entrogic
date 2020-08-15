@@ -21,7 +21,7 @@ namespace Entrogic.NPCs.Banners
             item.rare = ItemRarityID.Blue;
             item.value = Item.sellPrice(0, 0, 10, 0);
             item.createTile = TileType<MonsterBanner>();
-            item.placeStyle = 1;
+            item.placeStyle = 0;
         }
     }
 }

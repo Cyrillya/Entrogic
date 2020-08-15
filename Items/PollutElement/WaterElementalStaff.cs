@@ -19,7 +19,7 @@ namespace Entrogic.Items.PollutElement
         public override void SetDefaults()
         {
             item.mana = 10;
-            item.damage = 66;
+            item.damage = 58;
             item.useStyle = ItemUseStyleID.SwingThrow;
             item.width = 48;
             item.height = 46;
@@ -30,10 +30,10 @@ namespace Entrogic.Items.PollutElement
             item.value = Item.sellPrice(0, 5);
             item.rare = RareID.LV8;
             item.UseSound = SoundID.Item113;
-            item.shoot = ProjectileType<运动水元素>();
+            item.shoot = ProjectileType<WaterElemental>();
             item.shootSpeed = 8f;
             item.summon = true;
-            item.buffType = BuffType<Buffs.Minions.水元素>();
+            item.buffType = BuffType<Buffs.Minions.WaterElementalBuff>();
             item.buffTime = 2;
         }
         public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
@@ -45,12 +45,19 @@ namespace Entrogic.Items.PollutElement
             Vector2 vector = player.RotatedRelativePoint(player.MountedCenter, true);
             vector.X = Main.mouseX + Main.screenPosition.X;
             vector.Y = Main.mouseY + Main.screenPosition.Y;
-            for (int i = 0; i < 3; i++)
-                Projectile.NewProjectile(vector, Vector2.Zero, ProjectileType<运动水元素>(), num, num2, Main.myPlayer, 0f, 0f);
+            bool summonSuccessful = true;
+            Projectile minion = Projectile.NewProjectileDirect(vector, Vector2.Zero, ProjectileType<WaterElemental>(), num, num2, Main.myPlayer, 0f, Main.rand.Next(2));
+            if (player.slotsMinions + 0.33f > (float)player.maxMinions)
+            {
+                summonSuccessful = false;
+            }
+            Projectile.NewProjectile(vector, Vector2.Zero, ProjectileType<WaterElemental>(), num, num2, Main.myPlayer, 0f, Main.rand.Next(2));
+            Projectile.NewProjectile(vector, Vector2.Zero, ProjectileType<WaterElemental>(), num, num2, Main.myPlayer, 0f, Main.rand.Next(2));
 
+            if (summonSuccessful) return false;
             foreach (Projectile proj in Main.projectile)
             {
-                if (proj.active && proj.type == ProjectileType<运动水元素>())
+                if (proj.active && proj.type == ProjectileType<WaterElemental>())
                 {
                     proj.Center = vector;
                     return false;

@@ -1,4 +1,6 @@
-﻿using Entrogic.NPCs.CardFightable;
+﻿using Entrogic.Items.Weapons.Card;
+using Entrogic.NPCs.CardFightable;
+using Entrogic.NPCs.CardFightable.Particles;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -23,32 +26,18 @@ namespace Entrogic.UI.CardGame
         internal int Index;
         internal bool PlayerTurn;
         internal bool Clicked;
+        private Vector2 ScreenCenter => new Vector2(Main.screenWidth, Main.screenHeight) / 2f;
+        private Vector2 PanelSize = new Vector2(574f, 436f);
+        private Vector2 PanelPos => new Vector2(ScreenCenter.X - PanelSize.X / 2, ScreenCenter.Y - PanelSize.Y / 2);
+
+        private bool StartAnimation;
+        private int AnimationTimer;
+        private Vector2 AnimationPosition;
         public HandCardSlot(int index) : base(Main.magicPixel) // 无贴图
         {
             Index = index;
         }
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            uiWidth = 38;
-            uiHeight = 50;
-            float alpha = 0.36f;
-            if (ModHelper.MouseInRectangle(uiRectangle) && inventoryItem.type != ItemID.None && inventoryItem != null)
-            {
-                Main.hoverItemName = $"{inventoryItem.Name}\n点击以使用";
-                if (!PlayerTurn)
-                    Main.hoverItemName = $"{inventoryItem.Name}(暂不可用)";
-                alpha = 1f;
-            }
-            // 没有UI贴图
-            //spriteBatch.Draw(ModContent.GetTexture("Entrogic/UI/Cards/HelpGrid"), finalUIPosition, uiColor);
-            if (inventoryItem.type != ItemID.None && inventoryItem != null)
-            {
-                Texture2D t = Main.itemTexture[inventoryItem.type];
-                var frame = Main.itemAnimations[inventoryItem.type] != null ? Main.itemAnimations[inventoryItem.type].GetFrame(Main.itemTexture[inventoryItem.type]) : Main.itemTexture[inventoryItem.type].Frame(1, 1, 0, 0);
-                spriteBatch.Draw(t, finalUIPosition, (Rectangle?)frame, Color.White * alpha);
-            }
-        }
-        public override void ClickEvent()
+        public void Update()
         {
             if (Main.dedServ) return;
             Player clientPlayer = Main.LocalPlayer;
@@ -57,12 +46,94 @@ namespace Entrogic.UI.CardGame
                 return;
             NPC npc = Main.npc[clientModPlayer.CardGameNPCIndex];
             CardFightableNPC fightNPC = (CardFightableNPC)npc.modNPC;
-            if (!PlayerTurn) return;
-            clientModPlayer.CardGameType[Index] = 0;
-            Clicked = true;
 
-            // 伤害计算
-            fightNPC.CardGameHealth -= 100;
+            if (StartAnimation)
+            {
+                Vector2 TargetPosition = new Vector2(272f, 252f);
+                AnimationTimer++;
+                if (AnimationTimer <= 15f)
+                {
+                    AnimationPosition = (TargetPosition - uiPosition) / 15f * AnimationTimer + uiPosition;
+                }
+                else if (AnimationTimer >= 25f)
+                {
+                    // 出击
+                    if (inventoryItem.modItem is ModCard)
+                    {
+                        ModCard card = (ModCard)inventoryItem.modItem;
+                        Vector2 drawPosition = new Vector2(274f, 314f) + new Vector2(17f, 28f); // 元件在UI中的位置
+                        drawPosition = CardGameUI.ToPlaygroundPos(drawPosition);
+                        card.CardGameAttack(clientPlayer, npc, drawPosition, new Vector2(292f, 64f), PanelPos);
+
+                        clientModPlayer.CardGameType[Index] = 0;
+                    }
+                    StartAnimation = false;
+                }
+            }
+        }
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            Player clientPlayer = Main.LocalPlayer;
+            EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(clientPlayer);
+            bool Animationing = StartAnimation && AnimationTimer >= 1 ? true : false;
+            uiWidth = 38;
+            uiHeight = 50;
+            float alpha = 0.36f;
+            if (!Animationing && ModHelper.MouseInRectangle(uiRectangle) && inventoryItem.type != ItemID.None && inventoryItem != null)
+            {
+                if (PlayerTurn && clientModPlayer.CardGameLeftCard > 0)
+                {
+                    Main.hoverItemName = $"{inventoryItem.Name}\n点击以使用";
+                    alpha = 1f;
+                }
+            }
+            // 没有UI贴图
+            //spriteBatch.Draw(ModContent.GetTexture("Entrogic/UI/Cards/HelpGrid"), finalUIPosition, uiColor);
+            if (!Animationing && inventoryItem.type != ItemID.None && inventoryItem != null)
+            {
+                Texture2D t = Main.itemTexture[inventoryItem.type];
+                var frame = Main.itemAnimations[inventoryItem.type] != null ? Main.itemAnimations[inventoryItem.type].GetFrame(Main.itemTexture[inventoryItem.type]) : Main.itemTexture[inventoryItem.type].Frame(1, 1, 0, 0);
+                spriteBatch.Draw(t, finalUIPosition, (Rectangle?)frame, Color.White * alpha);
+            }
+
+            if (Animationing)
+            {
+                Texture2D t = Main.itemTexture[inventoryItem.type];
+                var frame = Main.itemAnimations[inventoryItem.type] != null ? Main.itemAnimations[inventoryItem.type].GetFrame(Main.itemTexture[inventoryItem.type]) : Main.itemTexture[inventoryItem.type].Frame(1, 1, 0, 0);
+
+                Main.spriteBatch.End();
+                Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.UIScaleMatrix);
+                // Retrieve reference to shader
+                var whiteBlur = GameShaders.Misc["Entrogic:WhiteBlur"];
+                // Reset back to default value.
+                whiteBlur.UseOpacity(0f);
+                if (AnimationTimer > 15f)
+                {
+                    whiteBlur.UseOpacity(MathHelper.Min((AnimationTimer - 15f) / 8f, 1f));
+                }
+                whiteBlur.Apply(null);
+
+                spriteBatch.Draw(t, AnimationPosition + fatherPosition, (Rectangle?)frame, Color.White);
+
+                // As mentioned above, be sure not to forget this step.
+                Main.spriteBatch.End();
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.UIScaleMatrix);
+            }
+        }
+        public override void ClickEvent()
+        {
+            if (Main.dedServ || StartAnimation) return;
+            Player clientPlayer = Main.LocalPlayer;
+            EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(clientPlayer);
+            if (clientModPlayer.CardGameNPCIndex == -1)
+                return;
+            NPC npc = Main.npc[clientModPlayer.CardGameNPCIndex];
+            CardFightableNPC fightNPC = (CardFightableNPC)npc.modNPC;
+            if (!PlayerTurn || clientModPlayer.CardGameLeftCard <= 0) return;
+            clientModPlayer.CardGameLeftCard--;
+            //Clicked = true;
+            StartAnimation = true;
+            AnimationTimer = 0;
         }
         public override void RightClickEvent()
         {

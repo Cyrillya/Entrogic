@@ -32,6 +32,8 @@ namespace Entrogic.Items.Weapons.Card
         public int costMana = 0;
         public int attackCardRemainingTimes = 0;
         public float cardProb = 0;
+        protected Vector2 PlaygroundPos => new Vector2(114f, 86f);
+        protected Vector2 PlaygroundSize => new Vector2(358f, 220f);
         public sealed override void SetStaticDefaults()
         {
             PreCreated();
@@ -144,6 +146,10 @@ namespace Entrogic.Items.Weapons.Card
         {
             add += EntrogicPlayer.ModPlayer(player).arcaneDamageAdd;
             mult *= EntrogicPlayer.ModPlayer(player).arcaneDamageMult;
+
+            // 收取25%的魔法伤害加成
+            add += player.magicDamage * 0.25f;
+            mult *= MathHelper.Max(player.magicDamageMult * 0.25f, 1f);
         }
 
         public override void GetWeaponKnockback(Player player, ref float knockback)
@@ -169,6 +175,21 @@ namespace Entrogic.Items.Weapons.Card
         {
 
         }
+        /// <summary>
+        /// 在玩家点击对局卡牌时执行
+        /// </summary>
+        /// <param name="attackPlayer">对局中的玩家</param>
+        /// <param name="attackNPC">对局中的NPC</param>
+        /// <param name="playerDrawPosition">玩家绘制位置（场地位置）</param>
+        public virtual void CardGameAttack(Player attackPlayer, NPC attackNPC, Vector2 playerDrawPosition, Vector2 NPCDrawPosition, Vector2 panelPos)
+        {
+
+        }
+        public virtual void GameAI(float Duration, Vector2 PanelPosition) { }
+        /// <summary>
+        /// 可被继承，NPC局开始前调用
+        /// </summary>
+        public virtual void PreStartGaming(ref float RoundDuration) { }
         public virtual void CardGraved(Player player, int number, int myNum, bool special, int packType, bool drawCard) { }
         public virtual void CardGravedWhileMeReady(Player player, int number, int myNum, bool special, int packType, bool drawCard) { }
         public virtual int DrawCardAmount(Player player, int number, ref bool[] series, ref bool[] style)

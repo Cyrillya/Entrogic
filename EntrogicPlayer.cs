@@ -34,6 +34,7 @@ using Entrogic.NPCs.Enemies;
 using Microsoft.Xna.Framework.Input;
 using Entrogic.NPCs.CardFightable.CardBullet;
 using Entrogic.NPCs.CardMerchantSystem;
+using Entrogic.NPCs.CardFightable.Particles;
 //using Entrogic.UI;
 
 namespace Entrogic
@@ -116,7 +117,10 @@ namespace Entrogic
         internal int CardGameNPCHealth;
         internal int CardGameNPCLastHealth;
         internal bool CardGamePlayerTurn;
+        internal int CardGameLeftCard;
+        internal Vector2 CardGamePlayerCenter;
         internal List<CardFightBullet> _bullets = new List<CardFightBullet>(); // 用List存储
+        internal List<Particle> _particles = new List<Particle>(); // 用List存储
 
         internal bool IsBookActive;
         internal bool IsClosingBook;
@@ -635,10 +639,9 @@ namespace Entrogic
             _currentKey = Keyboard.GetState();
             if (_currentKey.IsKeyUp(Keys.Z) && _previousKey.IsKeyDown(Keys.Z))
             {
-                for (int i = 0; i < 3; i++)
-                {
-                    CardGameType[i] = ItemType<Items.Weapons.Card.Elements.ArcaneMissle>();
-                }
+                CardGameType[0] = ItemType<Items.Weapons.Card.Elements.ArcaneMissle>();
+                CardGameType[1] = ItemType<Items.Weapons.Card.Elements.Fireball>();
+                CardGameType[2] = ItemType<Items.Weapons.Card.Organisms.FlameofPineapple>();
             }
             if (_currentKey.IsKeyUp(Keys.N) && _previousKey.IsKeyDown(Keys.N))
             {
@@ -1458,15 +1461,15 @@ namespace Entrogic
         {
             if (!Main.dedServ)
             {
-                if (EntrogicWorld.SnowZoneTiles > 80)
-                {
-                    Filters.Scene.Activate("Entrogic:IceScreen", Vector2.Zero);
-                    Filters.Scene["Entrogic:IceScreen"].GetShader().UseProgress(MathHelper.Min((float)(EntrogicWorld.SnowZoneTiles - 80) / 520f, 1.1f));
-                }
-                else if (Filters.Scene["Entrogic:IceScreen"].IsActive())
-                {
-                    Filters.Scene["Entrogic:IceScreen"].Deactivate();
-                }
+                //if (EntrogicWorld.SnowZoneTiles > 80)
+                //{
+                //    Filters.Scene.Activate("Entrogic:IceScreen", Vector2.Zero);
+                //    Filters.Scene["Entrogic:IceScreen"].GetShader().UseProgress(MathHelper.Min((float)(EntrogicWorld.SnowZoneTiles - 80) / 520f, 1.1f));
+                //}
+                //else if (Filters.Scene["Entrogic:IceScreen"].IsActive())
+                //{
+                //    Filters.Scene["Entrogic:IceScreen"].Deactivate();
+                //}
             }
 
             base.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);

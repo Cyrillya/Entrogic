@@ -82,7 +82,7 @@ namespace Entrogic.Projectiles.Arcane
         public override void AI()
         {
             Player player = Main.player[projectile.owner];
-            Dust dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, 21, 0f, 0f, 100, default(Color), 2f);
+            Dust dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, MyDustId.PurpleLingering, 0f, 0f, 100, default(Color), 2f);
             dust.noGravity = true;
             NPC target = null;
             NPC bossTarget = null;
@@ -114,23 +114,21 @@ namespace Entrogic.Projectiles.Arcane
             }
             if (bossTarget != null)
             {
-                // 计算朝向目标的向量
-                Vector2 targetVec = bossTarget.Center - projectile.Center;
-                targetVec.Normalize();
-                // 目标向量是朝向目标的大小为20的向量
-                targetVec *= 20f;
-                // 朝向npc的单位向量*20 + 一些(?)偏移量
-                projectile.velocity = (projectile.velocity * 20f + targetVec) / 21f;
+                var targetPos = (bossTarget == null) ? Vector2.Zero : bossTarget.Center;
+                float targetR = (targetPos - projectile.Center).ToRotation();
+                float selfR = projectile.velocity.ToRotation();
+                float dif = MathHelper.WrapAngle(targetR - selfR);
+                float r = selfR + dif * 0.3f;
+                projectile.velocity = projectile.velocity.Length() * r.ToRotationVector2();
             }
             else if (target != null)
             {
-                // 计算朝向目标的向量
-                Vector2 targetVec = target.Center - projectile.Center;
-                targetVec.Normalize();
-                // 目标向量是朝向目标的大小为20的向量
-                targetVec *= 20f;
-                // 朝向npc的单位向量*20 + 一些(?)偏移量
-                projectile.velocity = (projectile.velocity * 20f + targetVec) / 21f;
+                var targetPos = (target == null) ? Vector2.Zero : target.Center;
+                float targetR = (targetPos - projectile.Center).ToRotation();
+                float selfR = projectile.velocity.ToRotation();
+                float dif = MathHelper.WrapAngle(targetR - selfR);
+                float r = selfR + dif * 0.3f;
+                projectile.velocity = projectile.velocity.Length() * r.ToRotationVector2();
             }
         }
     }

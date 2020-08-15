@@ -96,13 +96,13 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
                 switch (Main.rand.Next(3))
                 {
                     case 0:
-                        type = "凝胶恶魔";
+                        type = typeof(GelDemon).Name;
                         break;
                     case 1:
-                        type = "凝胶鸟妖";
+                        type = typeof(GelHarpy).Name;
                         break;
                     default:
-                        type = "凝胶蜜蜂";
+                        type = typeof(GelBee).Name;
                         break;
                 }
                 int gel = NPC.NewNPC((int)(npc.Center.X + r.X), (int)(npc.Center.Y + r.Y), mod.NPCType(type));

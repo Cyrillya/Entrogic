@@ -43,7 +43,7 @@ namespace Entrogic.NPCs.Boss.PollutElement
         public override void AI()
         {
             Timer++;
-            if (Timer == 1)
+            if (Timer == 1 && Main.netMode != NetmodeID.MultiplayerClient)
             {
                 int proj = Projectile.NewProjectile(projectile.Center, new Vector2(0f, 1f), ProjectileType<EffectRay>(), 0, 0f, projectile.owner);
                 Main.projectile[proj].ai[0] = 12f;

@@ -9,14 +9,14 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Entrogic.Projectiles.Miscellaneous
 {
-    public class 拟态魔能 : ModProjectile
+    public class Arcana : ModProjectile
     {
         public override void SetDefaults()
         {
             projectile.width = 24;
             projectile.height = 24;
             projectile.aiStyle = -1;
-            projectile.timeLeft = 60 * 60 * 3;
+            projectile.timeLeft = 60 * 60; // 1min
             projectile.friendly = true;
             projectile.hostile = false;
             projectile.alpha = 255;
@@ -43,12 +43,9 @@ namespace Entrogic.Projectiles.Miscellaneous
                     Vector2 movement = -vectorItemToPlayer.SafeNormalize(default(Vector2)) * 0.09f;
                     projectile.velocity = projectile.velocity + movement;
                     projectile.velocity = Collision.TileCollision(projectile.position, projectile.velocity, projectile.width, projectile.height);
-                    if (player.getRect().Intersects(projectile.getRect()))
+                    if (player.Distance(projectile.Center) < projectile.width / 2f)
                     {
-                        for (int i = 1; i <= 100; i++)
-                            if (Main.rand.Next(Math.Max(0, i-(i+5)/5)) == 0)
-                                Item.NewItem(projectile.Center, ItemType<Items.Materials.拟态魔能>());
-                            else break;
+                        Item.NewItem(projectile.Center, ItemType<Items.Materials.拟态魔能>(), Main.rand.Next(1, 5 + 1));
                         projectile.Kill();
                     }
                 }

@@ -1,4 +1,6 @@
 ﻿
+using Entrogic.NPCs.CardFightable.CardBullet.PlayerBullets;
+
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -37,6 +39,17 @@ namespace Entrogic.Items.Weapons.Card.Organisms
         {
             Vector2 vec = new Vector2(speedX, speedY);
             Projectile.NewProjectile(position, vec, type, damage, knockBack, player.whoAmI);
+        }
+        public override void CardGameAttack(Player attackPlayer, NPC attackNPC, Vector2 playerDrawPosition, Vector2 NPCDrawPosition, Vector2 panelPos)
+        {
+            EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(attackPlayer);
+            ExplodingPineappleBullet bullet = new ExplodingPineappleBullet(NPCDrawPosition + new Vector2(0, -10f))
+            {
+                Velocity = new Vector2(0f, -16f),
+                Position = playerDrawPosition + new Vector2(-10f, -6f),
+                UIPosition = panelPos
+            };
+            clientModPlayer._bullets.Add(bullet);
         }
         public override bool AbleToGetFromRandom(Player player)
         {

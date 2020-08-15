@@ -63,8 +63,8 @@ namespace Entrogic.NPCs.Boss.PollutElement
             if (projectile.ai[0] == 1 && Main.netMode != NetmodeID.MultiplayerClient)
             {
                 // 选取
-                float startRadius = ModHelper.GetFromToRadius(projectile.Center, player.Center);
-                float endRadius = ModHelper.GetFromToRadius(projectile.Center, player.Center) + MathHelper.TwoPi;
+                float startRadius = ModHelper.GetFromToRadians(projectile.Center, player.Center);
+                float endRadius = ModHelper.GetFromToRadians(projectile.Center, player.Center) + MathHelper.TwoPi;
                 for (float rotation = startRadius; rotation < endRadius; rotation += MathHelper.TwoPi / 12f)
                 {
                     rotates.Add(rotation);

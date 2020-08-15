@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Entrogic.NPCs.CardFightable.CardBullet.PlayerBullets;
+
+using Microsoft.Xna.Framework;
 
 using System;
 
@@ -34,7 +36,19 @@ namespace Entrogic.Items.Weapons.Card.Elements
         }
         public override void AttackEffects(Player player, int type, Vector2 position, Vector2 shootTo, float speedX, float speedY, int damage, float knockBack, float speed)
         {
-            Projectile.NewProjectile(position.X, position.Y, speedX * 4f, speedY * 4f, type, damage, knockBack, player.whoAmI);
+            Projectile proj = Projectile.NewProjectileDirect(position, new Vector2(speedX, speedY) * 2f, type, damage, knockBack, player.whoAmI);
+            proj.extraUpdates = 2;
+        }
+        public override void CardGameAttack(Player attackPlayer, NPC attackNPC, Vector2 playerDrawPosition, Vector2 NPCDrawPosition, Vector2 panelPos)
+        {
+            EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(attackPlayer);
+            FireballBullet bullet = new FireballBullet(NPCDrawPosition + new Vector2(0, -10f))
+            {
+                Velocity = new Vector2(0f, 3.4f),
+                Position = playerDrawPosition + new Vector2(-10f, -6f),
+                UIPosition = panelPos
+            };
+            clientModPlayer._bullets.Add(bullet);
         }
     }
     public class Fireball_Electromagnetism : ModCard
@@ -63,7 +77,8 @@ namespace Entrogic.Items.Weapons.Card.Elements
         }
         public override void AttackEffects(Player player, int type, Vector2 position, Vector2 shootTo, float speedX, float speedY, int damage, float knockBack, float speed)
         {
-            Projectile.NewProjectile(position.X, position.Y, speedX, speedY, type, damage, knockBack, player.whoAmI);
+            Projectile proj = Projectile.NewProjectileDirect(position, new Vector2(speedX, speedY) * 2f, type, damage, knockBack, player.whoAmI);
+            proj.extraUpdates = 2;
         }
     }
     public class Fireball_WeakNuclear : ModCard
@@ -92,7 +107,8 @@ namespace Entrogic.Items.Weapons.Card.Elements
         }
         public override void AttackEffects(Player player, int type, Vector2 position, Vector2 shootTo, float speedX, float speedY, int damage, float knockBack, float speed)
         {
-            Projectile.NewProjectile(position.X, position.Y, speedX, speedY, type, damage, knockBack, player.whoAmI);
+            Projectile proj = Projectile.NewProjectileDirect(position, new Vector2(speedX, speedY) * 2f, type, damage, knockBack, player.whoAmI);
+            proj.extraUpdates = 2;
         }
     }
     public class Fireball_StrongNuclear : ModCard
@@ -121,7 +137,8 @@ namespace Entrogic.Items.Weapons.Card.Elements
         }
         public override void AttackEffects(Player player, int type, Vector2 position, Vector2 shootTo, float speedX, float speedY, int damage, float knockBack, float speed)
         {
-            Projectile.NewProjectile(position.X, position.Y, speedX, speedY, type, damage, knockBack, player.whoAmI);
+            Projectile proj = Projectile.NewProjectileDirect(position, new Vector2(speedX, speedY) * 2f, type, damage, knockBack, player.whoAmI);
+            proj.extraUpdates = 2;
         }
     }
 }

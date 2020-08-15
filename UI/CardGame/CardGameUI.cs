@@ -29,9 +29,11 @@ namespace Entrogic.UI.CardGame
         Vector2 PanelSize = new Vector2(574f, 436f);
         Vector2 PanelPos => new Vector2(ScreenCenter.X - PanelSize.X / 2, ScreenCenter.Y - PanelSize.Y / 2);
         Vector2 PanelCenter => PanelPos + PanelSize / 2f + new Vector2(10f / 2f, 0f); // 左边多出10px
+        internal Confirm ConfirmButton = new Confirm();
         internal List<HandCardSlot> HandCardSlots = new List<HandCardSlot>();
-        protected Vector2 PlaygroundPos => new Vector2(114f, 86f);
+        protected static Vector2 PlaygroundPos => new Vector2(114f, 86f);
         protected Vector2 PlaygroundSize => new Vector2(358f, 220f);
+        public bool PlayerTurnOver = false;
         private int AnimationTimer;
         private int TimerCountdown = 60;
         private string TurnText = " ";
@@ -69,6 +71,9 @@ namespace Entrogic.UI.CardGame
             HandCardSlots.Add(slot1);
             HandCardSlots.Add(slot2);
             HandCardSlots.Add(slot3);
+
+            ConfirmButton.uiPosition.X = 500f;
+            ConfirmButton.uiPosition.Y = 182f;
         }
         public void StartGame()
         {
@@ -83,6 +88,22 @@ namespace Entrogic.UI.CardGame
             fightNPC.CardGameHealth = fightNPC.CardGameHealthMax;
             fightNPC.CardGaming = true;
             Main.npcChatText = "";
+
+            PlayerTurnOver = false;
+            clientModPlayer.CardGamePlayerTurn = true;
+            IsUseBiggerTexture = true;
+            clientModPlayer._bullets.Clear();
+            clientModPlayer._particles.Clear();
+            clientModPlayer.CardGameLeftCard = 1;
+            //List<int> buffer = new List<int>();
+            //foreach (int card in clientModPlayer.CardType)
+            //    buffer.Add(card);
+            //for (int i = 0; i < clientModPlayer.CardGameType.Length; i++)
+            //{
+            //    int chosed = Main.rand.Next(0, buffer.Count);
+            //    clientModPlayer.CardGameType[i] = buffer[chosed];
+            //    buffer.RemoveAt(chosed);
+            //}
 
             Main.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGChangeTurn"));
             TimerCountdown = 0;
@@ -99,6 +120,7 @@ namespace Entrogic.UI.CardGame
                 Item slotitem = new Item();
                 slotitem.SetDefaults(clientModPlayer.CardGameType[i]);
                 HandCardSlots[i].inventoryItem = slotitem;
+                HandCardSlots[i].Update();
             }
 
             bool pause = (!Main.hasFocus || Main.gamePaused) && Main.netMode == NetmodeID.SinglePlayer;
@@ -153,33 +175,27 @@ namespace Entrogic.UI.CardGame
                     if (Deathing != 0) return;
                     if (clientModPlayer.CardGamePlayerTurn) // 玩家局
                     {
-                        bool Clicked = false;
                         foreach (HandCardSlot slot in HandCardSlots)
                         {
                             slot.PlayerTurn = true;
-                            if (slot.Clicked) // 转NPC局
-                            {
-                                IsUseBiggerTexture = false;
-                                clientModPlayer.CardGamePlayerTurn = false;
-                                fightNPC.PreStartRound(false);
-                                slot.Clicked = false;
-                                Clicked = true;
-                                Main.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGChangeTurn"));
-
-                                TimerCountdown = 0;
-                                AnimationTimer = 0;
-                                TurnText = Language.GetTextValue("Mods.Entrogic.Common.NPCTurn");
-
-                                CardFightBullet player = new CardGamePlayer()
-                                {
-                                    Position = PlaygroundSize / 2f,
-                                    UIPosition = PanelPos
-                                };
-                                clientModPlayer._bullets.Add(player);
-                            }
                         }
-                        if (Clicked)
+                        if (PlayerTurnOver) // 转NPC局
                         {
+                            IsUseBiggerTexture = false;
+                            clientModPlayer.CardGamePlayerTurn = false;
+                            fightNPC.PreStartRound(false);
+                            Main.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGChangeTurn"));
+
+                            TimerCountdown = 0;
+                            AnimationTimer = 0;
+                            TurnText = Language.GetTextValue("Mods.Entrogic.Common.NPCTurn");
+
+                            CardGamePlayer player = new CardGamePlayer()
+                            {
+                                Center = PlaygroundSize / 2f,
+                                UIPosition = PanelPos
+                            };
+                            clientModPlayer._bullets.Add(player);
                             for (int i = 0; i < HandCardSlots.Count; i++)
                             {
                                 clientModPlayer.CardGameType[i] = ItemID.None;
@@ -193,14 +209,35 @@ namespace Entrogic.UI.CardGame
                             slot.PlayerTurn = false;
                             slot.Clicked = false;
                         }
-                        fightNPC.OnAttacking();
+                        fightNPC.GameAI();
                         fightNPC.RoundDuration -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-                        if (fightNPC.RoundDuration <= 0)
+                        if (fightNPC.RoundDuration <= 0) // 转玩家局
                         {
-                            IsUseBiggerTexture = false;
+                            PlayerTurnOver = false;
                             clientModPlayer.CardGamePlayerTurn = true;
                             fightNPC.PreStartRound(true);
+                            IsUseBiggerTexture = true;
                             Main.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGChangeTurn"));
+                            for (int i = 0; i < clientModPlayer._bullets.Count; i++)
+                            {
+                                if (clientModPlayer._bullets[i].IsFriendly == false)
+                                {
+                                    clientModPlayer._bullets[i].Kill(clientPlayer);
+                                    clientModPlayer._bullets.RemoveAt(i);
+                                    i--;
+                                }
+                            }
+
+                            clientModPlayer.CardGameLeftCard = 1; // 设置出牌机会
+                            //List<int> buffer = new List<int>();
+                            //foreach (int card in clientModPlayer.CardType)
+                            //    buffer.Add(card);
+                            //for (int i = 0; i < clientModPlayer.CardGameType.Length; i++)
+                            //{
+                            //    int chosed = Main.rand.Next(0, buffer.Count);
+                            //    clientModPlayer.CardGameType[i] = buffer[chosed];
+                            //    buffer.RemoveAt(chosed);
+                            //}
 
                             TimerCountdown = 0;
                             AnimationTimer = 0;
@@ -215,7 +252,20 @@ namespace Entrogic.UI.CardGame
                     {
                         if (clientModPlayer._bullets[i].IsRemoved)
                         {
+                            clientModPlayer._bullets[i].Kill(clientPlayer);
                             clientModPlayer._bullets.RemoveAt(i);
+                            i--;
+                        }
+                    }
+                    foreach (var particle in clientModPlayer._particles.ToArray())
+                    {
+                        particle.Update(gameTime);
+                    }
+                    for (int i = 0; i < clientModPlayer._particles.Count; i++)
+                    {
+                        if (clientModPlayer._particles[i].IsRemoved)
+                        {
+                            clientModPlayer._particles.RemoveAt(i);
                             i--;
                         }
                     }
@@ -316,22 +366,16 @@ namespace Entrogic.UI.CardGame
             GamePanel.Top.Pixels = PanelPos.Y;
             // 原版很香
             base.Draw(spriteBatch);
-            // Draw子弹
-            foreach (var bullet in clientModPlayer._bullets.ToArray())
+            if (!IsUseBiggerTexture)
             {
-                if (bullet.IsRemoved) continue;
-                if (bullet.Position.X + bullet.Size.X < -108f || bullet.Position.Y + bullet.Size.Y < -62f ||
-                    bullet.Position.X > 432f || bullet.Position.Y > 316f) continue;
-                bullet.Draw(spriteBatch);
+                DrawBulletsParticles(spriteBatch);
             }
+
             // 再Draw一个透明板子
             switch (IsUseBiggerTexture)
             {
                 case false:
                     spriteBatch.Draw(GetTexture("Entrogic/UI/CardGame/CardGamePanel_Front"), PanelPos, Color.White);
-                    break;
-                case true:
-                    spriteBatch.Draw(GetTexture("Entrogic/UI/CardGame/CardGamePanel_FrontBig"), PanelPos, Color.White);
                     break;
 
             }
@@ -341,9 +385,19 @@ namespace Entrogic.UI.CardGame
                 slot.fatherPosition = PanelPos;
                 slot.Start();
             }
+            // Draw确认按钮
+            ConfirmButton.fatherPosition = PanelPos;
+            ConfirmButton.Start();
+            // 对局魔力值显示
+            if (clientModPlayer.CardGameLeftCard >= 1)
+                spriteBatch.Draw(GetTexture("Entrogic/UI/CardGame/ManaCrystal"), PanelPos + new Vector2(424, 342), Color.White);
+            if (clientModPlayer.CardGameLeftCard >= 2)
+                spriteBatch.Draw(GetTexture("Entrogic/UI/CardGame/ManaCrystal"), PanelPos + new Vector2(456, 342), Color.White);
+            if (clientModPlayer.CardGameLeftCard >= 3)
+                spriteBatch.Draw(GetTexture("Entrogic/UI/CardGame/ManaCrystal"), PanelPos + new Vector2(488, 342), Color.White);
 
             if (clientModPlayer.CardGameNPCIndex == -1)
-                goto IL_DRAWTIP;
+                goto IL_DRAWBIGTEXTUREPARTICLES;
             NPC npc = Main.npc[clientModPlayer.CardGameNPCIndex];
             CardFightableNPC fightNPC = (CardFightableNPC)npc.modNPC;
             string ImgPath = "Entrogic/Images/CardFightPlayer";
@@ -383,6 +437,9 @@ namespace Entrogic.UI.CardGame
                 tPerRectangle.Height -= 2;
                 drawPos.Y += 2f;
                 spriteBatch.Draw(Bar_Player, drawPos.NoShake(), (Rectangle?)tPerRectangle, Color.White * (1f - clientModPlayer.CardGameHealthAlpha));
+                // 玩家鼠标移上去显示血量
+                if (ModHelper.MouseInRectangle(new Rectangle((int)(PanelPos + drawPosition).X, (int)(PanelPos + drawPosition).Y, Player.Width, Player.Height)))
+                    Main.hoverItemName = $"{Language.GetTextValue("Mods.Entrogic.Common.You")}: {clientModPlayer.CardGamePlayerHealth} / {clientModPlayer.CardGamePlayerMaxHealth}";
                 // NPC：
                 Texture2D FightPanel_NPC = GetTexture($"{ImgPath}_FightPanel");
                 Texture2D Surface_NPC = GetTexture($"{ImgPath}_Surface");
@@ -412,6 +469,10 @@ namespace Entrogic.UI.CardGame
                 tPerRectangle.Height -= 2;
                 drawPos.Y += 2f;
                 spriteBatch.Draw(Bar_NPC, drawPos.NoShake(), (Rectangle?)tPerRectangle, Color.White * (1f - clientModPlayer.CardGameNPCHealthAlpha));
+                // 玩家鼠标移上去显示血量
+                if (ModHelper.MouseInRectangle(new Rectangle((int)(PanelPos + ImgPosition).X, (int)(PanelPos + ImgPosition).Y, Player.Width, Player.Height)))
+                    Main.hoverItemName = $"{npc.GivenName}: {clientModPlayer.CardGameNPCHealth} / {clientModPlayer.CardGameNPCMaxHealth}";
+                    //Main.hoverItemName = $"{Language.GetTextValue($"Mods.{fightNPC.mod.ToString().Split('.')[0]}.NPCName.{fightNPC.Name}")}: {clientModPlayer.CardGameNPCHealth} / {clientModPlayer.CardGameNPCMaxHealth}";
             }
             else
             {
@@ -421,7 +482,7 @@ namespace Entrogic.UI.CardGame
                 if (DeathTimer <= 120f + 20f)
                 {
                     Main.spriteBatch.End();
-                    Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+                    Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.UIScaleMatrix);
                     // Retrieve reference to shader
                     var deathShader = GameShaders.Misc["ExampleMod:DeathAnimation"];
                     // Reset back to default value.
@@ -443,7 +504,7 @@ namespace Entrogic.UI.CardGame
 
                     // As mentioned above, be sure not to forget this step.
                     Main.spriteBatch.End();
-                    Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+                    Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.UIScaleMatrix);
                 }
                 Tex = Deathing == 2 ? Entrogic.ModTexturesTable["CardFightPlayer"] : GetTexture($"{ImgPath}_Fight");
                 spriteBatch.Draw(Tex, PanelPos + (Deathing == 2 ? drawPosition : ImgPosition), Color.White);
@@ -451,6 +512,11 @@ namespace Entrogic.UI.CardGame
                 {
                     QuitGame();
                 }
+            }
+            IL_DRAWBIGTEXTUREPARTICLES:
+            if (IsUseBiggerTexture)
+            {
+                DrawBulletsParticles(spriteBatch, true);
             }
 
             IL_DRAWTIP:
@@ -482,6 +548,37 @@ namespace Entrogic.UI.CardGame
             // 再Draw顶端，看起来好看一点
             IL_DRAWTOPBAR:
             spriteBatch.Draw(GetTexture("Entrogic/UI/CardGame/CardGameTop"), PanelPos, Color.White);
+        }
+        private void DrawBulletsParticles(SpriteBatch spriteBatch, bool allowPanelParticle = false)
+        {
+            EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(Main.LocalPlayer);
+            // Draw子弹
+            foreach (var bullet in clientModPlayer._bullets.ToArray())
+            {
+                if (bullet.IsRemoved) continue;
+                if (bullet.Position.X < -108f || bullet.Position.Y < -62f ||
+                    bullet.Position.X + bullet.Size.X > 432f || bullet.Position.Y + bullet.Size.Y > 316f) continue;
+                bullet.Draw(spriteBatch);
+            }
+            // Draw粒子
+            foreach (var particle in clientModPlayer._particles.ToArray())
+            {
+                if (particle.IsRemoved) continue;
+                if ((particle.Position.X < 0f || particle.Position.Y < 0f ||
+                    particle.Position.X + particle.Size.X > PanelSize.X || particle.Position.Y + particle.Size.Y > PanelSize.Y)
+                    && (!allowPanelParticle || !particle.IsPanelParticle)) continue;
+                particle.Draw(spriteBatch);
+            }
+        }
+        public static Vector2 ToPlaygroundPos(Vector2 PosUI)
+        {
+            PosUI = PosUI - PlaygroundPos;
+            return PosUI;
+        }
+        public static Vector2 ToUIPos(Vector2 PosPlayground)
+        {
+            PosPlayground = PosPlayground + PlaygroundPos;
+            return PosPlayground;
         }
     }
 }

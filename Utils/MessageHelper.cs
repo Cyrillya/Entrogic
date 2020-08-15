@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+
+using System;
 using System.IO;
 
 using Terraria;
@@ -39,6 +41,19 @@ namespace Entrogic
             packet.Write((byte)playernum);
             packet.Write(Complete);
             packet.Send(toClient, ignoreClient);
+        }
+        public static void SendExplode(Vector2 position, Vector2 size, int damage, int toClient = -1, int ignoreClient = -1, int friendly = 0, int goreTimes = 1, bool useSomke = true)
+        {
+            if (Main.netMode == NetmodeID.SinglePlayer) return;
+            var packet = Instance.GetPacket();
+            packet.Write((byte)EntrogicModMessageType.SyncExplode);
+            packet.WritePackedVector2(position);
+            packet.WritePackedVector2(size);
+            packet.Write(damage);
+            packet.Write(friendly);
+            packet.Write(goreTimes);
+            packet.Write(useSomke);
+            packet.Send(-1, -1);
         }
     }
 }

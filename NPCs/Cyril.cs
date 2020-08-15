@@ -78,38 +78,38 @@ namespace Entrogic.NPCs
             int num5 = (int)(npc.position.X + (float)(npc.width / 2)) / 16;
             int num6 = (int)(npc.position.Y + (float)npc.height + 1f) / 16;
             bool flag11 = Collision.DrownCollision(npc.position, npc.width, npc.height, 1f);
-            float num15 = 3f;//控制NPC走路速度的参数
-            float num16 = 1.2f;//同上（必须少于上一个）
-            if (npc.ai[0] == 1f)//对应原版NPC走路时的ai[0]
-            {
-                if (!(Main.netMode != 1 && flag && num5 == npc.homeTileX && num6 == npc.homeTileY && !NPCID.Sets.TownCritter[npc.type]))//对应原版代码
-                {
-                    //以下为更改NPC走路速度
-                    if (npc.velocity.X < -num15 || npc.velocity.X > num15)
-                    {
-                        if (npc.velocity.Y == 0f)
-                        {
-                            npc.velocity *= 0.8f;
-                        }
-                    }
-                    else if (npc.velocity.X < num15 && npc.direction == 1)
-                    {
-                        npc.velocity.X = npc.velocity.X + num16;
-                        if (npc.velocity.X > num15)
-                        {
-                            npc.velocity.X = num15;
-                        }
-                    }
-                    else if (npc.velocity.X > -num15 && npc.direction == -1)
-                    {
-                        npc.velocity.X = npc.velocity.X - num16;
-                        if (npc.velocity.X > num15)
-                        {
-                            npc.velocity.X = num15;
-                        }
-                    }
-                }
-            }
+            //float num15 = 3f;//控制NPC走路速度的参数
+            //float num16 = 1.2f;//同上（必须少于上一个）
+            //if (npc.ai[0] == 1f)//对应原版NPC走路时的ai[0]
+            //{
+            //    if (!(Main.netMode != 1 && flag && num5 == npc.homeTileX && num6 == npc.homeTileY && !NPCID.Sets.TownCritter[npc.type]))//对应原版代码
+            //    {
+            //        //以下为更改NPC走路速度
+            //        if (npc.velocity.X < -num15 || npc.velocity.X > num15)
+            //        {
+            //            if (npc.velocity.Y == 0f)
+            //            {
+            //                npc.velocity *= 0.8f;
+            //            }
+            //        }
+            //        else if (npc.velocity.X < num15 && npc.direction == 1)
+            //        {
+            //            npc.velocity.X = npc.velocity.X + num16;
+            //            if (npc.velocity.X > num15)
+            //            {
+            //                npc.velocity.X = num15;
+            //            }
+            //        }
+            //        else if (npc.velocity.X > -num15 && npc.direction == -1)
+            //        {
+            //            npc.velocity.X = npc.velocity.X - num16;
+            //            if (npc.velocity.X > num15)
+            //            {
+            //                npc.velocity.X = num15;
+            //            }
+            //        }
+            //    }
+            //}
 
             if (npc.lifeMax < lMax)
             {
@@ -252,7 +252,7 @@ namespace Entrogic.NPCs
             {
                 if (player.active && player.talkNPC == npc.whoAmI)
                 {
-                    CyrilQuest questSystem = player.GetModPlayer<CyrilQuest>(mod);
+                    CyrilQuest questSystem = player.GetModPlayer<CyrilQuest>();
                     if (questSystem.completedToday)//如果今日任务已完成
                     {
                         switch (Main.rand.Next(3))
@@ -366,11 +366,11 @@ namespace Entrogic.NPCs
     }
     public class CyrilQuest : ModPlayer
     {
-        public static List<Quest> Quests = new List<Quest>();
+        public static List<CQuest> Quests = new List<CQuest>();
         public bool updateDay = false;
         public bool completedToday = false;
         public int questToday = -1;
-        public Quest GetCurrentQuest()//今日任务
+        public CQuest GetCurrentQuest()//今日任务
         {
             return Quests[questToday];
         }
@@ -384,7 +384,7 @@ namespace Entrogic.NPCs
             {
                 return false;
             }
-            Quest quest = Quests[questToday];
+            CQuest quest = Quests[questToday];
             return quest.CheckCompletion(Main.player[Main.myPlayer]);
         }
         public static int ChooseNewQuest()//选择任务
@@ -420,7 +420,7 @@ namespace Entrogic.NPCs
         {
             Quests.Clear();
             //下面这行参数从左到右分别是：任务文本, 所需物品, 所需数量, 凑数的, 提交文本, 提交是否失去物品(true为否, false为是)
-            Quest quest = new ItemQuest("给我一副墨镜，我要试试同时戴两副眼镜，请不要问我为什么", ItemID.Sunglasses, 1, 1.0, "同时戴两副眼镜感觉并不好，你留着吧。这是你的报酬", true);
+            CQuest quest = new ItemQuest("给我一副墨镜，我要试试同时戴两副眼镜，请不要问我为什么", ItemID.Sunglasses, 1, 1.0, "同时戴两副眼镜感觉并不好，你留着吧。这是你的报酬", true);
             quest.Reward = ItemID.HiTekSunglasses;
             quest.RewardMoney.Gold = 50; 
             Quests.Add(quest);
@@ -441,7 +441,7 @@ namespace Entrogic.NPCs
                 {
                     if (Netplay.Clients[remoteClient2].State == 10)
                     {
-                        NetMessage.SendData(MessageID.AnglerQuest, remoteClient2, -1, NetworkText.FromLiteral(Main.player[remoteClient2].name), Main.player[Main.myPlayer].GetModPlayer<CyrilQuest>(mod).questToday, 0f, 0f, 0f, 0, 0, 0);
+                        NetMessage.SendData(MessageID.AnglerQuest, remoteClient2, -1, NetworkText.FromLiteral(Main.player[remoteClient2].name), Main.player[Main.myPlayer].GetModPlayer<CyrilQuest>().questToday, 0f, 0f, 0f, 0, 0, 0);
                     }
                 }
                 return;
@@ -450,7 +450,7 @@ namespace Entrogic.NPCs
             {
                 return;
             }
-            NetMessage.SendData(MessageID.AnglerQuest, remoteClient, -1, NetworkText.FromLiteral(Main.player[remoteClient].name), Main.player[Main.myPlayer].GetModPlayer<CyrilQuest>(mod).questToday, 0f, 0f, 0f, 0, 0, 0);
+            NetMessage.SendData(MessageID.AnglerQuest, remoteClient, -1, NetworkText.FromLiteral(Main.player[remoteClient].name), Main.player[Main.myPlayer].GetModPlayer<CyrilQuest>().questToday, 0f, 0f, 0f, 0, 0, 0);
         }
         public void SpawnReward(NPC npc)
         {
@@ -505,7 +505,7 @@ namespace Entrogic.NPCs
             completedToday = reader.ReadBoolean();
         }
     }
-    public abstract class Quest
+    public abstract class CQuest
     {
         public Func<bool> IsAvailable;
         public string Name;
@@ -515,7 +515,7 @@ namespace Entrogic.NPCs
         public Action<NPC> SpawnReward;
         public string ThanksMessage;
         public double Weight;
-        protected Quest(string name, double weight = 1.0, string specialThanks = "真谢谢你！")
+        protected CQuest(string name, double weight = 1.0, string specialThanks = "真谢谢你！")
         {
             Name = name;
             Weight = weight;
@@ -535,7 +535,7 @@ namespace Entrogic.NPCs
             return Language.GetTextValue(ThanksMessage, Main.LocalPlayer.name);
         }
     }
-    public class ItemQuest : Quest
+    public class ItemQuest : CQuest
     {
         public int ItemAmount;
         public int ItemType;
