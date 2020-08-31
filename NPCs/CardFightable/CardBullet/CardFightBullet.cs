@@ -35,6 +35,7 @@ namespace Entrogic.NPCs.CardFightable.CardBullet
         public Color Color = Color.White;
         public float LifeSpan = 0f;
 
+        public bool IsPanelBullet;
         public bool IsRemoved = false;
         public bool IsFriendly = true;
         public bool CanDamage = true;

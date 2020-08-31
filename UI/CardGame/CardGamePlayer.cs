@@ -52,7 +52,6 @@ namespace Entrogic.UI.CardGame
 
                     if (!bullet.IsFriendly && bullet.GetDamage(bullet.Damage) > 0 && Hitbox.Intersects(bullet.Hitbox))
                     {
-                        Main.NewText(ImmuneTime);
                         Main.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGHurt"));
                         clientModPlayer.CardGamePlayerHealth -= bullet.GetDamage(bullet.Damage);
                         ImmuneTime = 1f;

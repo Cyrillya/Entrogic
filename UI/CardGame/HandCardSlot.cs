@@ -49,7 +49,7 @@ namespace Entrogic.UI.CardGame
 
             if (StartAnimation)
             {
-                Vector2 TargetPosition = new Vector2(272f, 252f);
+                Vector2 TargetPosition = new Vector2(274f, 252f);
                 AnimationTimer++;
                 if (AnimationTimer <= 15f)
                 {
@@ -117,7 +117,7 @@ namespace Entrogic.UI.CardGame
 
                 // As mentioned above, be sure not to forget this step.
                 Main.spriteBatch.End();
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.UIScaleMatrix);
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, null, null, null, Main.UIScaleMatrix);
             }
         }
         public override void ClickEvent()
@@ -137,6 +137,103 @@ namespace Entrogic.UI.CardGame
         }
         public override void RightClickEvent()
         {
+        }
+    }
+    public class NPCCardSlot : InventoryBase
+    {
+        private Vector2 ScreenCenter => new Vector2(Main.screenWidth, Main.screenHeight) / 2f;
+        private Vector2 PanelSize = new Vector2(574f, 436f);
+        private Vector2 PanelPos => new Vector2(ScreenCenter.X - PanelSize.X / 2, ScreenCenter.Y - PanelSize.Y / 2);
+
+        private bool StartAnimation;
+        private int AnimationTimer;
+        private Vector2 AnimationPosition;
+        public NPCCardSlot() : base(Main.magicPixel) // 无贴图
+        {
+        }
+        public void Update()
+        {
+            if (Main.dedServ) return;
+            Player clientPlayer = Main.LocalPlayer;
+            EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(clientPlayer);
+            if (clientModPlayer.CardGameNPCIndex == -1)
+                return;
+            NPC npc = Main.npc[clientModPlayer.CardGameNPCIndex];
+
+            if (StartAnimation)
+            {
+                Vector2 TargetPosition = new Vector2(274f, 90f);
+                AnimationTimer++;
+                if (AnimationTimer <= 15f)
+                {
+                    AnimationPosition = (TargetPosition - uiPosition) / 15f * AnimationTimer + uiPosition;
+                }
+                else if (AnimationTimer >= 30f)
+                {
+                    // 出击
+                    // 我不想再改代码了，所以这里直接消失掉吧
+                    StartAnimation = false;
+                }
+            }
+        }
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            Player clientPlayer = Main.LocalPlayer;
+            EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(clientPlayer);
+            bool Animationing = StartAnimation && AnimationTimer >= 1 ? true : false;
+            uiWidth = 38;
+            uiHeight = 50;
+            NPC npc = Main.npc[clientModPlayer.CardGameNPCIndex];
+            CardFightableNPC fightNPC = (CardFightableNPC)npc.modNPC;
+            if (Animationing)
+            {
+                Texture2D t = Main.itemTexture[inventoryItem.type];
+                var frame = Main.itemAnimations[inventoryItem.type] != null ? Main.itemAnimations[inventoryItem.type].GetFrame(Main.itemTexture[inventoryItem.type]) : Main.itemTexture[inventoryItem.type].Frame(1, 1, 0, 0);
+
+                Main.spriteBatch.SafeEnd();
+                Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.UIScaleMatrix);
+                // Retrieve reference to shader
+                var whiteBlur = GameShaders.Misc["Entrogic:WhiteBlur"];
+                // Reset back to default value.
+                whiteBlur.UseOpacity(0f);
+                if (AnimationTimer > 15f)
+                {
+                    whiteBlur.UseOpacity(MathHelper.Min((AnimationTimer - 15f) / 14f, 1f));
+                }
+                whiteBlur.Apply(null);
+
+                spriteBatch.Draw(t, AnimationPosition + fatherPosition, (Rectangle?)frame, Color.White);
+
+                // As mentioned above, be sure not to forget this step.
+                Main.spriteBatch.SafeEnd();
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, null, null, null, Main.UIScaleMatrix);
+            }
+        }
+        public void ActiveAnimation()
+        {
+            StartAnimation = true;
+            AnimationTimer = 0;
+
+            Player clientPlayer = Main.LocalPlayer;
+            EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(clientPlayer);
+            NPC npc = Main.npc[clientModPlayer.CardGameNPCIndex];
+            CardFightableNPC fightNPC = (CardFightableNPC)npc.modNPC;
+            Item item = new Item();
+            // 命名空间的第一个字符串即为Mod内部名（当然乱命名也没法了）
+            Mod currentCardMod = ModLoader.GetMod(fightNPC.currentCard.GetType().FullName.Split('.')[0]);
+            // 通过类名寻找相应物品
+            item.SetDefaults(currentCardMod.GetItem(fightNPC.currentCard.GetType().Name).item.type);
+            inventoryItem = item;
+            //foreach (var card in Entrogic.ModItems)
+            //{
+            //    // 通过命名空间寻找相应卡牌
+            //    if (card.GetType().FullName == fightNPC.currentCard.GetType().FullName)
+            //    {
+            //        Item item = new Item();
+            //        item.SetDefaults(card.item.type);
+            //        inventoryItem = item;
+            //    }
+            //}
         }
     }
 }

@@ -14,11 +14,128 @@ using Terraria.DataStructures;
 using Terraria.ModLoader.IO;
 using Terraria.World.Generation;
 using Terraria.GameContent.Generation;
+using Entrogic.Tiles;
 
 namespace Entrogic
 {
-    internal class ModGenHelper
+    internal class ModWorldHelper
     {
+        public static bool DeactiveConnectedPortal(int i, int j)
+        {
+            if (Main.tile[i, j].type == TileType<UnderworldPortal>())
+            {
+                Main.tile[i, j] = new Tile();
+                if (Main.netMode == NetmodeID.MultiplayerClient)
+                    NetMessage.SendTileSquare(-1, i, j, 1, TileChangeType.None);
+                DeactiveConnectedPortal(i + 1, j);
+                DeactiveConnectedPortal(i - 1, j);
+                DeactiveConnectedPortal(i, j + 1);
+                DeactiveConnectedPortal(i, j - 1);
+                return true;
+            }
+            return false;
+        }
+        /// <summary>
+        /// 发生在玩家使用岩浆桶点击黑曜石时（尝试生成地狱传送门）
+        /// </summary>
+        /// <param name="tileX">放置时岩浆所处的物块坐标X轴</param>
+        /// <param name="tileY">放置时岩浆所处的物块坐标Y轴</param>
+        public static bool CreateUnderworldTransport(int tileX, int tileY)
+        {
+            // 记录一遍初始物块位置
+            int statTileX = tileX;
+            int statTileY = tileY;
+            // 门框大小（包括左上角物块）
+            int XLength = 1;
+            int YLength = 1;
+            int inWorldRange = 15;
+            // 省事，当前被选取物块距离世界边界不到{inWorldRange}格即放弃搜索
+            if (!WorldGen.InWorld(tileX, tileY, inWorldRange)) return false;
+            // 第一步：向右搜索直到找到一个黑曜石下方有黑曜石
+            do
+            {
+                tileX++;
+                XLength++;
+                if (!WorldGen.InWorld(tileX, tileY, inWorldRange) || Main.tile[tileX, tileY].type != TileID.Obsidian)
+                    return false;
+            } 
+            while (Main.tile[tileX, tileY + 1].type != TileID.Obsidian) ;
+            // 第二步：向下搜索直到找到一个黑曜石左方有黑曜石
+            do
+            {
+                tileY++;
+                YLength++;
+                if (!WorldGen.InWorld(tileX, tileY, inWorldRange) || Main.tile[tileX, tileY].type != TileID.Obsidian)
+                    return false;
+            }
+            while (Main.tile[tileX - 1, tileY].type != TileID.Obsidian) ;
+            // 第三步：向左搜索直到找到一个黑曜石上方有黑曜石
+            do
+            {
+                tileX--;
+                if (!WorldGen.InWorld(tileX, tileY, inWorldRange) || Main.tile[tileX, tileY].type != TileID.Obsidian)
+                    return false;
+            }
+            while (Main.tile[tileX, tileY - 1].type != TileID.Obsidian) ;
+            // 第四步：向上搜索直到找到一个黑曜石右方有黑曜石
+            do
+            {
+                tileY--;
+                if (!WorldGen.InWorld(tileX, tileY, inWorldRange) || Main.tile[tileX, tileY].type != TileID.Obsidian)
+                    return false;
+            }
+            while (Main.tile[tileX + 1, tileY].type != TileID.Obsidian) ;
+            // 第五步：判定（如果门框大小小于4*5或大于50*50，或者一圈后位置与原先不同：生成失败）
+            if (XLength < 4 || YLength < 5 || XLength > 50 || YLength > 50 || statTileX != tileX || statTileY != tileY)
+                return false;
+            // 第六步：生成
+            // 首先检查一遍内部有无任何方块，选取的确保是框内方块
+            for (int i = 1; i < XLength - 1; i++)
+            {
+                for (int j = 1; j < YLength - 1; j++)
+                {
+                    if (Main.tile[tileX + i, tileY + j].active())
+                        return false;
+                }
+            }
+            // 确保没有，生成
+            for (int i = 0; i < XLength; i++)
+            {
+                for (int j = 0; j < YLength; j++)
+                {
+                    Tile tile = Main.tile[tileX + i, tileY + j];
+                    if (tile == null)
+                    {
+                        tile = new Tile();
+                        Main.tile[tileX + i, tileY + j] = tile;
+                    }
+                    if (!Main.tile[tileX + i, tileY + j].active())
+                    {
+                        Main.tile[tileX + i, tileY + j].active(true);
+                        Main.tile[tileX + i, tileY + j].type = (ushort)TileType<UnderworldPortal>();
+                        // 默认是左上角帧
+                        int styleX; int styleY;
+                        if (i == j)
+                        {
+                            styleX = styleY = (i + 1) % 2;
+                        }
+                        else
+                        {
+                            // 右上角帧
+                            styleX = i % 2 == 0 ? 1 : 0;
+                            // 左下角帧
+                            styleY = j % 2 == 0 ? 1 : 0;
+                        }
+                        Main.tile[tileX + i, tileY + j].frameX = (short)(styleX * 16);
+                        Main.tile[tileX + i, tileY + j].frameY = (short)(styleY * 16);
+                    }
+                    else Main.tile[tileX + i, tileY + j].inActive(true); // 对于黑曜石框架会进行虚化
+                }
+            }
+            if (Main.netMode == NetmodeID.MultiplayerClient) // 多人模式进行服务器通信
+                NetMessage.SendTileRange(-1, tileX, tileY, XLength, YLength);
+            return true;
+        }
         public static void SmoothTile(int StartX, int StartY, int X, int Y, GenerationProgress progress, bool useProgress = false)
         {
             for (int k = StartX; k < X; k++)

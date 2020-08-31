@@ -31,6 +31,10 @@ namespace Entrogic.UI.CardGame
         Vector2 PanelCenter => PanelPos + PanelSize / 2f + new Vector2(10f / 2f, 0f); // 左边多出10px
         internal Confirm ConfirmButton = new Confirm();
         internal List<HandCardSlot> HandCardSlots = new List<HandCardSlot>();
+        private NPCCardSlot NPCCardSlot = new NPCCardSlot()
+        {
+            uiPosition = new Vector2(274f, 8f)
+        }; // 它只是为了一个动画
         protected static Vector2 PlaygroundPos => new Vector2(114f, 86f);
         protected Vector2 PlaygroundSize => new Vector2(358f, 220f);
         public bool PlayerTurnOver = false;
@@ -122,6 +126,7 @@ namespace Entrogic.UI.CardGame
                 HandCardSlots[i].inventoryItem = slotitem;
                 HandCardSlots[i].Update();
             }
+            NPCCardSlot.Update();
 
             bool pause = (!Main.hasFocus || Main.gamePaused) && Main.netMode == NetmodeID.SinglePlayer;
             if (pause)
@@ -200,6 +205,7 @@ namespace Entrogic.UI.CardGame
                             {
                                 clientModPlayer.CardGameType[i] = ItemID.None;
                             }
+                            NPCCardSlot.ActiveAnimation();
                         }
                     }
                     if (!clientModPlayer.CardGamePlayerTurn) // NPC局
@@ -379,12 +385,6 @@ namespace Entrogic.UI.CardGame
                     break;
 
             }
-            // 板子Draw完了再Draw槽，不然会被盖住
-            foreach (var slot in HandCardSlots)
-            {
-                slot.fatherPosition = PanelPos;
-                slot.Start();
-            }
             // Draw确认按钮
             ConfirmButton.fatherPosition = PanelPos;
             ConfirmButton.Start();
@@ -481,7 +481,7 @@ namespace Entrogic.UI.CardGame
                 Vector2 drawPosition = new Vector2(274f, 314f);
                 if (DeathTimer <= 120f + 20f)
                 {
-                    Main.spriteBatch.End();
+                    Main.spriteBatch.SafeEnd();
                     Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.UIScaleMatrix);
                     // Retrieve reference to shader
                     var deathShader = GameShaders.Misc["ExampleMod:DeathAnimation"];
@@ -503,8 +503,8 @@ namespace Entrogic.UI.CardGame
                     spriteBatch.Draw(Tex, PanelPos + (Deathing == 1 ? drawPosition : ImgPosition), Color.White);
 
                     // As mentioned above, be sure not to forget this step.
-                    Main.spriteBatch.End();
-                    Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.UIScaleMatrix);
+                    Main.spriteBatch.SafeEnd();
+                    Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, null, null, null, Main.UIScaleMatrix);
                 }
                 Tex = Deathing == 2 ? Entrogic.ModTexturesTable["CardFightPlayer"] : GetTexture($"{ImgPath}_Fight");
                 spriteBatch.Draw(Tex, PanelPos + (Deathing == 2 ? drawPosition : ImgPosition), Color.White);
@@ -514,6 +514,14 @@ namespace Entrogic.UI.CardGame
                 }
             }
             IL_DRAWBIGTEXTUREPARTICLES:
+            // Draw槽
+            NPCCardSlot.fatherPosition = PanelPos;
+            NPCCardSlot.Start();
+            foreach (var slot in HandCardSlots)
+            {
+                slot.fatherPosition = PanelPos;
+                slot.Start();
+            }
             if (IsUseBiggerTexture)
             {
                 DrawBulletsParticles(spriteBatch, true);
@@ -549,15 +557,16 @@ namespace Entrogic.UI.CardGame
             IL_DRAWTOPBAR:
             spriteBatch.Draw(GetTexture("Entrogic/UI/CardGame/CardGameTop"), PanelPos, Color.White);
         }
-        private void DrawBulletsParticles(SpriteBatch spriteBatch, bool allowPanelParticle = false)
+        private void DrawBulletsParticles(SpriteBatch spriteBatch, bool allowPanelEntity = false)
         {
             EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(Main.LocalPlayer);
             // Draw子弹
             foreach (var bullet in clientModPlayer._bullets.ToArray())
             {
                 if (bullet.IsRemoved) continue;
-                if (bullet.Position.X < -108f || bullet.Position.Y < -62f ||
-                    bullet.Position.X + bullet.Size.X > 432f || bullet.Position.Y + bullet.Size.Y > 316f) continue;
+                if ((bullet.Position.X < -108f || bullet.Position.Y < -62f ||
+                    bullet.Position.X + bullet.Size.X > 432f || bullet.Position.Y + bullet.Size.Y > 316f)
+                    && (!allowPanelEntity || !bullet.IsPanelBullet)) continue;
                 bullet.Draw(spriteBatch);
             }
             // Draw粒子
@@ -566,7 +575,7 @@ namespace Entrogic.UI.CardGame
                 if (particle.IsRemoved) continue;
                 if ((particle.Position.X < 0f || particle.Position.Y < 0f ||
                     particle.Position.X + particle.Size.X > PanelSize.X || particle.Position.Y + particle.Size.Y > PanelSize.Y)
-                    && (!allowPanelParticle || !particle.IsPanelParticle)) continue;
+                    && (!allowPanelEntity || !particle.IsPanelParticle)) continue;
                 particle.Draw(spriteBatch);
             }
         }

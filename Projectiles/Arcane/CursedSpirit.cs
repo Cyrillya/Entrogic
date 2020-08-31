@@ -23,7 +23,7 @@ namespace Entrogic.Projectiles.Arcane
             projectile.alpha = 200;
             projectile.ignoreWater = true;
             projectile.tileCollide = true;
-            projectile.extraUpdates = 1;
+            projectile.extraUpdates = 2;
             aiType = -1;
         }
         public override void Kill(int timeLeft)
@@ -88,23 +88,21 @@ namespace Entrogic.Projectiles.Arcane
             }
             if (bossTarget != null)
             {
-                // 计算朝向目标的向量
-                Vector2 targetVec = bossTarget.Center - projectile.Center;
-                targetVec.Normalize();
-                // 目标向量是朝向目标的大小为20的向量
-                targetVec *= 20f;
-                // 朝向npc的单位向量*20 + 3.33%偏移量
-                projectile.velocity = (projectile.velocity * 30f + targetVec) / 31f;
+                var targetPos = (bossTarget == null) ? Vector2.Zero : bossTarget.Center;
+                float targetR = (targetPos - projectile.Center).ToRotation();
+                float selfR = projectile.velocity.ToRotation();
+                float dif = MathHelper.WrapAngle(targetR - selfR);
+                float r = selfR + dif * 0.3f;
+                projectile.velocity = projectile.velocity.Length() * r.ToRotationVector2();
             }
             else if (target != null)
             {
-                // 计算朝向目标的向量
-                Vector2 targetVec = target.Center - projectile.Center;
-                targetVec.Normalize();
-                // 目标向量是朝向目标的大小为20的向量
-                targetVec *= 20f;
-                // 朝向npc的单位向量*20 + 3.33%偏移量
-                projectile.velocity = (projectile.velocity * 30f + targetVec) / 31f;
+                var targetPos = (target == null) ? Vector2.Zero : target.Center;
+                float targetR = (targetPos - projectile.Center).ToRotation();
+                float selfR = projectile.velocity.ToRotation();
+                float dif = MathHelper.WrapAngle(targetR - selfR);
+                float r = selfR + dif * 0.3f;
+                projectile.velocity = projectile.velocity.Length() * r.ToRotationVector2();
             }
         }
     }

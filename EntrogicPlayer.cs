@@ -639,9 +639,9 @@ namespace Entrogic
             _currentKey = Keyboard.GetState();
             if (_currentKey.IsKeyUp(Keys.Z) && _previousKey.IsKeyDown(Keys.Z))
             {
-                CardGameType[0] = ItemType<Items.Weapons.Card.Elements.ArcaneMissle>();
+                CardGameType[0] = ItemType<Items.Weapons.Card.Elements.AstralImpact>();
                 CardGameType[1] = ItemType<Items.Weapons.Card.Elements.Fireball>();
-                CardGameType[2] = ItemType<Items.Weapons.Card.Organisms.FlameofPineapple>();
+                CardGameType[2] = ItemType<Items.Weapons.Card.Elements.BetrayerofDarkFlame>();
             }
             if (_currentKey.IsKeyUp(Keys.N) && _previousKey.IsKeyDown(Keys.N))
             {
@@ -828,9 +828,13 @@ namespace Entrogic
         /// </summary>
         public override void PreUpdateBuffs()
         {
-            if (EntrogicWorld.Check(player.Center.X,player.Center.Y) && player.wet)
+            base.PreUpdateBuffs();
+            if (player == Main.LocalPlayer)
             {
-                player.AddBuff(BuffType<Dissolve>(), 90);
+                if (EntrogicWorld.Check(player.Center.X, player.Center.Y) && player.wet)
+                {
+                    player.AddBuff(BuffType<Dissolve>(), 90);
+                }
             }
         }
 

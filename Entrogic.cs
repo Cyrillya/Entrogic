@@ -46,12 +46,16 @@ using Terraria.GameContent.Tile_Entities;
 using Entrogic.NPCs.CardFightable.CardBullet;
 using Entrogic.NPCs.CardMerchantSystem;
 using Entrogic.Projectiles.Miscellaneous;
+using BetterTaxes;
+using Entrogic.Tiles;
 
 namespace Entrogic
 {
     public class Entrogic : Mod
     {
         #region Fields
+        internal bool showIconTexture = false;
+        internal Texture2D showIconTexture2 = null;
         internal static int mimicryFrameCounter = 8;
         internal static List<ModItem> ModItems => new List<ModItem>(typeof(ItemLoader).GetFields(BindingFlags.Static | BindingFlags.NonPublic).Where(field => field.Name == "items").First().GetValue(null) as IList<ModItem>);
         internal static List<ModItem> EntrogicItems
@@ -128,6 +132,7 @@ namespace Entrogic
 
         public static int MimicryCustomCurrencyId;
         #endregion
+        public override uint ExtraPlayerBuffSlots => (uint)(GetInstance<BEntrogicConfigServer>().MaxBuffSlots - 22);
         static Entrogic()
         {
             ModFolder = string.Format("{0}{1}Mod Configs{2}Entrogic{3}", Main.SavePath, Path.DirectorySeparatorChar, Path.DirectorySeparatorChar, Path.DirectorySeparatorChar);
@@ -237,6 +242,8 @@ namespace Entrogic
             WashHotkey = RegisterHotKey("洗牌快捷键", "Q");
             HookCursorHotKey = RegisterHotKey("设置钩爪指针快捷键", "C");
             On.Terraria.Player.QuickGrapple += Player_QuickGrapple;
+            On.Terraria.Player.ItemCheck += UnderworldTransportCheck;
+            On.Terraria.Main.DrawInterface_40_InteractItemIcon += CustomHandIcon;
             //On.Terraria.Main.DrawTiles += Main_DrawTiles;
             foolTexts = Main.rand.Next(3);
             Unloading = false;
@@ -362,7 +369,9 @@ namespace Entrogic
                 SinsBarInterface = new UserInterface();
                 SinsBarInterface.SetState(Sinsbar);*/
             }
-            Buildings.Cache("Buildings/CardShrine0.ebuilding", "Buildings/CardShrine1.ebuilding");
+            Buildings.Cache("Buildings/CardShrine0.ebuilding", "Buildings/CardShrine1.ebuilding", "Buildings/UnderworldPortal.ebuilding");
+            new PiggyBankAmmo();
+            new ModHandler();
             #region Armor Translates
             Translation.RegisterTranslation("mspeed", GameCulture.Chinese, "移动速度", " movement speed");
             Translation.RegisterTranslation("and", GameCulture.Chinese, "与", " and");
@@ -433,6 +442,39 @@ namespace Entrogic
             #endregion
         }
 
+        private void CustomHandIcon(On.Terraria.Main.orig_DrawInterface_40_InteractItemIcon orig, Main self)
+        {
+            if (showIconTexture && showIconTexture2 != null)
+            {
+                float scale = Main.cursorScale;
+                Main.spriteBatch.Draw(showIconTexture2, 
+                    new Vector2((float)(Main.mouseX + 12), (float)(Main.mouseY + 12)), 
+                    null, Color.White, 0f, default(Vector2), scale, SpriteEffects.None, 0f);
+
+                showIconTexture = false;
+                return;
+            }
+            orig(self);
+        }
+
+        private void UnderworldTransportCheck(On.Terraria.Player.orig_ItemCheck orig, Player player, int i)
+        {
+            Item item = player.inventory[player.selectedItem];
+            if (player.controlUseItem && player.controlUseTile && item.type == ItemID.LavaBucket && 
+                Main.tile[Player.tileTargetX, Player.tileTargetY].type == TileID.Obsidian &&
+                ModWorldHelper.CreateUnderworldTransport(Player.tileTargetX, Player.tileTargetY)) // 最后这个是生成
+            {
+                Main.PlaySound(SoundID.DoorOpen, (int)player.position.X, (int)player.position.Y, 1, 1f, 0f);
+                item.stack--;
+                player.PutItemInInventory(ItemID.EmptyBucket, player.selectedItem);
+                player.itemTime = (int)((float)item.useTime / PlayerHooks.TotalUseTimeMultiplier(player, item));
+            }
+            else
+            {
+                orig(player, i);
+            }
+        }
+
         public override void Unload()
         {
             Unloading = true;
@@ -445,6 +487,9 @@ namespace Entrogic
                 WashHotkey = null;
                 HookCursorHotKey = null;
                 IsCalamityLoaded = false;
+
+                ModHandler.parser = null;
+                ModHandler.delegates = new Dictionary<string, Dictionary<string, Func<bool>>>();
             }
             catch (Exception e)
             {
@@ -775,6 +820,23 @@ namespace Entrogic
                             Main.NewText("魔力开始涌动...", 150, 150, 250); // 补一个提示
                         break;
                     }
+                case EntrogicModMessageType.FindUWTeleporter:
+                    {
+                        if (Main.dedServ) // 在服务器下
+                        {
+                            int i = reader.ReadInt32();
+                            int j = reader.ReadInt32();
+                            int playernum = reader.ReadInt32();
+                            UnderworldPortal.HandleTransportion(i, j, playernum, true);
+                            break;
+                        }
+                        else // 在客户端下，其实就是给玩家回复提示信息
+                        {
+                            string warn = reader.ReadString();
+                            Main.NewText(warn);
+                        }
+                        break;
+                    }
                 case EntrogicModMessageType.NPCSpawnOnPlayerAction:
                     {
                         int plr = (int)reader.ReadByte();
@@ -815,16 +877,7 @@ namespace Entrogic
                             Explode(reader.ReadPackedVector2(), reader.ReadPackedVector2(), reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32(), reader.ReadBoolean());
                         else
                         {
-                            MessageHelper.SendExplode(reader.ReadPackedVector2(), reader.ReadPackedVector2(), reader.ReadInt32(), whoAmI, -1, reader.ReadInt32(), reader.ReadInt32(), reader.ReadBoolean());
-                        }
-                        if (Main.dedServ) // 在服务器下
-                        {
-                            ModPacket packet = GetPacket();
-                            packet.Write((byte)EntrogicModMessageType.ReceiveMagicStormMPC);
-                            packet.Write(EntrogicWorld.magicStorm);
-                            // 发回给发送者
-                            packet.Send(whoAmI, -1);
-                            break;
+                            MessageHelper.SendExplode(reader.ReadPackedVector2(), reader.ReadPackedVector2(), reader.ReadInt32(), -1, whoAmI, reader.ReadInt32(), reader.ReadInt32(), reader.ReadBoolean());
                         }
                         break;
                     }
@@ -870,6 +923,14 @@ namespace Entrogic
                         }
                         break;
                     }
+                case EntrogicModMessageType.BuildBuilding:
+                    {
+                        string name = reader.ReadString();
+                        Vector2 pos = reader.ReadPackedVector2();
+                        bool useAir = reader.ReadBoolean();
+                        Buildings.Build(name, pos, useAir);
+                        break;
+                    }
                 default:
                     Logger.WarnFormat("Entrogic: Unknown Message type: {0}", msgType);
                     break;
@@ -879,12 +940,14 @@ namespace Entrogic
         {
             ReceiveMagicStormRequest,
             ReceiveMagicStormMPC,
+            FindUWTeleporter,
             NPCSpawnOnPlayerAction,
             NPCSpawn,
             SyncExplode,
             SyncBookBubbleInfo,
             SyncCardGamingInfos,
-            SendCompletedCardMerchantMissionRequest
+            SendCompletedCardMerchantMissionRequest,
+            BuildBuilding
         }
         public static void DebugModeNewText(string message, bool debug = false)
         {

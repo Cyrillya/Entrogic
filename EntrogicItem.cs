@@ -137,6 +137,9 @@ namespace Entrogic
                     TooltipLine line = new TooltipLine(mod, mod.Name, "[C/" + sr + sg + sb + ":" + textPres[presents.IndexOf(t)] + "]");
                     tooltips.Add(line);
                 }
+
+            // 跟收藏Tooltip说再见
+            tooltips.RemoveAll((TooltipLine line) => line.mod == "Terraria" && line.Name.StartsWith("Favorite"));
         }
         public override bool InstancePerEntity => true;
         public override bool CloneNewInstances => true;

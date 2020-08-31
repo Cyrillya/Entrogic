@@ -16,64 +16,51 @@ using Terraria.ModLoader;
 
 namespace Entrogic.NPCs.CardFightable.CardBullet.PlayerBullets
 {
-    public class ExplodingPineappleBullet : CardFightBullet
+    public class FallenStar : CardFightBullet
     {
         private Vector2 TargetPosition; // UI位置
-        public ExplodingPineappleBullet(Vector2 targetPos)
+        public FallenStar(Vector2 targetPos)
         {
             TargetPosition = targetPos;
-            _texture = ModContent.GetTexture("Entrogic/Projectiles/Arcane/Pineapple");
-            LifeSpan = 6f;
+            _texture = ModContent.GetTexture("Entrogic/Projectiles/Arcane/FallenStar");
+            LifeSpan = 5.5f;
             IsFriendly = true;
-            Size = new Vector2(_texture.Width, _texture.Height);
+            Size = new Vector2(8, 8);
             IsPanelBullet = true;
+        }
+        public override Color GetAlpha(Color drawColor)
+        {
+            return base.GetAlpha(drawColor) * 0.5f;
         }
         public override void Update(GameTime gameTime, Player attackPlayer, NPC attackNPC)
         {
-            for (int i = 0; i < 3; i++)
-            {
-                FireParticle particle = new FireParticle()
-                {
-                    Position = CardGameUI.ToUIPos(Position) + new Vector2(0f, -10f),
-                    Velocity = Vector2.Zero,
-                    UIPosition = UIPosition,
-                    Alpha = 100,
-                    IsPanelParticle = true
-                };
-                particle.Setup(Size, 1f, attackPlayer);
-                particle.Velocity *= 0.85f;
-                attackPlayer.GetModPlayer<EntrogicPlayer>()._particles.Add(particle);
-            }
-            Velocity.Y -= 0.1f;
+            //if (LifeSpan > 4.96 && LifeSpan <= 5.1f)
+            //    Velocity += -ModHelper.GetFromToVector(CardGameUI.ToUIPos(Center), TargetPosition) * 0.4f;
+            //else if (LifeSpan <= 5.1f)
+                Velocity += ModHelper.GetFromToVector(CardGameUI.ToUIPos(Center), TargetPosition) * 0.9f;
+            _rotation = MathHelper.ToRadians(45f) + ModHelper.GetFromToRadians(CardGameUI.ToUIPos(Center), TargetPosition);
 
-            if (Vector2.Distance(CardGameUI.ToUIPos(Position + Size / 2f), TargetPosition + new Vector2(0, 12f)) < 10f)
+            if (Vector2.Distance(CardGameUI.ToUIPos(Center), TargetPosition) < 20f)
             {
                 IsRemoved = true;
                 CardFightableNPC fightNPC = (CardFightableNPC)attackNPC.modNPC;
-                fightNPC.CardGameHealth -= 46;
+                fightNPC.CardGameHealth -= 120 / 5; // 总伤害120,，因为一射5个
             }
-
             base.Update(gameTime, attackPlayer, attackNPC);
-        }
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
         }
         public override void Kill(Player attackPlayer)
         {
             Vector2 screenCenter = new Vector2(Main.screenWidth, Main.screenHeight) / 2f + Main.screenPosition;
-            Main.PlaySound(SoundID.Item, (int)screenCenter.X, (int)screenCenter.Y + -30, 14, 1f, 0f);
-            Position.X = CardGameUI.ToUIPos(Position).X + (float)(Size.X / 2);
-            Position.Y = CardGameUI.ToUIPos(Position).Y + (float)(Size.Y / 2);
+            Main.PlaySound(SoundID.Item10, (int)screenCenter.X, (int)screenCenter.Y + -30);
             Size.X = 20;
             Size.Y = 20;
-            Position.X -= (float)(Size.X / 2);
-            Position.Y -= (float)(Size.Y / 2);
+            Position.X = CardGameUI.ToUIPos(Center).X - Size.X / 2f;
+            Position.Y = CardGameUI.ToUIPos(Center).Y - Size.Y / 2f;
             for (int i = 0; i < 23; i++)
             {
                 FireParticle particle = new FireParticle()
                 {
-                    Position = new Vector2(Position.X, Position.Y),
+                    Position = Position,
                     UIPosition = UIPosition,
                     Alpha = 100,
                     IsPanelParticle = true
@@ -90,7 +77,7 @@ namespace Entrogic.NPCs.CardFightable.CardBullet.PlayerBullets
             {
                 FireParticle2 particle = new FireParticle2()
                 {
-                    Position = new Vector2(Position.X, Position.Y),
+                    Position = Position,
                     UIPosition = UIPosition,
                     Alpha = 100,
                     IsPanelParticle = true
@@ -110,20 +97,9 @@ namespace Entrogic.NPCs.CardFightable.CardBullet.PlayerBullets
                 {
                     scaleFactor = 1f;
                 }
-                ExplodeParticle particle = new ExplodeParticle()
+                StarParticle particle = new StarParticle()
                 {
-                    Position = new Vector2(Position.X + (float)(Size.X / 2) - 24f, Position.Y + (float)(Size.Y / 2) - 24f),
-                    UIPosition = UIPosition,
-                    Alpha = Main.rand.Next(140, 201),
-                    IsPanelParticle = true
-                };
-                particle.Setup(Size, Main.rand.NextFloat() * 0.5f + 1f, attackPlayer);
-                particle.Velocity *= scaleFactor;
-                attackPlayer.GetModPlayer<EntrogicPlayer>()._particles.Add(particle);
-
-                particle = new ExplodeParticle()
-                {
-                    Position = new Vector2(Position.X + (float)(Size.X / 2) - 24f, Position.Y + (float)(Size.Y / 2) - 24f),
+                    Position = Position,
                     UIPosition = UIPosition,
                     Alpha = Main.rand.Next(140, 201),
                     IsPanelParticle = true

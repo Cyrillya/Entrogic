@@ -30,6 +30,7 @@ namespace Entrogic.NPCs.CardFightable.CardBullet.PlayerBullets
             IsFriendly = true;
             Size = new Vector2(12f, 12f);
             Damage = 100;
+            IsPanelBullet = true;
         }
         public override void Update(GameTime gameTime, Player attackPlayer, NPC attackNPC)
         {
@@ -44,7 +45,8 @@ namespace Entrogic.NPCs.CardFightable.CardBullet.PlayerBullets
                             Position = CardGameUI.ToUIPos(Position) + new Vector2(0f, -10f),
                             Velocity = Vector2.Zero,
                             UIPosition = UIPosition,
-                            Alpha = 100
+                            Alpha = 100,
+                            IsPanelParticle = true
                         };
                         particle.Setup(Size, 1.2f, attackPlayer);
                         particle.Velocity *= 0.5f * 1.1f;
@@ -84,7 +86,8 @@ namespace Entrogic.NPCs.CardFightable.CardBullet.PlayerBullets
                             Position = CardGameUI.ToUIPos(Position) + new Vector2(0f, -10f),
                             Velocity = Vector2.Zero,
                             UIPosition = UIPosition,
-                            Alpha = 100
+                            Alpha = 100,
+                            IsPanelParticle = true
                         };
                         particle.Setup(Size, 1.5f, attackPlayer);
                         particle.Position = CardGameUI.ToUIPos(Position) + Size / 2f;

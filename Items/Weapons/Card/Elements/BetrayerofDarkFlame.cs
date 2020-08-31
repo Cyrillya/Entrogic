@@ -1,4 +1,6 @@
 ﻿
+using Entrogic.NPCs.CardFightable.CardBullet.PlayerBullets;
+
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -28,7 +30,7 @@ namespace Entrogic.Items.Weapons.Card.Elements
         public override void CardDefaults()
         {
             attackCardRemainingTimes = 12;
-            item.shootSpeed = 15f;
+            item.shootSpeed = 7.5f;
             item.damage = 8;
             item.knockBack = 4f;
             item.rare = RareID.LV5;
@@ -44,6 +46,20 @@ namespace Entrogic.Items.Weapons.Card.Elements
             {
                 Vector2 finalVec = (vec.ToRotation() + rad).ToRotationVector2() * speed;
                 Projectile.NewProjectile(position, finalVec, type, damage, knockBack, player.whoAmI);
+            }
+        }
+        public override void CardGameAttack(Player attackPlayer, NPC attackNPC, Vector2 playerDrawPosition, Vector2 NPCDrawPosition, Vector2 panelPos)
+        {
+            EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(attackPlayer);
+            for (float rad = 0f; rad <= MathHelper.TwoPi; rad += MathHelper.TwoPi / 6f)
+            {
+                DarkFlame bullet = new DarkFlame(NPCDrawPosition + new Vector2(0, -10f))
+                {
+                    Velocity = new Vector2(0f, -1f),
+                    Position = playerDrawPosition + new Vector2(-10f, -6f) + (rad + MathHelper.TwoPi / 6f).ToRotationVector2() * 30f,
+                    UIPosition = panelPos
+                };
+                clientModPlayer._bullets.Add(bullet);
             }
         }
         public override bool AbleToGetFromRandom(Player player)

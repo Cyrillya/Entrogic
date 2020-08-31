@@ -278,6 +278,15 @@ namespace Entrogic
                     nextSlot++;
                 }
             }
+            if (type == NPCID.GoblinTinkerer)
+            {
+                if (NPC.downedMoonlord)
+                {
+                    shop.item[nextSlot].SetDefaults(ItemID.CellPhone);
+                    shop.item[nextSlot].shopCustomPrice = Item.buyPrice(platinum: 10);
+                    nextSlot++;
+                }
+            }
         }
         public override bool InstancePerEntity => true;
     }

@@ -6,7 +6,8 @@ using System.Text;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Microsoft.Xna.Framework;
-
+using Entrogic.NPCs.CardFightable.CardBullet;
+using Entrogic.NPCs.CardFightable.CardBullet.PlayerBullets;
 
 namespace Entrogic.Items.Weapons.Card.Elements
 {
@@ -69,6 +70,20 @@ namespace Entrogic.Items.Weapons.Card.Elements
                 Vector2 vec = mouse + r - mouse;
                 Vector2 finalVec = (vec.ToRotation() + MathHelper.Pi).ToRotationVector2() * 24;
                 Projectile proj = Main.projectile[Projectile.NewProjectile(mouse + r, finalVec, type, damage, knockBack, Main.myPlayer, Main.MouseWorld.Y - 50, IsShootingStar && ModLoader.GetMod("FallenStar49") != null ? 1f : 0f)];
+            }
+        }
+        public override void CardGameAttack(Player attackPlayer, NPC attackNPC, Vector2 playerDrawPosition, Vector2 NPCDrawPosition, Vector2 panelPos)
+        {
+            for (int i = -2; i <= 2; i++)
+            {
+                EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(attackPlayer);
+                CardFightBullet bullet = new FallenStar(NPCDrawPosition + new Vector2(0, -10f))
+                {
+                    Velocity = Vector2.Zero,
+                    Center = playerDrawPosition + new Vector2(0f, -6f) + new Vector2(i * 55f, 0f),
+                    UIPosition = panelPos
+                };
+                clientModPlayer._bullets.Add(bullet);
             }
         }
     }

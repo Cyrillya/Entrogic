@@ -55,6 +55,51 @@ namespace Entrogic
         public static float ScreenVerticalAxis => Main.screenWidth / 2;
         #endregion
 
+        public static void Return(Player player)
+        {
+            player.FindSpawn();
+            if (!Player.CheckSpawn(player.SpawnX, player.SpawnY))
+            {
+                player.SpawnX = -1;
+                player.SpawnY = -1;
+            }
+            if (player.SpawnX >= 0 && player.SpawnY >= 0)
+            {
+                Vector2 telePos = new Vector2(player.SpawnX * 16 + 8 - player.width / 2, player.SpawnY * 16 - player.height);
+                player.HandleTeleport(telePos);
+            }
+            else
+            {
+                player.HandleTeleport(new Vector2(Main.spawnTileX * 16 + 8 - player.width / 2, Main.spawnTileY * 16 - player.height));
+                for (int i = Main.spawnTileX - 1; i < Main.spawnTileX + 2; i++)
+                {
+                    for (int j = Main.spawnTileY - 3; j < Main.spawnTileY; j++)
+                    {
+                        if (Main.tile[i, j] != null)
+                        {
+                            if (Main.tileSolid[(int)Main.tile[i, j].type] && !Main.tileSolidTop[(int)Main.tile[i, j].type])
+                            {
+                                WorldGen.KillTile(i, j, false, false, false);
+                            }
+                            if (Main.tile[i, j].liquid > 0)
+                            {
+                                Main.tile[i, j].lava(false);
+                                Main.tile[i, j].liquid = 0;
+                                WorldGen.SquareTileFrame(i, j, true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void HandleTeleport(this Player player, Vector2 telePos)
+        {
+            player.Teleport(telePos);
+            if (Main.netMode != NetmodeID.SinglePlayer)
+                NetMessage.SendData(MessageID.Teleport, -1, -1, null, 2, (float)player.whoAmI, telePos.X, telePos.Y, 0, 0, 0);
+        }
+
         /// <summary>
         /// 判断鼠标是否在某个矩形上。
         /// </summary>

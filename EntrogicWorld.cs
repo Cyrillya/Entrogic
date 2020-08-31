@@ -291,11 +291,11 @@ namespace Entrogic
                     {
                         progress.Message = Language.GetTextValue("Mods.Entrogic.GenLifeLiquid");
                         int r = 55;
-                        ModGenHelper.RoundTile(maxX, maxY, r, r, 70, 75, true, TileType<BlackMeteorite>(), 1, 0.2);
+                        ModWorldHelper.RoundTile(maxX, maxY, r, r, 70, 75, true, TileType<BlackMeteorite>(), 1, 0.2);
                         progress.Set(0.20f);
-                        ModGenHelper.RoundTile(maxX, maxY, r, r, 0, 24.5, true, TileType<BlackMeteorite>());
+                        ModWorldHelper.RoundTile(maxX, maxY, r, r, 0, 24.5, true, TileType<BlackMeteorite>());
                         progress.Set(0.40f);
-                        ModGenHelper.RoundTile(maxX, maxY, r - 7, r - 7, 0, 18, true, 0, 2, 0.5, 1, 140);
+                        ModWorldHelper.RoundTile(maxX, maxY, r - 7, r - 7, 0, 18, true, 0, 2, 0.5, 1, 140);
                         progress.Set(0.60f);
                         int length = 15;
                         for (int j = maxY - 46; j >= maxY - 80; j--)
@@ -307,11 +307,11 @@ namespace Entrogic
                             }
                         }
                         progress.Set(0.80f);
-                        ModGenHelper.RoundWall(maxX, maxY, r, r, 0, 25, true, WallType<Walls.黑陨岩墙>(), 0, 1);
+                        ModWorldHelper.RoundWall(maxX, maxY, r, r, 0, 25, true, WallType<Walls.黑陨岩墙>(), 0, 1);
                         progress.Set(1.00f);
 
                         progress.Message = Language.GetTextValue("Mods.Entrogic.SmoothLifeLiquid");
-                        ModGenHelper.SmoothTile(maxX - 80, maxY - 80, maxX + 80, maxY + 80, progress, true);
+                        ModWorldHelper.SmoothTile(maxX - 80, maxY - 80, maxX + 80, maxY + 80, progress, true);
                     }
                     catch (Exception e)
                     {

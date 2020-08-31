@@ -52,7 +52,7 @@ namespace Entrogic
         [Label("启用癫痫模式")]
         public bool ThatsCrazy;
     }
-    [Label("服务器设置")]
+    [Label("全局设置")]
     public class BEntrogicConfigServer : ModConfig
     {
         public override ConfigScope Mode => ConfigScope.ServerSide;
@@ -68,6 +68,15 @@ namespace Entrogic
         [Label("(卡牌)多人模式强制开荒")]
         [ReloadRequired]
         public bool ClearNewPlayersCard;
+
+        [Range(22, 1100)]
+        [Increment(11)]
+        [DrawTicks]
+        [DefaultValue(55)]
+        [Label("Buff总数")]
+        [Tooltip("修改最大可允许的Buff总数（范围为22-110）（一排共11个）")]
+        [ReloadRequired]
+        public int MaxBuffSlots;
     }
     [Label("卡牌设置")]
     public class CEntrogicCardConfig : ModConfig

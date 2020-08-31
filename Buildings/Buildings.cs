@@ -110,6 +110,8 @@ namespace Entrogic
 					int wj = starttc.Y + j;
 					if ((ts[i, j].type != 0 && ts[i, j].active()) || useAir)
 					{
+						if (Main.tile[wi, wj] == null)
+							Main.tile[wi, wj] = new Tile();
 						Main.tile[wi, wj].CopyFrom(ts[i, j]);
 					}
 				}
