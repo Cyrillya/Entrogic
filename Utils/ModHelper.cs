@@ -158,6 +158,65 @@ namespace Entrogic
                 Main.spriteBatch.DrawString(font, name, new Vector2(texPos.X, texPos.Y), Color.White);
             }
         }
+
+        public static void ProjectileExplode(this Projectile projectile, float statRangeX = 22f, float statRangeY = 22f)
+        {
+            Main.PlaySound(SoundID.Item14, projectile.position);
+            projectile.position.X = projectile.position.X + (float)(projectile.width / 2);
+            projectile.position.Y = projectile.position.Y + (float)(projectile.height / 2);
+            projectile.width = (int)(22f * projectile.scale);
+            projectile.height = (int)(22f * projectile.scale);
+            projectile.position.X = projectile.position.X - (float)(projectile.width / 2);
+            projectile.position.Y = projectile.position.Y - (float)(projectile.height / 2);
+            int num3;
+            for (int num765 = 0; num765 < 20; num765 = num3 + 1)
+            {
+                int num766 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 31, 0f, 0f, 100, default(Color), 1.5f);
+                Dust dust = Main.dust[num766];
+                dust.velocity *= 1.4f;
+                num3 = num765;
+            }
+            for (int num767 = 0; num767 < 10; num767 = num3 + 1)
+            {
+                int num768 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 6, 0f, 0f, 100, default(Color), 2.5f);
+                Main.dust[num768].noGravity = true;
+                Dust dust = Main.dust[num768];
+                dust.velocity *= 5f;
+                num768 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 6, 0f, 0f, 100, default(Color), 1.5f);
+                dust = Main.dust[num768];
+                dust.velocity *= 3f;
+                num3 = num767;
+            }
+            int num769 = Gore.NewGore(new Vector2(projectile.position.X, projectile.position.Y), default(Vector2), Main.rand.Next(61, 64), 1f);
+            Gore gore = Main.gore[num769];
+            gore.velocity *= 0.4f;
+            Gore gore138 = Main.gore[num769];
+            gore138.velocity.X = gore138.velocity.X + 1f;
+            Gore gore139 = Main.gore[num769];
+            gore139.velocity.Y = gore139.velocity.Y + 1f;
+            num769 = Gore.NewGore(new Vector2(projectile.position.X, projectile.position.Y), default(Vector2), Main.rand.Next(61, 64), 1f);
+            gore = Main.gore[num769];
+            gore.velocity *= 0.4f;
+            Gore gore140 = Main.gore[num769];
+            gore140.velocity.X = gore140.velocity.X - 1f;
+            Gore gore141 = Main.gore[num769];
+            gore141.velocity.Y = gore141.velocity.Y + 1f;
+            num769 = Gore.NewGore(new Vector2(projectile.position.X, projectile.position.Y), default(Vector2), Main.rand.Next(61, 64), 1f);
+            gore = Main.gore[num769];
+            gore.velocity *= 0.4f;
+            Gore gore142 = Main.gore[num769];
+            gore142.velocity.X = gore142.velocity.X + 1f;
+            Gore gore143 = Main.gore[num769];
+            gore143.velocity.Y = gore143.velocity.Y - 1f;
+            num769 = Gore.NewGore(new Vector2(projectile.position.X, projectile.position.Y), default(Vector2), Main.rand.Next(61, 64), 1f);
+            gore = Main.gore[num769];
+            gore.velocity *= 0.4f;
+            Gore gore144 = Main.gore[num769];
+            gore144.velocity.X = gore144.velocity.X - 1f;
+            Gore gore145 = Main.gore[num769];
+            gore145.velocity.Y = gore145.velocity.Y - 1f;
+        }
+
         public static double GetLength(this Vector2 v)
         {
             return Math.Sqrt(Math.Pow(v.X,2) + Math.Pow(v.Y, 2));

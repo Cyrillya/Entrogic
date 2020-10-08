@@ -304,7 +304,7 @@ namespace Entrogic.NPCs.CardFightable
             else
                 button = "交换（" + changeAmount + "个" + Lang.GetItemNameValue(changeID) + "）";
 
-            button2 = "对局";
+            //button2 = "对局";
         }
 
         public override bool CanChat()

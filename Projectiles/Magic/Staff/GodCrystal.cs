@@ -22,6 +22,8 @@ namespace Entrogic.Projectiles.Magic.Staff
             projectile.scale = 1f;
             projectile.alpha = 60;
             projectile.timeLeft = 600;
+            projectile.localNPCHitCooldown = 10;
+            projectile.usesLocalNPCImmunity = true;
         }
         public override void AI()
         {
@@ -186,6 +188,8 @@ namespace Entrogic.Projectiles.Magic.Staff
             projectile.CloneDefaults(ProjectileType<GodCrystal>());
             projectile.penetrate = -1;
             projectile.tileCollide = false;
+            projectile.localNPCHitCooldown = 10;
+            projectile.usesLocalNPCImmunity = true;
         }
         public override void AI()
         {

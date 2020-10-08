@@ -31,7 +31,7 @@ namespace Entrogic.Items.Weapons.Melee.Sword
             item.shoot = ProjectileType<Skyline>();
             item.shootSpeed = 13f;
             item.melee = true;
-            item.noUseGraphic = true;
+            item.noUseGraphic = false;
         }
         
         public override void AddRecipes()

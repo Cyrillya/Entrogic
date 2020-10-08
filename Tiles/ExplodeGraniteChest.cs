@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Entrogic.Projectiles.Miscellaneous;
+
+using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.DataStructures;
@@ -132,7 +134,12 @@ namespace Entrogic.Tiles
                 {
                     NetMessage.SendData(MessageID.RequestChestOpen, -1, -1, null, left, (float)top, 0f, 0f, 0, 0, 0);
                     Main.stackSplit = 600;
-                    MessageHelper.SendExplode(new Vector2(left, top) * 16f, new Vector2(80f), 300, -1, -1, 2, 3);
+                    // Spawning a Grenade projectile that dies quickly is the simplest way to get this effect
+                    int projectile = Projectile.NewProjectile(left * 16 + 8, top * 16 + 8, 0, 0, ProjectileType<GraniteChestExplode>(), 300, 1, Main.myPlayer);
+                    Main.projectile[projectile].scale = 2f;
+                    Main.projectile[projectile].timeLeft = 2;
+                    Main.projectile[projectile].netUpdate = true;
+                    //MessageHelper.SendExplode(new Vector2(left, top) * 16f, new Vector2(80f), 300, -1, -1, 2, 3);
                 }
             }
             else
@@ -154,7 +161,12 @@ namespace Entrogic.Tiles
                         player.chestX = left;
                         player.chestY = top;
                         Main.PlaySound(player.chest < 0 ? SoundID.MenuOpen : SoundID.MenuTick);
-                        Entrogic.Explode(new Vector2(left, top) * 16f, new Vector2(80f), 300, 2, 3);
+                        // Spawning a Grenade projectile that dies quickly is the simplest way to get this effect
+                        int projectile = Projectile.NewProjectile(left * 16 + 8, top * 16 + 8, 0, 0, ProjectileType<GraniteChestExplode>(), 300, 1, Main.myPlayer);
+                        Main.projectile[projectile].scale = 2f;
+                        Main.projectile[projectile].timeLeft = 2;
+                        Main.projectile[projectile].netUpdate = true;
+                        //Entrogic.Explode(new Vector2(left, top) * 16f, new Vector2(80f), 300, 2, 3);
                     }
                     Recipe.FindRecipes();
                 }

@@ -24,6 +24,8 @@ ItemName.EarthElementalAffinityAgent=土元素亲和剂
 ItemName.Halle=哈雷
 ItemName.RustySword=生锈的长剑
 ItemName.CastIronSword=铸铁重剑
+ItemName.LeafbladeItem=飞叶
+ItemName.SkylineItem=天际
 
 # Volutio's Items
 ItemName.VolutioMask=凝胶共生体面具

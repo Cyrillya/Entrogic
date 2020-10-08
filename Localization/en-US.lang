@@ -24,6 +24,8 @@ ItemName.EarthElementalAffinityAgent=Earth Elemental Affinity Agent
 ItemName.Halle=Halle
 ItemName.RustySword=Rusty Sword
 ItemName.CastIronSword=Cast Iron Sword
+ItemName.LeafbladeItem=Leafblade
+ItemName.SkylineItem=Skyline
 
 # Volutio's Items
 ItemName.VolutioMask=Volutio Mask

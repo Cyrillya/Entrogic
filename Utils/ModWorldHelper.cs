@@ -42,13 +42,21 @@ namespace Entrogic
         /// <param name="tileY">放置时岩浆所处的物块坐标Y轴</param>
         public static bool CreateUnderworldTransport(int tileX, int tileY)
         {
+            int inWorldRange = 15;
+            // 通过遍历以粗略的手段定位左上角黑曜石
+            while (Main.tile[tileX - 1, tileY].type == TileID.Obsidian || Main.tile[tileX, tileY - 1].type == TileID.Obsidian)
+            {
+                if (Main.tile[tileX - 1, tileY].type == TileID.Obsidian)
+                    tileX--;
+                if (Main.tile[tileX, tileY - 1].type == TileID.Obsidian)
+                    tileY--;
+            }
             // 记录一遍初始物块位置
             int statTileX = tileX;
             int statTileY = tileY;
             // 门框大小（包括左上角物块）
             int XLength = 1;
             int YLength = 1;
-            int inWorldRange = 15;
             // 省事，当前被选取物块距离世界边界不到{inWorldRange}格即放弃搜索
             if (!WorldGen.InWorld(tileX, tileY, inWorldRange)) return false;
             // 第一步：向右搜索直到找到一个黑曜石下方有黑曜石
