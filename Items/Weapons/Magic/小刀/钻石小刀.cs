@@ -30,7 +30,7 @@
 //            item.autoReuse = false;
 //            item.shoot = ModContent.ProjectileType<钻石小刀>();
 //            item.shootSpeed = 14.8f;
-//            item.magic = true;
+//            item.DamageType = DamageClass.Magic;
 //            item.noUseGraphic = true;
 //            item.crit += 31;
 //        }

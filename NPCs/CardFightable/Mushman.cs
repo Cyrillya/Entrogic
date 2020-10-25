@@ -208,7 +208,7 @@ namespace Entrogic.NPCs.CardFightable
         public override void OnFirstButtonClicked(ref bool shop)
         {
             Player player = Main.player[Main.myPlayer];
-            Main.PlaySound(SoundID.Item35);
+            Terraria.Audio.SoundEngine.PlaySound(SoundID.Item35);
             if (!changed)
             {
                 int LifeC = 0;

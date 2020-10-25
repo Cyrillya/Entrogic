@@ -26,7 +26,7 @@ namespace Entrogic.Projectiles.Melee.Swords
             projectile.damage = 51;
             projectile.aiStyle = -1;
             projectile.knockBack = 6f;
-            projectile.melee = true;
+            projectile.DamageType = DamageClass.Melee;
             projectile.alpha = 70;
             projectile.Size = new Vector2(90f, 84f);
         }
@@ -35,7 +35,7 @@ namespace Entrogic.Projectiles.Melee.Swords
             projectile.soundDelay--;
             if (projectile.soundDelay <= 0)
             {
-                Main.PlaySound(SoundID.Item1, projectile.Center);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.Item1, projectile.Center);
                 projectile.soundDelay = 12;
             }
             projectile.timeLeft = 2;

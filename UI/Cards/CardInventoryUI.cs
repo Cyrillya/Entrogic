@@ -44,7 +44,7 @@ namespace Entrogic.UI.Cards
             {
                 float posX = statPoint.X + 32f + inventory.X + grid.X * (-0.5f + (int)(i % 3)) + (int)(i % 3) * 10f;
                 float posY = statPoint.Y + 18f + grid.Y * (-0.5f + (int)(i / 3)) + (int)(i / 3) * 10f;
-                CardInventoryGridSlot Gri = new CardInventoryGridSlot(GetTexture("Entrogic/UI/Cards/InventoryGrid"), i);
+                CardInventoryGridSlot Gri = new CardInventoryGridSlot((Texture2D)GetTexture("Entrogic/UI/Cards/InventoryGrid"), i);
                 Gri.uiPosition = new Vector2(posX, posY);
                 Gri.uiWidth = Gri.uiHeight = 64f;
                 Grid.Add(Gri);
@@ -96,8 +96,8 @@ namespace Entrogic.UI.Cards
         private void InventoryClicked(UIMouseEvent evt, UIElement listeningElement)
         {
             Main.LocalPlayer.chest = -1;
-            Main.npcShop = 0;
-            Main.PlaySound(SoundID.MenuOpen);
+            Main.SetNPCShopIndex(0);
+            Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuOpen);
             slotActive = !slotActive;
         }
     }
@@ -115,12 +115,12 @@ namespace Entrogic.UI.Cards
         {
             if (ModHelper.ControlShift && inventoryItem.type != ItemID.None)
             {
-                if (!Main.LocalPlayer.ItemSpace(inventoryItem))
+                if (!Main.LocalPlayer.ItemSpaceForCofveve(inventoryItem))
                     return;
-                Main.LocalPlayer.PutItemInInventory(inventoryItem.type);
+                Main.LocalPlayer.PutItemInInventoryFromItemUsage(inventoryItem.type);
                 inventoryItem = new Item();
                 EntrogicPlayer.ModPlayer(Main.LocalPlayer).CardType[Index] = inventoryItem.type;
-                Main.PlaySound(SoundID.Grab, -1, -1, 1, 1f, 0.0f);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.Grab, -1, -1, 1, 1f, 0.0f);
                 return;
             }
             RightClickEvent();
@@ -138,7 +138,7 @@ namespace Entrogic.UI.Cards
             }
             if (Main.mouseLeft && Main.mouseLeftRelease && EntrogicPlayer.ModPlayer(Main.LocalPlayer).CardType[Index] != inventoryItem.type)
             {
-                Main.PlaySound(SoundID.Grab, -1, -1, 1, 1f, 0.0f);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.Grab, -1, -1, 1, 1f, 0.0f);
             }
             EntrogicPlayer.ModPlayer(Main.LocalPlayer).CardType[Index] = inventoryItem.type;
         }

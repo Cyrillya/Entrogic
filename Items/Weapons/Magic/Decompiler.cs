@@ -15,12 +15,12 @@ namespace Entrogic.Items.Weapons.Magic
         public override void SetDefaults()
         {
             item.damage = 62;
-            item.magic = true;
+            item.DamageType = DamageClass.Magic;
             item.width = 26;
             item.height = 26;
             item.useTime = 90;
             item.useAnimation = 90;
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.noMelee = true;
             item.crit = 0;
             item.mana = 15;
@@ -98,15 +98,14 @@ namespace Entrogic.Items.Weapons.Magic
         }
         public override void AddRecipes()
         {
-            ModRecipe r = new ModRecipe(mod);
-            r.AddIngredient(ItemID.SoulofSight, 5);
-            r.AddIngredient(ItemID.SoulofFright, 5);
-            r.AddIngredient(ItemID.SoulofMight, 5);
-            r.AddIngredient(ItemID.HallowedBar, 10);
-            r.AddIngredient(ItemID.LaserRifle);
-            r.AddTile(TileID.MythrilAnvil); 
-            r.SetResult(this);
-            r.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(ItemID.SoulofSight, 5)
+                .AddIngredient(ItemID.SoulofFright, 5)
+                .AddIngredient(ItemID.SoulofMight, 5)
+                .AddIngredient(ItemID.HallowedBar, 10)
+                .AddIngredient(ItemID.LaserRifle)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
 }

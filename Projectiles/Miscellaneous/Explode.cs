@@ -47,7 +47,7 @@ namespace Entrogic.Projectiles.Miscellaneous
             if (projectile.frame == 7) projectile.Kill();
             for (int i = 0; i < 5; i++)
             {
-                Dust dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, DustID.Fire, 0f, 0f, 100, default(Color), 3f);
+                Dust dust = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, DustID.Firefly, 0f, 0f, 100, default(Color), 3f);
                 dust.noGravity = true;
             }
         }

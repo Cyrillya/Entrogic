@@ -16,7 +16,7 @@ namespace Entrogic.NPCs.CardFightable.Particles
     {
         public ArcaneMissleParticle() : base()
         {
-            _texture = ModContent.GetTexture($"Entrogic/NPCs/CardFightable/Particles/ArcaneMissleParticle_{Main.rand.Next(3)}");
+            _texture = (Texture2D)ModContent.GetTexture($"Entrogic/NPCs/CardFightable/Particles/ArcaneMissleParticle_{Main.rand.Next(3)}");
         }
         public override void Update(GameTime gameTime)
         {

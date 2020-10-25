@@ -18,7 +18,7 @@ namespace Entrogic.Projectiles.衰落魔像
             Main.projFrames[projectile.type] = 6;
             ProjectileID.Sets.MinionSacrificable[projectile.type] = true;
             ProjectileID.Sets.MinionTargettingFeature[projectile.type] = true;
-            ProjectileID.Sets.Homing[projectile.type] = true;
+            ProjectileID.Sets.CountsAsHoming[projectile.type] = true;
         }
         
         public override void SetDefaults()
@@ -32,7 +32,7 @@ namespace Entrogic.Projectiles.衰落魔像
             projectile.aiStyle = 26;
             projectile.timeLeft = 18000;
             projectile.penetrate = -1;
-            projectile.minion = true;
+            projectile.DamageType = DamageClass.Summon;
             aiType = ProjectileID.BabySlime;
             projectile.tileCollide = false;
             projectile.usesLocalNPCImmunity = true;
@@ -110,8 +110,8 @@ namespace Entrogic.Projectiles.衰落魔像
         public Vector2 NPCC = new Vector2(-1f);
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            Texture2D texture2D = Main.projectileTexture[projectile.type];
-            int num = Main.projectileTexture[projectile.type].Height / Main.projFrames[projectile.type];
+            Texture2D texture2D = (Texture2D)Terraria.GameContent.TextureAssets.Projectile[projectile.type];
+            int num = Terraria.GameContent.TextureAssets.Projectile[projectile.type].Height() / Main.projFrames[projectile.type];
             int y = num * projectile.frame;
             Main.spriteBatch.Draw(texture2D, projectile.Center - Main.screenPosition + new Vector2(0f, projectile.gfxOffY), new Rectangle?(new Rectangle(0, y, texture2D.Width, num)), projectile.GetAlpha(lightColor), projectile.rotation, new Vector2((float)texture2D.Width / 2f, (float)num / 2f), projectile.scale, SpriteEffects.None, 0f);
             return false;
@@ -170,7 +170,7 @@ namespace Entrogic.Projectiles.衰落魔像
             projectile.alpha = 80;
             projectile.aiStyle = 1;
             projectile.timeLeft = 300;
-            projectile.minion = true;
+            projectile.DamageType = DamageClass.Summon;
             projectile.usesLocalNPCImmunity = true;
             projectile.localNPCHitCooldown = 15;
         }
@@ -189,7 +189,7 @@ namespace Entrogic.Projectiles.衰落魔像
             if (projectile.ai[1] == 0f)
             {
                 projectile.ai[1] = 1f;
-                Main.PlaySound(SoundID.Item17, projectile.position);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.Item17, projectile.position);
             }
         }
         public override void Kill(int timeLeft)

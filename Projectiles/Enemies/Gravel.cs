@@ -37,7 +37,7 @@ namespace Entrogic.Projectiles.Enemies
             if (projectile.ai[1] == 0f)
             {
                 projectile.ai[1] = 1f;
-                Main.PlaySound(SoundID.Item17, projectile.position);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.Item17, projectile.position);
             }
         }
         public override void Kill(int timeLeft)

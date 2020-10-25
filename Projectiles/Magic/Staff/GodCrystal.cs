@@ -22,6 +22,8 @@ namespace Entrogic.Projectiles.Magic.Staff
             projectile.scale = 1f;
             projectile.alpha = 60;
             projectile.timeLeft = 600;
+            projectile.localNPCHitCooldown = 10;
+            projectile.usesLocalNPCImmunity = true;
         }
         public override void AI()
         {
@@ -110,13 +112,13 @@ namespace Entrogic.Projectiles.Magic.Staff
                 Main.projectile[j].penetrate = projectile.penetrate;
                 projectile.position -= new Vector2(sx,sy);
 
-                Main.PlaySound(SoundID.Item10, projectile.position);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.Item10, projectile.position);
             }
             return false;
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            Texture2D t = Main.projectileTexture[projectile.type];
+            Texture2D t = (Texture2D)Terraria.GameContent.TextureAssets.Projectile[projectile.type];
             int frameHeight = t.Height / Main.projFrames[projectile.type];
             SpriteEffects effects = SpriteEffects.None;
             if (projectile.spriteDirection < 0) effects = SpriteEffects.FlipHorizontally;
@@ -186,6 +188,8 @@ namespace Entrogic.Projectiles.Magic.Staff
             projectile.CloneDefaults(ProjectileType<GodCrystal>());
             projectile.penetrate = -1;
             projectile.tileCollide = false;
+            projectile.localNPCHitCooldown = 10;
+            projectile.usesLocalNPCImmunity = true;
         }
         public override void AI()
         {
@@ -259,7 +263,7 @@ namespace Entrogic.Projectiles.Magic.Staff
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            Texture2D t = Main.projectileTexture[projectile.type];
+            Texture2D t = (Texture2D)Terraria.GameContent.TextureAssets.Projectile[projectile.type];
             int frameHeight = t.Height / Main.projFrames[projectile.type];
             SpriteEffects effects = SpriteEffects.None;
             if (projectile.spriteDirection < 0) effects = SpriteEffects.FlipHorizontally;

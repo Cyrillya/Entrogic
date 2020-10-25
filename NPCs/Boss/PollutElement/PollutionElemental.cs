@@ -12,6 +12,7 @@ using Entrogic.Items.Materials;
 using Entrogic.Items.PollutElement.Armor;
 using Entrogic.Items.Miscellaneous.Placeable.Trophy;
 using Terraria.Utilities;
+using Terraria.GameContent.NetModules;
 
 namespace Entrogic.NPCs.Boss.PollutElement
 {
@@ -38,8 +39,6 @@ namespace Entrogic.NPCs.Boss.PollutElement
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[npc.type] = 4;
-            DisplayName.SetDefault("Pollution Elemental");
-            DisplayName.AddTranslation(GameCulture.Chinese, "污染之灵");
         }
 
         public override void SetDefaults()
@@ -67,7 +66,7 @@ namespace Entrogic.NPCs.Boss.PollutElement
             npc.buffImmune[BuffID.Bleeding] = true;
             npc.buffImmune[BuffID.Confused] = true;
             npc.timeLeft = NPC.activeTime * 30;
-            music = mod.GetSoundSlot(SoundType.Music, "Sounds/Music/TheStormy");
+            music = Mod.GetSoundSlot(SoundType.Music, "Sounds/Music/TheStormy");
             musicPriority = MusicPriority.BossMedium;
             bossBag = ItemType<ContaminatedElementalTreasureBag>();
             npc.alpha = 255;
@@ -142,6 +141,7 @@ namespace Entrogic.NPCs.Boss.PollutElement
             potionType = ItemID.GreaterHealingPotion;
         }
 
+        private int tester;
         private Vector2 recordedStartRoundPos;
         private bool IsState2 = false;
         public int GetState() => IsState2 ? 2 : 1;
@@ -323,7 +323,7 @@ namespace Entrogic.NPCs.Boss.PollutElement
                             npc.direction = npc.Center.X > player.Center.X ? -1 : 1;
                             npc.spriteDirection = npc.direction;
                             npc.velocity.X = npc.direction * 24;
-                            Main.PlaySound(SoundID.ForceRoar, (int)npc.position.X, (int)npc.position.Y, -1, 1f, 0f);
+                            Terraria.Audio.SoundEngine.PlaySound(SoundID.ForceRoar, (int)npc.position.X, (int)npc.position.Y, -1, 1f, 0f);
                         }
                         if ((Timer - 25) % 5 == 0)
                         {
@@ -883,13 +883,13 @@ namespace Entrogic.NPCs.Boss.PollutElement
                     Color GreenYellow = Color.GreenYellow;
                     if (Main.netMode == NetmodeID.SinglePlayer)
                     {
-                        Main.NewText(Language.GetTextValue(text2), orange, false);
-                        Main.NewText(Language.GetTextValue(text3), GreenYellow, false);
+                        Main.NewText(Language.GetTextValue(text2), orange);
+                        Main.NewText(Language.GetTextValue(text3), GreenYellow);
                     }
                     else if (Main.netMode == NetmodeID.Server)
                     {
-                        NetMessage.BroadcastChatMessage(NetworkText.FromKey(text2, new object[0]), orange, -1);
-                        NetMessage.BroadcastChatMessage(NetworkText.FromKey(text3, new object[0]), GreenYellow, -1);
+                        NetTextModule.SerializeServerMessage(NetworkText.FromKey(text2, new object[0]), orange);
+                        NetTextModule.SerializeServerMessage(NetworkText.FromKey(text3, new object[0]), GreenYellow);
                     }
                     EntrogicWorld.IsDownedPollutionElemental = true;
                     if (Main.netMode == NetmodeID.Server)

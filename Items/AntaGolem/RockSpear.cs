@@ -15,7 +15,7 @@ namespace Entrogic.Items.AntaGolem
     {
         public override void SetDefaults()
         {
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.useAnimation = 22;
             item.useTime = 22;
             item.shootSpeed = 4.6f;
@@ -29,7 +29,7 @@ namespace Entrogic.Items.AntaGolem
             item.value = Item.sellPrice(0, 3, 50);
             item.noMelee = true;
             item.noUseGraphic = true;
-            item.melee = true;
+            item.DamageType = DamageClass.Melee;
         }
         public override void HoldItem(Player player)
         {

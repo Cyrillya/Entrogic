@@ -35,14 +35,15 @@ using Microsoft.Xna.Framework.Input;
 using Entrogic.NPCs.CardFightable.CardBullet;
 using Entrogic.NPCs.CardMerchantSystem;
 using Entrogic.NPCs.CardFightable.Particles;
+using Terraria.IO;
+using Terraria.Social;
 //using Entrogic.UI;
 
 namespace Entrogic
 {
     public class EntrogicPlayer : ModPlayer
     {
-        internal string PlayerFolder => Main.PlayerPath + "/" + player.name + "/sysfile.ent/";
-        internal string ServerPlayerFolder => Main.PlayerPath + "/" + player.name + "/sysfile.ent/";
+        //internal string PlayerFolder => ModHelper.GetPlayerPathFromName(player.name, SocialAPI.Cloud == null, out string name) + "/sysfile.ent/";
 
         private KeyboardState _currentKey;
         private KeyboardState _previousKey;
@@ -203,8 +204,6 @@ namespace Entrogic
             IsDelayCycle_StaticWatch = false;
             IsMoreManaOrCard_LuckyCoin = false;
 
-            ResetVariables();
-
             //Main.NewText("CardFake: " + cardFakeType[0] + ", " + cardFakeType[1] + ", " + cardFakeType[2] + ", " + cardFakeType[3] + ", " + cardFakeType[4] + ", " + cardFakeType[5] + ", " + cardFakeType[6] + ", " + cardFakeType[7] + ", " + cardFakeType[8]);
             //Main.NewText("Card: " + cardType[0] + ", " + cardType[1] + ", " + cardType[2] + ", " + cardType[3] + ", " + cardType[4] + ", " + cardType[5] + ", " + cardType[6] + ", " + cardType[7] + ", " + cardType[8]);
         }
@@ -245,8 +244,6 @@ namespace Entrogic
             }
             IsDelayCycle_StaticWatch = false;
             IsMoreManaOrCard_LuckyCoin = false;
-
-            ResetVariables();
         }
 
         /// <summary>
@@ -255,21 +252,24 @@ namespace Entrogic
         /// <returns></returns>
         public override TagCompound Save()
         {
-            if (Main.netMode == NetmodeID.SinglePlayer)
-            {
-                string path = string.Format(PlayerFolder + "CardData.entini");
-                SaveCardData(path);
-            }
-            else if (BEntrogicConfigServer.Instance.ClearNewPlayersCard)
-            {
-                string path = string.Format(ServerPlayerFolder + "CardData" + Main.worldName + ".entini");
-                SaveCardData(path);
-            }
+            //if (Main.netMode == NetmodeID.SinglePlayer)
+            //{
+            //    string path = string.Format(PlayerFolder + "CardData.entini");
+            //    SaveCardData(path);
+            //}
+            //else if (BEntrogicConfigServer.Instance.ClearNewPlayersCard)
+            //{
+            //    ModHelper.GetWorldPathFromName(Main.worldName, SocialAPI.Cloud != null, out string worldName);
+            //    string path = string.Format(PlayerFolder + "CardData" + worldName + ".entini");
+            //    SaveCardData(path);
+            //}
+            string text = ModHelper.GetCardSlotInfo(player);
             return new TagCompound
             {
                 { "Sins", Sins },
                 { "LifeLastTime", LifeLastTime },
-                { nameof(CardUseCount), CardUseCount }
+                { nameof(CardUseCount), CardUseCount },
+                { nameof(CardType), text }
             };
         }
 
@@ -282,152 +282,57 @@ namespace Entrogic
             Sins = tag.GetInt("Sins");
             LifeLastTime = tag.GetInt("LifeLastTime");
             CardUseCount = tag.GetInt(nameof(CardUseCount));
-        }
 
-        public void SaveCardData(string path)
-        {
-            string[] directPath = path.Split('/');
-            string directoryPath = "";
-            for (int i = 0; i < directPath.Length - 1; i++) directoryPath += $"{directPath[i]}{Path.DirectorySeparatorChar}";
-            if (!Directory.Exists(directoryPath))
-                return;
-            //写文件
-            FileInfo fileInfo = new FileInfo(path);
-            Item item = new Item();
-            item.SetDefaults(CardType[0]);
-            string text = "";
-            if (CardType[0] == 0)
-            {
-                text = "0";
-            }
+            string cardInfos = tag.GetString(nameof(CardType));
+            List<int> list = new List<int>();
+            if (cardInfos == null || cardInfos == "") list = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             else
             {
-                text = $"{item.modItem.mod.Name}:{item.modItem.Name}";
-            }
-            for (int i = 1; i < CardType.Length; i++)
-            {
-                if (CardType[i] == 0)
+                string[] cardInfo = cardInfos.Split('\n');
+                foreach (string card in cardInfo)
                 {
-                    text += "\n0";
-                }
-                else
-                {
-                    item.SetDefaults(CardType[i]);
-                    text += $"\n{item.modItem.mod.Name}:{item.modItem.Name}";
-                }
-            }
-            File.WriteAllText(path, text);
-            Console.Read();
-        }
-        
-        public void LoadCardData(string path)
-        {
-            if (File.Exists(path))
-            {
-                // 创建泛型列表
-                List<int> list = new List<int>();
-                //string[] read = File.ReadAllText(path).Split('k');
-                //foreach (string r in read)
-                //{
-                //    // 将读入的数据转换成int类型值
-                //    int result;
-                //    if (int.TryParse(r, out result))
-                //    {
-                //        // 转换成功，加入到泛型列表
-                //        list.Add(Convert.ToInt32(r, 2));
-                //    }
-                //    else
-                //    {
-                //        // 转换失败，显示错误提示
-                //        MessageBox.Show($"在读取{player.name}的卡牌数据时出错！请将此问题报告给作者Cyril！通过QQ群59193481联系"
-                //           + $"\r\nMain.netMode={Main.netMode}");
-                //    }
-                //}
-                // 打开数据文件 D:\data.txt逐行读入
-                StreamReader rd = File.OpenText(path);
-                string line;
-                while ((line = rd.ReadLine()) != null)
-                {
-                    if (line == "0")
+                    if (list.Count >= 9)
+                        break;
+                    if (card == "0")
                     {
                         list.Add(0);
                         continue;
                     }
-                    string[] read = line.Split(':');
-                    Mod referenceMod = ModLoader.GetMod(read[0]);
-                    if (referenceMod != null)
+                    string[] read = card.Split(':');
+                    try
                     {
-                        try
+                        ModItem modItem = ModItems.Find(s => s.Name.Equals(read[1]));
+                        if (modItem != null)
                         {
-                            ModItem modItem = referenceMod.GetItem(read[1]);
-                            if (modItem != null)
-                            {
-                                list.Add(modItem.item.type);
-                            }
-                        }
-                        catch(Exception e)
-                        {
-                            throw e;
+                            list.Add(modItem.item.type);
                         }
                     }
-                }
-                // 关闭文件
-                rd.Close();
-                while (list.Count < 9)
-                {
-                    list.Add(0); // 填0
-                }
-                for (int i = list.Count - 1; i >= 9; i--)
-                {
-                    // 删除9之后的
-                    list.Remove(list[i]);
-                }
-                if (list.Count < 1) { return; }
-                FileInfo fileInfo = new FileInfo(path);
-                Item item = new Item();
-                item.SetDefaults(list[0]);
-                string text = "";
-                if (list[0] == 0)
-                {
-                    text = "0";
-                }
-                else
-                {
-                    text = $"{item.modItem.mod.Name}:{item.modItem.Name}";
-                }
-                for (int i = 1; i < list.Count; i++)
-                {
-                    if (list[i] == 0)
+                    catch (Exception e)
                     {
-                        text += "\n0";
+                        throw e;
                     }
-                    else
-                    {
-                        item.SetDefaults(list[i]);
-                        text += $"\n{item.modItem.mod.Name}:{item.modItem.Name}";
-                    }
-                }
-                File.WriteAllText(path, text);
-                try
-                {
-                    CardType = list.ToArray();
-                }
-                catch
-                {
                 }
             }
+            try
+            {
+
+                while (list.Count < 9) list.Add(0);
+                CardType = list.ToArray();
+            }
+            catch { }
         }
 
-        /// <summary>
-        /// Allows you to modify the inventory newly created players or killed mediumcore players will start with. To add items to the player's inventory, create a new Item, call its SetDefaults method for whatever ID you want, call its Prefix method with a parameter of -1 if you want to give it a random prefix, then add it to the items list parameter.
-        /// </summary>
-        /// <param name="items"></param>
-        /// <param name="mediumcoreDeath">If true, the inventory is being setup for a character that dies in mediumcore rather than a newly created player.</param>
-        public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath)
+        // AddStartingItems is a method you can use to add items to the player's starting inventory.
+        // It is also called when the player dies a mediumcore death
+        // Return an enumerable with the items you want to add to the inventory.
+        // This method adds an ExampleItem and 256 gold ore to the player's inventory.
+        // 
+        // If you know what 'yield return' is, you can also use that here, if you prefer so.
+        public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
         {
-            Item item = new Item();
-            item.SetDefaults(ItemType<TheGuide>());//开局获得物品
-            items.Add(item);
+            return new[] {
+                new Item(ItemType<TheGuide>())
+            };
         }
 
         public int AthanasyTimer = 0;
@@ -521,7 +426,7 @@ namespace Entrogic
                 }
             }
             if (AthanasyTimer == 70)
-                Main.PlaySound(SoundID.Zombie, (int)(Main.screenPosition.X + size.X / 2f), (int)(Main.screenPosition.Y + size.Y / 2f), 92, 0.7f, 0.4f);
+                SoundEngine.PlaySound(SoundID.Zombie, (int)(Main.screenPosition.X + size.X / 2f), (int)(Main.screenPosition.Y + size.Y / 2f), 92, 0.7f, 0.4f);
         }
 
         public override void UpdateBiomeVisuals()
@@ -649,11 +554,11 @@ namespace Entrogic
             }
             if (_currentKey.IsKeyDown(Keys.X))
             {
-                CardGamePlayerHealth+=3;
+                CardGamePlayerHealth += 3;
             }
             if (_currentKey.IsKeyDown(Keys.C))
             {
-                CardGamePlayerHealth-=3;
+                CardGamePlayerHealth -= 3;
             }
 
             if (player.ZoneUnderworldHeight && !EntrogicWorld.beArrivedAtUnderworld)
@@ -873,30 +778,31 @@ namespace Entrogic
             CardRecentEventAlpha -= 2;
             CardRecentEventAlpha = Math.Max(80, CardRecentEventAlpha);
             // 卡牌存储
-            if (!Main.gameMenu && !Main.dedServ)
-            {
-                ticks++;
-                if ((!Main.ingameOptionsWindow && ticks > 600) || (Main.ingameOptionsWindow && !savedSinceMenuOpen))
-                {
-                    if (BEntrogicConfigServer.Instance.ClearNewPlayersCard && Main.netMode == NetmodeID.MultiplayerClient)
-                    {
-                        string path = string.Format(ServerPlayerFolder + "CardData" + Main.worldName + ".entini");
-                        SaveCardData(path);
-                    }
-                    else
-                    {
-                        string path = string.Format(PlayerFolder + "CardData.entini");
-                        SaveCardData(path);
-                    }
-                    ticks = 0;
-                }
-                if (Main.ingameOptionsWindow)
-                {
-                    savedSinceMenuOpen = true;
-                    goto GetOffCardSaving;
-                }
-                savedSinceMenuOpen = false;
-            }
+            //if (!Main.gameMenu && !Main.dedServ)
+            //{
+            //    ticks++;
+            //    if ((!Main.ingameOptionsWindow && ticks > 600) || (Main.ingameOptionsWindow && !savedSinceMenuOpen))
+            //    {
+            //        if (BEntrogicConfigServer.Instance.ClearNewPlayersCard && Main.netMode == NetmodeID.MultiplayerClient)
+            //        {
+            //            ModHelper.GetWorldPathFromName(Main.worldName, SocialAPI.Cloud != null, out string worldName);
+            //            string path = string.Format(PlayerFolder + "CardData" + worldName + ".entini");
+            //            SaveCardData(path);
+            //        }
+            //        else
+            //        {
+            //            string path = string.Format(PlayerFolder + "CardData.entini");
+            //            SaveCardData(path);
+            //        }
+            //        ticks = 0;
+            //    }
+            //    if (Main.ingameOptionsWindow)
+            //    {
+            //        savedSinceMenuOpen = true;
+            //        goto GetOffCardSaving;
+            //    }
+            //    savedSinceMenuOpen = false;
+            //}
             GetOffCardSaving:
             oldPosition[0] = player.position;
             for (int i = oldPosition.Length - 1; i >= 1; i--)
@@ -949,22 +855,22 @@ namespace Entrogic
                 int HeadFrameDelay = 5;
                 PolluHeadTimer++;
                 if (PolluHeadTimer <= HeadFrameDelay)
-                    player.head = mod.GetEquipSlot("PollutionElementalMask1", EquipType.Head);
+                    player.head = Instance.GetEquipSlot("PollutionElementalMask1", EquipType.Head);
                 else if (PolluHeadTimer <= HeadFrameDelay * 2)
-                    player.head = mod.GetEquipSlot("PollutionElementalMask2", EquipType.Head);
+                    player.head = Instance.GetEquipSlot("PollutionElementalMask2", EquipType.Head);
                 else if (PolluHeadTimer <= HeadFrameDelay * 3)
-                    player.head = mod.GetEquipSlot("PollutionElementalMask3", EquipType.Head);
+                    player.head = Instance.GetEquipSlot("PollutionElementalMask3", EquipType.Head);
                 else if (PolluHeadTimer <= HeadFrameDelay * 4)
-                    player.head = mod.GetEquipSlot("PollutionElementalMask4", EquipType.Head);
+                    player.head = Instance.GetEquipSlot("PollutionElementalMask4", EquipType.Head);
                 if (PolluHeadTimer >= HeadFrameDelay * 4)
                     PolluHeadTimer = 0;
             }
             Item item = new Item();
             item.SetDefaults(ItemType<Items.PollutElement.BottleofStorm>());
-            if (player.wings == item.wingSlot || player.wings == mod.GetEquipSlot("PolluWings1", EquipType.Wings) || player.wings == mod.GetEquipSlot("PolluWings2", EquipType.Wings) || player.wings == mod.GetEquipSlot("PolluWings3", EquipType.Wings) || player.wings == mod.GetEquipSlot("PolluWings4", EquipType.Wings) || player.wings == mod.GetEquipSlot("PolluWings5", EquipType.Wings) || player.wings == mod.GetEquipSlot("PolluWings6", EquipType.Wings) || player.wings == mod.GetEquipSlot("PolluWings7", EquipType.Wings))
+            if (player.wings == item.wingSlot || player.wings == Instance.GetEquipSlot("PolluWings1", EquipType.Wings) || player.wings == Instance.GetEquipSlot("PolluWings2", EquipType.Wings) || player.wings == Instance.GetEquipSlot("PolluWings3", EquipType.Wings) || player.wings == Instance.GetEquipSlot("PolluWings4", EquipType.Wings) || player.wings == Instance.GetEquipSlot("PolluWings5", EquipType.Wings) || player.wings == Instance.GetEquipSlot("PolluWings6", EquipType.Wings) || player.wings == Instance.GetEquipSlot("PolluWings7", EquipType.Wings))
             {
                 bool flag18 = false;
-                if (player.wingsLogic > 0 && player.controlJump && player.wingTime > 0f && !player.jumpAgainCloud && player.jump == 0 && player.velocity.Y != 0f)
+                if (player.wingsLogic > 0 && player.controlJump && player.wingTime > 0f && !player.canJumpAgain_Cloud && player.jump == 0 && player.velocity.Y != 0f)
                 {
                     flag18 = true;
                 }
@@ -1027,26 +933,26 @@ namespace Entrogic
                 if (!player.controlJump) // 只有在控制跳跃时显示翅膀，防止不动还显示的情况
                     WingFrame = -1;
                 if (WingFrame == 0)
-                    player.wings = mod.GetEquipSlot("PolluWings1", EquipType.Wings);
+                    player.wings = Instance.GetEquipSlot("PolluWings1", EquipType.Wings);
                 if (WingFrame == 1)
-                    player.wings = mod.GetEquipSlot("PolluWings2", EquipType.Wings);
+                    player.wings = Instance.GetEquipSlot("PolluWings2", EquipType.Wings);
                 if (WingFrame == 2)
-                    player.wings = mod.GetEquipSlot("PolluWings3", EquipType.Wings);
+                    player.wings = Instance.GetEquipSlot("PolluWings3", EquipType.Wings);
                 if (WingFrame == 3)
-                    player.wings = mod.GetEquipSlot("PolluWings4", EquipType.Wings);
+                    player.wings = Instance.GetEquipSlot("PolluWings4", EquipType.Wings);
                 if (WingFrame == 4)
-                    player.wings = mod.GetEquipSlot("PolluWings5", EquipType.Wings);
+                    player.wings = Instance.GetEquipSlot("PolluWings5", EquipType.Wings);
                 if (WingFrame == 5)
-                    player.wings = mod.GetEquipSlot("PolluWings6", EquipType.Wings);
+                    player.wings = Instance.GetEquipSlot("PolluWings6", EquipType.Wings);
                 if (WingFrame == 6)
-                    player.wings = mod.GetEquipSlot("PolluWings7", EquipType.Wings);
+                    player.wings = Instance.GetEquipSlot("PolluWings7", EquipType.Wings);
                 if (WingFrame == -1)
-                    player.wings = mod.GetEquipSlot("PolluWings8", EquipType.Wings);
+                    player.wings = Instance.GetEquipSlot("PolluWings8", EquipType.Wings);
             }
         }
 
         public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
-        {           
+        {
             if (NPC.AnyNPCs(NPCType<PollutionElemental>()))
             {
                 NPC elemental = Main.npc[NPC.FindFirstNPC(NPCType<PollutionElemental>())];
@@ -1071,7 +977,7 @@ namespace Entrogic
         {
             if (CanExplode && damage >= 0 && Main.rand.Next(2) == 0)
             {
-                Main.PlaySound(SoundID.Item14, player.position);
+                SoundEngine.PlaySound(SoundID.Item14, player.position);
                 Projectile.NewProjectile(player.Center.X, player.Center.Y, 0f, 0f, ProjectileType<Explode>(), 50, 30, player.whoAmI);
             }
         }
@@ -1109,7 +1015,7 @@ namespace Entrogic
                 }
                 HasReborned = true;
                 RebornEffectTime = 60 + 30;
-                Main.PlaySound(SoundID.Item103, player.position);
+                SoundEngine.PlaySound(SoundID.Item103, player.position);
                 return false;
             }
             return true;
@@ -1193,7 +1099,7 @@ namespace Entrogic
         /// <param name="hitDirection"></param>
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
-            if (proj.friendly && proj.ranged && !proj.arrow && ProjectieHasArmorPenetration)
+            if (proj.friendly && proj.DamageType == DamageClass.Ranged && !proj.arrow && ProjectieHasArmorPenetration)
             {
                 player.armorPenetration += 35;
             }
@@ -1257,12 +1163,11 @@ namespace Entrogic
                     modPlayer.AnkhAlpha -= 11;
                 if (modPlayer.AnkhAlpha > 255)
                     modPlayer.AnkhAlpha = 255;
-                Texture2D texture = ModTexturesTable["凝胶安卡"];
+                Texture2D texture = (Texture2D)ModTexturesTable["凝胶安卡"];
                 int drawX = (int)(drawInfo.position.X + drawPlayer.width / 2f - Main.screenPosition.X);
                 int drawY = (int)(drawInfo.position.Y + drawPlayer.height / 2f - Main.screenPosition.Y);
 
-                DrawData data = new DrawData(texture, new Vector2(drawX, drawY), null, new Color(modPlayer.AnkhAlpha, modPlayer.AnkhAlpha, modPlayer.AnkhAlpha, modPlayer.AnkhAlpha), 0f, texture.Size() * 0.5f, modPlayer.AnkhScale, SpriteEffects.None, 0);
-                Main.playerDrawData.Add(data);
+                Main.spriteBatch.Draw(texture, new Vector2(drawX, drawY), null, new Color(modPlayer.AnkhAlpha, modPlayer.AnkhAlpha, modPlayer.AnkhAlpha, modPlayer.AnkhAlpha), 0f, texture.Size() * 0.5f, modPlayer.AnkhScale, SpriteEffects.None, 0);
             }
             else
             {
@@ -1277,7 +1182,7 @@ namespace Entrogic
                 return;
             }
             Player drawPlayer = drawInfo.drawPlayer;
-            Texture2D t = ModTexturesTable["ReadingBubble"];
+            Texture2D t = (Texture2D)ModTexturesTable["ReadingBubble"];
             EntrogicPlayer entrogicPlayer = drawPlayer.GetModPlayer<EntrogicPlayer>();
             if (entrogicPlayer.IsBookActive) entrogicPlayer.UseBookBubble = true;
             if (entrogicPlayer.UseBookBubble)
@@ -1329,7 +1234,7 @@ namespace Entrogic
                 Vector2 drawPosition = drawPlayer.Center - Main.screenPosition;
                 drawPosition.Y -= 20f + frameHeight * 0.5f;
                 Vector2 origin = new Vector2(t.Width / 2, frameHeight / 2);
-                DrawData data = new DrawData(t,
+                Main.spriteBatch.Draw(t,
                     drawPosition.NoShake(),
                     (Rectangle?)_frame,
                     Color.White,
@@ -1338,7 +1243,6 @@ namespace Entrogic
                     1f,
                     SpriteEffects.None,
                     0);
-                Main.playerDrawData.Add(data);
 
                 if (ModHelper.MouseInRectangle(ModHelper.CreateFromVector2(drawPosition - origin, t.Width, frameHeight)) && drawPlayer.whoAmI != Main.myPlayer)
                 {
@@ -1376,48 +1280,48 @@ namespace Entrogic
             if (Main.netMode == NetmodeID.MultiplayerClient)
             {
                 // 创建一个属于这个Mod的ModPacket
-                ModPacket packet = mod.GetPacket();
+                ModPacket packet = Instance.GetPacket();
                 // 往里面写入一个封包ID，类型为byte
                 packet.Write((byte)EntrogicModMessageType.ReceiveMagicStormMPC);
                 // 发送出去
                 packet.Send(-1, -1);
             }
-            if (IsDev) { Main.NewText(PlayerFolder); }
-            if (BEntrogicConfigServer.Instance.ClearNewPlayersCard && Main.netMode == NetmodeID.MultiplayerClient)
-            {
-                if (!Directory.Exists(ServerPlayerFolder))
-                {
-                    Directory.CreateDirectory(ServerPlayerFolder);
-                }
-                string savePath = string.Format(ServerPlayerFolder + "CardData" + Main.worldName + ".entini");
-                if (!File.Exists(savePath))
-                {
-                    for (int i = 0; i < CardType.Length; i++)
-                    {
-                        CardType[i] = 0;
-                    }
-                    SaveCardData(savePath);
-                    LoadCardData(savePath);
-                }
-                else
-                {
-                    LoadCardData(savePath);
-                }
-            }
-            else if (!Main.dedServ)
-            {
-                if (!Directory.Exists(PlayerFolder))
-                {
-                    Directory.CreateDirectory(PlayerFolder);
-                }
-                string path = string.Format(PlayerFolder + "CardData.entini");
-                if (!File.Exists(path))
-                {
-                    SaveCardData(path);
-                }
-                LoadCardData(path);
-            }
-            Instance.CardInventoryUI.UpdateSlots();
+            //if (DEntrogicDebugClient.Instance.AuthorMode) { Main.NewText(PlayerFolder); }
+            //if (BEntrogicConfigServer.Instance.ClearNewPlayersCard && Main.netMode == NetmodeID.MultiplayerClient)
+            //{
+            //    if (!Directory.Exists(PlayerFolder))
+            //    {
+            //        Directory.CreateDirectory(PlayerFolder);
+            //    }
+            //    ModHelper.GetWorldPathFromName(Main.worldName, SocialAPI.Cloud != null, out string worldName);
+            //    string savePath = string.Format(PlayerFolder + "CardData" + worldName + ".entini");
+            //    if (!File.Exists(savePath))
+            //    {
+            //        for (int i = 0; i < CardType.Length; i++)
+            //        {
+            //            CardType[i] = 0;
+            //        }
+            //        SaveCardData(savePath);
+            //        LoadCardData(savePath);
+            //    }
+            //    else
+            //    {
+            //        LoadCardData(savePath);
+            //    }
+            //}
+            //else if (!Main.dedServ)
+            //{
+            //    if (!Directory.Exists(PlayerFolder))
+            //    {
+            //        Directory.CreateDirectory(PlayerFolder);
+            //    }
+            //    string path = string.Format(PlayerFolder + "CardData.entini");
+            //    if (!File.Exists(path))
+            //    {
+            //        SaveCardData(path);
+            //    }
+            //    LoadCardData(path);
+            //}
 
             for (int i = 0; i < CardReadyType.Length; i++)
             {
@@ -1433,6 +1337,7 @@ namespace Entrogic
             {
                 CardGraveType[i] = 0;
             }
+            Instance.CardInventoryUI.UpdateSlots();
         }
 
         public override void PostBuyItem(NPC vendor, Item[] shopInventory, Item item)
@@ -1493,24 +1398,10 @@ namespace Entrogic
                 {
                     inventory[slot] = new Item();
                 }
-                Main.PlaySound(SoundID.Grab);
+                SoundEngine.PlaySound(SoundID.Grab);
                 return true;
             }
             return base.ShiftClickSlot(inventory, context, slot);
-        }
-
-        // Vanilla only really has damage multipliers in code
-        // And crit and knockback is usually just added to
-        // As a modder, you could make separate variables for multipliers and simple addition bonuses
-        public float arcaneDamageAdd;
-        public float arcaneDamageMult = 1f;
-        public float arcaneKnockback;
-
-        private void ResetVariables()
-        {
-            arcaneDamageAdd = 0f;
-            arcaneDamageMult = 1f;
-            arcaneKnockback = 0f;
         }
         public virtual void CardSetToGrave(int type, int number = -1, bool special = false, int packType = 1, bool drawCard = false, bool gravedFindHand = true, bool gravedFindReady = true)
         {

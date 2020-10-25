@@ -22,14 +22,14 @@ namespace Entrogic.Items.Weapons.Card.Elements
         {
             get
             {
-                if (ModLoader.GetMod("FallenStar49") != null)
-                {
-                    foreach (Projectile proj in Main.projectile)
-                    {
-                        if (proj.type == ModLoader.GetMod("FallenStar49").ProjectileType("ShootingStar") && proj.active)
-                            return true;
-                    }
-                }
+                //if (ModLoader.GetMod("FallenStar49") != null)
+                //{
+                //    foreach (Projectile proj in Main.projectile)
+                //    {
+                //        if (proj.type == ModHelper.ProjectileType("ShootingStar") && proj.active)
+                //            return true;
+                //    }
+                //}
                 return false;
             }
         }
@@ -69,7 +69,7 @@ namespace Entrogic.Items.Weapons.Card.Elements
                 if (Main.rand.NextBool(2)) r.X = -r.X;
                 Vector2 vec = mouse + r - mouse;
                 Vector2 finalVec = (vec.ToRotation() + MathHelper.Pi).ToRotationVector2() * 24;
-                Projectile proj = Main.projectile[Projectile.NewProjectile(mouse + r, finalVec, type, damage, knockBack, Main.myPlayer, Main.MouseWorld.Y - 50, IsShootingStar && ModLoader.GetMod("FallenStar49") != null ? 1f : 0f)];
+                Projectile proj = Main.projectile[Projectile.NewProjectile(mouse + r, finalVec, type, damage, knockBack, Main.myPlayer, Main.MouseWorld.Y - 50, /*IsShootingStar && ModLoader.GetMod("FallenStar49") != null ? 1f : */0f)];
             }
         }
         public override void CardGameAttack(Player attackPlayer, NPC attackNPC, Vector2 playerDrawPosition, Vector2 NPCDrawPosition, Vector2 panelPos)

@@ -14,15 +14,15 @@ namespace Entrogic.Items.Weapons.Summon
         {
             DisplayName.SetDefault("Deadly Sphere Staff V2");
             Tooltip.SetDefault("Summons deadly spheres to fight for you");
-            DisplayName.AddTranslation(GameCulture.Chinese, "完美球体召唤仗");
-            Tooltip.AddTranslation(GameCulture.Chinese, "召唤毫无瑕疵的球体为你作战");
+            DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "完美球体召唤仗");
+            Tooltip.AddTranslation((int)GameCulture.CultureName.Chinese, "召唤毫无瑕疵的球体为你作战");
         }
 
         public override void SetDefaults()
         {
             item.mana = 10;
             item.damage = 140;
-            item.useStyle = ItemUseStyleID.SwingThrow;
+            item.useStyle = ItemUseStyleID.Swing;
             item.width = 52;
             item.height = 50;
             item.useTime = 50;
@@ -35,7 +35,7 @@ namespace Entrogic.Items.Weapons.Summon
             item.autoReuse = true;
             item.shoot = ProjectileType<Projectiles.Minions.DeadlySphere>();
             item.shootSpeed = 8f;
-            item.summon = true;
+            item.DamageType = DamageClass.Summon;;
             item.buffType = BuffType<Buffs.Minions.DeadlySphere>();
             item.buffTime = 3600;
         }
@@ -55,7 +55,7 @@ namespace Entrogic.Items.Weapons.Summon
         {
             if (player.altFunctionUse == 2)
             {
-                player.MinionNPCTargetAim();
+                player.MinionNPCTargetAim(false);
             }
             return base.UseItem(player);
         }

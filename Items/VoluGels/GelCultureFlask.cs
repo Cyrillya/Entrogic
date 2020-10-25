@@ -23,19 +23,18 @@ namespace Entrogic.Items.VoluGels
             item.useAnimation = 20;
             item.useTime = 20;
             item.noUseGraphic = true;
-            item.useStyle = ItemUseStyleID.SwingThrow;
+            item.useStyle = ItemUseStyleID.Swing;
             item.consumable = true;
         }
         public override void AddRecipes()
         {
-            ModRecipe modRecipe = new ModRecipe(mod);
-            modRecipe.AddIngredient(ItemID.Gel, 20);
-            modRecipe.AddIngredient(ItemID.Bottle);
-            modRecipe.AddIngredient(ItemType<Materials.SoulOfPure>(), 5);
-            modRecipe.AddRecipeGroup("IronBar");
-            modRecipe.AddTile(TileID.WorkBenches);
-            modRecipe.SetResult(this);
-            modRecipe.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(ItemID.Gel, 20)
+                .AddIngredient(ItemID.Bottle)
+                .AddIngredient(ItemType<Materials.SoulOfPure>(), 5)
+                .AddRecipeGroup("IronBar")
+                .AddTile(TileID.WorkBenches)
+                .Register();
         }
         public override bool CanUseItem(Player player)
         {
@@ -46,7 +45,7 @@ namespace Entrogic.Items.VoluGels
         {
             if (player.whoAmI == Main.myPlayer && CanUseItem(player))
             {
-                Main.PlaySound(SoundID.Roar, player.position, 0);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.Roar, player.position, 0);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     int npc = NPC.NewNPC((int)ModHelper.MousePos.X, (int)ModHelper.MousePos.Y, NPCID.BlueSlime);
@@ -54,7 +53,7 @@ namespace Entrogic.Items.VoluGels
                     Main.NewText(Language.GetTextValue("Announcement.HasAwoken", typeName), 175, 75);
                     return true;
                 }
-                ModPacket packet = Entrogic.Instance.GetPacket();
+                ModPacket packet = Instance.GetPacket();
                 packet.Write((byte)EntrogicModMessageType.NPCSpawn);
                 packet.Write((byte)player.whoAmI);
                 packet.Write((short)NPCID.BlueSlime);
@@ -79,7 +78,7 @@ namespace Entrogic.Items.VoluGels
             item.useAnimation = 20;
             item.useTime = 20;
             item.noUseGraphic = true;
-            item.useStyle = ItemUseStyleID.HoldingUp;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.consumable = true;
         }
         public override bool CanUseItem(Player player)
@@ -91,7 +90,7 @@ namespace Entrogic.Items.VoluGels
         {
             if (player.whoAmI == Main.myPlayer && CanUseItem(player))
             {
-                Main.PlaySound(SoundID.Roar, player.position, 0);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.Roar, player.position, 0);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     int npc = NPC.NewNPC((int)(player.Center.X), (int)player.Center.Y - 16 * 8, NPCType<Embryo>());
@@ -99,7 +98,7 @@ namespace Entrogic.Items.VoluGels
                     Main.NewText(Language.GetTextValue("Announcement.HasAwoken", typeName), 175, 75);
                     return true;
                 }
-                ModPacket packet = Entrogic.Instance.GetPacket();
+                ModPacket packet = Instance.GetPacket();
                 packet.Write((byte)EntrogicModMessageType.NPCSpawn);
                 packet.Write((byte)player.whoAmI);
                 packet.Write((short)NPCType<Embryo>());

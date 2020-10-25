@@ -30,7 +30,7 @@ namespace Entrogic.NPCs
         {
             Main.NewText(drawColor);
             npc.rotation += 0.1f;
-            spriteBatch.Draw(Main.npcTexture[npc.type], npc.Center - Main.screenPosition, null, new Color(drawColor.R, drawColor.G, drawColor.B, npc.alpha), npc.rotation, Main.npcTexture[npc.type].Size() * 0.5f, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(((Texture2D)Terraria.GameContent.TextureAssets.Npc[npc.type]), npc.Center - Main.screenPosition, null, new Color(drawColor.R, drawColor.G, drawColor.B, npc.alpha), npc.rotation, ((Texture2D)Terraria.GameContent.TextureAssets.Npc[npc.type]).Size() * 0.5f, 1f, SpriteEffects.None, 0f);
             return false;
         }
     }

@@ -22,7 +22,7 @@ namespace Entrogic.Projectiles.Ranged.Bullets
             projectile.aiStyle = 1;
             projectile.friendly = true;
             projectile.hostile = false;
-            projectile.ranged = true;
+            projectile.DamageType = DamageClass.Ranged;
             projectile.penetrate = 1;
             projectile.timeLeft = 100;
             projectile.alpha = 4;

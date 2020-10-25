@@ -13,8 +13,8 @@ namespace Entrogic.Buffs.Minions
             Description.SetDefault("The stoneslime will fight for you");
             Main.buffNoTimeDisplay[Type] = true;
             Main.buffNoSave[Type] = true;
-            DisplayName.AddTranslation(GameCulture.Chinese, "岩石史莱姆");
-            Description.AddTranslation(GameCulture.Chinese, "岩石史莱姆将为你而战");
+            DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "岩石史莱姆");
+            Description.AddTranslation((int)GameCulture.CultureName.Chinese, "岩石史莱姆将为你而战");
         }
         
         public override void Update(Player player, ref int buffIndex)

@@ -23,8 +23,8 @@ namespace Entrogic.Items.Equipables.Armor
         }
         public override void UpdateEquip(Player player)
         {
-            player.minionDamage += 0.1f;
-            player.meleeDamage += 0.11f;
+            player.GetDamage(DamageClass.Summon) += 0.1f;
+            player.GetDamage(DamageClass.Melee) += 0.11f;
             player.maxMinions += 1;
         }
         /*public override void AddRecipes()

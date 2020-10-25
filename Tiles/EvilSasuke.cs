@@ -28,7 +28,7 @@ namespace Entrogic.Tiles
             name.SetDefault("邪神佐助");
             dustType = 7;
             AddMapEntry(new Color(200, 200, 200), name);
-            disableSmartCursor = true;
+            TileID.Sets.DisableSmartCursor[Type] = true;
         }
         
         public override void KillMultiTile(int i, int j, int frameX, int frameY)

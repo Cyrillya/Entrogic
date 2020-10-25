@@ -7,6 +7,7 @@ using static Terraria.ModLoader.ModContent;
 using Microsoft.Xna.Framework.Graphics;
 using Entrogic.Projectiles.Ranged.Bows;
 using Entrogic.Projectiles.Melee.Swords;
+using Entrogic.Items.Materials;
 
 namespace Entrogic.Items.Weapons.Melee.Sword
 {
@@ -28,7 +29,7 @@ namespace Entrogic.Items.Weapons.Melee.Sword
             item.height = 88;           //Weapon's texture's height 武器材质的高度
             item.useTime = 12;          //The time span of using the weapon. Remember in terraria, 60 frames is a second. 使用武器的速度的时间跨度(以帧为单位)。在Terraria中，60帧是一秒。
             item.useAnimation = 12;         //The time span of the using animat3ion of the weapon, suggest set it the same as useTime. 使用武器的动画的时间跨度(以帧为单位),通常和useTime设置成一样
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.knockBack = 8;         //The force of knockback of the weapon. Maximum is 20 武器的击退,最高是20
             item.rare = RareID.LV6;              //The rarity of the weapon, from -1 to 13 武器的稀有度,从-1到13   //The sound when the weapon is using 使用武器时的音效
             item.autoReuse = false;
@@ -37,7 +38,7 @@ namespace Entrogic.Items.Weapons.Melee.Sword
             item.shoot = ProjectileType<CompoundWill>();
             item.shootSpeed = 60f;
             item.noUseGraphic = false;
-            item.melee = true;
+            item.DamageType = DamageClass.Melee;
         }
         public override bool AltFunctionUse(Player player)
         {
@@ -188,7 +189,7 @@ namespace Entrogic.Items.Weapons.Melee.Sword
                     }
                 }
                 if (player.itemAnimation == item.useAnimation - 14)
-                    Main.PlaySound(SoundID.Item1, player.Center);
+                    Terraria.Audio.SoundEngine.PlaySound(SoundID.Item1, player.Center);
                 if (player.itemRotation == 1)
                     item.noUseGraphic = true;
             }
@@ -199,12 +200,11 @@ namespace Entrogic.Items.Weapons.Melee.Sword
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(null, "CBar", 6);
-            recipe.AddIngredient(ItemID.Excalibur, 1);
-            recipe.AddTile(TileID.Anvils);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(ItemType<CBar>(), 6)
+                .AddIngredient(ItemID.Excalibur, 1)
+                .AddTile(TileID.Anvils)
+                .Register();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Entrogic.Items.Weapons.Magic.Staff
         {
             item.mana = 10;
             item.damage = 52;
-            item.useStyle = ItemUseStyleID.SwingThrow;
+            item.useStyle = ItemUseStyleID.Swing;
             item.shootSpeed = 16f;
             item.shoot = ProjectileType<Projectiles.Magic.Staff.CorruCloud>();
             item.width = 26;
@@ -23,7 +23,7 @@ namespace Entrogic.Items.Weapons.Magic.Staff
             item.noMelee = true;
             item.knockBack = 0f;
             item.value = Item.sellPrice(0, 4, 50, 0);
-            item.magic = true;
+            item.DamageType = DamageClass.Magic;
         }
     }
 }

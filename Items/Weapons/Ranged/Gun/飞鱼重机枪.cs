@@ -20,7 +20,7 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         public override void SetDefaults()
         {
             item.damage = 66;
-            item.ranged = true;
+            item.DamageType = DamageClass.Ranged;
             item.width = 64;
             item.height = 32;
             item.useTime = 5;
@@ -32,7 +32,7 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             // 3 咸鱼突刺！(像同志短剑一样刺出去)
             // 4 神，赐予我力量吧！！(将物品提起，像使用生命水晶时那样的)
             // 5 手持枪、弓、法杖类武器的动作(这里就是这个)
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
 
             item.noMelee = true;
             item.knockBack = 3;
@@ -56,15 +56,14 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         //添加一个酷毙的合成配方！
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.IllegalGunParts, 2);//非法枪械部件
-            recipe.AddIngredient(null, "飞鱼冲锋枪", 1);//飞鱼冲锋枪
-            recipe.AddIngredient(ItemID.FragmentVortex, 18);//星璇碎片
-            recipe.AddIngredient(ItemID.LunarBar, 20);//夜明锭
-            recipe.AddIngredient(null, "碳钢枪械部件", 1);//碳钢枪械部件
-            recipe.AddTile(TileID.LunarCraftingStation);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(ItemID.IllegalGunParts, 2)//非法枪械部件
+                .AddIngredient(Mod, "飞鱼冲锋枪", 1)//飞鱼冲锋枪
+                .AddIngredient(ItemID.FragmentVortex, 18)//星璇碎片
+                .AddIngredient(ItemID.LunarBar, 20)//夜明锭
+                .AddIngredient(Mod, "碳钢枪械部件", 1)//碳钢枪械部件
+                .AddTile(TileID.LunarCraftingStation)
+                .Register();
         }
 
         public override bool ConsumeAmmo(Player player)

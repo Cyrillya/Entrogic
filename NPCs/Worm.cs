@@ -228,7 +228,7 @@ namespace Entrogic.NPCs
                 }
                 if (!npc.active && Main.netMode == NetmodeID.Server)
                 {
-                    NetMessage.SendData(MessageID.StrikeNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
+                    NetMessage.SendData(MessageID.DamageNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
                 }
             }
             int num180 = (int)(npc.position.X / 16f) - 1;
@@ -414,7 +414,7 @@ namespace Entrogic.NPCs
                             num195 = 20f;
                         }
                         npc.soundDelay = (int)num195;
-                        Main.PlaySound(SoundID.Roar, npc.position, 1);
+                        Terraria.Audio.SoundEngine.PlaySound(SoundID.Roar, npc.position, 1);
                     }
                     num193 = (float)Math.Sqrt((double)(num191 * num191 + num192 * num192));
                     float num196 = Math.Abs(num191);

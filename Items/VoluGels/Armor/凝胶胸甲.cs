@@ -78,7 +78,7 @@ namespace Entrogic.Items.VoluGels.Armor
             float[] i = new float[1001];
             foreach (Projectile proj in Main.projectile)
             {
-                if (proj.minion && proj.active && proj.owner == player.whoAmI && proj.minionSlots > 0.75f && (proj.type == ProjectileID.BabySlime/* || proj.type == ProjectileType<Projectiles.衰落魔像.Stoneslime>()*/))
+                if (proj.DamageType == DamageClass.Summon && proj.active && proj.owner == player.whoAmI && proj.minionSlots > 0.75f && (proj.type == ProjectileID.BabySlime/* || proj.type == ProjectileType<Projectiles.衰落魔像.Stoneslime>()*/))
                 {
                     i[proj.whoAmI] = proj.minionSlots;
                 }
@@ -93,12 +93,11 @@ namespace Entrogic.Items.VoluGels.Armor
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemType<CastIronBar>(), 20);
-            recipe.AddIngredient(ItemType<GelOfLife>(), 4);
-            recipe.SetResult(this);
-            recipe.AddTile(TileType<MagicDiversionPlatformTile>());
-            recipe.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(ItemType<CastIronBar>(), 20)
+                .AddIngredient(ItemType<GelOfLife>(), 4)
+                .AddTile(TileType<MagicDiversionPlatformTile>())
+                .Register();
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Entrogic.Projectiles.Minions
             projectile.penetrate = -1;
             projectile.tileCollide = false;
             projectile.timeLeft *= 5;
-            projectile.minion = true;
+            projectile.DamageType = DamageClass.Summon;
             weaponType = ItemType<DeadlySphereStaff>();
         }
         public override void CheckActive()

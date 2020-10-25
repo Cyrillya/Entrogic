@@ -14,7 +14,7 @@ namespace Entrogic.NPCs.CardFightable.CardBullet
     {
         public MushroomBullet()
         {
-            _texture = ModContent.GetTexture("Entrogic/NPCs/CardFightable/CardBullet/MushroomBullet");
+            _texture = (Texture2D)ModContent.GetTexture("Entrogic/NPCs/CardFightable/CardBullet/MushroomBullet");
             LifeSpan = 6f;
             IsFriendly = false;
             Damage = 100;

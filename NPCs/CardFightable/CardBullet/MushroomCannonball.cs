@@ -16,7 +16,7 @@ namespace Entrogic.NPCs.CardFightable.CardBullet
         private int collideDelay;
         public MushroomCannonball()
         {
-            _texture = ModContent.GetTexture(typeof(MushroomCannonball).FullName.Replace('.', '/'));
+            _texture = (Texture2D)ModContent.GetTexture(typeof(MushroomCannonball).FullName.Replace('.', '/'));
             LifeSpan = 6f;
             IsFriendly = false;
             Damage = 60;

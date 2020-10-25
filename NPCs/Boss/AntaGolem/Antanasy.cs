@@ -3,9 +3,13 @@ using Entrogic.Items.Miscellaneous.Placeable.Trophy;
 using Entrogic.NPCs.Boss.AntaGolem.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
+using ReLogic.Content;
+
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -78,7 +82,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
             npc.HitSound = SoundID.NPCHit3;
             npc.DeathSound = SoundID.NPCDeath37;
             npc.timeLeft = NPC.activeTime * 30;
-            music = mod.GetSoundSlot(SoundType.Music, "Sounds/Music/狂気の瞳");
+            music = Mod.GetSoundSlot(SoundType.Music, "Sounds/Music/狂気の瞳");
             musicPriority = MusicPriority.BossLow;
             bossBag = ItemType<AthanasyTreasureBag>();
             npc.alpha = 255;
@@ -115,16 +119,16 @@ namespace Entrogic.NPCs.Boss.AntaGolem
         {
             if (npc.life <= 0)
             {
-                Gore.NewGore(npc.Center, npc.velocity * 0.7f, mod.GetGoreSlot("Gores/衰落魔像Gore"), 1f);
-                Gore.NewGore(npc.Center, npc.velocity * 0.8f, mod.GetGoreSlot("Gores/衰落魔像Gore2"), 1f);
-                Gore.NewGore(npc.Center, npc.velocity * 0.9f, mod.GetGoreSlot("Gores/衰落魔像Gore2"), 1f);
-                Gore.NewGore(npc.Center, npc.velocity, mod.GetGoreSlot("Gores/衰落魔像Gore3"), 1f);
+                Gore.NewGore(npc.Center, npc.velocity * 0.7f, Mod.GetGoreSlot("Gores/衰落魔像Gore"), 1f);
+                Gore.NewGore(npc.Center, npc.velocity * 0.8f, Mod.GetGoreSlot("Gores/衰落魔像Gore2"), 1f);
+                Gore.NewGore(npc.Center, npc.velocity * 0.9f, Mod.GetGoreSlot("Gores/衰落魔像Gore2"), 1f);
+                Gore.NewGore(npc.Center, npc.velocity, Mod.GetGoreSlot("Gores/衰落魔像Gore3"), 1f);
                 if (!EntrogicWorld.downedAthanasy)
                 {
                     Item.NewItem(npc.getRect(), ItemType<AthanasyTrophy>());
                     for (int i = 0; i < 80; i++)
                     {
-                        Gore.NewGore(npc.Center, npc.velocity * i / 80, mod.GetGoreSlot("Gores/衰落魔像Gore3"), 1f);
+                        Gore.NewGore(npc.Center, npc.velocity * i / 80, Mod.GetGoreSlot("Gores/衰落魔像Gore3"), 1f);
                     }
                     EntrogicWorld.downedAthanasy = true;
                     if (Main.netMode == NetmodeID.Server) NetMessage.SendData(MessageID.WorldData);
@@ -247,7 +251,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                                         if (Math.Abs(player.Center.Y - npc.Center.Y) > 500 || insideTiles > 10)
                                             npc.Center = player.Center - new Vector2(480, 300);
                                         SwitchState((int)NPCState.Dash);
-                                        Main.PlaySound(SoundID.ForceRoar, (int)npc.position.X, (int)npc.position.Y, 0, 1f, 0f);
+                                        Terraria.Audio.SoundEngine.PlaySound(SoundID.ForceRoar, (int)npc.position.X, (int)npc.position.Y, 0, 1f, 0f);
                                         break;
                                     case 1:
                                         SwitchState((int)NPCState.Spawner);
@@ -351,7 +355,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                             if (Timer == 50)
                             {
                                 npc.velocity = (player.Center - npc.Center).ToRotation().ToRotationVector2() * 35f;
-                                Main.PlaySound(SoundID.ForceRoar, (int)npc.position.X, (int)npc.position.Y, -1, 1f, 0f);
+                                Terraria.Audio.SoundEngine.PlaySound(SoundID.ForceRoar, (int)npc.position.X, (int)npc.position.Y, -1, 1f, 0f);
                             }
                             if (Timer < 70)
                             {
@@ -440,7 +444,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                                 npc.direction = npc.Center.X > player.Center.X ? -1 : 1;
                                 npc.spriteDirection = npc.direction;
                                 npc.velocity = (player.Center - npc.Center).ToRotation().ToRotationVector2() * 20f;
-                                Main.PlaySound(SoundID.ForceRoar, (int)npc.position.X, (int)npc.position.Y, 0, 1f, 0.2f);
+                                Terraria.Audio.SoundEngine.PlaySound(SoundID.ForceRoar, (int)npc.position.X, (int)npc.position.Y, 0, 1f, 0.2f);
                             }
                         if (Timer < 98)
                             npc.velocity *= 0.97f;
@@ -468,7 +472,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                             npc.direction = npc.Center.X > player.Center.X ? -1 : 1;
                             npc.spriteDirection = npc.direction;
                             npc.velocity.X = npc.direction * 75;
-                            Main.PlaySound(SoundID.ForceRoar, (int)npc.position.X, (int)npc.position.Y, -1, 1f, 0f);
+                            Terraria.Audio.SoundEngine.PlaySound(SoundID.ForceRoar, (int)npc.position.X, (int)npc.position.Y, -1, 1f, 0f);
                         }
                         if (Timer < 80)
                             npc.velocity.X *= 0.94f;
@@ -550,7 +554,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
         {
-            Texture2D texture = Main.npcTexture[npc.type];
+            Asset<Texture2D> texture = TextureAssets.Npc[npc.type];
             switch ((NPCState)State)
             {
                 case NPCState.Break:
@@ -566,21 +570,21 @@ namespace Entrogic.NPCs.Boss.AntaGolem
             }
 
             SpriteEffects effects = (npc.spriteDirection == -1) ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            Vector2 origin = new Vector2((float)(texture.Width / 2), (float)(texture.Height / Main.npcFrameCount[npc.type] / 2));
+            Vector2 origin = new Vector2((float)(texture.Width() / 2), (float)(texture.Height() / Main.npcFrameCount[npc.type] / 2));
             for (int i = 1; i < npc.oldPos.Length; i++)
             {
                 Vector2 drawCenter = npc.Center - new Vector2(0f, 8f) + -(npc.velocity * 0.5f * i);
                 int alpha = 40 - 40 / (npc.oldPos.Length - 1) * i - (255 - npc.alpha);
                 alpha = Math.Max(0, alpha);
                 Color drawOn = drawColor * (float)(alpha / 255f);
-                Main.spriteBatch.Draw(texture, drawCenter - Main.screenPosition, new Rectangle?(npc.frame), npc.GetAlpha(drawOn), 0f, origin, npc.scale, effects, 0f);
+                Main.spriteBatch.Draw((Texture2D)texture, drawCenter - Main.screenPosition, new Rectangle?(npc.frame), npc.GetAlpha(drawOn), 0f, origin, npc.scale, effects, 0f);
             }
             return false;
         }
         public override void PostDraw(SpriteBatch spriteBatch, Color drawColor)
         {
             bool drawHighLight = false;
-            Texture2D texture = Main.npcTexture[npc.type];
+            Asset<Texture2D> texture = TextureAssets.Npc[npc.type];
             SpriteEffects effects = (npc.spriteDirection == -1) ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             switch ((NPCState)State)
             {
@@ -604,7 +608,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                     int alpha = 255 / 90 * Timer;
                     alpha = Math.Max(0, alpha);
                     Color onDrawColor = drawColor * (float)(alpha / 255f);
-                    spriteBatch.Draw(Entrogic.Instance.GetTexture("NPCs/Boss/AntaGolem/Antanasy_Shadow"), npc.Center - Main.screenPosition + new Vector2(0f, -8f), null, npc.GetAlpha(onDrawColor), 0f, texture.Size() * 0.5f, npc.scale, effects, 0f);
+                    spriteBatch.Draw((Texture2D)Entrogic.Instance.GetTexture("NPCs/Boss/AntaGolem/Antanasy_Shadow"), npc.Center - Main.screenPosition + new Vector2(0f, -8f), null, npc.GetAlpha(onDrawColor), 0f, texture.Size() * 0.5f, npc.scale, effects, 0f);
                     break;
                 case NPCState.Dash_Strong:
                     if (Timer >= 10)
@@ -623,8 +627,8 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                     break;
             }
             drawColor = drawColor * (float)(npc.alpha / 255f);
-            spriteBatch.Draw(texture, npc.Center - Main.screenPosition + new Vector2(0f, -8f), null, npc.GetAlpha(drawColor), npc.rotation, texture.Size() * 0.5f, npc.scale, effects, 0f);
-            Texture2D tex = Entrogic.Instance.GetTexture("NPCs/Boss/AntaGolem/Antanasy_HighLight_SD");
+            spriteBatch.Draw((Texture2D)texture, npc.Center - Main.screenPosition + new Vector2(0f, -8f), null, npc.GetAlpha(drawColor), npc.rotation, texture.Size() * 0.5f, npc.scale, effects, 0f);
+            Texture2D tex = (Texture2D)Entrogic.Instance.GetTexture("NPCs/Boss/AntaGolem/Antanasy_HighLight_SD");
             if (drawHighLight)
                 spriteBatch.Draw(tex, npc.Center - Main.screenPosition + new Vector2(0f, -8f), null, npc.GetAlpha(drawColor), npc.rotation, tex.Size() * 0.5f, npc.scale, effects, 0f);
         }
@@ -641,7 +645,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
         {
             if (npc.ai[2] == 0)
             {
-                Texture2D tex = Main.npcTexture[npc.type];
+                Asset<Texture2D> tex = TextureAssets.Npc[npc.type];
                 switch ((NPCState)State)
                 {
                     case NPCState.Spawner:
@@ -654,7 +658,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                 if (chargeScale < scaleLess) chargeScale = 2f;
                 int alpha = 40;
                 SpriteEffects effects = (npc.spriteDirection == -1) ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-                spriteBatch.Draw(tex, npc.Center - Main.screenPosition, null, new Color(drawColor.R, drawColor.G, drawColor.B, alpha), npc.rotation, tex.Size() * 0.5f, chargeScale, effects, 0f);
+                spriteBatch.Draw((Texture2D)tex, npc.Center - Main.screenPosition, null, new Color(drawColor.R, drawColor.G, drawColor.B, alpha), npc.rotation, tex.Size() * 0.5f, chargeScale, effects, 0f);
             }
         }
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)

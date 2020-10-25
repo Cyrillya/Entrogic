@@ -9,7 +9,7 @@ namespace Entrogic.UI.CardGame
 {
     public class Confirm : SpriteButton
     {
-        public Confirm() : base(ModContent.GetTexture(typeof(Confirm).FullName.Replace('.', '/')))
+        public Confirm() : base((Texture2D)ModContent.GetTexture(typeof(Confirm).FullName.Replace('.', '/')))
         {
         }
         public override void Draw(SpriteBatch spriteBatch)
@@ -35,7 +35,7 @@ namespace Entrogic.UI.CardGame
             if (clientModPlayer.CardGamePlayerTurn)
             {
                 Entrogic.Instance.CardGameUI.PlayerTurnOver = true;
-                Main.PlaySound(SoundID.MenuTick);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuTick);
             }
         }
     }

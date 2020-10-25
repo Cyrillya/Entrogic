@@ -113,7 +113,7 @@ namespace Entrogic.Gores
 				{
 					gore.frame = 10;
 					gore.frameCounter = 0;
-					Main.PlaySound(SoundID.Drip, (int)gore.position.X + 8, (int)gore.position.Y + 8, Main.rand.Next(2));
+					Terraria.Audio.SoundEngine.PlaySound(SoundID.Drip, (int)gore.position.X + 8, (int)gore.position.Y + 8, Main.rand.Next(2));
 				}
 			}
 			else if (Collision.WetCollision(gore.position + gore.velocity, 16, 14))
@@ -122,7 +122,7 @@ namespace Entrogic.Gores
 				{
 					gore.frame = 10;
 					gore.frameCounter = 0;
-					Main.PlaySound(SoundID.Drip, (int)gore.position.X + 8, (int)gore.position.Y + 8, 2);
+					Terraria.Audio.SoundEngine.PlaySound(SoundID.Drip, (int)gore.position.X + 8, (int)gore.position.Y + 8, 2);
 				}
 				int tileX = (int)(gore.position.X + 8f) / 16;
 				int tileY = (int)(gore.position.Y + 14f) / 16;

@@ -25,8 +25,8 @@ namespace Entrogic.Buffs.Weapons
             player.maxRunSpeed += 2.5f;
             // Some other effects:
             //player.lifeRegen++; (玩家生命回复速度)
-            //player.meleeCrit += 2; (玩家近战暴击率)
-            //player.meleeDamage += 0.051f; (玩家近战伤害)
+            //player.GetCrit(DamageClass.Melee) += 2; (玩家近战暴击率)
+            //player.GetDamage(DamageClass.Melee) += 0.051f; (玩家近战伤害)
             //player.meleeSpeed += 0.051f; (玩家近战攻速)
             //player.statDefense += 3; (玩家防御)
             //player.moveSpeed += 0.05f; (玩家移速)

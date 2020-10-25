@@ -112,7 +112,7 @@ namespace Entrogic.Projectiles.Arcane
         }
         public override void Kill(int timeLeft)
         {
-            Main.PlaySound(SoundID.Item);
+            Terraria.Audio.SoundEngine.PlaySound(SoundID.Item);
             for (int i = 0; i < 10; i++)
             {
                 int num = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, MyDustId.GreyPebble, 0, 0, 100, Color.LightBlue, 1.8f);

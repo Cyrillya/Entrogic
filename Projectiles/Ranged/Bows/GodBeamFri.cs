@@ -37,7 +37,7 @@ namespace Entrogic.Projectiles.Ranged.Bows
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            Texture2D t = Main.projectileTexture[projectile.type];
+            Texture2D t = (Texture2D)Terraria.GameContent.TextureAssets.Projectile[projectile.type];
             int frameHeight = t.Height / Main.projFrames[projectile.type];
             SpriteEffects effects = SpriteEffects.None;
             if (projectile.spriteDirection < 0) effects = SpriteEffects.FlipHorizontally;

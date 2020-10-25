@@ -7,6 +7,7 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
+using Terraria.GameContent.Creative;
 
 namespace Entrogic.Items.Materials
 {
@@ -16,7 +17,9 @@ namespace Entrogic.Items.Materials
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("“纯净的魔法能源”");
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 25;
             Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(5, 6));
+            ItemID.Sets.AnimatesAsSoul[item.type] = true; // Makes the item have 4 animation frames by default.
             ItemID.Sets.ItemIconPulse[item.type] = true;
             ItemID.Sets.ItemNoGravity[item.type] = true;
         }

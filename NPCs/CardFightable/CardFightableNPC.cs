@@ -12,7 +12,6 @@ namespace Entrogic.NPCs.CardFightable
 {
     public abstract class CardFightableNPC : ModNPC
     {
-        internal bool CloseChatNextFrame;
         internal int CardGameHealth;
         internal int CardGameHealthMax;
         internal float RoundDuration;

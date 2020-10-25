@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Entrogic.Items.Materials;
+
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -11,10 +13,10 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
         public override void SetDefaults()
         {
             item.damage = 43;
-            item.ranged = true;
+            item.DamageType = DamageClass.Ranged;
             item.useTime = 20;
             item.useAnimation = 20;
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.noMelee = true; 
             item.knockBack = 4;
             item.rare = ItemRarityID.LightPurple;
@@ -51,14 +53,13 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.SoulofLight, 6);
-            recipe.AddIngredient(ItemID.Wire, 12);
-            recipe.AddIngredient(null, "CuteWidget", 1);
-            recipe.AddRecipeGroup("IronBar", 4);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(ItemID.SoulofLight, 6)
+                .AddIngredient(ItemID.Wire, 12)
+                .AddIngredient(ItemType<CuteWidget>(), 1)
+                .AddRecipeGroup("IronBar", 4)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
 }

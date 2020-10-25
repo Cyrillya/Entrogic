@@ -30,7 +30,7 @@ namespace Entrogic.Items.Weapons.Melee.Sword
             item.shoot = ModContent.ProjectileType<¸´ºÏÒâÖ¾>();
             item.shootSpeed = 20f;
             item.noUseGraphic = true;
-            item.melee = true;
+            item.DamageType = DamageClass.Melee;
         }
         public override bool AltFunctionUse(Player player)
         {

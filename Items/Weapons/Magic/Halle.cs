@@ -19,12 +19,12 @@ namespace Entrogic.Items.Weapons.Magic
         {
             item.knockBack = 4f;
             item.damage = 67;
-            item.magic = true;
+            item.DamageType = DamageClass.Magic;
             item.width = 86;
             item.height = 32;
             item.useTime = 40;
             item.useAnimation = 40;
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.noMelee = true;
             item.crit += 37;
             item.mana = 10;
@@ -41,15 +41,14 @@ namespace Entrogic.Items.Weapons.Magic
         }
         public override void AddRecipes()
         {
-            ModRecipe r = new ModRecipe(mod);
-            r.AddIngredient(ItemID.Wire, 6);
-            r.AddIngredient(ItemID.FallenStar, 6);
-            r.AddIngredient(ItemType<碳钢枪械部件>());
-            r.AddIngredient(null, "CastIronBar", 6);
-            r.AddIngredient(null, "SoulOfPure", 3);
-            r.AddTile(TileID.Anvils);
-            r.SetResult(this);
-            r.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(ItemID.Wire, 6)
+                .AddIngredient(ItemID.FallenStar, 6)
+                .AddIngredient(ItemType<碳钢枪械部件>())
+                .AddIngredient(ItemType<CastIronBar>(), 6)
+                .AddIngredient(ItemType<SoulOfPure>(), 3)
+                .AddTile(TileID.Anvils)
+                .Register();
         }
     }
 }

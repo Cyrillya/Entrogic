@@ -18,14 +18,14 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
         public override void SetDefaults()
         {
             item.damage = 89;
-            item.ranged = true;
+            item.DamageType = DamageClass.Ranged;
             item.width = 32;
             item.crit += 26;
             item.height = 64;
             item.useTime = 25;
             item.useAnimation = 25;
             
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
 
             item.noMelee = true;
             item.knockBack = 7;
@@ -42,15 +42,14 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
         
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.Tsunami, 1);
-            recipe.AddIngredient(ItemID.DD2PhoenixBow, 1);
-            recipe.AddIngredient(ItemID.FragmentVortex, 20);
-            recipe.AddIngredient(ItemID.FragmentSolar, 20);
-            recipe.AddIngredient(ItemID.LunarBar, 18);
-            recipe.AddTile(TileID.LunarCraftingStation);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(ItemID.Tsunami, 1)
+                .AddIngredient(ItemID.DD2PhoenixBow, 1)
+                .AddIngredient(ItemID.FragmentVortex, 20)
+                .AddIngredient(ItemID.FragmentSolar, 20)
+                .AddIngredient(ItemID.LunarBar, 18)
+                .AddTile(TileID.LunarCraftingStation)
+                .Register();
         }
 
         public override bool ConsumeAmmo(Player player)

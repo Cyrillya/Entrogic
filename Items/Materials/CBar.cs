@@ -20,7 +20,7 @@ namespace Entrogic.Items.Materials
             item.maxStack = 99;
             item.value = Item.sellPrice(silver: 55);
             item.rare = ItemRarityID.Pink;
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.useAnimation = 15;
             item.useTime = 10;
             item.noUseGraphic = true;
@@ -30,13 +30,12 @@ namespace Entrogic.Items.Materials
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.HallowedBar, 1);
-            recipe.AddIngredient(ItemID.SoulofLight, 3);
-            recipe.AddIngredient(ItemID.SoulofNight, 3);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(ItemID.HallowedBar, 1)
+                .AddIngredient(ItemID.SoulofLight, 3)
+                .AddIngredient(ItemID.SoulofNight, 3)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
 }

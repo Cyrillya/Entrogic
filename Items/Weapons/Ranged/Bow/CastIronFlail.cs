@@ -1,4 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Entrogic.Items.Materials;
+using Entrogic.Items.VoluGels;
+
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -18,10 +21,10 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
         public override void SetDefaults()
         {
             item.damage = 21;
-            item.ranged = true;
+            item.DamageType = DamageClass.Ranged;
             item.useTime = 10;
             item.useAnimation = 30;
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.noMelee = true; 
             item.knockBack = 4;
             item.rare = ItemRarityID.Green;
@@ -51,12 +54,10 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(null, "GelOfLife", 7);
-            recipe.AddIngredient(null, "CastIronBar", 10);
-            recipe.AddTile(TileID.Anvils);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(ItemType<GelOfLife>(), 7)
+                .AddIngredient(ItemType<CastIronBar>(), 10)
+                .AddTile(TileID.Anvils);
         }
     }
 }

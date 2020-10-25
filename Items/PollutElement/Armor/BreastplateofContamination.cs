@@ -23,14 +23,14 @@ namespace Entrogic.Items.PollutElement.Armor
     {
         public override void SetStaticDefaults()
         {
-            ModTranslation modTranslation = mod.CreateTranslation("PArmorBonus");
-            modTranslation.AddTranslation(GameCulture.Chinese, "召唤一个圈为你抵挡三次伤害，30秒后重新充能");
+            ModTranslation modTranslation = Mod.CreateTranslation("PArmorBonus");
+            modTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "召唤一个圈为你抵挡三次伤害，30秒后重新充能");
             modTranslation.SetDefault("Young man, there are still many things you don't understand");
-            mod.AddTranslation(modTranslation);
-            modTranslation = mod.CreateTranslation("PArmorBonus2");
-            modTranslation.AddTranslation(GameCulture.Chinese, "提高仆从数量上限");
+            Mod.AddTranslation(modTranslation);
+            modTranslation = Mod.CreateTranslation("PArmorBonus2");
+            modTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "提高仆从数量上限");
             modTranslation.SetDefault("Young man, there are still many things you don't understand");
-            mod.AddTranslation(modTranslation);
+            Mod.AddTranslation(modTranslation);
         }
         public override void SetDefaults()
         {
@@ -43,10 +43,11 @@ namespace Entrogic.Items.PollutElement.Armor
         public override void UpdateEquip(Player player)
         {
             int critpoint = 15;
-            player.magicCrit += critpoint;
-            player.meleeCrit += critpoint;
-            player.rangedCrit += critpoint;
-            player.thrownCrit += critpoint;
+            player.GetCrit(DamageClass.Summon) += critpoint;
+            player.GetCrit(DamageClass.Magic) += critpoint;
+            player.GetCrit(DamageClass.Ranged) += critpoint;
+            player.GetCrit(DamageClass.Melee) += critpoint;
+            player.GetCrit(DamageClass.Throwing) += critpoint;
         }
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {
@@ -93,7 +94,7 @@ namespace Entrogic.Items.PollutElement.Armor
             PollutionArmorSet modPlayer = drawPlayer.GetModPlayer<PollutionArmorSet>();
             if (modPlayer.pEffect && modPlayer.EffectEnable)
             {
-                Texture2D texture = Entrogic.ModTexturesTable["PollutionArmorSetEffect"];
+                Texture2D texture = (Texture2D)Entrogic.ModTexturesTable["PollutionArmorSetEffect"];
                 int frameSize = texture.Height / 3;
                 int drawX = (int)(drawInfo.position.X + drawPlayer.width / 2f - Main.screenPosition.X);
                 int drawY = (int)(drawInfo.position.Y + drawPlayer.height / 2f - Main.screenPosition.Y);
@@ -126,8 +127,9 @@ namespace Entrogic.Items.PollutElement.Armor
                     num3 -= num * 2f;
                 }
                 float num4 = MathHelper.Lerp(0.8f, 0f, Math.Abs(num3 - num2) * 10f);
-                DrawData data = new DrawData(texture, new Vector2(drawX, drawY), new Rectangle(0, 0, texture.Width, frameSize), new Color(num4, num4, num4, num4 / 2f), modPlayer.flameRingRot, new Vector2(texture.Width / 2f, frameSize / 2f), num3 * 0.6f, SpriteEffects.None, 0);
-                Main.playerDrawData.Add(data);
+                //DrawData data = new DrawData(texture, new Vector2(drawX, drawY), new Rectangle(0, 0, texture.Width, frameSize), new Color(num4, num4, num4, num4 / 2f), modPlayer.flameRingRot, new Vector2(texture.Width / 2f, frameSize / 2f), num3 * 0.6f, SpriteEffects.None, 0);
+                //Main.playerDrawData.Add(data);
+                Main.spriteBatch.Draw(texture, new Vector2(drawX, drawY), new Rectangle(0, 0, texture.Width, frameSize), new Color(num4, num4, num4, num4 / 2f), modPlayer.flameRingRot, new Vector2(texture.Width / 2f, frameSize / 2f), num3 * 0.6f, SpriteEffects.None, 0);
                 modPlayer.fRingScale = 1f;
             }
         });

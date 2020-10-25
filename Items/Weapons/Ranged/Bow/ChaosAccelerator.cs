@@ -1,9 +1,11 @@
 using System;
 
+using Entrogic.Items.Materials;
 using Entrogic.Projectiles.Ammos;
 
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -12,7 +14,7 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
 {
     public class ChaosAccelerator : ModItem
     {
-        public override string Texture { get { return "Entrogic/Items/Weapons/Ranged/Bow/ChaosAccelerator_1"; } }
+        public override string Texture => "Entrogic/Items/Weapons/Ranged/Bow/ChaosAccelerator_1";
         public override void SetDefaults()
         {
             item.damage = 62;
@@ -20,7 +22,7 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
             item.height = 30;
             item.useTime = 12;
             item.useAnimation = 12;
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.noMelee = true;
             item.value = Item.sellPrice(0, 5);
             item.rare = ItemRarityID.Pink;
@@ -29,7 +31,7 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
             item.shoot = ProjectileType<ProGodArrow>();
             item.shootSpeed = 12f;
             item.useAmmo = AmmoID.Arrow;
-            item.ranged = true;
+            item.DamageType = DamageClass.Ranged;
         }
         public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
@@ -38,12 +40,11 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(null, "CBar", 6);
-            recipe.AddIngredient(ItemID.HallowedRepeater, 1);
-            recipe.AddTile(TileID.Anvils);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(ItemType<CBar>(), 6)
+                .AddIngredient(ItemID.HallowedRepeater, 1)
+                .AddTile(TileID.Anvils)
+                .Register();
         }
 
         public override Vector2? HoldoutOffset()
@@ -66,20 +67,20 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
             item.autoReuse = true;
             return base.CanUseItem(player);
         }
+
         public int timeCounter = 0;
         public int timer = 1;
-
-        [Obsolete]
-        public override void GetWeaponDamage(Player player, ref int damage)
+        public override void ModifyWeaponDamage(Player player, ref Modifier damage, ref float flat)
         {
             timeCounter++;
-            Main.itemTexture[ItemType<ChaosAccelerator>()] = mod.GetTexture("Items/Weapons/Ranged/Bow/ChaosAccelerator_" + timer);
+            TextureAssets.Item[ItemType<ChaosAccelerator>()] = Entrogic.Instance.GetTexture("Items/Weapons/Ranged/Bow/ChaosAccelerator_" + timer);
             if (timeCounter >= 6)
             {
                 if (timer >= 4) timer = 0;
                 timer++;
                 timeCounter = 0;
             }
+            base.ModifyWeaponDamage(player, ref damage, ref flat);
         }
     }
 }

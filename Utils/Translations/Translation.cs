@@ -23,10 +23,10 @@ namespace Entrogic
         /// <param name="translated">译后文本</param>
         /// <param name="key">文本键值</param>
         /// <returns></returns>
-        internal static string RegisterTranslation(string key, GameCulture language, string translated, string original)
+        internal static string RegisterTranslation(string key, GameCulture.CultureName language, string translated, string original)
         {
             ModTranslation translate = GetOrCreateTranslation(key);
-            translate.AddTranslation(language, translated);
+            translate.AddTranslation((int)language, translated);
             translate.SetDefault(original);
             Entrogic.Instance.AddTranslation(translate);
             if (translations.TryGetValue(key, out ModTranslation value))

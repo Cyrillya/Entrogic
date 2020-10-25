@@ -18,14 +18,14 @@ namespace Entrogic.Items.PollutElement
         public override void SetDefaults()
         {
             item.damage = 50;
-            item.ranged = true;
+            item.DamageType = DamageClass.Ranged;
             item.width = 28;
             item.height = 60;
             item.useAnimation = 5;
             item.useTime = 5;
             item.reuseDelay = item.useAnimation + 5;
             item.crit += 22;
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.noMelee = true;
             item.knockBack = 7f;
             item.value = Item.sellPrice(0, 5);

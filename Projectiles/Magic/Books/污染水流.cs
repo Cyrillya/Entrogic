@@ -18,7 +18,7 @@ namespace Entrogic.Projectiles.Magic.Books
             projectile.height = 16;
             projectile.aiStyle = -1;
             projectile.friendly = true;
-            projectile.magic = true;
+            projectile.DamageType = DamageClass.Magic;
             projectile.hide = true;
             projectile.extraUpdates = 100;
         }

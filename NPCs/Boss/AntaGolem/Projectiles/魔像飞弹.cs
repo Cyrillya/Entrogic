@@ -31,7 +31,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem.Projectiles
             if (maxTimeLeft == 0)
             {
                 maxTimeLeft = projectile.timeLeft;
-                Main.PlaySound(SoundID.Item1, projectile.position);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.Item1, projectile.position);
             }
             projectile.ai[1]++;
             if (projectile.ai[1] < (projectile.scale > 2f ? 6f : 4f))

@@ -26,12 +26,12 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         public override void SetDefaults()
         {
             item.damage = 34;
-            item.ranged = true;
+            item.DamageType = DamageClass.Ranged;
             item.width = 64;
             item.height = 36;
             item.useTime = 7;
             item.useAnimation = 28;
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
 
             item.noMelee = true;
             item.knockBack = 4;
@@ -70,13 +70,12 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.Megashark,1);//巨兽鲨
-            recipe.AddRecipeGroup("Entrogic:AdamantiteBar", 12);
-            recipe.AddIngredient(ItemType<碳钢枪械部件>(), 1);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(ItemID.Megashark, 1)//巨兽鲨
+                .AddRecipeGroup("Entrogic:AdamantiteBar", 12)
+                .AddIngredient(ItemType<碳钢枪械部件>(), 1)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
 
         private void AddRecipeGroup(string v1, int v2)

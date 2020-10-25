@@ -27,10 +27,11 @@ namespace Entrogic.Items.PollutElement.Armor
         public override void UpdateEquip(Player player)
         {
             int critpoint = 6;
-            player.magicCrit += critpoint;
-            player.meleeCrit += critpoint;
-            player.rangedCrit += critpoint;
-            player.thrownCrit += critpoint;
+            player.GetCrit(DamageClass.Summon) += critpoint;
+            player.GetCrit(DamageClass.Magic) += critpoint;
+            player.GetCrit(DamageClass.Ranged) += critpoint;
+            player.GetCrit(DamageClass.Melee) += critpoint;
+            player.GetCrit(DamageClass.Throwing) += critpoint;
             player.moveSpeed += 0.1f;
         }
         public override bool DrawLegs()

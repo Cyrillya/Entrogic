@@ -30,9 +30,9 @@ namespace Entrogic.Items.Equipables.Armor
         }
         public override void UpdateEquip(Player player)
         {
-            player.rangedDamage += 0.1f;
-            player.rangedCrit += 5;
-            player.magicCrit += 8;
+            player.GetDamage(DamageClass.Ranged) += 0.1f;
+            player.GetCrit(DamageClass.Ranged) += 5;
+            player.GetCrit(DamageClass.Magic) += 8;
             player.statManaMax2 += 40;
         }
         public override void UpdateArmorSet(Player player)
@@ -86,7 +86,7 @@ namespace Entrogic.Items.Equipables.Armor
             {
                 twice = false;
             }
-            if (item.ranged || item.magic)
+            if (item.DamageType == DamageClass.Ranged || item.DamageType == DamageClass.Magic)
             {
                 if (twice && !twice2)
                 {
@@ -111,7 +111,7 @@ namespace Entrogic.Items.Equipables.Armor
         {
             if (twiceChance)
             {
-                return !(player.itemAnimation < item.useAnimation - 2) && twice && item.ranged;
+                return !(player.itemAnimation < item.useAnimation - 2) && twice && item.DamageType == DamageClass.Ranged;
             }
             else
                 return true;

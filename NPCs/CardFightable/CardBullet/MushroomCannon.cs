@@ -26,7 +26,7 @@ namespace Entrogic.NPCs.CardFightable.CardBullet
         float RotateDrawOffset => MathHelper.ToRadians(-90f);
         public MushroomCannon()
         {
-            _texture = ModContent.GetTexture(typeof(MushroomCannon).FullName.Replace('.', '/'));
+            _texture = (Texture2D)ModContent.GetTexture(typeof(MushroomCannon).FullName.Replace('.', '/'));
             LifeSpan = 12f;
             IsFriendly = false;
             Damage = 0;

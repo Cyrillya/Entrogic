@@ -26,8 +26,8 @@ namespace Entrogic.Items.PollutElement.Armor
         public override void UpdateEquip(Player player)
         {
             player.meleeSpeed += 0.08f;
-            player.meleeCrit += 12;
-            player.meleeDamage += 0.1f;
+            player.GetCrit(DamageClass.Melee) += 12;
+            player.GetDamage(DamageClass.Melee) += 0.1f;
         }
         public override bool DrawHead()
         {

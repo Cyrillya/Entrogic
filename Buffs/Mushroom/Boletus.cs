@@ -8,7 +8,7 @@ namespace Entrogic.Buffs.Mushroom
     {
         public override void Update(Player player, ref int buffIndex)
         {
-            player.meleeDamage += 0.35f;
+            player.GetDamage(DamageClass.Melee) += 0.35f;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Entrogic.Buffs.Weapons
         }
         public override void Update(Player player, ref int buffIndex)
         {
-            EntrogicPlayer.ModPlayer(player).arcaneDamageAdd += 0.6f;
+            player.GetDamage<ArcaneDamageClass>() += 0.6f;
         }
     }
 }

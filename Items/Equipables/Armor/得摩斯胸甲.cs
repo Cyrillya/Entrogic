@@ -26,9 +26,9 @@ namespace Entrogic.Items.Equipables.Armor
 
         public override void UpdateEquip(Player player)
         {
-            player.magicCrit += 8;
-            player.magicDamage += 0.08f;
-            player.rangedDamage += 0.11f;
+            player.GetCrit(DamageClass.Magic) += 8;
+            player.GetDamage(DamageClass.Magic) += 0.08f;
+            player.GetDamage(DamageClass.Ranged) += 0.11f;
             //player.GetModPlayer<(mod).ammoCost85 = true;
         }
 

@@ -1,4 +1,5 @@
 ﻿
+using Entrogic;
 using Entrogic.NPCs;
 using Entrogic.NPCs.CardMerchantSystem;
 
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -39,6 +41,7 @@ namespace Entrogic.Items.Weapons.Card
             PreCreated();
             if (!glove)
             {
+                CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 2;
                 List<string> rareColorText = new List<string>
                 {
                     "[c/555555:",
@@ -78,6 +81,7 @@ namespace Entrogic.Items.Weapons.Card
             }
             else
             {
+                CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
                 Tooltip.SetDefault("[c/00F5FF:持有时可使用卡牌] \n" + AnotherMessages());
             }
         }
@@ -121,17 +125,13 @@ namespace Entrogic.Items.Weapons.Card
                 item.maxStack = 1;
                 item.noUseGraphic = true;
                 item.noMelee = true;
-                item.useStyle = ItemUseStyleID.SwingThrow;
+                item.useStyle = ItemUseStyleID.Swing;
                 item.shoot = ProjectileID.PurificationPowder;
                 item.shootSpeed = 3f;
                 item.useTime = item.useAnimation = 20;
             }
             CardDefaults();
-            item.melee = false;
-            item.ranged = false;
-            item.magic = false;
-            item.thrown = false;
-            item.summon = false;
+            item.DamageType = GetInstance<ArcaneDamageClass>(); // Makes our item use our custom damage type.
             if (minion || special)
                 item.value = Item.sellPrice(0, 1, 80, 0);
             else
@@ -142,20 +142,11 @@ namespace Entrogic.Items.Weapons.Card
             item.value = (int)MathHelper.Min(Item.sellPrice(gold: 6), item.value);
         }
         // As a modder, you could also opt to make these overrides also sealed. Up to the modder
-        public override void ModifyWeaponDamage(Player player, ref float add, ref float mult, ref float flat)
+        public override void ModifyWeaponDamage(Player player, ref Modifier damage, ref float flat)
         {
-            add += EntrogicPlayer.ModPlayer(player).arcaneDamageAdd;
-            mult *= EntrogicPlayer.ModPlayer(player).arcaneDamageMult;
-
-            // 收取25%的魔法伤害加成
-            add += player.magicDamage * 0.25f;
-            mult *= MathHelper.Max(player.magicDamageMult * 0.25f, 1f);
-        }
-
-        public override void GetWeaponKnockback(Player player, ref float knockback)
-        {
-            // Adds knockback bonuses
-            knockback += EntrogicPlayer.ModPlayer(player).arcaneKnockback;
+            base.ModifyWeaponDamage(player, ref damage, ref flat);
+            // 收取30%的魔法伤害加成(也有可能是减少)
+            damage.additive += player.GetDamage(DamageClass.Magic) * 0.3f;
         }
 
         public override void GetWeaponCrit(Player player, ref int crit)
@@ -221,18 +212,6 @@ namespace Entrogic.Items.Weapons.Card
         // Because we want the damage tooltip to show our custom damage, we need to modify it
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            // Get the vanilla damage tooltip
-            TooltipLine tt = tooltips.FirstOrDefault(x => x.Name == "Damage" && x.mod == "Terraria");
-            if (tt != null)
-            {
-                // We want to grab the last word of the tooltip, which is the translated word for 'damage' (depending on what language the player is using)
-                // So we split the string by whitespace, and grab the last word from the returned arrays to get the damage word, and the first to get the damage shown in the tooltip
-                string[] splitText = tt.text.Split(' ');
-                string damageValue = splitText.First();
-                string damageWord = splitText.Last();
-                // Change the tooltip text
-                tt.text = damageValue + ' ' + Language.GetTextValue("Mods.Entrogic.ArcaneDamage") + damageWord;
-            }
             bool hasGlove = false;
             foreach (Item it in Main.LocalPlayer.inventory)
             {
@@ -244,7 +223,7 @@ namespace Entrogic.Items.Weapons.Card
             }
             if (!hasGlove && !glove)
             {
-                TooltipLine line = new TooltipLine(mod, mod.Name, $"你似乎还无法使用这张卡牌，请" +
+                TooltipLine line = new TooltipLine(Mod, Mod.Name, $"你似乎还无法使用这张卡牌，请" +
                     $"{(NPC.AnyNPCs(NPCType<CardMerchant>()) ? "" : "等待卡牌商的到来并")}从卡牌商处购买一个手套以使用")
                 {
                     overrideColor = Color.Red
@@ -253,7 +232,7 @@ namespace Entrogic.Items.Weapons.Card
             }
             if (AEntrogicConfigClient.Instance.ShowUsefulInformations)
             {
-                TooltipLine line = new TooltipLine(mod, mod.Name, $"抽取概率：{item.GetGlobalItem<EntrogicItem>().cardProb * 100f}%") {
+                TooltipLine line = new TooltipLine(Mod, Mod.Name, $"抽取概率：{item.GetGlobalItem<EntrogicItem>().cardProb * 100f}%") {
                     overrideColor = Color.Gray
                 };
                 tooltips.Add(line);

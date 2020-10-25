@@ -90,7 +90,7 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
                     npc.StrikeNPCNoInteraction(9999, 0, 0);
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                     {
-                        NetMessage.SendData(MessageID.StrikeNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
+                        NetMessage.SendData(MessageID.DamageNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
                     }
                 }
             }
@@ -112,7 +112,7 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
                 npc.StrikeNPCNoInteraction(9999, 0, 0);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    NetMessage.SendData(MessageID.StrikeNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
+                    NetMessage.SendData(MessageID.DamageNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
                 }
             }
             npc.ai[3]++;
@@ -125,11 +125,11 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
         public override void OnHitPlayer(Player target, int damage, bool crit)
         {
             if (Main.rand.NextBool(2))
-                target.AddBuff(BuffType<Buffs.Enemies.Dissolve>(), Main.rand.Next(90, 151) * (Main.expertMode ? (int)Main.expertDebuffTime : 1));
+                target.AddBuff(BuffType<Buffs.Enemies.Dissolve>(), (int)(Main.rand.Next(90, 151) * Main.GameModeInfo.DebuffTimeMultiplier));
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
         {
-            spriteBatch.Draw(Main.npcTexture[npc.type], npc.position - Main.screenPosition + new Vector2(0, 5), null, drawColor, npc.rotation, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(((Texture2D)Terraria.GameContent.TextureAssets.Npc[npc.type]), npc.position - Main.screenPosition + new Vector2(0, 5), null, drawColor, npc.rotation, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             return false;
         }
     }
@@ -178,7 +178,7 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
                 npc.StrikeNPCNoInteraction(9999, 0, 0);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    NetMessage.SendData(MessageID.StrikeNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
+                    NetMessage.SendData(MessageID.DamageNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
                 }
             }
             int Java = 0;
@@ -217,7 +217,7 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
                 npc.StrikeNPCNoInteraction(9999, 0, 0);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    NetMessage.SendData(MessageID.StrikeNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
+                    NetMessage.SendData(MessageID.DamageNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
                 }
             }
             if (Java <= 0 || npc.ai[3] >= 300)
@@ -225,7 +225,7 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
                 npc.StrikeNPCNoInteraction(9999, 0, 0);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    NetMessage.SendData(MessageID.StrikeNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
+                    NetMessage.SendData(MessageID.DamageNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
                 }
             }
             npc.ai[3]++;
@@ -238,11 +238,11 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
         public override void OnHitPlayer(Player target, int damage, bool crit)
         {
             if (Main.rand.NextBool(2))
-                target.AddBuff(BuffType<Buffs.Enemies.Dissolve>(), Main.rand.Next(90, 151) * (Main.expertMode ? (int)Main.expertDebuffTime : 1));
+                target.AddBuff(BuffType<Buffs.Enemies.Dissolve>(), (int)(Main.rand.Next(90, 151) * Main.GameModeInfo.DebuffTimeMultiplier));
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
         {
-            spriteBatch.Draw(Main.npcTexture[npc.type], npc.position - Main.screenPosition + new Vector2(0, 5), null, drawColor, npc.rotation, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(((Texture2D)Terraria.GameContent.TextureAssets.Npc[npc.type]), npc.position - Main.screenPosition + new Vector2(0, 5), null, drawColor, npc.rotation, Vector2.Zero, 1f, SpriteEffects.None, 0f);
             return false;
         }
     }

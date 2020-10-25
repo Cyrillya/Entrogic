@@ -23,7 +23,7 @@ namespace Entrogic.Projectiles.Thrown
             projectile.aiStyle = 1;
             projectile.friendly = true;
             projectile.hostile = false;
-            projectile.ranged = true;
+            projectile.DamageType = DamageClass.Ranged;
             projectile.penetrate = 2;
             projectile.timeLeft = 180;
             projectile.alpha = 0;

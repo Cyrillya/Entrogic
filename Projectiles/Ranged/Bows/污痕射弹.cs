@@ -53,7 +53,7 @@ namespace Entrogic.Projectiles.Ranged.Bows
             else
             {
                 Collision.HitTiles(projectile.position + projectile.velocity, projectile.velocity, projectile.width, projectile.height);
-                Main.PlaySound(SoundID.Item10, projectile.position);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.Item10, projectile.position);
                 if (projectile.velocity.X != oldVelocity.X)
                 {
                     projectile.velocity.X = -oldVelocity.X;
@@ -67,7 +67,7 @@ namespace Entrogic.Projectiles.Ranged.Bows
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            Texture2D t = Main.projectileTexture[projectile.type];
+            Texture2D t = (Texture2D)Terraria.GameContent.TextureAssets.Projectile[projectile.type];
             int frameHeight = t.Height / Main.projFrames[projectile.type];
             SpriteEffects effects = SpriteEffects.None;
             if (projectile.spriteDirection < 0) effects = SpriteEffects.FlipHorizontally;

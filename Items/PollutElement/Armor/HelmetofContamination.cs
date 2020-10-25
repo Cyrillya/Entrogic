@@ -23,8 +23,8 @@ namespace Entrogic.Items.PollutElement.Armor
         }
         public override void UpdateEquip(Player player)
         {
-            player.rangedCrit += 7;
-            player.rangedDamage += 0.17f;
+            player.GetCrit(DamageClass.Ranged) += 7;
+            player.GetDamage(DamageClass.Ranged) += 0.17f;
             //player.GetModPlayer<EntrogicPlayer>().ammoCost90 = true;
         }
         public override bool DrawHead()

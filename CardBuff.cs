@@ -48,7 +48,7 @@ namespace Entrogic
                             }
                         }
                         if (itemSound != null)
-                            Main.PlaySound(itemSound, position);
+                            SoundEngine.PlaySound(itemSound, position);
                     }
                 }
                 return false;

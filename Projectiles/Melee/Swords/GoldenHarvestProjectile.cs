@@ -23,7 +23,7 @@ namespace Entrogic.Projectiles.Melee.Swords
             projectile.friendly = true;
             projectile.hostile = false;
             projectile.tileCollide = false;
-            projectile.melee = true;
+            projectile.DamageType = DamageClass.Melee;
             projectile.penetrate = -1;
             projectile.ownerHitCheck = true;
             projectile.scale = 1f;
@@ -59,7 +59,7 @@ namespace Entrogic.Projectiles.Melee.Swords
             projectile.soundDelay--;
             if (projectile.soundDelay <= 0)
             {
-                Main.PlaySound(SoundID.Item1, projectile.Center);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.Item1, projectile.Center);
                 projectile.soundDelay = 21;
             }
             projectile.direction = player.direction;

@@ -23,7 +23,7 @@ namespace Entrogic.NPCs.CardFightable.CardBullet.PlayerBullets
         public ArcaneMissleBullet(Vector2 targetPos, float invisibleSpan = 0f)
         {
             TargetPosition = targetPos;
-            _texture = ModContent.GetTexture("Entrogic/Projectiles/Arcane/ArcaneMissle");
+            _texture = (Texture2D)ModContent.GetTexture("Entrogic/Projectiles/Arcane/ArcaneMissle");
             LifeSpan = 6f;
             IsFriendly = true;
             Size = new Vector2(_texture.Width, _texture.Height);
@@ -73,7 +73,7 @@ namespace Entrogic.NPCs.CardFightable.CardBullet.PlayerBullets
         }
         public override void Kill(Player attackPlayer)
         {
-            Main.PlaySound(SoundID.Item10);
+            Terraria.Audio.SoundEngine.PlaySound(SoundID.Item10);
             for (int i = 0; i < 22; i++)
             {
                 ArcaneMissleParticle particle = new ArcaneMissleParticle()

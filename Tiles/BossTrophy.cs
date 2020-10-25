@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria.ObjectData;
 using Entrogic.Items.Miscellaneous.Placeable.Trophy;
+using Terraria.ID;
 
 namespace Entrogic.Tiles
 {
@@ -18,7 +19,7 @@ namespace Entrogic.Tiles
             TileObjectData.newTile.StyleWrapLimit = 36;
             TileObjectData.addTile(Type);
             dustType = 7;
-            disableSmartCursor = true;
+            TileID.Sets.DisableSmartCursor[Type] = true;
             ModTranslation name = CreateMapEntryName();
             name.SetDefault("{$MapObject.Trophy}");
             AddMapEntry(new Color(120, 85, 60), name);

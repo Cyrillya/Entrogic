@@ -14,6 +14,7 @@ using Entrogic.UI.Cards;
 using Entrogic.Items.Weapons.Card.Undeads;
 using Entrogic.Items.Weapons.Card.Nones;
 using Entrogic.Items.Weapons.Card.Organisms;
+using Terraria.GameContent.Creative;
 
 namespace Entrogic
 {
@@ -27,6 +28,9 @@ namespace Entrogic
         public float cardProb = 0;
         public bool ammoCost85 { get { return EntrogicPlayer.CanAmmoCost85; } }
         public bool ammoCost90 { get { return EntrogicPlayer.CanAmmoCost90; } }
+        public override void ModifyResearchSorting(Item item, ref ContentSamples.CreativeHelper.ItemGroup itemGroup)
+        {
+        }
         public override void SetDefaults(Item item)
         {
             if (item.type == ItemID.BoneSword) item.damage = 26;
@@ -99,14 +103,14 @@ namespace Entrogic
         {
             if (AEntrogicConfigClient.Instance.ShowUsefulInformations)
             {
-                TooltipLine line = new TooltipLine(mod, mod.Name, $"物品ID：{item.type}\n最大堆叠数：{item.maxStack}")
+                TooltipLine line = new TooltipLine(Mod, Mod.Name, $"物品ID：{item.type}\n最大堆叠数：{item.maxStack}")
                 {
                     overrideColor = Color.Gray
                 };
                 tooltips.Add(line);
                 if (item.type >= 3930 && item.modItem != null)
                 {
-                    line = new TooltipLine(mod, mod.Name, $"物品内部名：{item.modItem.mod.Name}:{item.modItem.Name}")
+                    line = new TooltipLine(Mod, Mod.Name, $"物品内部名：{item.modItem.Mod.Name}:{item.modItem.Name}")
                     {
                         overrideColor = Color.Gray
                     };
@@ -134,7 +138,7 @@ namespace Entrogic
                     string sr = mPlayer.colorDecR.ToString("X2");
                     string sg = mPlayer.colorDecG.ToString("X2");
                     string sb = mPlayer.colorDecB.ToString("X2");
-                    TooltipLine line = new TooltipLine(mod, mod.Name, "[C/" + sr + sg + sb + ":" + textPres[presents.IndexOf(t)] + "]");
+                    TooltipLine line = new TooltipLine(Mod, Mod.Name, "[C/" + sr + sg + sb + ":" + textPres[presents.IndexOf(t)] + "]");
                     tooltips.Add(line);
                 }
 

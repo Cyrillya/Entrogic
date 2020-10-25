@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -35,14 +36,14 @@ namespace Entrogic
             if (maxDepth >= 0 && minDepth < 0)
             {
                 int color = 0;
-                spriteBatch.Draw(Main.blackTileTexture, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), new Color(color, color, color + 20f, 60f) * intensity);
+                spriteBatch.Draw((Texture2D)TextureAssets.BlackTile, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), new Color(color, color, color + 20f, 60f) * intensity);
 
                 if ((double)Main.screenPosition.Y < Main.worldSurface * 16.0 + 16.0)
                 {
                     for (var index = 0; index < Main.numStars - 2; index += 2)
                     {
                         Star star = Main.star[index];
-                        Texture2D tex = Main.starTexture[Main.star[index].type];
+                        Texture2D tex = (Texture2D)TextureAssets.Star[Main.star[index].type];
                         var num11 = MathHelper.Max(star.position.X * ((float)Main.screenWidth / 800f), 10);
                         var num12 = MathHelper.Max(star.position.Y * ((float)Main.screenHeight / 600f), 10);
                         // Main.caveParallax 范围为0.8-1.0

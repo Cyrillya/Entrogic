@@ -88,25 +88,18 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
 
             if (npc.ai[0] == 0)
             {
-                Vector2 r = new Vector2(Main.rand.Next(240, 428 + 1), Main.rand.Next(240, 428 + 1));
-                r = r - new Vector2(Main.rand.Next(201), Main.rand.Next(201));
-                if (Main.rand.NextBool(2)) r.X = -r.X;
-                if (Main.rand.NextBool(2)) r.Y = -r.Y;
-                string type = "";
                 switch (Main.rand.Next(3))
                 {
                     case 0:
-                        type = typeof(GelDemon).Name;
+                        SpawnNPC(NPCType<GelDemon>());
                         break;
                     case 1:
-                        type = typeof(GelHarpy).Name;
+                        SpawnNPC(NPCType<GelHarpy>());
                         break;
                     default:
-                        type = typeof(GelBee).Name;
+                        SpawnNPC(NPCType<GelBee>());
                         break;
                 }
-                int gel = NPC.NewNPC((int)(npc.Center.X + r.X), (int)(npc.Center.Y + r.Y), mod.NPCType(type));
-                npc.netUpdate = true;
             }
             else if (npc.ai[0] == 270)
             {
@@ -136,6 +129,17 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
 
             if (npc.wet)
                 npc.velocity.Y = -6.6f;
+        }
+        private void SpawnNPC(int type)
+        {
+            Vector2 r = new Vector2(Main.rand.Next(240, 428 + 1), Main.rand.Next(240, 428 + 1));
+            r = r - new Vector2(Main.rand.Next(201), Main.rand.Next(201));
+            if (Main.rand.NextBool(2)) r.X = -r.X;
+            if (Main.rand.NextBool(2)) r.Y = -r.Y;
+            
+            int gel = NPC.NewNPC((int)(npc.Center.X + r.X), (int)(npc.Center.Y + r.Y), type);
+            npc.netUpdate = true;
+            Main.npc[gel].netUpdate = true;
         }
     }
 }

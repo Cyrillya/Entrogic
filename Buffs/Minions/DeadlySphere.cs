@@ -14,8 +14,8 @@ namespace Entrogic.Buffs.Minions
             Description.SetDefault("The Deadly Sphere will fight for you");
             Main.buffNoTimeDisplay[Type] = true;
             Main.buffNoSave[Type] = true;
-            DisplayName.AddTranslation(GameCulture.Chinese, "DeadlySphere");
-            Description.AddTranslation(GameCulture.Chinese, "一个毫无瑕疵的球体将为你作战");
+            DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "DeadlySphere");
+            Description.AddTranslation((int)GameCulture.CultureName.Chinese, "一个毫无瑕疵的球体将为你作战");
         }
 
         public override void Update(Player player, ref int buffIndex)

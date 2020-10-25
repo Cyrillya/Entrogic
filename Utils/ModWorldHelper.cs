@@ -12,9 +12,9 @@ using ReLogic.Graphics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader.IO;
-using Terraria.World.Generation;
 using Terraria.GameContent.Generation;
 using Entrogic.Tiles;
+using Terraria.WorldBuilding;
 
 namespace Entrogic
 {
@@ -42,13 +42,21 @@ namespace Entrogic
         /// <param name="tileY">放置时岩浆所处的物块坐标Y轴</param>
         public static bool CreateUnderworldTransport(int tileX, int tileY)
         {
+            int inWorldRange = 15;
+            // 通过遍历以粗略的手段定位左上角黑曜石
+            while (Main.tile[tileX - 1, tileY].type == TileID.Obsidian || Main.tile[tileX, tileY - 1].type == TileID.Obsidian)
+            {
+                if (Main.tile[tileX - 1, tileY].type == TileID.Obsidian)
+                    tileX--;
+                if (Main.tile[tileX, tileY - 1].type == TileID.Obsidian)
+                    tileY--;
+            }
             // 记录一遍初始物块位置
             int statTileX = tileX;
             int statTileY = tileY;
             // 门框大小（包括左上角物块）
             int XLength = 1;
             int YLength = 1;
-            int inWorldRange = 15;
             // 省事，当前被选取物块距离世界边界不到{inWorldRange}格即放弃搜索
             if (!WorldGen.InWorld(tileX, tileY, inWorldRange)) return false;
             // 第一步：向右搜索直到找到一个黑曜石下方有黑曜石
@@ -58,8 +66,8 @@ namespace Entrogic
                 XLength++;
                 if (!WorldGen.InWorld(tileX, tileY, inWorldRange) || Main.tile[tileX, tileY].type != TileID.Obsidian)
                     return false;
-            } 
-            while (Main.tile[tileX, tileY + 1].type != TileID.Obsidian) ;
+            }
+            while (Main.tile[tileX, tileY + 1].type != TileID.Obsidian);
             // 第二步：向下搜索直到找到一个黑曜石左方有黑曜石
             do
             {
@@ -68,7 +76,7 @@ namespace Entrogic
                 if (!WorldGen.InWorld(tileX, tileY, inWorldRange) || Main.tile[tileX, tileY].type != TileID.Obsidian)
                     return false;
             }
-            while (Main.tile[tileX - 1, tileY].type != TileID.Obsidian) ;
+            while (Main.tile[tileX - 1, tileY].type != TileID.Obsidian);
             // 第三步：向左搜索直到找到一个黑曜石上方有黑曜石
             do
             {
@@ -76,7 +84,7 @@ namespace Entrogic
                 if (!WorldGen.InWorld(tileX, tileY, inWorldRange) || Main.tile[tileX, tileY].type != TileID.Obsidian)
                     return false;
             }
-            while (Main.tile[tileX, tileY - 1].type != TileID.Obsidian) ;
+            while (Main.tile[tileX, tileY - 1].type != TileID.Obsidian);
             // 第四步：向上搜索直到找到一个黑曜石右方有黑曜石
             do
             {
@@ -84,7 +92,7 @@ namespace Entrogic
                 if (!WorldGen.InWorld(tileX, tileY, inWorldRange) || Main.tile[tileX, tileY].type != TileID.Obsidian)
                     return false;
             }
-            while (Main.tile[tileX + 1, tileY].type != TileID.Obsidian) ;
+            while (Main.tile[tileX + 1, tileY].type != TileID.Obsidian);
             // 第五步：判定（如果门框大小小于4*5或大于50*50，或者一圈后位置与原先不同：生成失败）
             if (XLength < 4 || YLength < 5 || XLength > 50 || YLength > 50 || statTileX != tileX || statTileY != tileY)
                 return false;

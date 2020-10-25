@@ -22,7 +22,7 @@ namespace Entrogic.NPCs.CardFightable.CardBullet.PlayerBullets
         public ExplodingPineappleBullet(Vector2 targetPos)
         {
             TargetPosition = targetPos;
-            _texture = ModContent.GetTexture("Entrogic/Projectiles/Arcane/Pineapple");
+            _texture = (Texture2D)ModContent.GetTexture("Entrogic/Projectiles/Arcane/Pineapple");
             LifeSpan = 6f;
             IsFriendly = true;
             Size = new Vector2(_texture.Width, _texture.Height);
@@ -62,7 +62,7 @@ namespace Entrogic.NPCs.CardFightable.CardBullet.PlayerBullets
         public override void Kill(Player attackPlayer)
         {
             Vector2 screenCenter = new Vector2(Main.screenWidth, Main.screenHeight) / 2f + Main.screenPosition;
-            Main.PlaySound(SoundID.Item, (int)screenCenter.X, (int)screenCenter.Y + -30, 14, 1f, 0f);
+            Terraria.Audio.SoundEngine.PlaySound(SoundID.Item, (int)screenCenter.X, (int)screenCenter.Y + -30, 14, 1f, 0f);
             Position.X = CardGameUI.ToUIPos(Position).X + (float)(Size.X / 2);
             Position.Y = CardGameUI.ToUIPos(Position).Y + (float)(Size.Y / 2);
             Size.X = 20;

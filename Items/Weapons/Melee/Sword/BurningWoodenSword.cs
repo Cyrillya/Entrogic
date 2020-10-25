@@ -21,9 +21,9 @@ namespace Entrogic.Items.Weapons.Melee.Sword
             item.rare = ItemRarityID.White;
             item.useTime = 30;
             item.useAnimation = 30;
-            item.useStyle = ItemUseStyleID.SwingThrow;
+            item.useStyle = ItemUseStyleID.Swing;
             item.autoReuse = true;
-            item.melee = true;
+            item.DamageType = DamageClass.Melee;
             item.value = Item.sellPrice(0, 0, 60, 0);
             item.UseSound = SoundID.Item1;
             item.scale = 1.4f;
@@ -34,12 +34,11 @@ namespace Entrogic.Items.Weapons.Melee.Sword
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.WoodenSword, 1);//木剑
-            recipe.AddIngredient(ItemID.Torch, 8);//火把
-            recipe.AddTile(TileID.WorkBenches);//工作台
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(ItemID.WoodenSword, 1)//木剑
+                .AddIngredient(ItemID.Torch, 8)//火把
+                .AddTile(TileID.WorkBenches)//工作台
+                .Register();
         }
         public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
         {

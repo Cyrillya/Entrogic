@@ -135,7 +135,7 @@ namespace Entrogic
 						from.type = br.ReadUInt16();
 						var str = br.ReadString();
 						if (str != "")
-							from.type = (ushort)Entrogic.Instance.TileType(str);
+							from.type = (ushort)TileType(str);
 						from.wall = br.ReadUInt16();
 						from.liquid = br.ReadByte();
 						from.sTileHeader = br.ReadUInt16();
@@ -150,5 +150,10 @@ namespace Entrogic
 				return ts;
 			}
 		}
-	}
+
+        private static ushort TileType(string str)
+        {
+			return Entrogic.ModTiles.Find(s => s.Name == str).Type;
+		}
+    }
 }

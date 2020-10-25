@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria.ObjectData;
 using Entrogic.NPCs.Enemies;
+using Terraria.ID;
 
 namespace Entrogic.NPCs.Banners
 {
@@ -22,7 +23,7 @@ namespace Entrogic.NPCs.Banners
             TileObjectData.newTile.StyleWrapLimit = 111;
             TileObjectData.addTile(Type);
             dustType = -1;
-            disableSmartCursor = true;
+            TileID.Sets.DisableSmartCursor[Type] = true;
             ModTranslation name = CreateMapEntryName();
             name.SetDefault("{$MapObject.Banner}");
             AddMapEntry(new Color(13, 88, 130), name);
@@ -56,18 +57,18 @@ namespace Entrogic.NPCs.Banners
                 switch (style)
                 {
                     case 0:
-                        player.NPCBannerBuff[NPCType<CrimsonSpirit>()] = true;
+                        Main.SceneMetrics.NPCBannerBuff[NPCType<CrimsonSpirit>()] = true;
                         break;
                     case 1:
-                        player.NPCBannerBuff[NPCType<AngryofCorruption>()] = true;
+                        Main.SceneMetrics.NPCBannerBuff[NPCType<AngryofCorruption>()] = true;
                         break;
                     case 2:
-                        player.NPCBannerBuff[NPCType<StoneSlime>()] = true;
+                        Main.SceneMetrics.NPCBannerBuff[NPCType<StoneSlime>()] = true;
                         break;
                     default:
                         return;
                 }
-                player.hasBanner = true;
+                Main.SceneMetrics.hasBanner = true;
             }
         }
 

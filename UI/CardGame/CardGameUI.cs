@@ -4,10 +4,13 @@ using Entrogic.NPCs.CardFightable.CardBullet;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using ReLogic.Graphics;
+
 using System;
 using System.Collections.Generic;
 
 using Terraria;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
@@ -109,7 +112,7 @@ namespace Entrogic.UI.CardGame
             //    buffer.RemoveAt(chosed);
             //}
 
-            Main.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGChangeTurn"));
+            Terraria.Audio.SoundEngine.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGChangeTurn"));
             TimerCountdown = 0;
             AnimationTimer = 0;
             TurnText = Language.GetTextValue("Mods.Entrogic.Common.PlayerTurn");
@@ -189,7 +192,7 @@ namespace Entrogic.UI.CardGame
                             IsUseBiggerTexture = false;
                             clientModPlayer.CardGamePlayerTurn = false;
                             fightNPC.PreStartRound(false);
-                            Main.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGChangeTurn"));
+                            Terraria.Audio.SoundEngine.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGChangeTurn"));
 
                             TimerCountdown = 0;
                             AnimationTimer = 0;
@@ -223,7 +226,7 @@ namespace Entrogic.UI.CardGame
                             clientModPlayer.CardGamePlayerTurn = true;
                             fightNPC.PreStartRound(true);
                             IsUseBiggerTexture = true;
-                            Main.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGChangeTurn"));
+                            Terraria.Audio.SoundEngine.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGChangeTurn"));
                             for (int i = 0; i < clientModPlayer._bullets.Count; i++)
                             {
                                 if (clientModPlayer._bullets[i].IsFriendly == false)
@@ -381,7 +384,7 @@ namespace Entrogic.UI.CardGame
             switch (IsUseBiggerTexture)
             {
                 case false:
-                    spriteBatch.Draw(GetTexture("Entrogic/UI/CardGame/CardGamePanel_Front"), PanelPos, Color.White);
+                    spriteBatch.Draw((Texture2D)GetTexture("Entrogic/UI/CardGame/CardGamePanel_Front"), PanelPos, Color.White);
                     break;
 
             }
@@ -390,11 +393,11 @@ namespace Entrogic.UI.CardGame
             ConfirmButton.Start();
             // 对局魔力值显示
             if (clientModPlayer.CardGameLeftCard >= 1)
-                spriteBatch.Draw(GetTexture("Entrogic/UI/CardGame/ManaCrystal"), PanelPos + new Vector2(424, 342), Color.White);
+                spriteBatch.Draw((Texture2D)GetTexture("Entrogic/UI/CardGame/ManaCrystal"), PanelPos + new Vector2(424, 342), Color.White);
             if (clientModPlayer.CardGameLeftCard >= 2)
-                spriteBatch.Draw(GetTexture("Entrogic/UI/CardGame/ManaCrystal"), PanelPos + new Vector2(456, 342), Color.White);
+                spriteBatch.Draw((Texture2D)GetTexture("Entrogic/UI/CardGame/ManaCrystal"), PanelPos + new Vector2(456, 342), Color.White);
             if (clientModPlayer.CardGameLeftCard >= 3)
-                spriteBatch.Draw(GetTexture("Entrogic/UI/CardGame/ManaCrystal"), PanelPos + new Vector2(488, 342), Color.White);
+                spriteBatch.Draw((Texture2D)GetTexture("Entrogic/UI/CardGame/ManaCrystal"), PanelPos + new Vector2(488, 342), Color.White);
 
             if (clientModPlayer.CardGameNPCIndex == -1)
                 goto IL_DRAWBIGTEXTUREPARTICLES;
@@ -412,10 +415,10 @@ namespace Entrogic.UI.CardGame
                 //       第三层：Surface
                 //       第四层：Bar
                 // 玩家：
-                Texture2D FightPanel_Player = Entrogic.ModTexturesTable["CardFightPlayer_FightPanel"];
-                Texture2D Surface_Player = Entrogic.ModTexturesTable["CardFightPlayer_Surface"];
-                Texture2D Bar_Player = Entrogic.ModTexturesTable["CardFightPlayer_Bar"];
-                Texture2D Player = Entrogic.ModTexturesTable["CardFightPlayer"];
+                Texture2D FightPanel_Player = (Texture2D)Entrogic.ModTexturesTable["CardFightPlayer_FightPanel"];
+                Texture2D Surface_Player = (Texture2D)Entrogic.ModTexturesTable["CardFightPlayer_Surface"];
+                Texture2D Bar_Player = (Texture2D)Entrogic.ModTexturesTable["CardFightPlayer_Bar"];
+                Texture2D Player = (Texture2D)Entrogic.ModTexturesTable["CardFightPlayer"];
                 Vector2 drawPosition = new Vector2(274f, 314f);
                 spriteBatch.Draw(FightPanel_Player, PanelPos + drawPosition, Color.White * (1f - clientModPlayer.CardGameHealthAlpha));
                 // 只有在血量变动的时候显示血量
@@ -441,10 +444,10 @@ namespace Entrogic.UI.CardGame
                 if (ModHelper.MouseInRectangle(new Rectangle((int)(PanelPos + drawPosition).X, (int)(PanelPos + drawPosition).Y, Player.Width, Player.Height)))
                     Main.hoverItemName = $"{Language.GetTextValue("Mods.Entrogic.Common.You")}: {clientModPlayer.CardGamePlayerHealth} / {clientModPlayer.CardGamePlayerMaxHealth}";
                 // NPC：
-                Texture2D FightPanel_NPC = GetTexture($"{ImgPath}_FightPanel");
-                Texture2D Surface_NPC = GetTexture($"{ImgPath}_Surface");
-                Texture2D Bar_NPC = GetTexture($"{ImgPath}_Bar");
-                Texture2D NPC = GetTexture($"{ImgPath}_Fight");
+                Texture2D FightPanel_NPC = (Texture2D)GetTexture($"{ImgPath}_FightPanel");
+                Texture2D Surface_NPC = (Texture2D)GetTexture($"{ImgPath}_Surface");
+                Texture2D Bar_NPC = (Texture2D)GetTexture($"{ImgPath}_Bar");
+                Texture2D NPC = (Texture2D)GetTexture($"{ImgPath}_Fight");
                 //Texture2D FightPanel_NPC = Entrogic.ModTexturesTable["CardFightPlayer_FightPanel"];
                 //Texture2D Surface_NPC = Entrogic.ModTexturesTable["CardFightPlayer_Surface"];
                 //Texture2D Bar_NPC = Entrogic.ModTexturesTable["CardFightPlayer_Bar"];
@@ -477,7 +480,7 @@ namespace Entrogic.UI.CardGame
             else
             {
                 DeathTimer++;
-                Texture2D Tex = Deathing == 1 ? Entrogic.ModTexturesTable["CardFightPlayer"] : GetTexture($"{ImgPath}_Fight");
+                Texture2D Tex = Deathing == 1 ? (Texture2D)Entrogic.ModTexturesTable["CardFightPlayer"] : (Texture2D)GetTexture($"{ImgPath}_Fight");
                 Vector2 drawPosition = new Vector2(274f, 314f);
                 if (DeathTimer <= 120f + 20f)
                 {
@@ -494,7 +497,7 @@ namespace Entrogic.UI.CardGame
                         deathShader.UseOpacity(1f - (DeathTimer - 20f) / 120f);
                         if (DeathTimer % 60f == 21f)
                         {
-                            Main.PlaySound(SoundID.NPCDeath22, npc.Center); // every second while dying, play a sound
+                            Terraria.Audio.SoundEngine.PlaySound(SoundID.NPCDeath22, npc.Center); // every second while dying, play a sound
                         }
                     }
                     // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.
@@ -506,7 +509,7 @@ namespace Entrogic.UI.CardGame
                     Main.spriteBatch.SafeEnd();
                     Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, null, null, null, Main.UIScaleMatrix);
                 }
-                Tex = Deathing == 2 ? Entrogic.ModTexturesTable["CardFightPlayer"] : GetTexture($"{ImgPath}_Fight");
+                Tex = Deathing == 2 ? (Texture2D)Entrogic.ModTexturesTable["CardFightPlayer"] : (Texture2D)GetTexture($"{ImgPath}_Fight");
                 spriteBatch.Draw(Tex, PanelPos + (Deathing == 2 ? drawPosition : ImgPosition), Color.White);
                 if (DeathTimer >= 150f + 20f)
                 {
@@ -528,7 +531,7 @@ namespace Entrogic.UI.CardGame
             }
 
             IL_DRAWTIP:
-            Texture2D TipTexture = GetTexture("Entrogic/UI/CardGame/CardGameTurnTip");
+            Texture2D TipTexture = (Texture2D)GetTexture("Entrogic/UI/CardGame/CardGameTurnTip");
             int max = 15;
             if (TimerCountdown < 60)
             {
@@ -548,14 +551,14 @@ namespace Entrogic.UI.CardGame
             spriteBatch.Draw(TipTexture, AniPos.NoShake(), (Rectangle?)PerRectangle, Color.White);
             // 提示信息
             if (AnimationTimer != max) goto IL_DRAWTOPBAR;
-            float hsize = Main.fontMouseText.MeasureString(TurnText).X / 2f;
+            float hsize = ((DynamicSpriteFont)FontAssets.MouseText).MeasureString(TurnText).X / 2f;
             Vector2 textPos = PanelCenter;
             textPos.X -= hsize;
             textPos.Y = PanelPos.Y + 12f;
-            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontMouseText, TurnText, textPos, TurnTextColor, 0f, Vector2.Zero, Vector2.One);
+            ChatManager.DrawColorCodedStringWithShadow(spriteBatch, (DynamicSpriteFont)FontAssets.MouseText, TurnText, textPos, TurnTextColor, 0f, Vector2.Zero, Vector2.One);
             // 再Draw顶端，看起来好看一点
             IL_DRAWTOPBAR:
-            spriteBatch.Draw(GetTexture("Entrogic/UI/CardGame/CardGameTop"), PanelPos, Color.White);
+            spriteBatch.Draw((Texture2D)GetTexture("Entrogic/UI/CardGame/CardGameTop"), PanelPos, Color.White);
         }
         private void DrawBulletsParticles(SpriteBatch spriteBatch, bool allowPanelEntity = false)
         {

@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Entrogic.Items.Materials;
+
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -16,13 +18,13 @@ namespace Entrogic.Items.Tools
 		public override void SetDefaults()
 		{
 			item.damage = 28;
-			item.melee = true;
+			item.DamageType = DamageClass.Melee;
 			item.width = 28;
 			item.height = 28;
 			item.useTime = 16;
 			item.useAnimation = 20;
             item.hammer = 70;
-            item.useStyle = ItemUseStyleID.SwingThrow;
+            item.useStyle = ItemUseStyleID.Swing;
 			item.knockBack = 5;
 			item.value = 30000;
 			item.rare = ItemRarityID.LightPurple;
@@ -33,15 +35,14 @@ namespace Entrogic.Items.Tools
 		}
 
         public override void AddRecipes()
-        {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.SoulofLight, 6);
-            recipe.AddIngredient(ItemID.Wire, 12);
-            recipe.AddIngredient(null, "CuteWidget", 1);
-            recipe.AddRecipeGroup("IronBar", 4);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+		{
+			CreateRecipe()
+				.AddIngredient(ItemID.SoulofLight, 6)
+				.AddIngredient(ItemID.Wire, 12)
+				.AddIngredient(ItemType<CuteWidget>(), 1)
+				.AddRecipeGroup("IronBar", 4)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
         }
 
         public override void MeleeEffects(Player player, Rectangle hitbox)

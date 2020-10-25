@@ -21,11 +21,11 @@ namespace Entrogic.Items.AntaGolem
         {
             item.scale = 1.2f;
             item.damage = 111;
-            item.ranged = true;
+            item.DamageType = DamageClass.Ranged;
             item.width = 32;
             item.height = 20;
             item.useTime = item.useAnimation = 18;
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.noMelee = true;
             item.knockBack = 3;
             item.value = Item.sellPrice(0, 3, 50);

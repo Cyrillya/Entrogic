@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
 using Entrogic.Projectiles.Ranged.Bullets;
+using Entrogic.Items.Materials;
 
 namespace Entrogic.Items.Weapons.Ranged.Gun
 {
@@ -31,13 +32,12 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.SnowballCannon);
-            recipe.AddIngredient(ItemID.FrostCore);
-            recipe.AddIngredient(Entrogic.Instance, "CuteWidget");
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(ItemID.SnowballCannon)
+                .AddIngredient(ItemID.FrostCore)
+                .AddIngredient(ModContent.ItemType<CuteWidget>())
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
         public override Vector2? HoldoutOffset()
         {

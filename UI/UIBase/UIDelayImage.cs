@@ -1,5 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
+using ReLogic.Content;
+
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 
@@ -13,9 +16,9 @@ namespace Entrogic.UI
         internal int Alpha;
         internal Texture2D Texture;
 
-        public UIDelayImageY(Texture2D texture, int alpha) : base(texture)
+        public UIDelayImageY(Asset<Texture2D> texture, int alpha) : base(texture)
         {
-            Texture = texture;
+            Texture = (Texture2D)texture;
             Alpha = alpha;
         }
         public override void Draw(SpriteBatch spriteBatch)
@@ -33,9 +36,9 @@ namespace Entrogic.UI
         internal int Alpha;
         internal Texture2D Texture;
 
-        public UIDelayImageX(Texture2D texture, int alpha) : base(texture)
+        public UIDelayImageX(Asset<Texture2D> texture, int alpha) : base(texture)
         {
-            Texture = texture;
+            Texture = (Texture2D)texture;
             Alpha = alpha;
         }
         public override void Draw(SpriteBatch spriteBatch)

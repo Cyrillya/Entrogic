@@ -55,7 +55,7 @@ namespace Entrogic.Items.AntaGolem
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            tooltips.Add(new TooltipLine(mod, mod.Name,
+            tooltips.Add(new TooltipLine(Mod, Mod.Name,
 "本BossBGM改编自东方永夜抄五面BOSS玲仙的BGM\n" +
 "原作者为Zun.原曲:狂気の瞳 ～ Invisible Full Moon\n" +
 "本BGM名称也为: 狂気の瞳 - UniCyix Bootleg" +

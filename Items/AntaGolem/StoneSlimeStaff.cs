@@ -16,14 +16,14 @@ namespace Entrogic.Items.AntaGolem
         {
             DisplayName.SetDefault("Stoneslime Staff");
             Tooltip.SetDefault("Summons a stone slime to fight for you");
-            DisplayName.AddTranslation(GameCulture.Chinese, "岩石史莱姆法杖");
-            Tooltip.AddTranslation(GameCulture.Chinese, "召唤岩石史莱姆为你而战");
+            DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "岩石史莱姆法杖");
+            Tooltip.AddTranslation((int)GameCulture.CultureName.Chinese, "召唤岩石史莱姆为你而战");
         }
         public override void SetDefaults()
         {
             item.mana = 10;
             item.damage = 20;
-            item.useStyle = ItemUseStyleID.SwingThrow;
+            item.useStyle = ItemUseStyleID.Swing;
             item.width = 48;
             item.height = 46;
             item.useTime = 30;
@@ -35,7 +35,7 @@ namespace Entrogic.Items.AntaGolem
             item.UseSound = SoundID.Item113;
             item.shoot = ProjectileType<Stoneslime>();
             item.shootSpeed = 10f;
-            item.summon = true;
+            item.DamageType = DamageClass.Summon;
             item.buffType = BuffType<Buffs.Minions.Stoneslime>();
             item.buffTime = 3600;
         }
@@ -55,7 +55,7 @@ namespace Entrogic.Items.AntaGolem
         {
             if (player.altFunctionUse == 2)
             {
-                player.MinionNPCTargetAim();
+                player.MinionNPCTargetAim(false);
             }
             return base.UseItem(player);
         }

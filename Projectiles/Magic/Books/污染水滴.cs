@@ -17,7 +17,7 @@ namespace Entrogic.Projectiles.Magic.Books
             projectile.aiStyle = -1;
             projectile.friendly = true;
             projectile.timeLeft = 300;
-            projectile.magic = true;
+            projectile.DamageType = DamageClass.Magic;
             projectile.damage = 20;
             projectile.tileCollide = false;
             projectile.alpha = 255;

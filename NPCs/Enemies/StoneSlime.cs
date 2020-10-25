@@ -46,7 +46,6 @@ namespace Entrogic.NPCs.Enemies
         public override void AI()
         {
             Player player = Main.player[Main.myPlayer]; //Get Player
-            Mod mod = ModLoader.GetMod("Entrogic"); //Get Mod
             EntrogicPlayer modPlayer = player.GetModPlayer<EntrogicPlayer>();
             if (_Life)
             {

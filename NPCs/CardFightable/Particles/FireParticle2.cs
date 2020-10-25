@@ -16,7 +16,7 @@ namespace Entrogic.NPCs.CardFightable.Particles
     {
         public FireParticle2() : base()
         {
-            _texture = ModContent.GetTexture(typeof(FireParticle2).FullName.Replace('.', '/') + $"_{Main.rand.Next(3)}");
+            _texture = (Texture2D)ModContent.GetTexture(typeof(FireParticle2).FullName.Replace('.', '/') + $"_{Main.rand.Next(3)}");
         }
         public override void Update(GameTime gameTime)
         {

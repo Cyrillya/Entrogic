@@ -18,7 +18,7 @@ namespace Entrogic.Items.Miscellaneous.Ammo
 		public override void SetDefaults()
 		{
 			item.damage = 4;
-			item.ranged = true;
+			item.DamageType = DamageClass.Ranged;
 			item.width = 12;
 			item.height = 18;
 			item.maxStack = 999;
@@ -32,13 +32,12 @@ namespace Entrogic.Items.Miscellaneous.Ammo
 			}
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(ItemID.Torch, 5);
-			recipe.AddIngredient(ItemID.MusketBall, 125);
-            recipe.AddIngredient(ItemID.Glass, 5);
-            recipe.AddTile(TileID.WorkBenches);
-			recipe.SetResult(this, 125);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient(ItemID.Torch, 5)
+				.AddIngredient(ItemID.MusketBall, 125)
+				.AddIngredient(ItemID.Glass, 5)
+				.AddTile(TileID.WorkBenches)
+				.Register();
 		}
 	}
 }

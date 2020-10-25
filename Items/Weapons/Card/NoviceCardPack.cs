@@ -49,12 +49,12 @@ namespace Entrogic.Items.Weapons.Card
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            TooltipLine line2 = new TooltipLine(mod, mod.Name, "新手专用！买不了吃亏买不了上当！")
+            TooltipLine line2 = new TooltipLine(Mod, Mod.Name, "新手专用！买不了吃亏买不了上当！")
             {
                 overrideColor = Color.Red
             };
             tooltips.Add(line2);
-            TooltipLine line = new TooltipLine(mod, mod.Name, "内含：")
+            TooltipLine line = new TooltipLine(Mod, Mod.Name, "内含：")
             {
                 overrideColor = Color.LightSlateGray
             };
@@ -64,7 +64,7 @@ namespace Entrogic.Items.Weapons.Card
                 Item i = new Item();
                 i.SetDefaults(card);
                 ModItem modItem = i.modItem;
-                line = new TooltipLine(mod, mod.Name, i.Name + "×" + GetCardStack[GetCard.IndexOf(card)])
+                line = new TooltipLine(Mod, Mod.Name, i.Name + "×" + GetCardStack[GetCard.IndexOf(card)])
                 {
                     overrideColor = Color.SlateGray
                 };

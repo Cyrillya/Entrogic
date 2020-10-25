@@ -16,7 +16,7 @@ namespace Entrogic.Items.Weapons.Melee.Sword
             item.Size = new Vector2(168, 84);
             item.useTime = 21;
             item.useAnimation = 21;
-            item.useStyle = ItemUseStyleID.Stabbing;
+            item.useStyle = ItemUseStyleID.Thrust;
             item.knockBack = 5f;
             item.value = Item.sellPrice(0, 1, 24, 0);
             item.rare = RareID.LV4;
@@ -26,7 +26,7 @@ namespace Entrogic.Items.Weapons.Melee.Sword
             item.shoot = ProjectileType<GoldenHarvestProjectile>();
             item.shootSpeed = 0.01f;
             item.noUseGraphic = true;
-            item.melee = true;
+            item.DamageType = DamageClass.Melee;
             item.autoReuse = true;
             return;
         }

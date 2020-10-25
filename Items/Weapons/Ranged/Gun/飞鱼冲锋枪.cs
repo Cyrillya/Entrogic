@@ -20,13 +20,13 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         public override void SetDefaults()
         {
             item.damage = 22;
-            item.ranged = true;
+            item.DamageType = DamageClass.Ranged;
             item.width = 62;
             item.height = 32;
             item.useTime = 5;
             item.useAnimation = 5;
             
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
 
             item.noMelee = true;
             item.knockBack = 4;
@@ -42,16 +42,15 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.SoulofMight, 18);
-            recipe.AddIngredient(ItemID.SoulofFright, 18);
-            recipe.AddIngredient(ItemID.SoulofSight, 18);
-            recipe.AddIngredient(null,"飞鱼手枪", 1);
-            recipe.AddIngredient(ItemID.HallowedBar, 20);
-            recipe.AddIngredient(null, "碳钢枪械部件", 1);//碳钢枪械部件
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(ItemID.SoulofMight, 18)
+                .AddIngredient(ItemID.SoulofFright, 18)
+                .AddIngredient(ItemID.SoulofSight, 18)
+                .AddIngredient(null,"飞鱼手枪", 1)
+                .AddIngredient(ItemID.HallowedBar, 20)
+                .AddIngredient(null, "碳钢枪械部件", 1)//碳钢枪械部件
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
 
         public override bool ConsumeAmmo(Player player)

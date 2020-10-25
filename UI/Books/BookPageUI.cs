@@ -45,7 +45,7 @@
 //            EntrogicPlayer plr = Main.LocalPlayer.GetModPlayer<EntrogicPlayer>();
 //            if (plr.PageNum >= plr.MaxPage)
 //                return;
-//            Main.PlaySound(SoundID.MenuOpen);
+//            Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuOpen);
 //            plr.PageNum += 1;
 //        }
 //        private void PreviousPageClicked(UIMouseEvent evt, UIElement listeningElement)
@@ -53,7 +53,7 @@
 //            EntrogicPlayer plr = Main.LocalPlayer.GetModPlayer<EntrogicPlayer>();
 //            if (plr.PageNum <= 1)
 //                return;
-//            Main.PlaySound(SoundID.MenuOpen);
+//            Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuOpen);
 //            plr.PageNum -= 1;
 //        }
 //        protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -95,7 +95,7 @@
 //                base.DrawSelf(spriteBatch);
 //                if (!hasTicked)
 //                {
-//                    Main.PlaySound(SoundID.MenuTick);
+//                    Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuTick);
 //                    hasTicked = true;
 //                }
 //            }
@@ -116,7 +116,7 @@
 //            EntrogicPlayer plr = Main.LocalPlayer.GetModPlayer<EntrogicPlayer>();
 //            if (plr.PageNum <= 1)
 //                return;
-//            Main.PlaySound(SoundID.MenuOpen);
+//            Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuOpen);
 //            plr.PageNum -= 1;
 //        }
 //        public override void MiddleClick(UIMouseEvent evt)
@@ -124,7 +124,7 @@
 //            EntrogicPlayer plr = Main.LocalPlayer.GetModPlayer<EntrogicPlayer>();
 //            if (plr.PageNum >= plr.MaxPage)
 //                return;
-//            Main.PlaySound(SoundID.MenuOpen);
+//            Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuOpen);
 //            plr.PageNum += 1;
 //        }
 //    }

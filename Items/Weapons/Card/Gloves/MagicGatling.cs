@@ -18,7 +18,7 @@ namespace Entrogic.Items.Weapons.Card.Gloves
         {
             base.CardDefaults();
             item.value = Item.buyPrice(0, 5);
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.shootSpeed = 14f;
             item.useTime = item.useAnimation = 6;
             item.autoReuse = true;

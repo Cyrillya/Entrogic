@@ -28,9 +28,9 @@ namespace Entrogic.Items.PollutElement.Armor
         {
             player.statManaMax2 += 40;
             player.manaRegenBonus++;
-            player.magicCrit += 10;
+            player.GetCrit(DamageClass.Magic) += 10;
             player.manaCost -= 0.2f;
-            player.magicDamage += 0.1f;
+            player.GetDamage(DamageClass.Magic) += 0.1f;
         }
     }
 }

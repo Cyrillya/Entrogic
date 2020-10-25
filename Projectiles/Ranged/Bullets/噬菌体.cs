@@ -7,12 +7,11 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Entrogic.Projectiles.Ranged.Bullets
 {
-    [CopyFromExampleMod]
     public class 噬菌体 : ModProjectile
     {
         public override void SetDefaults()
         {
-            projectile.ranged = true;
+            projectile.DamageType = DamageClass.Ranged;
             projectile.timeLeft = 600;
             projectile.tileCollide = true;
             projectile.Size = new Vector2(8f);
@@ -64,7 +63,7 @@ namespace Entrogic.Projectiles.Ranged.Bullets
 
         public override void Kill(int timeLeft)
         {
-            Main.PlaySound(SoundID.Dig, (int)projectile.position.X, (int)projectile.position.Y, 1, 0.65f); // Play a death sound
+            Terraria.Audio.SoundEngine.PlaySound(SoundID.Dig, (int)projectile.position.X, (int)projectile.position.Y, 1, 0.65f); // Play a death sound
 
             const int DUST_AMOUNTS = 10;
             for (int i = 0; i < DUST_AMOUNTS; i++)

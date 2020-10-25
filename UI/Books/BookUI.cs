@@ -15,6 +15,8 @@ using Entrogic.Items.Books;
 using Terraria.UI.Chat;
 using System.Linq;
 using static Entrogic.Entrogic;
+using ReLogic.Content;
+using Terraria.GameContent;
 
 namespace Entrogic.UI.Books
 {
@@ -46,7 +48,7 @@ namespace Entrogic.UI.Books
             Rectangle rectRight = new Rectangle((int)(bookPos.X + bookSize.X - 72), (int)(bookPos.Y + bookSize.Y - 117), 72, 117);
             if (mouseRect.Intersects(rectLeft) && ePlayer.PageNum > 1)
             {
-                Main.PlaySound(SoundID.MenuOpen);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuOpen);
                 ePlayer.PageNum -= 1;
                 MessageHelper.SendBookInfo(Main.LocalPlayer.whoAmI, ePlayer.PageNum, ePlayer.IsBookActive);
             }
@@ -56,7 +58,7 @@ namespace Entrogic.UI.Books
                     MaxPage = ((ModBook)ePlayer.GetHoldItem().modItem).MaxPage;
             if (mouseRect.Intersects(rectRight) && ePlayer.PageNum < MaxPage)
             {
-                Main.PlaySound(SoundID.MenuOpen);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuOpen);
                 ePlayer.PageNum += 1;
                 MessageHelper.SendBookInfo(Main.LocalPlayer.whoAmI, ePlayer.PageNum, ePlayer.IsBookActive);
             }
@@ -128,13 +130,13 @@ namespace Entrogic.UI.Books
                 Rectangle rectRight = new Rectangle((int)(bookPos.X + bookSize.X - 72), (int)(bookPos.Y + bookSize.Y - 117), 72, 117);
                 if (mouseRect.Intersects(rectLeft) && ePlayer.PageNum > 1)
                 {
-                    spriteBatch.Draw(Entrogic.Instance.GetTexture("UI/Books/书本_03"), new Vector2(rectLeft.X, rectLeft.Y), null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+                    spriteBatch.Draw((Texture2D)Instance.GetTexture("UI/Books/书本_03"), new Vector2(rectLeft.X, rectLeft.Y), null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
                 }
                 else
                 {
                     string page = (ePlayer.PageNum * 2 - 1).ToString();
-                    Vector2 size = Main.fontMouseText.MeasureString(page) * 0.5f;
-                    ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, page, new Vector2(bookPos.X + 34 - size.X, bookPos.Y + bookSize.Y - 86 - size.Y), Color.White, 0f, Vector2.Zero, new Vector2(1f));
+                    Vector2 size = FontAssets.MouseText.MeasureString(page) * 0.5f;
+                    ChatManager.DrawColorCodedStringWithShadow(spriteBatch, (DynamicSpriteFont)FontAssets.ItemStack, page, new Vector2(bookPos.X + 34 - size.X, bookPos.Y + bookSize.Y - 86 - size.Y), Color.White, 0f, Vector2.Zero, new Vector2(1f));
                 }
                 int MaxPage = 1;
                 if (ePlayer.GetHoldItem() != null)
@@ -142,26 +144,26 @@ namespace Entrogic.UI.Books
                         MaxPage = ((ModBook)ePlayer.GetHoldItem().modItem).MaxPage;
                 if (mouseRect.Intersects(rectRight) && ePlayer.PageNum < MaxPage)
                 {
-                    spriteBatch.Draw(Entrogic.Instance.GetTexture("UI/Books/书本_02"), new Vector2(rectRight.X, rectRight.Y), null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+                    spriteBatch.Draw((Texture2D)Instance.GetTexture("UI/Books/书本_02"), new Vector2(rectRight.X, rectRight.Y), null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
                 }
                 else
                 {
                     string page = (ePlayer.PageNum * 2).ToString();
-                    Vector2 size = Main.fontMouseText.MeasureString(page) * 0.5f;
-                    ChatManager.DrawColorCodedStringWithShadow(spriteBatch, Main.fontItemStack, page, new Vector2(bookPos.X + bookSize.X - 34 - size.X, bookPos.Y + bookSize.Y - 86 - size.Y), Color.White, 0f, Vector2.Zero, new Vector2(1f));
+                    Vector2 size = FontAssets.MouseText.MeasureString(page) * 0.5f;
+                    ChatManager.DrawColorCodedStringWithShadow(spriteBatch, (DynamicSpriteFont)FontAssets.ItemStack, page, new Vector2(bookPos.X + bookSize.X - 34 - size.X, bookPos.Y + bookSize.Y - 86 - size.Y), Color.White, 0f, Vector2.Zero, new Vector2(1f));
                 }
 
                 #region Draw Text
                 Vector2 space = new Vector2((Main.screenWidth - bookSize.X) / 2 + 38, (Main.screenHeight - bookSize.Y) / 2 + 46);
                 //Main.spriteBatch.Draw(Main.magicPixel, space.ToRectangle(), Color.Yellow * .7f);
                 //Main.spriteBatch.Draw(Main.magicPixel, GetOuterDimensions().ToRectangle(), Color.Red * .7f);
-                DynamicSpriteFont font = Entrogic.PixelFont;
+                DynamicSpriteFont font = (DynamicSpriteFont)PixelFont;
                 float scale = 1f;
                 string text = " ";
                 Color baseColor = Color.White;
                 float lineDistance = 0f;
                 Item playerHeldItem = player.HeldItem;
-                if (Entrogic.ItemSafe(playerHeldItem))
+                if (ItemSafe(playerHeldItem))
                     if (playerHeldItem.GetGlobalItem<EntrogicItem>().book)
                     {
                         ModBook itemBook = (ModBook)playerHeldItem.modItem;
@@ -192,7 +194,7 @@ namespace Entrogic.UI.Books
                             ChatManager.ConvertNormalSnippets(texts);
                             ChatManager.DrawColorCodedString(spriteBatch, font, texts, new Vector2(space.X, space.Y + position /*+ offset*/), baseColor, 0f, Vector2.Zero, new Vector2(scale), out hoveredSnippet, -1f);
                             //offset += 20;
-                            //offset += texts.Max(t => (int)ChatManager.GetStringSize(Main.fontMouseText, texts, Vector2.One).X);
+                            //offset += texts.Max(t => (int)ChatManager.GetStringSize(FontAssets.MouseText, texts, Vector2.One).X);
                             //if (hoveredSnippet > -1 && IsMouseHovering)
                             //{
                             //    BossChecklist.instance.BossLog.hoveredTextSnippet = texts[hoveredSnippet];
@@ -235,7 +237,7 @@ namespace Entrogic.UI.Books
                             ChatManager.ConvertNormalSnippets(texts);
                             ChatManager.DrawColorCodedString(spriteBatch, font, texts, new Vector2(space.X + bookSize.X * 0.5f, space.Y + position /*+ offset*/), baseColor, 0f, Vector2.Zero, new Vector2(scale), out hoveredSnippet, -1f);
                             //offset += 20;
-                            //offset += texts.Max(t => (int)ChatManager.GetStringSize(Main.fontMouseText, texts, Vector2.One).X);
+                            //offset += texts.Max(t => (int)ChatManager.GetStringSize(FontAssets.MouseText, texts, Vector2.One).X);
                             //if (hoveredSnippet > -1 && IsMouseHovering)
                             //{
                             //    BossChecklist.instance.BossLog.hoveredTextSnippet = texts[hoveredSnippet];
@@ -383,9 +385,9 @@ namespace Entrogic.UI.Books
     }
     public class BookPanel : UIImage
     {
-        public Texture2D tex = GetTexture("Entrogic/UI/Books/书本_01");
+        public Asset<Texture2D> tex = GetTexture("Entrogic/UI/Books/书本_01");
         public int num = 1;
-        public BookPanel(Texture2D texture, int number) : base(texture)
+        public BookPanel(Asset<Texture2D> texture, int number) : base(texture)
         {
             tex = texture;
             num = number;
@@ -402,8 +404,8 @@ namespace Entrogic.UI.Books
                         tex = ((ModBook)ePlayer.GetHoldItem().modItem).PageTexture[num];
             float alpha = 1.0f;
             //base.Draw(spriteBatch); // 不使用原绘制方案
-            ChatManager.DrawColorCodedString(spriteBatch, Main.fontMouseText, ePlayer.PageNum.ToString(), new Vector2(Left.Pixels, Top.Pixels), Color.White, 0f, Vector2.Zero, Vector2.One);
-            spriteBatch.Draw(tex, new Vector2(Left.Pixels, Top.Pixels), null, new Color(alpha, alpha, alpha, alpha), 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+            ChatManager.DrawColorCodedString(spriteBatch, (DynamicSpriteFont)FontAssets.MouseText, ePlayer.PageNum.ToString(), new Vector2(Left.Pixels, Top.Pixels), Color.White, 0f, Vector2.Zero, Vector2.One);
+            spriteBatch.Draw((Texture2D)tex, new Vector2(Left.Pixels, Top.Pixels), null, new Color(alpha, alpha, alpha, alpha), 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
         }
         public override void Update(GameTime gameTime)
         {

@@ -10,13 +10,13 @@ namespace Entrogic.Items.Weapons.Magic.Staff
         public override void SetDefaults()
         {
             item.damage = 44;
-            item.magic = true;
+            item.DamageType = DamageClass.Magic;
             item.mana = 3;
             item.width = 28;
             item.height = 28;
             item.useTime = 12;
             item.useAnimation = 12;
-            item.useStyle = ItemUseStyleID.SwingThrow;
+            item.useStyle = ItemUseStyleID.Swing;
             item.noMelee = true;
             item.knockBack = 3;
             item.value = Item.sellPrice(0, 1, 50);
@@ -30,14 +30,13 @@ namespace Entrogic.Items.Weapons.Magic.Staff
 
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.SoulofLight, 6);
-            recipe.AddIngredient(ItemID.Wire, 12);
-            recipe.AddIngredient(null, "CuteWidget", 1);
-            recipe.AddRecipeGroup("IronBar", 4);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(ItemID.SoulofLight, 6)
+                .AddIngredient(ItemID.Wire, 12)
+                .AddIngredient(Mod, "CuteWidget", 1)
+                .AddRecipeGroup("IronBar", 4)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
 }

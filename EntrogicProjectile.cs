@@ -10,14 +10,13 @@ namespace Entrogic
 {
     public class EntrogicProjectile : GlobalProjectile
     {
-        public bool arcane = false;
         public override void Kill(Projectile projectile, int timeLeft)
         {
-            if (ModLoader.GetMod("FallenStar49") != null)
-            {
-                if (projectile.type == ModLoader.GetMod("FallenStar49").ProjectileType("ShootingStar") && Main.rand.NextFloat() < .003)
-                    Item.NewItem(projectile.Center, ItemType<AstralImpact>());
-            }
+            //if (ModLoader.GetMod("FallenStar49") != null)
+            //{
+            //    if (projectile.type == ModHelper.ProjectileType("ShootingStar") && Main.rand.NextFloat() < .003)
+            //        Item.NewItem(projectile.Center, ItemType<AstralImpact>());
+            //}
         }
         public override bool InstancePerEntity => true;
         public override bool CloneNewInstances => true;

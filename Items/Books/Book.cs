@@ -9,12 +9,13 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using static Entrogic.Entrogic;
 using Terraria.Localization;
+using ReLogic.Content;
 
 namespace Entrogic.Items.Books
 {
     public abstract class ModBook : ModItem
     {
-        public Texture2D[] PageTexture = new Texture2D[129];
+        public Asset<Texture2D>[] PageTexture = new Asset<Texture2D>[129];
         public string[] PageText = new string[257];
         public byte MaxPage = 2;
         public bool bold = false;
@@ -30,7 +31,7 @@ namespace Entrogic.Items.Books
             item.height = 1;
             item.useAnimation = 20;
             item.useTime = 20;
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.value = 1000;
             item.scale = 0.75f;
             item.rare = ItemRarityID.Quest;
@@ -74,19 +75,19 @@ namespace Entrogic.Items.Books
         public string WarnTexts => "[c/FF0000:请于物品栏关闭的情况下开启本书籍]";
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            TooltipLine line = new TooltipLine(mod, mod.Name, WarnTexts);
+            TooltipLine line = new TooltipLine(Instance, Instance.Name, WarnTexts);
             if (Main.playerInventory)
                 tooltips.Add(line);
             if (AEntrogicConfigClient.Instance.ShowUsefulInformations && item.GetGlobalItem<EntrogicItem>().book)
             {
-                line = new TooltipLine(mod, mod.Name, "总页数：" + MaxPage * 2)
+                line = new TooltipLine(Instance, Instance.Name, "总页数：" + MaxPage * 2)
                 {
                     overrideColor = Color.Gray
                 };
                 tooltips.Add(line);
                 for (int i = 1; i <= MaxPage * 2; i++)
                 {
-                    line = new TooltipLine(mod, mod.Name, "[" + i + "] 行距：" + lineDistance[i] + ", 字体大小：" + textScale[i])
+                    line = new TooltipLine(Instance, Instance.Name, "[" + i + "] 行距：" + lineDistance[i] + ", 字体大小：" + textScale[i])
                     {
                         overrideColor = Color.Gray
                     };

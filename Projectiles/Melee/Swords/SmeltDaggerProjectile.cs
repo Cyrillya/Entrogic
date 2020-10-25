@@ -31,7 +31,7 @@ namespace Entrogic.Projectiles.Melee.Swords
             projectile.soundDelay--;
             if (projectile.soundDelay <= 0)
             {
-                Main.PlaySound(SoundID.Item1, projectile.Center);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.Item1, projectile.Center);
                 projectile.soundDelay = 12;
             }
             projectile.timeLeft = 2;

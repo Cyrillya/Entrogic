@@ -16,9 +16,9 @@ namespace Entrogic.Items.Weapons.Melee.Sword
             item.rare = ItemRarityID.Orange;
             item.useTime = 35;
             item.useAnimation = 35;
-            item.useStyle = ItemUseStyleID.SwingThrow;
+            item.useStyle = ItemUseStyleID.Swing;
             item.autoReuse = false;
-            item.melee = true;
+            item.DamageType = DamageClass.Melee;
             item.value = Item.sellPrice(0, 1, 50, 0);
             item.UseSound = SoundID.Item1;
             item.scale = 1.2f;
@@ -29,12 +29,11 @@ namespace Entrogic.Items.Weapons.Melee.Sword
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(null,"GelOfLife", 7);
-            recipe.AddIngredient(null,"CastIronBar", 10);
-            recipe.AddTile(TileID.Anvils);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(Mod,"GelOfLife", 7)
+                .AddIngredient(Mod,"CastIronBar", 10)
+                .AddTile(TileID.Anvils)
+                .Register();
         }
         public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
         {

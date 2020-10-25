@@ -116,7 +116,7 @@ namespace Entrogic.Buffs.Weapons
                     npc.StrikeNPCNoInteraction(9999, 0f, 0);
                     if (Main.netMode == NetmodeID.Server)
                     {
-                        NetMessage.SendData(MessageID.StrikeNPC, -1, -1, null, npc.whoAmI, 9999f);
+                        NetMessage.SendData(MessageID.DamageNPC, -1, -1, null, npc.whoAmI, 9999f);
                     }
                 }
             }

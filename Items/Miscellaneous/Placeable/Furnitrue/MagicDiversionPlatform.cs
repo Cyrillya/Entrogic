@@ -25,7 +25,7 @@ namespace Entrogic.Items.Miscellaneous.Placeable.Furnitrue
             item.autoReuse = true;
             item.useAnimation = 15;
             item.useTime = 10;
-            item.useStyle = ItemUseStyleID.SwingThrow;
+            item.useStyle = ItemUseStyleID.Swing;
             item.consumable = true;
             item.rare = RareID.LV2;
             item.value = Item.sellPrice(0, 0, 20, 0);

@@ -116,7 +116,7 @@ namespace Entrogic.NPCs
                 npc.StrikeNPCNoInteraction(9999, 0f, npc.direction, false, false, false);
                 if (Main.netMode != NetmodeID.SinglePlayer)
                 {
-                    NetMessage.SendData(MessageID.StrikeNPC, -1, -1, null, npc.whoAmI, 2f, 0f, 0f, 0, 0, 0);
+                    NetMessage.SendData(MessageID.DamageNPC, -1, -1, null, npc.whoAmI, 2f, 0f, 0f, 0, 0, 0);
                 }
             }
             monstersAround = false;
@@ -284,7 +284,7 @@ namespace Entrogic.NPCs
                         if (questSystem.CheckQuest())//如果在提交时符合任务条件
                         {
                             Main.npcChatText = questSystem.GetCurrentQuest().SayThanks();
-                            Main.PlaySound(12, -1, -1, 1, 1f, 0f);
+                            Terraria.Audio.SoundEngine.PlaySound(12, -1, -1, 1, 1f, 0f);
                             questSystem.SpawnReward(base.npc);
                             questSystem.CompleteQuest();
                             break;
@@ -342,16 +342,16 @@ namespace Entrogic.NPCs
         public override void PostDraw(SpriteBatch spriteBatch, Color drawColor)
         {
             SpriteEffects effects = (npc.direction == -1) ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            Vector2 halfSize = new Vector2((float)(Main.npcTexture[npc.type].Width / 2), (float)(Main.npcTexture[npc.type].Height / Main.npcFrameCount[npc.type] / 2));
+            Vector2 halfSize = new Vector2((float)(((Texture2D)Terraria.GameContent.TextureAssets.Npc[npc.type]).Width / 2), (float)(((Texture2D)Terraria.GameContent.TextureAssets.Npc[npc.type]).Height / Main.npcFrameCount[npc.type] / 2));
             float num70 = Main.NPCAddHeight(NPCID.Guide);
             if (npc.ai[0] == 12f)//当NPC正在攻击(另外, 这个if里包含的内容只适用于向导这种AI的NPC)
             {
-                if (npc.frame.Y / (Main.npcTexture[npc.type].Height / Main.npcFrameCount[npc.type]) >= 21)
+                if (npc.frame.Y / (((Texture2D)Terraria.GameContent.TextureAssets.Npc[npc.type]).Height / Main.npcFrameCount[npc.type]) >= 21)
                 {
                     //为了做到手挡住武器而不是武器挡住手的效果, 需要再draw一只手来覆盖武器
                     Texture2D texture2D3 = mod.GetTexture("NPCs/Cyril_Hand");
-                    Rectangle value2 = texture2D3.Frame(1, 5, 0, npc.frame.Y / (Main.npcTexture[npc.type].Height / Main.npcFrameCount[npc.type]) - 21);
-                    Main.spriteBatch.Draw(texture2D3, new Vector2(npc.position.X - Main.screenPosition.X + (float)(npc.width / 2) - (float)Main.npcTexture[npc.type].Width * npc.scale / 2f + halfSize.X * npc.scale, npc.position.Y - Main.screenPosition.Y + (float)npc.height - (float)Main.npcTexture[npc.type].Height * npc.scale / (float)Main.npcFrameCount[npc.type] + 4f + halfSize.Y * npc.scale + num70 + npc.gfxOffY), new Rectangle?(value2), npc.GetAlpha(drawColor), npc.rotation, halfSize, npc.scale, effects, 0f);
+                    Rectangle value2 = texture2D3.Frame(1, 5, 0, npc.frame.Y / (((Texture2D)Terraria.GameContent.TextureAssets.Npc[npc.type]).Height / Main.npcFrameCount[npc.type]) - 21);
+                    Main.spriteBatch.Draw(texture2D3, new Vector2(npc.position.X - Main.screenPosition.X + (float)(npc.width / 2) - (float)((Texture2D)Terraria.GameContent.TextureAssets.Npc[npc.type]).Width * npc.scale / 2f + halfSize.X * npc.scale, npc.position.Y - Main.screenPosition.Y + (float)npc.height - (float)((Texture2D)Terraria.GameContent.TextureAssets.Npc[npc.type]).Height * npc.scale / (float)Main.npcFrameCount[npc.type] + 4f + halfSize.Y * npc.scale + num70 + npc.gfxOffY), new Rectangle?(value2), npc.GetAlpha(drawColor), npc.rotation, halfSize, npc.scale, effects, 0f);
                 }
             }
             if (hitbyprojectile||leftTime > 0)//当开启护盾
@@ -454,7 +454,7 @@ namespace Entrogic.NPCs
         }
         public void SpawnReward(NPC npc)
         {
-            Main.PlaySound(SoundID.Chat, -1, -1, 1, 1f, 0f);
+            Terraria.Audio.SoundEngine.PlaySound(SoundID.Chat, -1, -1, 1, 1f, 0f);
             if (GetCurrentQuest().Reward == -1)
             {
                 return;

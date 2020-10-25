@@ -15,6 +15,8 @@ using Entrogic.Buffs.Miscellaneous;
 using Terraria.UI.Chat;
 using Terraria.Localization;
 using Entrogic.Items.Weapons.Card.Elements;
+using ReLogic.Content;
+using Terraria.GameContent;
 
 namespace Entrogic.UI.Cards
 {
@@ -280,7 +282,7 @@ namespace Entrogic.UI.Cards
                     Active = true;
             if (!Active) return;
             int cardGot = 0;
-            Main.PlaySound(SoundID.MenuOpen);
+            Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuOpen);
             bool ButWeStillHaveCards = false;
             for (int i = 0; i < player.CardGraveType.Length; i++)
             {
@@ -348,7 +350,7 @@ namespace Entrogic.UI.Cards
             if (!Active) return;
             int cardDrawed = 0;
             int manaRegrew = 0;
-            Main.PlaySound(SoundID.MenuOpen);
+            Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuOpen);
             bool ButWeStillHaveCards = false;
             for (int a = 0; a < ePlayer.CardHandType.Length; a++)
             {
@@ -462,7 +464,7 @@ namespace Entrogic.UI.Cards
         internal int number;
         internal Vector2 position;
         internal bool hasTicked = false;
-        public UICardHandGridButton(Texture2D texture, int num, Vector2 pos) : base(texture)
+        public UICardHandGridButton(Asset<Texture2D> texture, int num, Vector2 pos) : base(texture)
         {
             number = num;
             position = pos;
@@ -477,11 +479,11 @@ namespace Entrogic.UI.Cards
             ContainedItem.SetDefaults(type);
             if (ContainedItem.type != ItemID.None)
             {
-                Texture2D tex = Main.itemTexture[type];
+                Texture2D tex = (Texture2D)TextureAssets.Item[type];
                 int alpha = 80;
                 if (IsMouseHovering)
                     alpha = 255;
-                var frame = Main.itemAnimations[ContainedItem.type] != null ? Main.itemAnimations[ContainedItem.type].GetFrame(Main.itemTexture[ContainedItem.type]) : Main.itemTexture[ContainedItem.type].Frame(1, 1, 0, 0);
+                var frame = Main.itemAnimations[ContainedItem.type] != null ? Main.itemAnimations[ContainedItem.type].GetFrame((Texture2D)TextureAssets.Item[ContainedItem.type]) : ((Texture2D)TextureAssets.Item[ContainedItem.type]).Frame(1, 1, 0, 0);
                 spriteBatch.Draw(tex, position + Size * 0.5f - tex.Size() * 0.5f, new Rectangle?(frame), new Color(alpha, alpha, alpha, alpha), 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
             }
             if (IsMouseHovering && type != 0 && ContainedItem != null)
@@ -489,7 +491,7 @@ namespace Entrogic.UI.Cards
                 Main.hoverItemName = ContainedItem.Name + "\r\n费用：" + ePlayer.CardHandCost[number];
                 if (!hasTicked)
                 {
-                    Main.PlaySound(SoundID.MenuTick);
+                    Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuTick);
                     hasTicked = true;
                 }
             }
@@ -748,7 +750,7 @@ namespace Entrogic.UI.Cards
         internal Vector2 Size = new Vector2(64f, 64f);
         internal int number;
         internal Vector2 position;
-        public CardManaUI(Texture2D texture, int num, Vector2 pos) : base(texture)
+        public CardManaUI(Asset<Texture2D> texture, int num, Vector2 pos) : base(texture)
         {
             number = num;
             position = pos;

@@ -27,3 +27,9 @@ C:\Users\Administrator\Documents\My Games\Terraria\ModLoader\Mod Sources\Entrogi
 C:\Users\Administrator\Documents\My Games\Terraria\ModLoader\Mod Sources\Entrogic\obj\Debug\net45\Entrogic.csproj.CopyComplete
 C:\Users\Administrator\Documents\My Games\Terraria\ModLoader\Mod Sources\Entrogic\obj\Debug\net45\Entrogic.dll
 C:\Users\Administrator\Documents\My Games\Terraria\ModLoader\Mod Sources\Entrogic\obj\Debug\net45\Entrogic.pdb
+C:\Users\Administrator\Documents\My Games\Terraria\ModLoader\Beta\Mod Sources\Entrogic\obj\Debug\net45\Entrogic.csprojAssemblyReference.cache
+C:\Users\Administrator\Documents\My Games\Terraria\ModLoader\Beta\Mod Sources\Entrogic\obj\Debug\net45\Entrogic.AssemblyInfoInputs.cache
+C:\Users\Administrator\Documents\My Games\Terraria\ModLoader\Beta\Mod Sources\Entrogic\obj\Debug\net45\Entrogic.AssemblyInfo.cs
+C:\Users\Administrator\Documents\My Games\Terraria\ModLoader\Beta\Mod Sources\Entrogic\obj\Debug\net45\Entrogic.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Documents\My Games\Terraria\ModLoader\Beta\Mod Sources\Entrogic\obj\Debug\net45\Entrogic.dll
+C:\Users\Administrator\Documents\My Games\Terraria\ModLoader\Beta\Mod Sources\Entrogic\obj\Debug\net45\Entrogic.pdb

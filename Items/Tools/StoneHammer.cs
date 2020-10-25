@@ -16,10 +16,10 @@ namespace Entrogic.Items.Tools
             item.rare = ItemRarityID.Blue;
             item.useTurn = false;
             item.autoReuse = true;
-            item.melee = true;
+            item.DamageType = DamageClass.Melee;
             item.value = Item.sellPrice(0, 0, 0, 50);
             item.UseSound = SoundID.Item1;
-            item.useStyle = ItemUseStyleID.SwingThrow;
+            item.useStyle = ItemUseStyleID.Swing;
             item.width = 40;
             item.height = 40;
             item.maxStack = 1;
@@ -29,12 +29,11 @@ namespace Entrogic.Items.Tools
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.StoneBlock, 10);
-            recipe.AddRecipeGroup("Wood", 4);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(ItemID.StoneBlock, 10)
+                .AddRecipeGroup("Wood", 4)
+                .AddTile(TileID.WorkBenches)
+                .Register();
         }
     }
 }

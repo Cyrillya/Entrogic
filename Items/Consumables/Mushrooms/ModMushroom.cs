@@ -14,7 +14,7 @@ namespace Entrogic.Items.Consumables.Mushrooms
             item.height = 10;
             item.useAnimation = 30;
             item.useTime = 30;
-            item.useStyle = ItemUseStyleID.EatingUsing;
+            item.useStyle = ItemUseStyleID.EatFood;
             item.maxStack = 50;
             item.value = Item.sellPrice(0, 0, 50);
             item.consumable = true;

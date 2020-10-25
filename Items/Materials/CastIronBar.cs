@@ -30,13 +30,12 @@ namespace Entrogic.Items.Materials
 
 		public override void AddRecipes()
 		{
-			ModRecipe recipe = new ModRecipe(mod);
-			recipe.AddIngredient(null,"SoulOfPure",3);
-            recipe.AddRecipeGroup("IronBar", 3);
-            recipe.AddRecipeGroup("Entrogic:GoldBar", 2);
-            recipe.SetResult(this, 3);
-            recipe.AddTile(TileID.Anvils);
-			recipe.AddRecipe();
+			CreateRecipe()
+				.AddIngredient(ItemType<SoulOfPure>(),3)
+				.AddRecipeGroup("IronBar", 3)
+				.AddRecipeGroup("Entrogic:GoldBar", 2)
+				.AddTile(TileID.Anvils)
+				.Register();
 		}
     }
 }

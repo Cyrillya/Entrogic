@@ -19,7 +19,7 @@ namespace Entrogic.Items.Miscellaneous.Placeable.Trophy
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("{$Mods.Entrogic.NPCName.Volutio} " + "{$MapObject.Trophy}");
-            DisplayName.AddTranslation(GameCulture.Chinese, "凝胶共生体纪念章");
+            DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "凝胶共生体纪念章");
         }
         public override void SetDefaults()
         {

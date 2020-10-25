@@ -20,7 +20,7 @@ namespace Entrogic.Items.AntaGolem
             item.rare = RareID.LV4;
             item.useAnimation = 45;
             item.useTime = 45;
-            item.useStyle = ItemUseStyleID.HoldingUp;
+            item.useStyle = ItemUseStyleID.HoldUp;
             item.consumable = true;
         }
         public override bool CanUseItem(Player player)
@@ -32,7 +32,7 @@ namespace Entrogic.Items.AntaGolem
         {
             if (player.whoAmI == Main.myPlayer && CanUseItem(player))
             {
-                Main.PlaySound(SoundID.Roar, player.Center, 0);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.Roar, player.Center, 0);
                 NPCSpawnOnPlayer(player, NPCType<Antanasy>());
                 return true;
             }
@@ -40,12 +40,12 @@ namespace Entrogic.Items.AntaGolem
         }
         public static void NPCSpawnOnPlayer(Player player, int type)
         {
-            if (Main.netMode != 1)
+            if (Main.netMode != NetmodeID.MultiplayerClient)
             {
                 NPC.SpawnOnPlayer(player.whoAmI, type);
                 return;
             }
-            ModPacket packet = Entrogic.Instance.GetPacket();
+            ModPacket packet = Instance.GetPacket();
             packet.Write((byte)EntrogicModMessageType.NPCSpawnOnPlayerAction);
             packet.Write((byte)player.whoAmI);
             packet.Write((short)type);

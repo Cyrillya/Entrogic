@@ -20,7 +20,7 @@ namespace Entrogic.Items.PollutElement
         {
             item.mana = 10;
             item.damage = 58;
-            item.useStyle = ItemUseStyleID.SwingThrow;
+            item.useStyle = ItemUseStyleID.Swing;
             item.width = 48;
             item.height = 46;
             item.useTime = 30;
@@ -32,7 +32,7 @@ namespace Entrogic.Items.PollutElement
             item.UseSound = SoundID.Item113;
             item.shoot = ProjectileType<WaterElemental>();
             item.shootSpeed = 8f;
-            item.summon = true;
+            item.DamageType = DamageClass.Summon;;
             item.buffType = BuffType<Buffs.Minions.WaterElementalBuff>();
             item.buffTime = 2;
         }

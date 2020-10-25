@@ -26,7 +26,7 @@ namespace Entrogic.Projectiles.Magic.Staff
 			projectile.width = 8;
 			projectile.height = 8;
 			projectile.friendly = true;
-			projectile.magic = true;
+			projectile.DamageType = DamageClass.Magic;
             projectile.aiStyle = 1;
             aiType = 14;
 			projectile.penetrate = 1;

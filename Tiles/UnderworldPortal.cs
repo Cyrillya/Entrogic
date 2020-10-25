@@ -7,11 +7,13 @@ using static Terraria.ModLoader.ModContent;
 using Terraria.ObjectData;
 using Entrogic.Items.Miscellaneous.Placeable.Furnitrue;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 
 namespace Entrogic.Tiles
 {
     public class UnderworldPortal : ModTile
     {
+        private Asset<Texture2D> portalTexture;
         public override void SetDefaults()
         {
 			Main.tileSolid[Type] = false;
@@ -27,24 +29,29 @@ namespace Entrogic.Tiles
             soundType = -1;
             //dustType = MyDustId.PurpleLight;
             AddMapEntry(new Color(105, 5, 196), name);
+            // Assets
+            if (!Main.dedServ)
+            {
+                portalTexture = GetTexture("Entrogic/Tiles/UnderworldPortal"); // We could also reuse Main.FlameTexture[] textures, but using our own texture is nice.
+            }
         }
-        public override bool NewRightClick(int i, int j)
+        public override bool RightClick(int i, int j)
         {
             // 多人模式由服务器处理一切
             // 遇事不决给服务器做就行了，别想着客户端上能怎么优化，给服务器做速度快又没有大大小小的问题
             if (Main.netMode == NetmodeID.MultiplayerClient)
             {
                 MessageHelper.FindUWTeleporter(i, j, Main.myPlayer);
-                return base.NewRightClick(i, j);
+                return base.RightClick(i, j);
             }
             HandleTransportion(i, j, Main.myPlayer);
-            return base.NewRightClick(i, j);
+            return base.RightClick(i, j);
         }
         public static void HandleTransportion(int i, int j, int playernum, bool inServer = false)
         {
             int statX = i;
             int addX = 0;
-            int PortalType = ModContent.TileType<UnderworldPortal>();
+            int PortalType = TileType<UnderworldPortal>();
             Vector2 PortalUnderworld = Vector2.Zero;
             if (j >= Main.maxTilesY - 360) // 如果在地狱附近（传送目标地表）
             {
@@ -129,8 +136,8 @@ namespace Entrogic.Tiles
         }
         public override void MouseOver(int i, int j)
         {
-            Entrogic.Instance.showIconTexture = true;
-            Entrogic.Instance.showIconTexture2 = Entrogic.ModTexturesTable["TeleportIcon"];
+            Entrogic.Instance.cursurIconEnabled = true;
+            Entrogic.Instance.cursorIconTexture = (Texture2D)Entrogic.ModTexturesTable["TeleportIcon"];
             base.MouseOver(i, j);
         }
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
@@ -160,15 +167,6 @@ namespace Entrogic.Tiles
             SpriteEffects effects = SpriteEffects.None;
 
             Tile tile = Main.tile[i, j];
-            Texture2D texture;
-            if (Main.canDrawColorTile(i, j))
-            {
-                texture = Main.tileAltTexture[Type, (int)tile.color()];
-            }
-            else
-            {
-                texture = Main.tileTexture[Type];
-            }
             Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
             if (Main.drawToScreen)
             {
@@ -184,7 +182,7 @@ namespace Entrogic.Tiles
             }
 
             Main.spriteBatch.Draw(
-                texture,
+                (Texture2D)portalTexture,
                 new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero,
                 new Rectangle(tile.frameX, tile.frameY + animate, 16, 16),
                 color, 0f, default(Vector2), 1f, effects, 0f);

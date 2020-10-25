@@ -36,7 +36,7 @@ namespace Entrogic.UI
         }
         public override void ClickEvent ( )
         {
-            Main.PlaySound( SoundID.MenuTick );
+            Terraria.Audio.SoundEngine.PlaySound( SoundID.MenuTick );
         }
     }
 }

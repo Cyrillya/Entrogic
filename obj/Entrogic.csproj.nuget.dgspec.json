@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj": {}
+    "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Entrogic\\Entrogic.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj": {
+    "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Entrogic\\Entrogic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj",
+        "projectUniqueName": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Entrogic\\Entrogic.csproj",
         "projectName": "Entrogic",
-        "projectPath": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj",
+        "projectPath": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Entrogic\\Entrogic.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\obj\\",
+        "outputPath": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Entrogic\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"

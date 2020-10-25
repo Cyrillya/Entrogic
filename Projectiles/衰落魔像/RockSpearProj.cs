@@ -19,7 +19,7 @@ namespace Entrogic.Projectiles.衰落魔像
 
             projectile.hide = true;
             projectile.ownerHitCheck = true;
-            projectile.melee = true;
+            projectile.DamageType = DamageClass.Melee;
             projectile.tileCollide = false;
             projectile.friendly = true;
         }

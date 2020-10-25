@@ -118,7 +118,7 @@ namespace Entrogic.NPCs.Enemies.PE
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Eroder");
-            DisplayName.AddTranslation(GameCulture.Chinese, "侵蚀者");
+            DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "侵蚀者");
         }
         public override void Init()
         {

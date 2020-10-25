@@ -13,10 +13,10 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             item.damage = 36;
             item.crit -= 9;
             item.knockBack = 5f;
-            item.ranged = true;
+            item.DamageType = DamageClass.Ranged;
             item.useTime = 15;
             item.useAnimation = 15;
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.shootSpeed = 10f;
             item.noMelee = true;
             item.shoot = Bullet;

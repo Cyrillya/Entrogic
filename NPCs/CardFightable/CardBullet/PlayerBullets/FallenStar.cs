@@ -22,7 +22,7 @@ namespace Entrogic.NPCs.CardFightable.CardBullet.PlayerBullets
         public FallenStar(Vector2 targetPos)
         {
             TargetPosition = targetPos;
-            _texture = ModContent.GetTexture("Entrogic/Projectiles/Arcane/FallenStar");
+            _texture = (Texture2D)ModContent.GetTexture("Entrogic/Projectiles/Arcane/FallenStar");
             LifeSpan = 5.5f;
             IsFriendly = true;
             Size = new Vector2(8, 8);
@@ -51,7 +51,7 @@ namespace Entrogic.NPCs.CardFightable.CardBullet.PlayerBullets
         public override void Kill(Player attackPlayer)
         {
             Vector2 screenCenter = new Vector2(Main.screenWidth, Main.screenHeight) / 2f + Main.screenPosition;
-            Main.PlaySound(SoundID.Item10, (int)screenCenter.X, (int)screenCenter.Y + -30);
+            Terraria.Audio.SoundEngine.PlaySound(SoundID.Item10, (int)screenCenter.X, (int)screenCenter.Y + -30);
             Size.X = 20;
             Size.Y = 20;
             Position.X = CardGameUI.ToUIPos(Center).X - Size.X / 2f;

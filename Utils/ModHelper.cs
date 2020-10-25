@@ -1,19 +1,25 @@
 using Entrogic.Items.Weapons.Card;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using ReLogic.Content;
 using ReLogic.Graphics;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
+using Terraria.Utilities;
 
 using static Entrogic.Entrogic;
 
@@ -100,6 +106,11 @@ namespace Entrogic
                 NetMessage.SendData(MessageID.Teleport, -1, -1, null, 2, (float)player.whoAmI, telePos.X, telePos.Y, 0, 0, 0);
         }
 
+        public static Vector2 MeasureString(this Asset<DynamicSpriteFont> fontAsset, string text)
+        {
+            return ((DynamicSpriteFont)fontAsset).MeasureString(text);
+        }
+
         /// <summary>
         /// 判断鼠标是否在某个矩形上。
         /// </summary>
@@ -158,9 +169,68 @@ namespace Entrogic
                 Main.spriteBatch.DrawString(font, name, new Vector2(texPos.X, texPos.Y), Color.White);
             }
         }
+
+        public static void ProjectileExplode(this Projectile projectile, float statRangeX = 22f, float statRangeY = 22f)
+        {
+            SoundEngine.PlaySound(SoundID.Item14, projectile.position);
+            projectile.position.X = projectile.position.X + (float)(projectile.width / 2);
+            projectile.position.Y = projectile.position.Y + (float)(projectile.height / 2);
+            projectile.width = (int)(22f * projectile.scale);
+            projectile.height = (int)(22f * projectile.scale);
+            projectile.position.X = projectile.position.X - (float)(projectile.width / 2);
+            projectile.position.Y = projectile.position.Y - (float)(projectile.height / 2);
+            int num3;
+            for (int num765 = 0; num765 < 20; num765 = num3 + 1)
+            {
+                int num766 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 31, 0f, 0f, 100, default(Color), 1.5f);
+                Dust dust = Main.dust[num766];
+                dust.velocity *= 1.4f;
+                num3 = num765;
+            }
+            for (int num767 = 0; num767 < 10; num767 = num3 + 1)
+            {
+                int num768 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 6, 0f, 0f, 100, default(Color), 2.5f);
+                Main.dust[num768].noGravity = true;
+                Dust dust = Main.dust[num768];
+                dust.velocity *= 5f;
+                num768 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 6, 0f, 0f, 100, default(Color), 1.5f);
+                dust = Main.dust[num768];
+                dust.velocity *= 3f;
+                num3 = num767;
+            }
+            int num769 = Gore.NewGore(new Vector2(projectile.position.X, projectile.position.Y), default(Vector2), Main.rand.Next(61, 64), 1f);
+            Gore gore = Main.gore[num769];
+            gore.velocity *= 0.4f;
+            Gore gore138 = Main.gore[num769];
+            gore138.velocity.X = gore138.velocity.X + 1f;
+            Gore gore139 = Main.gore[num769];
+            gore139.velocity.Y = gore139.velocity.Y + 1f;
+            num769 = Gore.NewGore(new Vector2(projectile.position.X, projectile.position.Y), default(Vector2), Main.rand.Next(61, 64), 1f);
+            gore = Main.gore[num769];
+            gore.velocity *= 0.4f;
+            Gore gore140 = Main.gore[num769];
+            gore140.velocity.X = gore140.velocity.X - 1f;
+            Gore gore141 = Main.gore[num769];
+            gore141.velocity.Y = gore141.velocity.Y + 1f;
+            num769 = Gore.NewGore(new Vector2(projectile.position.X, projectile.position.Y), default(Vector2), Main.rand.Next(61, 64), 1f);
+            gore = Main.gore[num769];
+            gore.velocity *= 0.4f;
+            Gore gore142 = Main.gore[num769];
+            gore142.velocity.X = gore142.velocity.X + 1f;
+            Gore gore143 = Main.gore[num769];
+            gore143.velocity.Y = gore143.velocity.Y - 1f;
+            num769 = Gore.NewGore(new Vector2(projectile.position.X, projectile.position.Y), default(Vector2), Main.rand.Next(61, 64), 1f);
+            gore = Main.gore[num769];
+            gore.velocity *= 0.4f;
+            Gore gore144 = Main.gore[num769];
+            gore144.velocity.X = gore144.velocity.X - 1f;
+            Gore gore145 = Main.gore[num769];
+            gore145.velocity.Y = gore145.velocity.Y - 1f;
+        }
+
         public static double GetLength(this Vector2 v)
         {
-            return Math.Sqrt(Math.Pow(v.X,2) + Math.Pow(v.Y, 2));
+            return Math.Sqrt(Math.Pow(v.X, 2) + Math.Pow(v.Y, 2));
         }
         public static Rectangle CreateFromVector2(Vector2 vec, float width, float height)
         {
@@ -233,10 +303,22 @@ namespace Entrogic
         }
         public static void ShowHitBox(Entity ent, SpriteBatch sb)
         {
-            sb.Draw(Main.magicPixel, new Rectangle((int)(ent.position.X - Main.screenPosition.X),
+            sb.Draw((Texture2D)ModTexturesTable["Block"], new Rectangle((int)(ent.position.X - Main.screenPosition.X),
                 (int)(ent.position.Y - Main.screenPosition.Y),
                 ent.width,
                 ent.height), Color.White);
+        }
+        public static ushort TileType(string str)
+        {
+            return Entrogic.ModTiles.Find(s => s.Name == str).Type;
+        }
+        public static int ProjectileType(string str)
+        {
+            return Entrogic.ModProjectiles.Find(s => s.Name == str).Type;
+        }
+        public static int ItemType(string str)
+        {
+            return Entrogic.ModItems.Find(s => s.Name == str).Type;
         }
         public static Player FindCloestPlayer(Vector2 position, float maxDistance, Func<Player, bool> predicate)
         {
@@ -294,7 +376,7 @@ namespace Entrogic
         {
             while (value >= 1000000)
             {
-                value -= 1000000; 
+                value -= 1000000;
                 int number = Item.NewItem(pos, ItemID.PlatinumCoin);
                 if (Main.netMode == NetmodeID.MultiplayerClient && number >= 0)
                 {
@@ -917,7 +999,7 @@ namespace Entrogic
         public static Item GetRandomCard(Player player, Terraria.Utilities.UnifiedRandom rand, int rare = -1, int series = -1, bool useCheckGet = true)
         {
             List<int> ableToGet = new List<int>();
-            foreach (ModItem findItem in Entrogic.ModItems)
+            foreach (ModItem findItem in ModItems)
             {
                 Item i = new Item();
                 i.SetDefaults(findItem.item.type);
@@ -984,6 +1066,53 @@ namespace Entrogic
                         return Main.sign[Sign.ReadSign(r.X + i, r.Y + j)];
             return null;
         }
+        public static float GetLerpValue(float from, float to, float t, bool clamped = false)
+        {
+            if (clamped)
+            {
+                if (from < to)
+                {
+                    if (t < from)
+                    {
+                        return 0f;
+                    }
+                    if (t > to)
+                    {
+                        return 1f;
+                    }
+                }
+                else
+                {
+                    if (t < to)
+                    {
+                        return 1f;
+                    }
+                    if (t > from)
+                    {
+                        return 0f;
+                    }
+                }
+            }
+            return (t - from) / (to - from);
+        }
+
+        public static Vector2 DirectionTo(this Vector2 Origin, Vector2 Target)
+        {
+            return Vector2.Normalize(Target - Origin);
+        }
+
+        // Token: 0x06000101 RID: 257 RVA: 0x000068ED File Offset: 0x00004AED
+        public static Rectangle Rectangle(this Texture2D texture)
+        {
+            return new Rectangle(0, 0, texture.Width, texture.Height);
+        }
+
+        // Token: 0x06000102 RID: 258 RVA: 0x00006902 File Offset: 0x00004B02
+        public static float Distance(this Vector2 Origin, Vector2 Target)
+        {
+            return Vector2.Distance(Origin, Target);
+        }
+
         public static void SafeBegin(this SpriteBatch sb)
         {
             try
@@ -1015,6 +1144,126 @@ namespace Entrogic
             {
             }
         }
+
+        public static string GetCardSlotInfo(Player player)
+        {
+            EntrogicPlayer entrogicPlayer = player.GetModPlayer<EntrogicPlayer>();
+            Item item = new Item();
+            string text = "";
+            for (int i = 0; i < entrogicPlayer.CardType.Length; i++)
+            {
+                if (entrogicPlayer.CardType[i] == 0)
+                {
+                    text += "0\n";
+                }
+                else
+                {
+                    item.SetDefaults(entrogicPlayer.CardType[i]);
+                    text += $"{item.modItem.Mod.Name}:{item.modItem.Name}\n";
+                }
+            }
+            return text;
+        }
+
+        public static string GetPlayerPathFromName(string playerName, bool cloudSave, out string trueName)
+        {
+            char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
+            string text = "";
+            if (playerName == ".")
+            {
+                playerName = "_";
+            }
+            else if (playerName == "..")
+            {
+                playerName = "__";
+            }
+            foreach (char c in playerName)
+            {
+                char c2;
+                if (invalidFileNameChars.Contains(c))
+                {
+                    c2 = '-';
+                }
+                else if (c == ' ')
+                {
+                    c2 = '_';
+                }
+                else
+                {
+                    c2 = c;
+                }
+                text += c2.ToString();
+            }
+            string text2 = cloudSave ? Main.CloudPlayerPath : Main.PlayerPath;
+            if (FileUtilities.GetFullPath($"{text2}{Path.DirectorySeparatorChar}{text}.plr", cloudSave).StartsWith("\\\\.\\", StringComparison.Ordinal))
+            {
+                text += "_";
+            }
+            if (FileUtilities.Exists($"{text2}{Path.DirectorySeparatorChar}{text}.plr", cloudSave))
+            {
+                int num = 2;
+                while (FileUtilities.Exists(string.Concat(new object[]
+                {
+                    text2,
+                    Path.DirectorySeparatorChar.ToString(),
+                    text,
+                    num,
+                    ".plr"
+                }), cloudSave))
+                {
+                    num++;
+                }
+                text += num;
+            }
+            trueName = text;
+            return $"{text2}{Path.DirectorySeparatorChar}{text}";
+        }
+
+        public static string GetWorldPathFromName(string worldName, bool cloudSave, out string trueName)
+        {
+            char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
+            string text = "";
+            foreach (char c in worldName)
+            {
+                char c2;
+                if (invalidFileNameChars.Contains(c))
+                {
+                    c2 = '-';
+                }
+                else if (c == ' ')
+                {
+                    c2 = '_';
+                }
+                else
+                {
+                    c2 = c;
+                }
+                text += c2.ToString();
+            }
+            string text2 = cloudSave ? Main.CloudWorldPath : Main.WorldPath;
+            if (FileUtilities.GetFullPath($"{text2}{Path.DirectorySeparatorChar}{text}.wld", cloudSave).StartsWith("\\\\.\\", StringComparison.Ordinal))
+            {
+                text += "_";
+            }
+            if (FileUtilities.Exists($"{text2}{Path.DirectorySeparatorChar}{text}.wld", cloudSave))
+            {
+                int num = 2;
+                while (FileUtilities.Exists(string.Concat(new object[]
+                {
+                    text2,
+                    Path.DirectorySeparatorChar.ToString(),
+                    text,
+                    num,
+                    ".wld"
+                }), cloudSave))
+                {
+                    num++;
+                }
+                text += num;
+            }
+            trueName = text;
+            return $"{text2}{Path.DirectorySeparatorChar}{text}";
+        }
         /// <summary>
         /// 无入侵
         /// </summary>
@@ -1028,7 +1277,7 @@ namespace Entrogic
         public static bool NoBiome(NPCSpawnInfo spawnInfo)
         {
             Player player = spawnInfo.player;
-            return !player.ZoneJungle && !player.ZoneDungeon && !player.ZoneCorrupt && !player.ZoneCrimson && !player.ZoneHoly && !player.ZoneSnow && !player.ZoneUndergroundDesert;
+            return !player.ZoneJungle && !player.ZoneDungeon && !player.ZoneCorrupt && !player.ZoneCrimson && !player.ZoneHallow && !player.ZoneSnow && !player.ZoneUndergroundDesert;
         }
         /// <summary>
         /// 不在太空, 陨石, 蜘蛛洞地形

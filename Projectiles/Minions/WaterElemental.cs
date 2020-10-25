@@ -34,7 +34,7 @@ namespace Entrogic.Projectiles.Minions
             projectile.aiStyle = -1;
             projectile.penetrate = -1;
             projectile.timeLeft *= 5;
-            projectile.minion = true;
+            projectile.DamageType = DamageClass.Summon;
             projectile.minionSlots = 0.33f;
             projectile.tileCollide = false;
             projectile.ignoreWater = true;
@@ -166,7 +166,7 @@ namespace Entrogic.Projectiles.Minions
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            Texture2D t = Main.projectileTexture[projectile.type];
+            Texture2D t = (Texture2D)Terraria.GameContent.TextureAssets.Projectile[projectile.type];
             int frameHeight = t.Height / Main.projFrames[projectile.type];
             SpriteEffects effects = SpriteEffects.None;
             if (projectile.spriteDirection < 0) effects = SpriteEffects.FlipHorizontally;

@@ -15,7 +15,7 @@ namespace Entrogic.Items.Weapons.Magic.Staff
             item.UseSound = SoundID.Item20;
             item.Size = new Vector2(74, 76);
             item.useTime = item.useAnimation = 30;
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.knockBack = 8f;
             item.value = Item.sellPrice(0, 5);
             item.rare = RareID.LV6;
@@ -27,7 +27,7 @@ namespace Entrogic.Items.Weapons.Magic.Staff
             item.shootSpeed = 20f;
             item.noMelee = true;
             item.mana = 20;
-            item.magic = true;
+            item.DamageType = DamageClass.Magic;
         }
         public override Vector2? HoldoutOffset()
         {
@@ -63,12 +63,11 @@ namespace Entrogic.Items.Weapons.Magic.Staff
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(null, "CBar", 6);
-            recipe.AddIngredient(ItemID.MagicalHarp, 1);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(Mod, "CBar", 6)
+                .AddIngredient(ItemID.MagicalHarp, 1)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
 }

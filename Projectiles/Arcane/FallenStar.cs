@@ -33,7 +33,7 @@ namespace Entrogic.Projectiles.Arcane
             Dust d = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height, 159, 0f, 0f, 100, Color.White, 1f);
             d.noGravity = true;
             Lighting.AddLight(projectile.Center, (float)Color.Gold.R * 0.005f, (float)Color.Gold.G * 0.005f, (float)Color.Gold.B * 0.005f);
-            if (projectile.ai[1] == 1 && ModLoader.GetMod("FallenStar49") != null)
+            if (projectile.ai[1] == 1)
             {
                 float num470 = projectile.Center.X;
                 float num471 = projectile.Center.Y;
@@ -76,7 +76,7 @@ namespace Entrogic.Projectiles.Arcane
         }
         public override void Kill(int timeLeft)
         {
-            Main.PlaySound(SoundID.Item10, projectile.position);
+            Terraria.Audio.SoundEngine.PlaySound(SoundID.Item10, projectile.position);
             for (int index = 0; index < 5; index++)
             {
                 Dust.NewDust(projectile.position, projectile.width, projectile.height, 58, projectile.velocity.X * 0.1f, projectile.velocity.Y * 0.1f, 150, default(Color), 1f);
@@ -105,7 +105,7 @@ namespace Entrogic.Projectiles.Arcane
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            Texture2D t = Main.projectileTexture[projectile.type];
+            Texture2D t = (Texture2D)Terraria.GameContent.TextureAssets.Projectile[projectile.type];
             int frameHeight = t.Height / Main.projFrames[projectile.type];
             SpriteEffects effects = SpriteEffects.None;
             if (projectile.spriteDirection < 0) effects = SpriteEffects.FlipHorizontally;

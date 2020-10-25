@@ -14,6 +14,8 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent.NetModules;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -89,9 +91,9 @@ namespace Entrogic
                 npc.StrikeNPC(9999, 0, 0);
                 if (Main.netMode == NetmodeID.Server)
                 {
-                    NetMessage.SendData(MessageID.StrikeNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
+                    NetMessage.SendData(MessageID.DamageNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
                 }
-                Main.PlaySound(SoundID.NPCHit1, npc.position);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.NPCHit1, npc.position);
             }
             return !frozen;
         }
@@ -104,7 +106,7 @@ namespace Entrogic
             if (frozen)
             {
                 // 加载图片
-                Texture2D tex = Entrogic.ModTexturesTable["Frozen"];
+                Texture2D tex = (Texture2D)Entrogic.ModTexturesTable["Frozen"];
                 Vector2 worldPos = npc.Center;
                 float scale = (float)((npc.width + npc.height) / 2) / 29f;
                 spriteBatch.Draw(tex, worldPos - Main.screenPosition, null, drawColor, 0f, tex.Size() * 0.5f, scale, SpriteEffects.None, 0f);
@@ -131,7 +133,7 @@ namespace Entrogic
         }
         public override void NPCLoot(NPC npc)
         {
-            if (npc.lifeMax <= 30 || npc.SpawnedFromStatue)
+            if (npc.lifeMax <= 10 * Main.GameModeInfo.EnemyMaxLifeMultiplier && !Main.GameModeInfo.IsJourneyMode || npc.SpawnedFromStatue)
                 return;
 
             Player lootPlayer = Main.player[Player.FindClosest(npc.position, npc.width, npc.height)];
@@ -148,6 +150,7 @@ namespace Entrogic
                 Item.NewItem(npc.getRect(), ItemType<GoldenHarvest>());
             //if (Main.eclipse && Main.rand.NextBool(100)) Item.NewItem(npc.getRect(), ModContent.ItemType<衰变立场>());
 
+            Item.NewItem(npc.getRect(), Main.rand.Next(Main.maxItemTypes, Entrogic.MaxItemTypes));
             if (Main.rand.NextBool(8) && IsSeaEnemies(npc))
                 if (!EntrogicWorld.IsDownedPollutionElemental)
                     Item.NewItem(npc.getRect(), ItemType<SoulOfPure>(), Main.rand.Next(1, 2 + 1));
@@ -207,14 +210,14 @@ namespace Entrogic
                 string typeName = npc.TypeName;
                 if (Main.netMode == NetmodeID.SinglePlayer)
                 {
-                    Main.NewText(Language.GetTextValue("Announcement.HasBeenDefeated_Single", typeName), 175, 75, byte.MaxValue, false);
+                    Main.NewText(Language.GetTextValue("Announcement.HasBeenDefeated_Single", typeName), 175, 75, byte.MaxValue);
                 }
                 else if (Main.netMode == NetmodeID.Server)
                 {
-                    NetMessage.BroadcastChatMessage(NetworkText.FromKey("Announcement.HasBeenDefeated_Single", new object[]
+                    NetTextModule.SerializeServerMessage(NetworkText.FromKey("Announcement.HasBeenDefeated_Single", new object[]
                     {
                         npc.GetTypeNetName()
-                    }), new Color(175, 75, 255), -1);
+                    }), new Color(175, 75, 255));
                 }
             }
         }

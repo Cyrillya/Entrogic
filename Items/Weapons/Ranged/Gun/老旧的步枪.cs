@@ -25,8 +25,8 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             item.shoot = ProjectileID.PurificationPowder;
             item.shootSpeed = 13f;
             item.useAmmo = AmmoID.Bullet;
-            item.ranged = true;
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.DamageType = DamageClass.Ranged;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.useTime = 65;
             item.useAnimation = 65;
             item.maxStack = 1;
@@ -81,7 +81,7 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
                 }
             }
             Projectile.NewProjectile(position, new Vector2(speedX, speedY), type, damage, knockBack, player.whoAmI);
-            Main.PlaySound(SoundID.Item40, player.position);
+            Terraria.Audio.SoundEngine.PlaySound(SoundID.Item40, player.position);
             return false;
         }
         public float Timer = 0;

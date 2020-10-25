@@ -26,8 +26,8 @@ namespace Entrogic.Items.Equipables.Armor
         public override void UpdateEquip(Player player)
         {
             player.moveSpeed += 0.06f;
-            player.magicCrit += 4;
-            player.rangedDamage += 0.05f;
+            player.GetCrit(DamageClass.Magic) += 4;
+            player.GetDamage(DamageClass.Ranged) += 0.05f;
         }
 
         /*public override void AddRecipes()

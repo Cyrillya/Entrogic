@@ -34,7 +34,7 @@ namespace Entrogic.Projectiles.Arcane
         }
         public override void Kill(int timeLeft)
         {
-            Main.PlaySound(SoundID.Item10);
+            Terraria.Audio.SoundEngine.PlaySound(SoundID.Item10);
             for (int i = 0; i < 22; i++)
             {
                 int num = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 272, 0f, 0f, 100, default(Color), 2f);
@@ -49,7 +49,7 @@ namespace Entrogic.Projectiles.Arcane
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            Texture2D t = Main.projectileTexture[projectile.type];
+            Texture2D t = (Texture2D)Terraria.GameContent.TextureAssets.Projectile[projectile.type];
             int frameHeight = t.Height / Main.projFrames[projectile.type];
             SpriteEffects effects = SpriteEffects.None;
             if (projectile.spriteDirection < 0) effects = SpriteEffects.FlipHorizontally;

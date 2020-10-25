@@ -25,7 +25,7 @@ namespace Entrogic.Items.Weapons.Ranged.Thrown
             item.height = 22;          
             item.useTime = 12;          
             item.useAnimation = 12;     
-            item.useStyle = ItemUseStyleID.SwingThrow;
+            item.useStyle = ItemUseStyleID.Swing;
             item.knockBack = 2;         
             item.value = Item.sellPrice(copper: 5);
             item.rare = ItemRarityID.Green;              
@@ -33,7 +33,7 @@ namespace Entrogic.Items.Weapons.Ranged.Thrown
             item.autoReuse = true;
             item.shoot = ProjectileType<Leafblade>();
             item.shootSpeed = 15f;
-            item.ranged = true;
+            item.DamageType = DamageClass.Ranged;
             item.noUseGraphic = true;
             item.crit += 19;
             item.consumable = true;
@@ -41,11 +41,10 @@ namespace Entrogic.Items.Weapons.Ranged.Thrown
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddRecipeGroup("Wood", 10);
-            recipe.AddTile(TileID.LivingLoom);
-            recipe.SetResult(this, 15);
-            recipe.AddRecipe();
+            CreateRecipe(15)
+                .AddRecipeGroup("Wood", 1)
+                .AddTile(TileID.LivingLoom)
+                .Register();
         }
 
         public override void MeleeEffects(Player player, Rectangle hitbox)

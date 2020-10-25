@@ -35,91 +35,91 @@ namespace Entrogic.NPCs.CardMerchantSystem
             NPCID.Sets.AttackAverageChance[npc.type] = 30;
             NPCID.Sets.HatOffsetY[npc.type] = 4;
 
-            ModTranslation modTranslation = mod.CreateTranslation("Card_Unknow");
-            modTranslation.AddTranslation(GameCulture.Chinese, "小伙子，你不懂的事还有很多");
-            modTranslation.SetDefault("Young man, there are still many things you don't understand");
-            mod.AddTranslation(modTranslation);
-            modTranslation = mod.CreateTranslation("Card_Unknow2");
-            modTranslation.AddTranslation(GameCulture.Chinese, "你不会想知道我的身份的");
-            modTranslation.SetDefault("You'll never want to know who I'm");
-            mod.AddTranslation(modTranslation);
-            modTranslation = mod.CreateTranslation("Card_Manual");
-            modTranslation.AddTranslation(GameCulture.Chinese, "来一份卡牌手册吧！你需要了解一下！");
-            modTranslation.SetDefault("Get a card manual! You have to know!");
-            mod.AddTranslation(modTranslation);
-            modTranslation = mod.CreateTranslation("Card_Slime");
-            modTranslation.AddTranslation(GameCulture.Chinese, "你有没有从带着皇冠的史莱姆那边找到过卡牌？只是问问罢了");
-            modTranslation.SetDefault("Have you ever found a card from Slime with a crown? Just asking");
-            mod.AddTranslation(modTranslation);
-            modTranslation = mod.CreateTranslation("Card_Always");
-            modTranslation.AddTranslation(GameCulture.Chinese, "常来问问我，我可能会有你想要的东西！");
-            modTranslation.SetDefault("Come and ask me often, I may have what you want!");
-            mod.AddTranslation(modTranslation);
+            ModTranslation ModTranslation = Mod.CreateTranslation("Card_Unknow");
+            ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "小伙子，你不懂的事还有很多");
+            ModTranslation.SetDefault("Young man, there are still many things you don't understand");
+            Mod.AddTranslation(ModTranslation);
+            ModTranslation = Mod.CreateTranslation("Card_Unknow2");
+            ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "你不会想知道我的身份的");
+            ModTranslation.SetDefault("You'll never want to know who I'm");
+            Mod.AddTranslation(ModTranslation);
+            ModTranslation = Mod.CreateTranslation("Card_Manual");
+            ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "来一份卡牌手册吧！你需要了解一下！");
+            ModTranslation.SetDefault("Get a card manual! You have to know!");
+            Mod.AddTranslation(ModTranslation);
+            ModTranslation = Mod.CreateTranslation("Card_Slime");
+            ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "你有没有从带着皇冠的史莱姆那边找到过卡牌？只是问问罢了");
+            ModTranslation.SetDefault("Have you ever found a card from Slime with a crown? Just asking");
+            Mod.AddTranslation(ModTranslation);
+            ModTranslation = Mod.CreateTranslation("Card_Always");
+            ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "常来问问我，我可能会有你想要的东西！");
+            ModTranslation.SetDefault("Come and ask me often, I may have what you want!");
+            Mod.AddTranslation(ModTranslation);
 
-            modTranslation = mod.CreateTranslation("Card_NWelcome");
-            modTranslation.AddTranslation(GameCulture.Chinese, "好吧，一个来历不明的人是没有人会殷勤接待的");
-            modTranslation.SetDefault("Well, a person of unknown origin is no one will be reception.");
-            mod.AddTranslation(modTranslation);
-            modTranslation = mod.CreateTranslation("Card_NShop");
-            modTranslation.AddTranslation(GameCulture.Chinese, "除非你给我找个住所，否则我不会给你贩卖物品");
-            modTranslation.SetDefault("I won't sell you items unless you find the place where I live.");
-            mod.AddTranslation(modTranslation);
+            ModTranslation = Mod.CreateTranslation("Card_NWelcome");
+            ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "好吧，一个来历不明的人是没有人会殷勤接待的");
+            ModTranslation.SetDefault("Well, a person of unknown origin is no one will be reception.");
+            Mod.AddTranslation(ModTranslation);
+            ModTranslation = Mod.CreateTranslation("Card_NShop");
+            ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "除非你给我找个住所，否则我不会给你贩卖物品");
+            ModTranslation.SetDefault("I won't sell you items unless you find the place where I live.");
+            Mod.AddTranslation(ModTranslation);
 
-            modTranslation = mod.CreateTranslation("Card_Merchant");
-            modTranslation.AddTranslation(GameCulture.Chinese, "");
-            modTranslation.SetDefault("What ");
-            mod.AddTranslation(modTranslation);
-            modTranslation = mod.CreateTranslation("Card_Merchant2");
-            modTranslation.AddTranslation(GameCulture.Chinese, "卖的东西根本一文不值！");
-            modTranslation.SetDefault(" sells is worthless!");
-            mod.AddTranslation(modTranslation);
+            ModTranslation = Mod.CreateTranslation("Card_Merchant");
+            ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "");
+            ModTranslation.SetDefault("What ");
+            Mod.AddTranslation(ModTranslation);
+            ModTranslation = Mod.CreateTranslation("Card_Merchant2");
+            ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "卖的东西根本一文不值！");
+            ModTranslation.SetDefault(" sells is worthless!");
+            Mod.AddTranslation(ModTranslation);
 
-            modTranslation = mod.CreateTranslation("Card_CardDay");
-            modTranslation.AddTranslation(GameCulture.Chinese, "这些卡牌多有趣，不是吗？");
-            modTranslation.SetDefault("These cards are so interesting, isn't it?");
-            mod.AddTranslation(modTranslation);
-            modTranslation = mod.CreateTranslation("Card_CardDay2");
-            modTranslation.AddTranslation(GameCulture.Chinese, "要不要来看看最新的卡牌！");
-            modTranslation.SetDefault("Come and see the latest cards!");
-            mod.AddTranslation(modTranslation);
-            modTranslation = mod.CreateTranslation("Card_CardDay3");
-            modTranslation.AddTranslation(GameCulture.Chinese, "我一直不希望我与他们之间站着你这么一个瘦弱的孩子");
-            modTranslation.SetDefault("I always hope a scrawny kid like you isn't all that is standing between us and them.");
-            mod.AddTranslation(modTranslation);
+            ModTranslation = Mod.CreateTranslation("Card_CardDay");
+            ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "这些卡牌多有趣，不是吗？");
+            ModTranslation.SetDefault("These cards are so interesting, isn't it?");
+            Mod.AddTranslation(ModTranslation);
+            ModTranslation = Mod.CreateTranslation("Card_CardDay2");
+            ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "要不要来看看最新的卡牌！");
+            ModTranslation.SetDefault("Come and see the latest cards!");
+            Mod.AddTranslation(ModTranslation);
+            ModTranslation = Mod.CreateTranslation("Card_CardDay3");
+            ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "我一直不希望我与他们之间站着你这么一个瘦弱的孩子");
+            ModTranslation.SetDefault("I always hope a scrawny kid like you isn't all that is standing between us and them.");
+            Mod.AddTranslation(ModTranslation);
 
-            modTranslation = mod.CreateTranslation("Card_CardNight");
-            modTranslation.AddTranslation(GameCulture.Chinese, "不来点想星星一样闪耀的卡牌吗？");
-            modTranslation.SetDefault("Want some cards shining like stars?");
-            mod.AddTranslation(modTranslation);
-            modTranslation = mod.CreateTranslation("Card_CardNight2");
-            modTranslation.AddTranslation(GameCulture.Chinese, "来些奇妙的卡牌吧，你总会用到的");
-            modTranslation.SetDefault("Here and get some fantastic cards, you'll use it.");
-            mod.AddTranslation(modTranslation);
-            modTranslation = mod.CreateTranslation("Card_CardNight3");
-            modTranslation.AddTranslation(GameCulture.Chinese, "黑暗中隐藏着无名的敌人");
-            modTranslation.SetDefault("Unknown enemies hides in the dark.");
-            mod.AddTranslation(modTranslation);
+            ModTranslation = Mod.CreateTranslation("Card_CardNight");
+            ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "不来点想星星一样闪耀的卡牌吗？");
+            ModTranslation.SetDefault("Want some cards shining like stars?");
+            Mod.AddTranslation(ModTranslation);
+            ModTranslation = Mod.CreateTranslation("Card_CardNight2");
+            ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "来些奇妙的卡牌吧，你总会用到的");
+            ModTranslation.SetDefault("Here and get some fantastic cards, you'll use it.");
+            Mod.AddTranslation(ModTranslation);
+            ModTranslation = Mod.CreateTranslation("Card_CardNight3");
+            ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "黑暗中隐藏着无名的敌人");
+            ModTranslation.SetDefault("Unknown enemies hides in the dark.");
+            Mod.AddTranslation(ModTranslation);
 
-            //modTranslation = mod.CreateTranslation("CardShop");
-            //modTranslation.AddTranslation(GameCulture.Chinese, "（卡牌物品商店）");
-            //modTranslation.SetDefault("(Card Item Shop)");
-            //mod.AddTranslation(modTranslation);
-            //modTranslation = mod.CreateTranslation("SinShop");
-            //modTranslation.AddTranslation(GameCulture.Chinese, "（罪恶物品商店）");
-            //modTranslation.SetDefault("(Sins Item Shop)");
-            //mod.AddTranslation(modTranslation);
-            //modTranslation = mod.CreateTranslation("CShop");
-            //modTranslation.AddTranslation(GameCulture.Chinese, "切换商店");
-            //modTranslation.SetDefault("Cycle Shop");
-            //mod.AddTranslation(modTranslation);
-            modTranslation = mod.CreateTranslation("NoShop");
-            modTranslation.AddTranslation(GameCulture.Chinese, "（禁用）");
-            modTranslation.SetDefault("(Disable)");
-            mod.AddTranslation(modTranslation);
-            modTranslation = mod.CreateTranslation("Mission");
-            modTranslation.AddTranslation(GameCulture.Chinese, "任务");
-            modTranslation.SetDefault("Mission");
-            mod.AddTranslation(modTranslation);
+            //ModTranslation = Mod.CreateTranslation("CardShop");
+            //ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "（卡牌物品商店）");
+            //ModTranslation.SetDefault("(Card Item Shop)");
+            //Mod.AddTranslation(ModTranslation);
+            //ModTranslation = Mod.CreateTranslation("SinShop");
+            //ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "（罪恶物品商店）");
+            //ModTranslation.SetDefault("(Sins Item Shop)");
+            //Mod.AddTranslation(ModTranslation);
+            //ModTranslation = Mod.CreateTranslation("CShop");
+            //ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "切换商店");
+            //ModTranslation.SetDefault("Cycle Shop");
+            //Mod.AddTranslation(ModTranslation);
+            ModTranslation = Mod.CreateTranslation("NoShop");
+            ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "（禁用）");
+            ModTranslation.SetDefault("(Disable)");
+            Mod.AddTranslation(ModTranslation);
+            ModTranslation = Mod.CreateTranslation("Mission");
+            ModTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "任务");
+            ModTranslation.SetDefault("Mission");
+            Mod.AddTranslation(ModTranslation);
         }
         public override bool UsesPartyHat()
         {
@@ -414,14 +414,14 @@ namespace Entrogic.NPCs.CardMerchantSystem
                 {
                     CardMerchantQuest questSystem = player.GetModPlayer<CardMerchantQuest>();
                 EndMission:
-                    Main.NewText($"Count:{Entrogic.CardQuests.Count}, quest:{questSystem.quest}");
-                    if (questSystem.quest >= Entrogic.CardQuests.Count) // 如果完成了所有任务
+                    Main.NewText($"Count:{CardQuests.Count}, quest:{questSystem.quest}");
+                    if (questSystem.quest >= CardQuests.Count) // 如果完成了所有任务
                     {
-                        questSystem.quest = Math.Min(questSystem.quest, Entrogic.CardQuests.Count);
+                        questSystem.quest = Math.Min(questSystem.quest, CardQuests.Count);
                         int NewQuest = questSystem.ChooseNewQuest();
-                        if (NewQuest < Entrogic.CardQuests.Count)
+                        if (NewQuest < CardQuests.Count)
                         {
-                            Main.npcChatText = Entrogic.CardQuests[NewQuest].ToString();
+                            Main.npcChatText = CardQuests[NewQuest].ToString();
                             questSystem.quest = NewQuest;
                             return;
                         }
@@ -443,12 +443,12 @@ namespace Entrogic.NPCs.CardMerchantSystem
                         if (questSystem.quest == -1) // 如果未布置任务/已完成任务
                         {
                             int NewQuest = questSystem.ChooseNewQuest();
-                            if (NewQuest >= Entrogic.CardQuests.Count)
+                            if (NewQuest >= CardQuests.Count)
                             {
                                 goto EndMission;
                             }
-                            Main.npcChatText = Entrogic.CardQuests[NewQuest].ToString();
-                            Main.npcChatCornerItem = Entrogic.CardQuests[NewQuest].CornerItem;
+                            Main.npcChatText = CardQuests[NewQuest].ToString();
+                            Main.npcChatCornerItem = CardQuests[NewQuest].CornerItem;
                             questSystem.quest = NewQuest;
                             break;
                         }
@@ -457,9 +457,9 @@ namespace Entrogic.NPCs.CardMerchantSystem
                             Main.npcChatText = questSystem.GetCurrentQuest().SayThanks();
                             // 角落物品先给你整个心心，有需要再改
                             Main.npcChatCornerItem = ItemID.Heart;
-                            Main.PlaySound(SoundID.MenuTick, -1, -1, 1, 1f, 0f);
+                            Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuTick, -1, -1, 1, 1f, 0f);
                             questSystem.SpawnReward(npc);
-                            questSystem.Complete += "_" + Entrogic.CardQuests[questSystem.quest].ID;
+                            questSystem.Complete += "_" + CardQuests[questSystem.quest].ID;
                             if (Main.netMode == NetmodeID.Server)
                             {
                                 MessageHelper.SendCardMission((byte)player.whoAmI, questSystem.Complete);
@@ -467,7 +467,7 @@ namespace Entrogic.NPCs.CardMerchantSystem
                             questSystem.quest = -1;
                             break;
                         }
-                        if (questSystem.quest == -1 || questSystem.quest >= Entrogic.CardQuests.Count)
+                        if (questSystem.quest == -1 || questSystem.quest >= CardQuests.Count)
                         {
                             goto EndMission;
                         }
@@ -485,22 +485,22 @@ namespace Entrogic.NPCs.CardMerchantSystem
         private EntrogicPlayer entrogicPlayer => player.GetModPlayer<EntrogicPlayer>();
         public Quest GetCurrentQuest() // 获取任务
         {
-            return Entrogic.CardQuests[quest];
+            return CardQuests[quest];
         }
         public bool CheckQuest() // 任务未完成即为true，已完成或未布置为false
         {
-            if (quest == -1 || quest >= Entrogic.CardQuests.Count)
+            if (quest == -1 || quest >= CardQuests.Count)
             {
                 return false;
             }
-            Quest q = Entrogic.CardQuests[quest];
+            Quest q = CardQuests[quest];
             return q.CheckCompletion(Main.player[Main.myPlayer]);
         }
         public int ChooseNewQuest()//选择任务
         {
             string[] s = Complete.Split('_');
             Dictionary<string, bool> comp = new Dictionary<string, bool>();
-            foreach (Quest q in Entrogic.CardQuests) // 先遍历一遍任务列表，添加字典中的所有键值，bool初始值为false（未完成）
+            foreach (Quest q in CardQuests) // 先遍历一遍任务列表，添加字典中的所有键值，bool初始值为false（未完成）
             {
                 comp.Add(q.ID, false);
             }
@@ -508,15 +508,15 @@ namespace Entrogic.NPCs.CardMerchantSystem
             {
                 comp[s[i]] = true;
             }
-            foreach (Quest q in Entrogic.CardQuests)
+            foreach (Quest q in CardQuests)
             {
                 if (!q.CheckCompletion(player) || !comp[q.ID]) // 这里就不会找不到键值了
                 {
-                    quest = Entrogic.CardQuests.IndexOf(q);
+                    quest = CardQuests.IndexOf(q);
                     return quest;
                 }
             }
-            quest = Entrogic.CardQuests.Count;
+            quest = CardQuests.Count;
             return quest;
         }
         public override void PostUpdate()
@@ -549,7 +549,7 @@ namespace Entrogic.NPCs.CardMerchantSystem
         }
         public void SpawnReward(NPC npc)
         {
-            Main.PlaySound(SoundID.Chat, -1, -1, 1, 1f, 0f);
+            Terraria.Audio.SoundEngine.PlaySound(SoundID.Chat, -1, -1, 1, 1f, 0f);
             GetCurrentQuest().SpawnReward(player, npc);
             if (GetCurrentQuest().RewardMoney.Platinum > 0)
             {

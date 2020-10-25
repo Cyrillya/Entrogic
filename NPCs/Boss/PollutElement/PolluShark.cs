@@ -34,7 +34,7 @@ namespace Entrogic.NPCs.Boss.PollutElement
         {
             if (npc.ai[0] == 0)
             {
-                Main.PlaySound(SoundID.NPCKilled, (int)npc.Center.X, (int)npc.Center.Y, 19);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.NPCKilled, (int)npc.Center.X, (int)npc.Center.Y, 19);
                 npc.ai[0]++;
                 npc.velocity.Y = npc.ai[2];
                 npc.velocity.X = npc.ai[3];
@@ -49,7 +49,7 @@ namespace Entrogic.NPCs.Boss.PollutElement
             npc.velocity.Y += 0.32f;
             if (Collision.SolidCollision(npc.position, npc.width, npc.height))
             {
-                Main.PlaySound(SoundID.NPCKilled, (int)npc.position.X, (int)npc.position.Y, 19);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.NPCKilled, (int)npc.position.X, (int)npc.position.Y, 19);
                 npc.life = 0;
                 npc.HitEffect(0, 10.0);
                 npc.active = false;
@@ -75,9 +75,9 @@ namespace Entrogic.NPCs.Boss.PollutElement
                     int num162 = Dust.NewDust(npc.Center - Vector2.One * 25f, 50, 50, 5, (float)(2 * hitDirection), -2f, 0, default(Color), 1f);
                     Main.dust[num162].velocity /= 2f;
                 }
-                Gore.NewGore(npc.Center, npc.velocity * 0.8f, mod.GetGoreSlot("Gores/PolluSharkGore"), 1f);
-                Gore.NewGore(npc.Center, npc.velocity * 0.9f, mod.GetGoreSlot("Gores/PolluSharkGore2"), 1f);
-                Gore.NewGore(npc.Center, npc.velocity, mod.GetGoreSlot("Gores/PolluSharkGore3"), 1f);
+                Gore.NewGore(npc.Center, npc.velocity * 0.8f, Mod.GetGoreSlot("Gores/PolluSharkGore"), 1f);
+                Gore.NewGore(npc.Center, npc.velocity * 0.9f, Mod.GetGoreSlot("Gores/PolluSharkGore2"), 1f);
+                Gore.NewGore(npc.Center, npc.velocity, Mod.GetGoreSlot("Gores/PolluSharkGore3"), 1f);
             }
         }
     }

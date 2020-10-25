@@ -309,8 +309,8 @@ namespace Entrogic.NPCs.Enemies
 
         public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
         {
-            //Main.npcTexture[npc.type] = Entrogic.Instance.GetTexture("NPCs/Enemies/EarthElemental_" + tex);
-            Texture2D tex = Entrogic.Instance.GetTexture("NPCs/Enemies/EarthElemental");
+            //((Texture2D)Terraria.GameContent.TextureAssets.Npc[npc.type]) = Entrogic.Instance.GetTexture("NPCs/Enemies/EarthElemental_" + tex);
+            Texture2D tex = (Texture2D)Entrogic.Instance.GetTexture("NPCs/Enemies/EarthElemental");
             int npcFrameCountX = 4;
             FindFrame(tex.Height / Main.npcFrameCount[npc.type], tex.Width / npcFrameCountX);
             npc.frame.Width = tex.Width / npcFrameCountX;

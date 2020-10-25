@@ -9,7 +9,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria.ModLoader.IO;
-using Terraria.World.Generation;
 using Terraria.Localization;
 using Terraria.Graphics.Effects;
 using static Entrogic.Entrogic;
@@ -18,6 +17,8 @@ using Entrogic.Tiles;
 using Entrogic.Items.AntaGolem;
 using Entrogic.Items.Weapons.Ranged.Gun;
 using Entrogic.Items.Weapons.Melee.Sword;
+using Terraria.GameContent.NetModules;
+using Terraria.WorldBuilding;
 
 namespace Entrogic
 {
@@ -68,24 +69,6 @@ namespace Entrogic
             var events = tag.GetList<string>("events");
             magicStorm = events.Contains("magicStorm");
             beArrivedAtUnderworld = events.Contains("beArrivedAtUnderworld");
-        }
-
-        public override void LoadLegacy(BinaryReader reader)
-        {
-            int loadVersion = reader.ReadInt32();
-            if (loadVersion == 0)
-            {
-                BitsByte flags = reader.ReadByte();
-                IsDownedPollutionElemental = flags[0];
-                downedAthanasy = flags[1];
-                downedGelSymbiosis = flags[2];
-                magicStorm = flags[3];
-                beArrivedAtUnderworld = flags[4];
-            }
-            else
-            {
-                mod.Logger.WarnFormat("Entrogic: Unknown loadVersion: {0}" + loadVersion);
-            }
         }
 
         public override void NetSend(BinaryWriter writer)
@@ -184,8 +167,8 @@ namespace Entrogic
                         if (Main.dedServ)
                         {
                             NetworkText text = NetworkText.FromKey("魔力平静了下来");
-                            NetMessage.BroadcastChatMessage(text, new Color(150, 150, 250));
-                            var packet = mod.GetPacket();
+                            NetTextModule.SerializeServerMessage(text, new Color(150, 150, 250));
+                            var packet = Instance.GetPacket();
                             packet.Write((byte)EntrogicModMessageType.ReceiveMagicStormRequest);
                             packet.Write(magicStorm);
                             packet.Send(); // 不填即为发给服务器
@@ -233,8 +216,8 @@ namespace Entrogic
             else
             {
                 NetworkText text = NetworkText.FromKey("魔力开始涌动...");
-                NetMessage.BroadcastChatMessage(text, new Color(150, 150, 250));
-                var packet = mod.GetPacket();
+                NetTextModule.SerializeServerMessage(text, new Color(150, 150, 250));
+                var packet = Instance.GetPacket();
                 packet.Write((byte)EntrogicModMessageType.ReceiveMagicStormRequest);
                 packet.Write(magicStorm);
                 packet.Send();
@@ -247,77 +230,77 @@ namespace Entrogic
             int MicroBiomesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Micro Biomes"));
             if (MicroBiomesIndex != -1)
             {
-                tasks.Insert(MicroBiomesIndex + 1, new PassLegacy("Generating Card Shrine", delegate (GenerationProgress progress)
-                {
-                    progress.Message = Language.GetTextValue("Mods.Entrogic.GenCardShrine");
-                    try
-                    {
-                        for (int l = 0; l < (int)((double)(MaxTilesX * MaxTilesY) * 0.00003); l++)
-                        {
-                            Point psw = new Point(WorldGen.genRand.Next(50, MaxTilesX - 50), WorldGen.genRand.Next((int)((float)MaxTilesY * 0.35f), (int)((float)MaxTilesY * 0.85f)));
-                            bool goodPlace = true;
-                            for (int i = psw.X; i <= psw.X + 5; i++)
-                            {
-                                int j = psw.Y + 9;
-                                if (!Main.tile[i, j].active() || !Main.tileSolid[Main.tile[i, j].type])
-                                {
-                                    goodPlace = false;
-                                    break;
-                                }
-                            }
-                            if (goodPlace && WorldGen.InWorld(psw.X, psw.Y) && WorldGen.InWorld(psw.X + 8, psw.Y + 16) && Main.tile[psw.X, psw.Y].active() && Main.tile[psw.X, psw.Y].type == TileID.Stone && Main.tile[psw.X + 5, psw.Y].active() && Main.tile[psw.X + 5, psw.Y].type == TileID.Stone)
-                            {
-                                Rectangle r = Buildings.Build($"Buildings/CardShrine{WorldGen.genRand.Next(2)}.ebuilding", psw.ToWorldCoordinates());
-                                ModHelper.FindAndReplaceWall(r, (ushort)WallType<黑陨岩墙>());
-                                Chest c = ModHelper.FindAndCreateChest(r, TileType<Tiles.ExplodeGraniteChest>());
-                                int index = 0;
-                                c.AddItem(ModHelper.GetRandomCard(Main.LocalPlayer, WorldGen.genRand, CardRareID.GrandUnified, -1, false).type, 1, ref index);
-                                Item item = ModHelper.GetRandomCard(Main.LocalPlayer, WorldGen.genRand);
-                                c.AddItem(item.type, Math.Max(WorldGen.genRand.Next(item.maxStack) + 1 - 2, 1), ref index);
-                                c.AddNormalChestItem(psw.Y, index);
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        throw new Exception("生成世界时发生错误！请将错误发送在QQ群798484146并将 Terraria/ModLoader/Logs/client.txt 发给群主！\n" + e.Message);
-                    }
-                }));
-                int maxX = Main.maxTilesX / 2;
-                int maxY = Main.maxTilesY / 2 + 160;
-                tasks.Insert(MicroBiomesIndex + 1, new PassLegacy("Generating Life Liquid", delegate (GenerationProgress progress)
-                {
-                    try
-                    {
-                        progress.Message = Language.GetTextValue("Mods.Entrogic.GenLifeLiquid");
-                        int r = 55;
-                        ModWorldHelper.RoundTile(maxX, maxY, r, r, 70, 75, true, TileType<BlackMeteorite>(), 1, 0.2);
-                        progress.Set(0.20f);
-                        ModWorldHelper.RoundTile(maxX, maxY, r, r, 0, 24.5, true, TileType<BlackMeteorite>());
-                        progress.Set(0.40f);
-                        ModWorldHelper.RoundTile(maxX, maxY, r - 7, r - 7, 0, 18, true, 0, 2, 0.5, 1, 140);
-                        progress.Set(0.60f);
-                        int length = 15;
-                        for (int j = maxY - 46; j >= maxY - 80; j--)
-                        {
-                            for (int i = maxX - WorldGen.genRand.Next(-1, 2) - length; i <= maxX + WorldGen.genRand.Next(-1, 2) + length; i++)
-                            {
-                                if (Main.tile[i, j].type == TileType<BlackMeteorite>())
-                                    Main.tile[i, j].active(false);
-                            }
-                        }
-                        progress.Set(0.80f);
-                        ModWorldHelper.RoundWall(maxX, maxY, r, r, 0, 25, true, WallType<Walls.黑陨岩墙>(), 0, 1);
-                        progress.Set(1.00f);
+                //tasks.Insert(MicroBiomesIndex + 1, new PassLegacy("Generating Card Shrine", delegate (GenerationProgress progress)
+                //{
+                //    progress.Message = Language.GetTextValue("Mods.Entrogic.GenCardShrine");
+                //    try
+                //    {
+                //        for (int l = 0; l < (int)((double)(MaxTilesX * MaxTilesY) * 0.00003); l++)
+                //        {
+                //            Point psw = new Point(WorldGen.genRand.Next(50, MaxTilesX - 50), WorldGen.genRand.Next((int)((float)MaxTilesY * 0.35f), (int)((float)MaxTilesY * 0.85f)));
+                //            bool goodPlace = true;
+                //            for (int i = psw.X; i <= psw.X + 5; i++)
+                //            {
+                //                int j = psw.Y + 9;
+                //                if (!Main.tile[i, j].active() || !Main.tileSolid[Main.tile[i, j].type])
+                //                {
+                //                    goodPlace = false;
+                //                    break;
+                //                }
+                //            }
+                //            if (goodPlace && WorldGen.InWorld(psw.X, psw.Y) && WorldGen.InWorld(psw.X + 8, psw.Y + 16) && Main.tile[psw.X, psw.Y].active() && Main.tile[psw.X, psw.Y].type == TileID.Stone && Main.tile[psw.X + 5, psw.Y].active() && Main.tile[psw.X + 5, psw.Y].type == TileID.Stone)
+                //            {
+                //                Rectangle r = Buildings.Build($"Buildings/CardShrine{WorldGen.genRand.Next(2)}.ebuilding", psw.ToWorldCoordinates());
+                //                ModHelper.FindAndReplaceWall(r, (ushort)WallType<黑陨岩墙>());
+                //                Chest c = ModHelper.FindAndCreateChest(r, TileType<Tiles.ExplodeGraniteChest>());
+                //                int index = 0;
+                //                c.AddItem(ModHelper.GetRandomCard(Main.LocalPlayer, WorldGen.genRand, CardRareID.GrandUnified, -1, false).type, 1, ref index);
+                //                Item item = ModHelper.GetRandomCard(Main.LocalPlayer, WorldGen.genRand);
+                //                c.AddItem(item.type, Math.Max(WorldGen.genRand.Next(item.maxStack) + 1 - 2, 1), ref index);
+                //                c.AddNormalChestItem(psw.Y, index);
+                //            }
+                //        }
+                //    }
+                //    catch (Exception e)
+                //    {
+                //        throw new Exception("生成世界时发生错误！请将错误发送在QQ群798484146并将 Terraria/ModLoader/Logs/client.txt 发给群主！\n" + e.Message);
+                //    }
+                //}));
 
-                        progress.Message = Language.GetTextValue("Mods.Entrogic.SmoothLifeLiquid");
-                        ModWorldHelper.SmoothTile(maxX - 80, maxY - 80, maxX + 80, maxY + 80, progress, true);
-                    }
-                    catch (Exception e)
-                    {
-                        throw new Exception("生成世界时发生错误！请将错误发送在QQ群798484146并将 Terraria/ModLoader/Logs/client.txt 发给群主！\n" + e.Message);
-                    }
-                }));
+                //int maxX = Main.maxTilesX / 2;
+                //int maxY = Main.maxTilesY / 2 + 160;
+                //tasks.Insert(MicroBiomesIndex + 1, new PassLegacy("Generating Life Liquid", delegate (GenerationProgress progress)
+                //{
+                //    try
+                //    {
+                //        progress.Message = Language.GetTextValue("Mods.Entrogic.GenLifeLiquid");
+                //        int r = 55;
+                //        ModWorldHelper.RoundTile(maxX, maxY, r, r, 70, 75, true, TileType<BlackMeteorite>(), 1, 0.2);
+                //        progress.Set(0.20f);
+                //        ModWorldHelper.RoundTile(maxX, maxY, r, r, 0, 24.5, true, TileType<BlackMeteorite>());
+                //        progress.Set(0.40f);
+                //        ModWorldHelper.RoundTile(maxX, maxY, r - 7, r - 7, 0, 18, true, 0, 2, 0.5, 1, 140);
+                //        progress.Set(0.60f);
+                //        int length = 15;
+                //        for (int j = maxY - 46; j >= maxY - 80; j--)
+                //        {
+                //            for (int i = maxX - WorldGen.genRand.Next(-1, 2) - length; i <= maxX + WorldGen.genRand.Next(-1, 2) + length; i++)
+                //            {
+                //                if (Main.tile[i, j].type == TileType<BlackMeteorite>())
+                //                    Main.tile[i, j].active(false);
+                //            }
+                //        }
+                //        progress.Set(0.80f);
+                //        ModWorldHelper.RoundWall(maxX, maxY, r, r, 0, 25, true, WallType<Walls.黑陨岩墙>(), 0, 1);
+                //        progress.Set(1.00f);
+                //        progress.Message = Language.GetTextValue("Mods.Entrogic.SmoothLifeLiquid");
+                //        ModWorldHelper.SmoothTile(maxX - 80, maxY - 80, maxX + 80, maxY + 80, progress, true);
+                //    }
+                //    catch (Exception e)
+                //    {
+                //        throw new Exception("生成世界时发生错误！请将错误发送在QQ群798484146并将 Terraria/ModLoader/Logs/client.txt 发给群主！\n" + e.Message);
+                //    }
+                //}));
             }
         }
         public override void PostWorldGen()

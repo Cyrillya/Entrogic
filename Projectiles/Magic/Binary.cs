@@ -12,7 +12,7 @@ namespace Entrogic.Projectiles.Magic
         public override void SetDefaults()
         {
             projectile.damage = 61;
-            projectile.magic = true;
+            projectile.DamageType = DamageClass.Magic;
             projectile.width = 16;
             projectile.height = 16;
             projectile.aiStyle = -1;
@@ -80,7 +80,7 @@ namespace Entrogic.Projectiles.Magic
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            Texture2D tex = Main.projectileTexture[projectile.type];
+            Texture2D tex = (Texture2D)Terraria.GameContent.TextureAssets.Projectile[projectile.type];
             spriteBatch.Draw(tex, projectile.position - Main.screenPosition, new Rectangle(0, tex.Height / Main.projFrames[projectile.type] * projectile.frame, tex.Width, tex.Height / Main.projFrames[projectile.type]),
                 projectile.GetAlpha(lightColor), projectile.rotation, Vector2.Zero, projectile.scale, SpriteEffects.None, 0f);
             return false;

@@ -18,7 +18,7 @@ namespace Entrogic.Items.Miscellaneous.Placeable.Furnitrue
             item.autoReuse = true;
             item.useAnimation = 15;
             item.useTime = 10;
-            item.useStyle = ItemUseStyleID.SwingThrow;
+            item.useStyle = ItemUseStyleID.Swing;
             item.consumable = true;
             item.rare = ItemRarityID.Blue;
             item.value = Item.sellPrice(0, 0, 20, 0);
@@ -27,12 +27,11 @@ namespace Entrogic.Items.Miscellaneous.Placeable.Furnitrue
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddRecipeGroup("Entrogic:RCAV", 10);
-            recipe.AddRecipeGroup("Entrogic:DemBar", 5);
-            recipe.AddTile(TileID.DemonAltar);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            CreateRecipe()
+                .AddRecipeGroup("Entrogic:RCAV", 10)
+                .AddRecipeGroup("Entrogic:DemBar", 5)
+                .AddTile(TileID.DemonAltar)
+                .Register();
         }
     }
 }

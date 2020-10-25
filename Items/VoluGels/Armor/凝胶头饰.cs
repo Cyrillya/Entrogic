@@ -32,12 +32,11 @@ namespace Entrogic.Items.VoluGels.Armor
         }
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemType<CastIronBar>(), 10);
-            recipe.AddIngredient(ItemType<GelOfLife>(), 3);
-            recipe.SetResult(this);
-            recipe.AddTile(TileType<MagicDiversionPlatformTile>());
-            recipe.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(ItemType<CastIronBar>(), 10)
+                .AddIngredient(ItemType<GelOfLife>(), 3)
+                .AddTile(TileType<MagicDiversionPlatformTile>())
+                .Register();
         }
     }
 }

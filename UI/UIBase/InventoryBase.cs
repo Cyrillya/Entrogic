@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
 using ReLogic.Graphics;
+using Terraria.GameContent;
 
 namespace Entrogic.UI
 {
@@ -47,7 +48,7 @@ namespace Entrogic.UI
             spriteBatch.Draw( buttonImage , uiPosition , uiColor );
             if (inventoryItem.type != ItemID.None && inventoryItem != null)
             {
-                var frame = Main.itemAnimations[inventoryItem.type] != null ? Main.itemAnimations[inventoryItem.type].GetFrame(Main.itemTexture[inventoryItem.type]) : Main.itemTexture[inventoryItem.type].Frame(1, 1, 0, 0);
+                var frame = Main.itemAnimations[inventoryItem.type] != null ? Main.itemAnimations[inventoryItem.type].GetFrame((Texture2D)TextureAssets.Item[inventoryItem.type]) : ((Texture2D)TextureAssets.Item[inventoryItem.type]).Frame(1, 1, 0, 0);
                 var size = frame.Size();
                 float texScale = 1f;
                 if ((size.X > uiRectangle.Width || size.Y > uiRectangle.Height) && useScaleChange)
@@ -56,10 +57,10 @@ namespace Entrogic.UI
                     texScale = 0.8f / texScale;
                     size *= texScale;
                 }
-                spriteBatch.Draw(Main.itemTexture[inventoryItem.type], uiPosition + uiCenter - size / 2 + itemOffset, new Rectangle?(frame), uiColor, 0, Vector2.Zero, texScale, 0, 0);
+                spriteBatch.Draw((Texture2D)TextureAssets.Item[inventoryItem.type], uiPosition + uiCenter - size / 2 + itemOffset, new Rectangle?(frame), uiColor, 0, Vector2.Zero, texScale, 0, 0);
                 if (inventoryItem.stack > 1)
                 {
-                    spriteBatch.DrawString(Main.fontMouseText, inventoryItem.stack.ToString(), new Vector2(uiRectangle.X + 10, uiRectangle.Y + uiRectangle.Height - 20), Color.White);
+                    spriteBatch.DrawString((DynamicSpriteFont)FontAssets.MouseText, inventoryItem.stack.ToString(), new Vector2(uiRectangle.X + 10, uiRectangle.Y + uiRectangle.Height - 20), Color.White);
                 }
             }
         }
@@ -67,25 +68,25 @@ namespace Entrogic.UI
         {
             if (inventoryItem.type == Main.mouseItem.type && inventoryItem.type != ItemID.None)
             {
-                Main.PlaySound(SoundID.Grab);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.Grab);
                 inventoryItem.stack += Main.mouseItem.stack;
                 Main.mouseItem = new Item();
             }
             else if (Main.mouseItem.type == ItemID.None && inventoryItem.type != ItemID.None)
             {
-                Main.PlaySound(SoundID.Grab);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.Grab);
                 Main.mouseItem = inventoryItem;
                 inventoryItem = new Item();
             }
             else if (Main.mouseItem.type != ItemID.None && inventoryItem.type == ItemID.None)
             {
-                Main.PlaySound(SoundID.Grab);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.Grab);
                 inventoryItem = Main.mouseItem;
                 Main.mouseItem = new Item();
             }
             else if (Main.mouseItem.type != ItemID.None && inventoryItem.type != ItemID.None)
             {
-                Main.PlaySound(SoundID.Grab);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.Grab);
                 Item mouseItem = Main.mouseItem;
                 Main.mouseItem = inventoryItem;
                 inventoryItem = mouseItem;
@@ -95,7 +96,7 @@ namespace Entrogic.UI
         {
             if ((Main.mouseItem.type == ItemID.None || Main.mouseItem.type == inventoryItem.type && Main.mouseItem.stack < Main.mouseItem.maxStack) && inventoryItem.type != ItemID.None)
             {
-                Main.PlaySound(SoundID.MenuTick);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuTick);
                 int stack = Main.mouseItem.stack;
                 Main.mouseItem = inventoryItem.Clone();
                 Main.mouseItem.stack = stack + 1;
@@ -107,7 +108,7 @@ namespace Entrogic.UI
             }
             else if ((inventoryItem.type == ItemID.None || inventoryItem.type == Main.mouseItem.type && inventoryItem.stack < inventoryItem.maxStack) && Main.mouseItem.type != ItemID.None)
             {
-                Main.PlaySound(SoundID.MenuTick);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuTick);
                 int stack = inventoryItem.stack;
                 inventoryItem = Main.mouseItem.Clone();
                 inventoryItem.stack = stack + 1;

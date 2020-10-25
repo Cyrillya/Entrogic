@@ -30,7 +30,7 @@ namespace Entrogic.Projectiles.Enemies
         }
         public override void Kill(int timeLeft)
         {
-            Main.PlaySound(SoundID.Dig, (int)projectile.position.X, (int)projectile.position.Y);
+            Terraria.Audio.SoundEngine.PlaySound(SoundID.Dig, (int)projectile.position.X, (int)projectile.position.Y);
             for (int num590 = 0; num590 < 5; num590++)
             {
                 Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 0);
@@ -64,12 +64,12 @@ namespace Entrogic.Projectiles.Enemies
                             WorldGen.SlopeTile(num833, num834 + 1);
                             if (Main.netMode == NetmodeID.Server)
                             {
-                                NetMessage.SendData(MessageID.TileChange, -1, -1, null, 14, num833, num834 + 1);
+                                NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 14, num833, num834 + 1);
                             }
                         }
                         if (Main.netMode != NetmodeID.SinglePlayer)
                         {
-                            NetMessage.SendData(MessageID.TileChange, -1, -1, null, 1, num833, num834, num835);
+                            NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 1, num833, num834, num835);
                         }
                     }
                     else if (num836 > 0)

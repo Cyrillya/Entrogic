@@ -26,7 +26,7 @@ namespace Entrogic.Items.PollutElement.Armor
         public override void UpdateEquip(Player player)
         {
             player.maxMinions++;
-            player.minionDamage += 0.16f;
+            player.GetDamage(DamageClass.Summon) += 0.16f;
             player.minionKB += 0.07f;
         }
     }

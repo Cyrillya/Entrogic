@@ -32,10 +32,10 @@ namespace Entrogic.Items.Equipables.Armor
         public override void UpdateEquip(Player player)
         {
             player.endurance += 0.1f;
-            player.meleeDamage += 0.07f;
-            player.meleeCrit += 5;
+            player.GetDamage(DamageClass.Melee) += 0.07f;
+            player.GetCrit(DamageClass.Melee) += 5;
             player.meleeSpeed += 0.09f;
-            player.minionDamage += 0.08f;
+            player.GetDamage(DamageClass.Summon) += 0.08f;
         }
         public override void UpdateArmorSet(Player player)
         {

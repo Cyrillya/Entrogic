@@ -1,3 +1,5 @@
+using Entrogic.Items.VoluGels;
+
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -14,13 +16,13 @@ namespace Entrogic.Items.Weapons.Magic.Staff
         public override void SetDefaults()
         {
             item.damage = 19;
-            item.magic = true;
+            item.DamageType = DamageClass.Magic;
             item.mana = 10;
             item.width = 66;
             item.height = 22;
             item.useTime = 25;
             item.useAnimation = 25;
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.noMelee = true;
             item.knockBack = 3;
             item.value = 10000;
@@ -34,13 +36,12 @@ namespace Entrogic.Items.Weapons.Magic.Staff
 
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.MagicMissile, 1);//海蓝法杖
-            recipe.AddIngredient(null,"GelOfLife" ,7);
-            recipe.AddIngredient(ItemID.Lens, 8);//晶状体
-            recipe.AddTile(TileType<Tiles.MagicDiversionPlatformTile>());
-            recipe.SetResult(this);
-            recipe.AddRecipe();
+            CreateRecipe()
+                .AddIngredient(ItemID.MagicMissile, 1)//海蓝法杖
+                .AddIngredient(ItemType<GelOfLife>() ,7)
+                .AddIngredient(ItemID.Lens, 8)//晶状体
+                .AddTile(TileType<Tiles.MagicDiversionPlatformTile>())
+                .Register();
         }
     }
 }

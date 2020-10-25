@@ -35,7 +35,7 @@ namespace Entrogic.Tiles
             name.SetDefault("魔力导流台");
             dustType = 7;
             AddMapEntry(new Color(200, 200, 200), name);
-            disableSmartCursor = true;
+            TileID.Sets.DisableSmartCursor[Type] = true;
             animationFrameHeight = 54;
         }
         public override void AnimateTile(ref int frame, ref int frameCounter)

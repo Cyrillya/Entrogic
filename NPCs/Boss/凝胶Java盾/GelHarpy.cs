@@ -54,17 +54,17 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
         public override void OnHitPlayer(Player target, int damage, bool crit)
         {
             if (Main.rand.NextBool(2))
-                target.AddBuff(BuffType<Buffs.Enemies.Dissolve>(), Main.rand.Next(90, 151) * (Main.expertMode ? (int)Main.expertDebuffTime : 1));
+                target.AddBuff(BuffType<Buffs.Enemies.Dissolve>(), (int)(Main.rand.Next(90, 151) * Main.GameModeInfo.DebuffTimeMultiplier));
         }
         public override void AI()
         {
             npc.dontTakeDamage = false;
-            npc.reflectingProjectiles = false;
+            npc.reflectsProjectiles = false;
             if (npc.ai[3] < 240)
             {
                 npc.dontTakeDamage = true;
                 npc.ReflectProjectiles(npc.Hitbox);
-                npc.reflectingProjectiles = true;
+                npc.reflectsProjectiles = true;
                 npc.alpha = 255;
                 for (int i = 0; i < 3; i++)
                 {
@@ -134,7 +134,13 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
                         num = master.Center.X - vector.X;
                         num2 = master.Center.Y - vector.Y;
                         Color color = Lighting.GetColor((int)vector.X / 16, (int)(vector.Y / 16f));
-                        Main.spriteBatch.Draw(mod.GetTexture("NPCs/Boss/凝胶Java盾/GelChain"), new Vector2(vector.X - Main.screenPosition.X, vector.Y - Main.screenPosition.Y), new Rectangle?(new Rectangle(0, 0, mod.GetTexture("NPCs/Boss/凝胶Java盾/GelChain").Width, num3)), color, rotation, new Vector2((float)mod.GetTexture("NPCs/Boss/凝胶Java盾/GelChain").Width * 0.5f, (float)mod.GetTexture("NPCs/Boss/凝胶Java盾/GelChain").Height * 0.5f), 1f, SpriteEffects.None, 0f);
+                        Main.spriteBatch.Draw((Texture2D)GetTexture("NPCs/Boss/凝胶Java盾/GelChain"), 
+                            new Vector2(vector.X - Main.screenPosition.X, vector.Y - Main.screenPosition.Y), 
+                            new Rectangle?(new Rectangle(0, 0, GetTexture("NPCs/Boss/凝胶Java盾/GelChain").Width(), num3)), 
+                            color, 
+                            rotation, 
+                            new Vector2((float)GetTexture("NPCs/Boss/凝胶Java盾/GelChain").Width() * 0.5f, 
+                            (float)GetTexture("NPCs/Boss/凝胶Java盾/GelChain").Height() * 0.5f), 1f, SpriteEffects.None, 0f);
                     }
                 }
             }

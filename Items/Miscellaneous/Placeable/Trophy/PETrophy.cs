@@ -11,14 +11,14 @@ namespace Entrogic.Items.Miscellaneous.Placeable.Trophy
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("{$Mods.Entrogic.NPCName.污染之灵}" + "{$MapObject.Trophy}");
-            DisplayName.AddTranslation(GameCulture.Chinese, "污染之灵纪念章");
-            DisplayName.AddTranslation(GameCulture.German, "Verschmutzung Element-Trophäe");
-            DisplayName.AddTranslation(GameCulture.Spanish, "Trofeo elemento de contaminación");
-            DisplayName.AddTranslation(GameCulture.French, "Trophée de Élément Pollution");
-            DisplayName.AddTranslation(GameCulture.Italian, "Elemento di inquinamento trofeo");
-            DisplayName.AddTranslation(GameCulture.Portuguese, "Troféu elemento de poluição");
-            DisplayName.AddTranslation(GameCulture.Russian, "Трофей элемента загрязнения");
-            DisplayName.AddTranslation(GameCulture.Polish, "Trofeum – Elementu Zanieczyszczenia");
+            DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "污染之灵纪念章");
+            DisplayName.AddTranslation((int)GameCulture.CultureName.German, "Verschmutzung Element-Trophäe");
+            DisplayName.AddTranslation((int)GameCulture.CultureName.Spanish, "Trofeo elemento de contaminación");
+            DisplayName.AddTranslation((int)GameCulture.CultureName.French, "Trophée de Élément Pollution");
+            DisplayName.AddTranslation((int)GameCulture.CultureName.Italian, "Elemento di inquinamento trofeo");
+            DisplayName.AddTranslation((int)GameCulture.CultureName.Portuguese, "Troféu elemento de poluição");
+            DisplayName.AddTranslation((int)GameCulture.CultureName.Russian, "Трофей элемента загрязнения");
+            DisplayName.AddTranslation((int)GameCulture.CultureName.Polish, "Trofeum – Elementu Zanieczyszczenia");
         }
         public override void SetDefaults()
         {

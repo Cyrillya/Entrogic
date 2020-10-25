@@ -18,13 +18,13 @@ namespace Entrogic.Items.PollutElement
         public override void SetDefaults()
         {
             item.damage = 89;
-            item.magic = true;
+            item.DamageType = DamageClass.Magic;
             item.mana = 4;
             item.width = 28;
             item.height = 30;
             item.useTime = 20;
             item.useAnimation = 20;
-            item.useStyle = ItemUseStyleID.HoldingOut;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.noMelee = true; //当然是让它不能近战攻击啦
             item.knockBack = 5;
             item.value = Item.sellPrice(0, 5);

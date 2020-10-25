@@ -35,7 +35,7 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾.Projectiles
             if (projectile.ai[1] == 0f)
             {
                 projectile.ai[1] = 1f;
-                Main.PlaySound(SoundID.Item8, projectile.position);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.Item8, projectile.position);
             }
             projectile.rotation += (float)projectile.direction * 0.8f;
             projectile.ai[0] += 1f;

@@ -25,7 +25,7 @@ namespace Entrogic.NPCs.CardFightable.CardBullet.PlayerBullets
         public FireballBullet(Vector2 targetPos)
         {
             TargetPosition = targetPos;
-            _texture = Entrogic.ModTexturesTable["Block"];
+            _texture = (Texture2D)Entrogic.ModTexturesTable["Block"];
             LifeSpan = 5f * 2f;
             IsFriendly = true;
             Size = new Vector2(12f, 12f);
@@ -59,7 +59,7 @@ namespace Entrogic.NPCs.CardFightable.CardBullet.PlayerBullets
                     if (localAI == 0f)
                     {
                         Vector2 screenCenter = new Vector2(Main.screenWidth, Main.screenHeight) / 2f + Main.screenPosition;
-                        Main.PlaySound(SoundID.Item74, (int)screenCenter.X, (int)screenCenter.Y + -30);
+                        Terraria.Audio.SoundEngine.PlaySound(SoundID.Item74, (int)screenCenter.X, (int)screenCenter.Y + -30);
                         localAI += 1f;
                     }
                     ai += 1f;

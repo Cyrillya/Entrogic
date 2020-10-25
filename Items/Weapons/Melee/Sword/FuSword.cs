@@ -12,10 +12,10 @@ namespace Entrogic.Items.Weapons.Melee.Sword
         {
             item.width = 54;
             item.height = 68;
-            item.useStyle = ItemUseStyleID.SwingThrow;
+            item.useStyle = ItemUseStyleID.Swing;
             item.useTime = item.useAnimation = 20;
             item.damage = 16;
-            item.melee = true;
+            item.DamageType = DamageClass.Melee;
             item.autoReuse = true;
             item.crit += 5;
             item.knockBack = 10f;
@@ -29,7 +29,7 @@ namespace Entrogic.Items.Weapons.Melee.Sword
                 if (npc.boss)
                     return;
             Vector2 knockBackSpeed = Vector2.Zero;
-            Main.PlaySound(target.HitSound, target.position);
+            Terraria.Audio.SoundEngine.PlaySound(target.HitSound, target.position);
             if (target.type == NPCID.TargetDummy)
                 return;
             for (int i = 0; i < 20; i++)

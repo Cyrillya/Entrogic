@@ -128,7 +128,6 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
         Vector2 Melee = Vector2.Zero;
         Vector2 Magic = Vector2.Zero;
         Vector2 Ranged = Vector2.Zero;
-        Vector2 Thrown = Vector2.Zero;
         Vector2 Summon = Vector2.Zero;
         Vector2 Another = Vector2.Zero;
 
@@ -149,7 +148,6 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
             writer.WriteVector2(Melee);
             writer.WriteVector2(Magic);
             writer.WriteVector2(Ranged);
-            writer.WriteVector2(Thrown);
             writer.WriteVector2(Summon);
             writer.WriteVector2(Another);
         }
@@ -163,7 +161,6 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
             Melee = reader.ReadVector2();
             Magic = reader.ReadVector2();
             Summon = reader.ReadVector2();
-            Thrown = reader.ReadVector2();
             Ranged = reader.ReadVector2();
             Another = reader.ReadVector2();
         }
@@ -357,7 +354,7 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
             {
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    Main.PlaySound(SoundID.Zombie, npc.Center, 104);
+                    Terraria.Audio.SoundEngine.PlaySound(SoundID.Zombie, npc.Center, 104);
                     if (Main.player[npc.target].position.X + (float)(Main.player[npc.target].width / 2) > npc.position.X + (float)(npc.width / 2))
                         dire = 1;
                     else
@@ -409,11 +406,11 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
         }
         public override void OnHitPlayer(Player target, int damage, bool crit)
         {
-            target.AddBuff(BuffType<Buffs.Enemies.Dissolve>(), Main.rand.Next(90, 151) * (Main.expertMode ? (int)Main.expertDebuffTime : 1));
+            target.AddBuff(BuffType<Buffs.Enemies.Dissolve>(), Main.rand.Next(90, 151) * (Main.expertMode ? (int)2 : 1));
         }
         public override void ModifyHitByProjectile(Projectile proj, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
-            if (proj.melee)
+            if (proj.DamageType == DamageClass.Melee)
             {
                 if (Melee.X < DefMax)
                 {
@@ -428,7 +425,7 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
                     Melee.X = DefMax;
                 damage = (int)((float)damage * (1f - Melee.X));
             }
-            else if (proj.ranged)
+            else if (proj.DamageType == DamageClass.Ranged)
             {
                 if (Ranged.X < DefMax)
                 {
@@ -443,7 +440,7 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
                     Ranged.X = DefMax;
                 damage = (int)((float)damage * (1f - Ranged.X));
             }
-            else if (proj.minion)
+            else if (proj.DamageType == DamageClass.Summon)
             {
                 if (Summon.X < DefMax)
                 {
@@ -458,7 +455,7 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
                     Summon.X = DefMax;
                 damage = (int)((float)damage * (1f - Summon.X));
             }
-            else if (proj.magic)
+            else if (proj.DamageType == DamageClass.Magic)
             {
                 if (Magic.X < DefMax)
                 {
@@ -472,21 +469,6 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
                 if (Magic.X >= DefMax)
                     Magic.X = DefMax;
                 damage = (int)((float)damage * (1f - Magic.X));
-            }
-            else if (proj.thrown)
-            {
-                if (Thrown.X < DefMax)
-                {
-                    Thrown.Y += damage;
-                }
-                while (Thrown.Y >= 60)
-                {
-                    Thrown.X += 0.01f;
-                    Thrown.Y -= 60;
-                }
-                if (Thrown.X >= DefMax)
-                    Thrown.X = DefMax;
-                damage = (int)((float)damage * (1f - Thrown.X));
             }
             else
             {
@@ -506,7 +488,7 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
         }
         public override void ModifyHitByItem(Player player, Item item, ref int damage, ref float knockback, ref bool crit)
         {
-            if (item.melee)
+            if (item.DamageType == DamageClass.Melee)
             {
                 if (Melee.X < DefMax)
                 {
@@ -521,7 +503,7 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
                     Melee.X = DefMax;
                 damage = (int)((float)damage * (1f - Melee.X));
             }
-            else if (item.ranged)
+            else if (item.DamageType == DamageClass.Ranged)
             {
                 if (Ranged.X < DefMax)
                 {
@@ -536,7 +518,7 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
                     Ranged.X = DefMax;
                 damage = (int)((float)damage * (1f - Ranged.X));
             }
-            else if (item.summon)
+            else if (item.DamageType == DamageClass.Summon)
             {
                 if (Summon.X < DefMax)
                 {
@@ -551,7 +533,7 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
                     Summon.X = DefMax;
                 damage = (int)((float)damage * (1f - Summon.X));
             }
-            else if (item.magic)
+            else if (item.DamageType == DamageClass.Magic)
             {
                 if (Magic.X < DefMax)
                 {
@@ -565,21 +547,6 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
                 if (Magic.X >= DefMax)
                     Magic.X = DefMax;
                 damage = (int)((float)damage * (1f - Magic.X));
-            }
-            else if (item.thrown)
-            {
-                if (Thrown.X < DefMax)
-                {
-                    Thrown.Y += damage;
-                }
-                while (Thrown.Y >= 60)
-                {
-                    Thrown.X += 0.01f;
-                    Thrown.Y -= 60;
-                }
-                if (Thrown.X >= DefMax)
-                    Thrown.X = DefMax;
-                damage = (int)((float)damage * (1f - Thrown.X));
             }
             else
             {

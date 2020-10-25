@@ -10,7 +10,8 @@ using ReLogic.Graphics;
 using Entrogic.UI;
 using Entrogic.Items.Weapons.Card;
 using System.Collections.Generic;
-
+using ReLogic.Content;
+using Terraria.GameContent;
 
 namespace Entrogic.UI.Cards
 {
@@ -43,7 +44,7 @@ namespace Entrogic.UI.Cards
         internal Vector2 Size = new Vector2(64f, 64f);
         internal int number;
         internal Vector2 position;
-        public UICardGridButton(Texture2D texture, int num, Vector2 pos) : base(texture)
+        public UICardGridButton(Asset<Texture2D> texture, int num, Vector2 pos) : base(texture)
         {
             number = num;
             position = pos;
@@ -61,8 +62,8 @@ namespace Entrogic.UI.Cards
                     Main.hoverItemName = ContainedItem.Name;
                     Main.HoverItem = ContainedItem.Clone();
                 }
-                var frame = Main.itemAnimations[ContainedItem.type] != null ? Main.itemAnimations[ContainedItem.type].GetFrame(Main.itemTexture[ContainedItem.type]) : Main.itemTexture[ContainedItem.type].Frame(1, 1, 0, 0);
-                Texture2D tex = Main.itemTexture[ContainedItem.type];
+                var frame = Main.itemAnimations[ContainedItem.type] != null ? Main.itemAnimations[ContainedItem.type].GetFrame((Texture2D)TextureAssets.Item[ContainedItem.type]) : ((Texture2D)TextureAssets.Item[ContainedItem.type]).Frame(1, 1, 0, 0);
+                Texture2D tex = (Texture2D)TextureAssets.Item[ContainedItem.type];
                 spriteBatch.Draw(tex, position + Size * 0.5f - tex.Size() * 0.5f + new Vector2(2f, -1f), new Rectangle?(frame), Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
             }
         }
@@ -123,7 +124,7 @@ namespace Entrogic.UI.Cards
                     }
                 }
             }
-            Main.PlaySound(SoundID.Grab, -1, -1, 1, 1f, 0.0f);
+            Terraria.Audio.SoundEngine.PlaySound(SoundID.Grab, -1, -1, 1, 1f, 0.0f);
             if (player.CardType[number] != 0 && mouseItem.type == ItemID.None)
             {
                 Item item = new Item();

@@ -102,14 +102,14 @@ namespace Entrogic.NPCs.Enemies
         }
         public override void PostDraw(SpriteBatch spriteBatch, Color drawColor)
         {
-            Texture2D texture = Main.npcTexture[npc.type];
+            Texture2D texture = ((Texture2D)Terraria.GameContent.TextureAssets.Npc[npc.type]);
             SpriteEffects effects = (npc.spriteDirection == -1) ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             spriteBatch.Draw(texture, npc.Center - Main.screenPosition + new Vector2(0f, npc.gfxOffY + 2f), new Rectangle?(npc.frame), Color.White, npc.rotation, Utils.Size(npc.frame) / 2f, npc.scale, effects, 0f);
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             SpriteEffects effects = (npc.spriteDirection == -1) ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            Vector2 origin = new Vector2((float)(Main.npcTexture[npc.type].Width / 2), (float)(Main.npcTexture[npc.type].Height / Main.npcFrameCount[npc.type] / 2));
+            Vector2 origin = new Vector2((float)(((Texture2D)Terraria.GameContent.TextureAssets.Npc[npc.type]).Width / 2), (float)(((Texture2D)Terraria.GameContent.TextureAssets.Npc[npc.type]).Height / Main.npcFrameCount[npc.type] / 2));
             for (int i = 1; i < npc.oldPos.Length; i++)
             {
                 Color color = Lighting.GetColor((int)((double)npc.position.X + (double)npc.width * 0.5) / 16, (int)(((double)npc.position.Y + (double)npc.height * 0.5) / 16.0));
@@ -117,7 +117,7 @@ namespace Entrogic.NPCs.Enemies
                 color2 = Color.Lerp(color2, Color.White, 0.5f);
                 color2 = npc.GetAlpha(color2);
                 color2 *= (float)(npc.oldPos.Length - i) / 15f;
-                Main.spriteBatch.Draw(Main.npcTexture[npc.type], new Vector2(npc.position.X - Main.screenPosition.X + (float)(npc.width / 2) - (float)Main.npcTexture[npc.type].Width * npc.scale / 2f + origin.X * npc.scale, npc.position.Y - Main.screenPosition.Y + (float)npc.height - (float)Main.npcTexture[npc.type].Height * npc.scale / (float)Main.npcFrameCount[npc.type] + 4f + origin.Y * npc.scale) - npc.velocity * (float)i * 0.5f, new Rectangle?(npc.frame), color2, npc.rotation, origin, npc.scale, effects, 0f);
+                Main.spriteBatch.Draw(((Texture2D)Terraria.GameContent.TextureAssets.Npc[npc.type]), new Vector2(npc.position.X - Main.screenPosition.X + (float)(npc.width / 2) - (float)((Texture2D)Terraria.GameContent.TextureAssets.Npc[npc.type]).Width * npc.scale / 2f + origin.X * npc.scale, npc.position.Y - Main.screenPosition.Y + (float)npc.height - (float)((Texture2D)Terraria.GameContent.TextureAssets.Npc[npc.type]).Height * npc.scale / (float)Main.npcFrameCount[npc.type] + 4f + origin.Y * npc.scale) - npc.velocity * (float)i * 0.5f, new Rectangle?(npc.frame), color2, npc.rotation, origin, npc.scale, effects, 0f);
             }
             return false;
         }

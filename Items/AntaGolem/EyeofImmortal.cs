@@ -82,12 +82,12 @@ namespace Entrogic.Items.AntaGolem
                 projectile.soundDelay *= 2;
                 if (projectile.ai[0] != 1f)
                 {
-                    Main.PlaySound(SoundID.Item15, projectile.position);
+                    Terraria.Audio.SoundEngine.PlaySound(SoundID.Item15, projectile.position);
                 }
             }
             if (projectile.ai[0] == 181f)
             {
-                Main.PlaySound(SoundID.NPCKilled, (int)projectile.position.X, (int)projectile.position.Y, 17, 1f, 0f);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.NPCKilled, (int)projectile.position.X, (int)projectile.position.Y, 17, 1f, 0f);
             }
             if (projectile.ai[0] > 10f && !flag42)
             {

@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
+using ReLogic.Content;
+
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 
 namespace Entrogic.UI
 {
-    [CopyFromExampleMod]
 	// This UIHoverImageButton class inherits from UIImageButton. 
 	// Inheriting is a great tool for UI design. 
 	// By inheriting, we get the Image drawing, MouseOver sound, and fading for free from UIImageButton
@@ -14,7 +16,7 @@ namespace Entrogic.UI
 	{
 		internal string HoverText;
 
-		public UIHoverImageButton(Texture2D texture, string hoverText) : base(texture) {
+		public UIHoverImageButton(Asset<Texture2D> texture, string hoverText) : base(texture) {
 			HoverText = hoverText;
 		}
 

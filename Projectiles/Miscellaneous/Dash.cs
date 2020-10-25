@@ -13,7 +13,7 @@ namespace Entrogic.Projectiles.Miscellaneous
     {
         public override void SetDefaults()
         {
-            projectile.melee = true;
+            projectile.DamageType = DamageClass.Melee;
             projectile.width = 20;
             projectile.height = 42;
             projectile.penetrate = -1;

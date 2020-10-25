@@ -16,9 +16,9 @@ namespace Entrogic.Items.Weapons.Melee.Sword
             item.rare = ItemRarityID.Blue;
             item.useTime = 40;
             item.useAnimation = 40;
-            item.useStyle = ItemUseStyleID.SwingThrow;
+            item.useStyle = ItemUseStyleID.Swing;
             item.autoReuse = true;
-            item.melee = true;
+            item.DamageType = DamageClass.Melee;
             item.value = Item.sellPrice(0, 0, 90, 0);
             item.UseSound = SoundID.Item1;
             item.scale = 0.9f;

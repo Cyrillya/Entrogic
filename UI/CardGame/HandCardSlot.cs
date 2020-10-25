@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Terraria;
+using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -33,7 +34,7 @@ namespace Entrogic.UI.CardGame
         private bool StartAnimation;
         private int AnimationTimer;
         private Vector2 AnimationPosition;
-        public HandCardSlot(int index) : base(Main.magicPixel) // 无贴图
+        public HandCardSlot(int index) : base((Texture2D)TextureAssets.MagicPixel) // 无贴图
         {
             Index = index;
         }
@@ -91,15 +92,15 @@ namespace Entrogic.UI.CardGame
             //spriteBatch.Draw(ModContent.GetTexture("Entrogic/UI/Cards/HelpGrid"), finalUIPosition, uiColor);
             if (!Animationing && inventoryItem.type != ItemID.None && inventoryItem != null)
             {
-                Texture2D t = Main.itemTexture[inventoryItem.type];
-                var frame = Main.itemAnimations[inventoryItem.type] != null ? Main.itemAnimations[inventoryItem.type].GetFrame(Main.itemTexture[inventoryItem.type]) : Main.itemTexture[inventoryItem.type].Frame(1, 1, 0, 0);
+                Texture2D t = (Texture2D)TextureAssets.Item[inventoryItem.type];
+                var frame = Main.itemAnimations[inventoryItem.type] != null ? Main.itemAnimations[inventoryItem.type].GetFrame((Texture2D)TextureAssets.Item[inventoryItem.type]) : ((Texture2D)TextureAssets.Item[inventoryItem.type]).Frame(1, 1, 0, 0);
                 spriteBatch.Draw(t, finalUIPosition, (Rectangle?)frame, Color.White * alpha);
             }
 
             if (Animationing)
             {
-                Texture2D t = Main.itemTexture[inventoryItem.type];
-                var frame = Main.itemAnimations[inventoryItem.type] != null ? Main.itemAnimations[inventoryItem.type].GetFrame(Main.itemTexture[inventoryItem.type]) : Main.itemTexture[inventoryItem.type].Frame(1, 1, 0, 0);
+                Texture2D t = (Texture2D)TextureAssets.Item[inventoryItem.type];
+                var frame = Main.itemAnimations[inventoryItem.type] != null ? Main.itemAnimations[inventoryItem.type].GetFrame((Texture2D)TextureAssets.Item[inventoryItem.type]) : ((Texture2D)TextureAssets.Item[inventoryItem.type]).Frame(1, 1, 0, 0);
 
                 Main.spriteBatch.End();
                 Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.UIScaleMatrix);
@@ -148,7 +149,7 @@ namespace Entrogic.UI.CardGame
         private bool StartAnimation;
         private int AnimationTimer;
         private Vector2 AnimationPosition;
-        public NPCCardSlot() : base(Main.magicPixel) // 无贴图
+        public NPCCardSlot() : base((Texture2D)TextureAssets.MagicPixel) // 无贴图
         {
         }
         public void Update()
@@ -187,8 +188,8 @@ namespace Entrogic.UI.CardGame
             CardFightableNPC fightNPC = (CardFightableNPC)npc.modNPC;
             if (Animationing)
             {
-                Texture2D t = Main.itemTexture[inventoryItem.type];
-                var frame = Main.itemAnimations[inventoryItem.type] != null ? Main.itemAnimations[inventoryItem.type].GetFrame(Main.itemTexture[inventoryItem.type]) : Main.itemTexture[inventoryItem.type].Frame(1, 1, 0, 0);
+                Texture2D t = (Texture2D)TextureAssets.Item[inventoryItem.type];
+                var frame = Main.itemAnimations[inventoryItem.type] != null ? Main.itemAnimations[inventoryItem.type].GetFrame((Texture2D)TextureAssets.Item[inventoryItem.type]) : ((Texture2D)TextureAssets.Item[inventoryItem.type]).Frame(1, 1, 0, 0);
 
                 Main.spriteBatch.SafeEnd();
                 Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.UIScaleMatrix);
@@ -219,10 +220,11 @@ namespace Entrogic.UI.CardGame
             NPC npc = Main.npc[clientModPlayer.CardGameNPCIndex];
             CardFightableNPC fightNPC = (CardFightableNPC)npc.modNPC;
             Item item = new Item();
-            // 命名空间的第一个字符串即为Mod内部名（当然乱命名也没法了）
-            Mod currentCardMod = ModLoader.GetMod(fightNPC.currentCard.GetType().FullName.Split('.')[0]);
+            // [不需要用到]命名空间的第一个字符串即为Mod内部名（当然乱命名也没法了）
+            //Mod currentCardMod = ModLoader.GetMod(fightNPC.currentCard.GetType().FullName.Split('.')[0]);
             // 通过类名寻找相应物品
-            item.SetDefaults(currentCardMod.GetItem(fightNPC.currentCard.GetType().Name).item.type);
+            //item.SetDefaults(currentCardMod.GetItem(fightNPC.currentCard.GetType().Name).item.type);
+            item.SetDefaults(Entrogic.ModItems.Find(s => s.Name == fightNPC.currentCard.Name).Type);
             inventoryItem = item;
             //foreach (var card in Entrogic.ModItems)
             //{

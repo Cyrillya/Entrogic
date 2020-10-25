@@ -10,12 +10,7 @@ namespace Entrogic.Projectiles.Arcane
         public sealed override void SetDefaults()
         {
             ArcaneDefaults();
-            projectile.melee = false;
-            projectile.magic = false;
-            projectile.ranged = false;
-            projectile.thrown = false;
-            projectile.minion = false;
-            projectile.GetGlobalProjectile<EntrogicProjectile>().arcane = true;
+            projectile.DamageType = ModContent.GetInstance<ArcaneDamageClass>();
         }
         public virtual void ArcaneDefaults() { }
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)

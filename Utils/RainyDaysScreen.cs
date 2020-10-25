@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -39,9 +40,9 @@ namespace Entrogic
             if (maxDepth >= 0 && minDepth < 0)
             {
                 int color = 0;
-                spriteBatch.Draw(Main.blackTileTexture, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), new Color(color, color, color, 60f) * intensity);
+                spriteBatch.Draw((Texture2D)TextureAssets.BlackTile, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), new Color(color, color, color, 60f) * intensity);
                 Main.numClouds = 172;
-                Main.windSpeed = 0.3f + 3f * (intensity * 2f);
+                Main.windSpeedCurrent = 0.3f + 3f * (intensity * 2f);
             }
         }
 
