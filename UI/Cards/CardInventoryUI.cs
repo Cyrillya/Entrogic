@@ -10,6 +10,7 @@ using ReLogic.Graphics;
 using Entrogic.UI;
 using Entrogic.Items.Weapons.Card;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 
 namespace Entrogic.UI.Cards
 {
@@ -17,7 +18,7 @@ namespace Entrogic.UI.Cards
     {
         internal bool slotActive = false;
         internal static bool IsActive = false;//UI开启的bool
-        internal Vector2 statPoint = new Vector2(40f, 280f);
+        internal Vector2 statPoint => new Vector2(Main.GameModeInfo.IsJourneyMode ? 80f : 40f, 283f);
         UIHoverImageButton InventoryHighlight = new UIHoverImageButton(GetTexture("Entrogic/UI/Cards/Inventory_Highlight"), "卡牌背包");
         UIHoverImageButton Inventory = new UIHoverImageButton(GetTexture("Entrogic/UI/Cards/Inventory"), "卡牌背包");
         public List<CardInventoryGridSlot> Grid = new List<CardInventoryGridSlot>();
@@ -52,6 +53,9 @@ namespace Entrogic.UI.Cards
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
+            Vector2 inventory = new Vector2(30f, 32f);
+            Inventory.Left.Pixels = statPoint.X - inventory.X * 0.5f;
+            Inventory.Top.Pixels = statPoint.Y - inventory.Y * 0.5f;
             base.Draw(spriteBatch);
             if (slotActive && (Main.npcShop != 0 || Main.HoverItem.favorited || Main.LocalPlayer.chest != -1))
             {

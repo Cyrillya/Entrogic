@@ -150,7 +150,6 @@ namespace Entrogic
                 Item.NewItem(npc.getRect(), ItemType<GoldenHarvest>());
             //if (Main.eclipse && Main.rand.NextBool(100)) Item.NewItem(npc.getRect(), ModContent.ItemType<衰变立场>());
 
-            Item.NewItem(npc.getRect(), Main.rand.Next(Main.maxItemTypes, Entrogic.MaxItemTypes));
             if (Main.rand.NextBool(8) && IsSeaEnemies(npc))
                 if (!EntrogicWorld.IsDownedPollutionElemental)
                     Item.NewItem(npc.getRect(), ItemType<SoulOfPure>(), Main.rand.Next(1, 2 + 1));

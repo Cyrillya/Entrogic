@@ -14,6 +14,10 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
 {
     public class TheStorm : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+        }
         public override void SetDefaults()
         {
             item.damage = 23;

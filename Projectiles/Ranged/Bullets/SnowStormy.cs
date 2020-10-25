@@ -1,17 +1,53 @@
 ﻿using System;
 using Entrogic.Dusts;
-using Entrogic.Shaders;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.Audio;
+using Terraria.Graphics;
 using Terraria.ModLoader;
+using Terraria.Graphics.Shaders;
 
 namespace Entrogic.Projectiles.Ranged.Bullets
 {
 	public class SnowStormy : ModProjectile
 	{
+        public override void Load()
+        {
+            On.Terraria.Graphics.RainbowRodDrawer.Draw += RainbowRodDrawer_Draw;
+        }
+
+		private static VertexStrip _vertexStrip = new VertexStrip();
+		private void RainbowRodDrawer_Draw(On.Terraria.Graphics.RainbowRodDrawer.orig_Draw orig, ref Terraria.Graphics.RainbowRodDrawer self, Projectile proj)
+        {
+			if (proj.type == Type)
+			{
+				MiscShaderData miscShaderData = GameShaders.Misc["RainbowRod"];
+				miscShaderData.UseSaturation(-2.8f);
+				miscShaderData.UseOpacity(40f);
+				miscShaderData.Apply(null);
+				_vertexStrip.PrepareStripWithProceduralPadding(proj.oldPos, proj.oldRot, new VertexStrip.StripColorFunction(this.StripColors), new VertexStrip.StripHalfWidthFunction(this.StripWidth), -Main.screenPosition + proj.Size / 2f, false);
+				_vertexStrip.DrawTrail();
+				Main.pixelShader.CurrentTechnique.Passes[0].Apply();
+			}
+			else orig(ref self, proj);
+		}
+		private Color StripColors(float progressOnStrip)
+		{
+			Color value = Main.hslToRgb((progressOnStrip * 1.6f - Main.GlobalTimeWrappedHourly) % 1f, 1f, 0.5f, byte.MaxValue);
+			Color result = Color.Lerp(Color.White, Color.White, Utils.GetLerpValue(-0.2f, 0.5f, progressOnStrip, true)) * (1f - Utils.GetLerpValue(0f, 0.98f, progressOnStrip, false));
+			result.A = 0;
+			return result;
+		}
+		private float StripWidth(float progressOnStrip)
+		{
+			float num = 1f;
+			float lerpValue = Utils.GetLerpValue(0f, 0.2f, progressOnStrip, true);
+			num *= 1f - (1f - lerpValue) * (1f - lerpValue);
+			return MathHelper.Lerp(0f, 32f, num);
+		}
+
 		public override void SetDefaults()
 		{
 			projectile.width = 16;
@@ -40,13 +76,14 @@ namespace Entrogic.Projectiles.Ranged.Bullets
 
 		public override void PostDraw(SpriteBatch spriteBatch, Color lightColor)
 		{
-			default(RainbowRodDrawer).Draw(projectile, Color.White, 2.8f, 40f);
+			default(RainbowRodDrawer).Draw(projectile/*, Color.White, 2.8f, 40f*/);
 			base.PostDraw(spriteBatch, lightColor);
 		}
 
 		public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
 		{
-			return base.PreDraw(spriteBatch, lightColor);
+			// 1.4 tML特性，PreDraw为false才会调用PostDraw
+			return false;//base.PreDraw(spriteBatch, lightColor);
 		}
 
 		public override void Kill(int timeLeft)

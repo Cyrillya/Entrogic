@@ -98,10 +98,6 @@ namespace Entrogic
 			AddIntoTextureTable("拟态魔能_7");
 			AddIntoTextureTable("拟态魔能_8");
 			AddIntoTextureTable("拟态魔能_9");
-			AddIntoTextureTable("MagicMissile0");
-			AddIntoTextureTable("MagicMissile1");
-			AddIntoTextureTable("MagicMissile2");
-			AddIntoTextureTable("MagicMissile-RainbowRod");
 
 			//IDictionary<string, Texture2D> textures = (IDictionary<string, Texture2D>)typeof(Mod).GetField("textures",
 			//	System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(Entrogic.Instance);
@@ -148,7 +144,6 @@ namespace Entrogic
 			try
 			{
 				PixelShader = null;
-				MagicMissile = null;
 				LoadShaders();
 			}
 			catch (Exception ex)
@@ -157,7 +152,6 @@ namespace Entrogic
 			}
 		}
 		public static Effect PixelShader;
-		public static EMiscShaderData MagicMissile;
 		private static void LoadShaders()
 		{
 			Filters.Scene["Entrogic:RainyDaysScreen"] = new Filter(new PollutionElementalScreenShaderData("FilterMiniTower").UseColor(0.2f, 0.2f, 0.4f).UseOpacity(0.3f), EffectPriority.VeryHigh);
@@ -184,13 +178,6 @@ namespace Entrogic
 			Filters.Scene["Entrogic:GooddShader"].Load();
 			Filters.Scene["Entrogic:Blur"] = new Filter(new ScreenShaderData(new Ref<Effect>((Effect)Entrogic.Instance.GetEffect("Effects/Blur")), "Blur"), EffectPriority.VeryHigh);
 			Filters.Scene["Entrogic:Blur"].Load();
-
-
-			PixelShader = (Effect)Entrogic.Instance.GetEffect("Effects/PixelShader");
-			MagicMissile = new EMiscShaderData(new Ref<Effect>(PixelShader), "MagicMissile").UseProjectionMatrix(true);
-			MagicMissile.UseImage0((Texture2D)Entrogic.ModTexturesTable["MagicMissile2"]);
-			MagicMissile.UseImage1((Texture2D)Entrogic.ModTexturesTable["MagicMissile0"]);
-			MagicMissile.UseImage2((Texture2D)Entrogic.ModTexturesTable["MagicMissile1"]);
 		}
 	}
 }

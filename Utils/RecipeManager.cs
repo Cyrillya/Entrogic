@@ -16,81 +16,78 @@ namespace Entrogic
         public static void Load(Mod mod)
         {
             AddRecipeGroups();
+
             // 赫尔墨斯之靴
-            //Mod.CreateRecipe(ItemID.HermesBoots)
-            //    .AddIngredient(ItemID.Silk, 3)
-            //    .AddIngredient(ModContent.ItemType<SoulOfPure>(), 5)
-            //    .AddTile(TileID.WorkBenches)
-            //    .Register();
+            Recipe hermers = ModContent.GetInstance<Entrogic>().CreateRecipe(ItemID.HermesBoots);
+            hermers.AddIngredient(ItemID.Silk, 3);
+            hermers.AddIngredient(ModContent.ItemType<SoulOfPure>(), 5);
+            hermers.AddTile(TileID.WorkBenches);
+            hermers.Register();
 
             // 金字塔独特产品
-            //Mod.CreateRecipe(ItemID.FlyingCarpet)
-            //    .AddIngredient(ItemID.SandstoneBrick, 30)
-            //    .AddIngredient(ModContent.ItemType<SoulOfPure>(), 5)
-            //    .AddTile(TileID.WorkBenches)
-            //    .Register();
-            //Mod.CreateRecipe(ItemID.SandstorminaBottle)
-            //    .AddIngredient(ItemID.SandBlock, 50)
-            //    .AddIngredient(ItemID.Bottle, 1)
-            //    .AddIngredient(ModContent.ItemType<SoulOfPure>(), 5)
-            //    .AddTile(TileID.WorkBenches)
-            //    .Register();
+            Recipe pyramidThings = ModContent.GetInstance<Entrogic>().CreateRecipe(ItemID.FlyingCarpet);
+            pyramidThings.AddIngredient(ItemID.SandstoneBrick, 30);
+            pyramidThings.AddIngredient(ModContent.ItemType<SoulOfPure>(), 5);
+            pyramidThings.AddTile(TileID.WorkBenches);
+            pyramidThings.Register();
+            pyramidThings = ModContent.GetInstance<Entrogic>().CreateRecipe(ItemID.SandstorminaBottle);
+            pyramidThings.AddIngredient(ItemID.SandBlock, 50);
+            pyramidThings.AddIngredient(ItemID.Bottle, 1);
+            pyramidThings.AddIngredient(ModContent.ItemType<SoulOfPure>(), 5);
+            pyramidThings.AddTile(TileID.WorkBenches);
+            pyramidThings.Register();
 
-            //// 空岛独特产品
-            //Mod.CreateRecipe(ItemID.ShinyRedBalloon)
-            //    .AddIngredient(ItemID.Cloud, 10)
-            //    .AddIngredient(ItemID.RainCloud, 10)
-            //    .AddIngredient(ItemID.Umbrella, 1)
-            //    .AddIngredient(ModContent.ItemType<SoulOfPure>(), 5)
-            //    .AddTile(TileID.WorkBenches)
-            //    .Register();
-            //Mod.CreateRecipe(ItemID.LuckyHorseshoe)
-            //    .AddIngredient(ItemID.Umbrella, 1)
-            //    .AddRecipeGroup("Entrogic:GoldBar", 5)
-            //    .AddIngredient(ModContent.ItemType<SoulOfPure>(), 5)
-            //    .AddTile(TileID.WorkBenches)
-            //    .Register();
-            //Mod.CreateRecipe(ItemID.FloatingIslandFishingCrate)
-            //    .AddIngredient(ItemID.SkywareChest, 1)
-            //    .AddIngredient(ModContent.ItemType<SoulOfPure>(), 20)
-            //    .AddTile(TileID.AlchemyTable)
-            //    .AddCondition(Recipe.Condition.NearWater)
-            //    .Register();
+            // 空岛独特产品
+            Recipe skyThings = ModContent.GetInstance<Entrogic>().CreateRecipe(ItemID.ShinyRedBalloon);
+            skyThings.AddIngredient(ItemID.Cloud, 10);
+            skyThings.AddIngredient(ItemID.RainCloud, 10);
+            skyThings.AddIngredient(ItemID.Umbrella, 1);
+            skyThings.AddIngredient(ModContent.ItemType<SoulOfPure>(), 5);
+            skyThings.AddTile(TileID.WorkBenches);
+            skyThings.Register();
+            skyThings = ModContent.GetInstance<Entrogic>().CreateRecipe(ItemID.LuckyHorseshoe);
+            skyThings.AddIngredient(ItemID.Umbrella, 1);
+            skyThings.AddRecipeGroup("Entrogic:GoldBar", 5);
+            skyThings.AddIngredient(ModContent.ItemType<SoulOfPure>(), 5);
+            skyThings.AddTile(TileID.WorkBenches);
+            skyThings.Register();
+            skyThings = ModContent.GetInstance<Entrogic>().CreateRecipe(ItemID.FloatingIslandFishingCrate);
+            skyThings.AddIngredient(ItemID.SkywareChest, 1);
+            skyThings.AddIngredient(ModContent.ItemType<SoulOfPure>(), 20);
+            skyThings.AddCondition(Recipe.Condition.NearWater);
+            skyThings.AddTile(TileID.AlchemyTable);
+            skyThings.Register();
 
-            //// 雨伞
-            //Mod.CreateRecipe(ItemID.Umbrella)
-            //    .AddIngredient(ItemID.Silk, 5)
-            //    .AddTile(TileID.WorkBenches)
-            //    .Register();
+            // 雨伞
+            Recipe umbrella = ModContent.GetInstance<Entrogic>().CreateRecipe(ItemID.Umbrella);
+            umbrella.AddIngredient(ItemID.Silk, 5);
+            umbrella.AddTile(TileID.WorkBenches);
+            umbrella.Register();
 
-            //// 四纹章
-            //Mod.CreateRecipe(ItemID.RangerEmblem)
-            //    .AddIngredient(ItemID.StoneBlock)
-            //    .AddRecipeGroup("Entrogic:FourEmblem")
-            //    .AddTile(TileID.TinkerersWorkbench)
-            //    .Register();
-            //Mod.CreateRecipe(ItemID.SorcererEmblem)
-            //    .AddIngredient(ItemID.StoneBlock)
-            //    .AddRecipeGroup("Entrogic:FourEmblem")
-            //    .AddTile(TileID.TinkerersWorkbench)
-            //    .Register();
-            //Mod.CreateRecipe(ItemID.SummonerEmblem)
-            //    .AddIngredient(ItemID.StoneBlock)
-            //    .AddRecipeGroup("Entrogic:FourEmblem")
-            //    .AddTile(TileID.TinkerersWorkbench)
-            //    .Register();
-            //Mod.CreateRecipe(ItemID.WarriorEmblem)
-            //    .AddIngredient(ItemID.StoneBlock)
-            //    .AddRecipeGroup("Entrogic:FourEmblem")
-            //    .AddTile(TileID.TinkerersWorkbench)
-            //    .Register();
+            // 四纹章
+            Recipe emblems = ModContent.GetInstance<Entrogic>().CreateRecipe(ItemID.RangerEmblem);
+            emblems.AddRecipeGroup("Entrogic:FourEmblem");
+            emblems.AddTile(TileID.TinkerersWorkbench);
+            emblems.Register();
+            emblems = ModContent.GetInstance<Entrogic>().CreateRecipe(ItemID.SorcererEmblem);
+            emblems.AddRecipeGroup("Entrogic:FourEmblem");
+            emblems.AddTile(TileID.TinkerersWorkbench);
+            emblems.Register();
+            emblems = ModContent.GetInstance<Entrogic>().CreateRecipe(ItemID.SummonerEmblem);
+            emblems.AddRecipeGroup("Entrogic:FourEmblem");
+            emblems.AddTile(TileID.TinkerersWorkbench);
+            emblems.Register();
+            emblems = ModContent.GetInstance<Entrogic>().CreateRecipe(ItemID.WarriorEmblem);
+            emblems.AddRecipeGroup("Entrogic:FourEmblem");
+            emblems.AddTile(TileID.TinkerersWorkbench);
+            emblems.Register();
 
-            //// 金虫网
-            //Mod.CreateRecipe(ItemID.GoldenBugNet)
-            //    .AddIngredient(ItemID.BugNet)
-            //    .AddRecipeGroup("Entrogic:GoldBar", 5)
-            //    .AddTile(TileID.TinkerersWorkbench)
-            //    .Register();
+            // 金虫网
+            Recipe goldenNet = ModContent.GetInstance<Entrogic>().CreateRecipe(ItemID.GoldenBugNet);
+            goldenNet.AddIngredient(ItemID.BugNet);
+            goldenNet.AddRecipeGroup("Entrogic:GoldBar", 5);
+            goldenNet.AddTile(TileID.TinkerersWorkbench);
+            goldenNet.Register();
         }
 
         public static void AddRecipeGroups()

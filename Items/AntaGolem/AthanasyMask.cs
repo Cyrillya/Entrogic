@@ -16,10 +16,5 @@ namespace Entrogic.Items.AntaGolem
             item.vanity = true;
             item.value = Item.sellPrice(0, 0, 20, 0);
         }
-
-        public override bool DrawHead()
-        {
-            return false;
-        }
     }
 }
