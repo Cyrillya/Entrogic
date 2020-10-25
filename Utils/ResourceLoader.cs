@@ -3,7 +3,6 @@ using Entrogic.Items.Weapons.Card.Organisms;
 using Entrogic.NPCs.Boss.AntaGolem;
 using Entrogic.NPCs.Boss.PollutElement;
 using Entrogic.NPCs.CardMerchantSystem;
-using Entrogic.Shaders;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
