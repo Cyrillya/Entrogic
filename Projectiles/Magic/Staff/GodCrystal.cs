@@ -144,7 +144,7 @@ namespace Entrogic.Projectiles.Magic.Staff
     }
     public class FC : ModProjectile
     {
-        public override string Texture => "Entrogic/Images/Block";
+        public override string Texture => "Entrogic/Assets/Images/Block";
         public override void SetDefaults()
         {
             projectile.Size = new Vector2(64);
@@ -153,7 +153,7 @@ namespace Entrogic.Projectiles.Magic.Staff
             projectile.alpha = 255;
             projectile.hide = projectile.friendly = true;
         }
-        public override bool CanDamage()
+        public override bool? CanDamage()
         {
             return false;
         }

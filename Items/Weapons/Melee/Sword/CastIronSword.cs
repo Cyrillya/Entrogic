@@ -8,6 +8,10 @@ namespace Entrogic.Items.Weapons.Melee.Sword
 {
     public class CastIronSword : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        }
         public override void SetDefaults()
         {
             item.damage = 43;

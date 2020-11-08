@@ -12,7 +12,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameInput;
 using Terraria.ModLoader.IO;
-using Entrogic.Items.Equipables.Armor;
 using Terraria.Audio;
 using Entrogic.Items.Weapons.Melee.Sword;
 using Entrogic.NPCs.Boss.PollutElement;
@@ -37,6 +36,8 @@ using Entrogic.NPCs.CardMerchantSystem;
 using Entrogic.NPCs.CardFightable.Particles;
 using Terraria.IO;
 using Terraria.Social;
+using Entrogic.Items.Weapons.Summon.Whip;
+using Entrogic.Common;
 //using Entrogic.UI;
 
 namespace Entrogic
@@ -167,7 +168,6 @@ namespace Entrogic
 
             CanAmmoCost85 = false;
             CanAmmoCost90 = false;
-            德摩斯Item.twiceChance = false;
             CanExplode = false;
             CanPollutionRing = false;
             ProjectieHasArmorPenetration = false;
@@ -218,7 +218,6 @@ namespace Entrogic
             CanAmmoCost85 = false;
             CanAmmoCost90 = false;
 
-            德摩斯Item.twiceChance = false;
             CanExplode = false;
             CanPollutionRing = false;
 
@@ -325,14 +324,24 @@ namespace Entrogic
         // AddStartingItems is a method you can use to add items to the player's starting inventory.
         // It is also called when the player dies a mediumcore death
         // Return an enumerable with the items you want to add to the inventory.
-        // This method adds an ExampleItem and 256 gold ore to the player's inventory.
-        // 
         // If you know what 'yield return' is, you can also use that here, if you prefer so.
         public override IEnumerable<Item> AddStartingItems(bool mediumCoreDeath)
         {
             return new[] {
                 new Item(ItemType<TheGuide>())
             };
+        }
+        // ModifyStartingItems is a more elaborate version of AddStartingItems, which lets you remove items
+        // that either vanilla or other mods add. You can technically use it to add items as well, but it's recommended
+        // to only do that in AddStartingItems.
+        // (If you want to stop another mod from adding an item, its entry is the mod's internal name, e.g itemsByMod["SomeMod"]
+        // Terraria's entry is always named just "Terraria"
+        public override void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath)
+        {
+            for (int i = 0; i < itemsByMod["Terraria"].Count; i++)
+            {
+                if (itemsByMod["Terraria"][i].type == ItemID.CopperShortsword) itemsByMod["Terraria"][i].type = ItemType<CopperSwordWhip>();
+            }
         }
 
         public int AthanasyTimer = 0;
@@ -746,10 +755,7 @@ namespace Entrogic
         /// <summary>
         /// Called after Update Accessories. 
         /// </summary>
-        /// <param name="wallSpeedBuff"></param>
-        /// <param name="tileSpeedBuff"></param>
-        /// <param name="tileRangeBuff"></param>
-        public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff)
+        public override void UpdateEquips()
         {
             if (player.armor[0].type == ItemType<Items.PollutElement.PollutionElementalMask>() && player.armor[10].headSlot < 0)
                 IsPolluHeadActive = true;
@@ -1144,124 +1150,8 @@ namespace Entrogic
                 }
             }
         }
-        int AnkhAlpha = 255;
-        float AnkhScale = 0f;
-        public static readonly PlayerLayer GelAnkhEffect = new PlayerLayer("Entrogic", "Gel Ankh", PlayerLayer.MiscEffectsFront, delegate (PlayerDrawInfo drawInfo)
-        {
-            if (drawInfo.shadow != 0f)
-            {
-                return;
-            }
-            Player drawPlayer = drawInfo.drawPlayer;
-            EntrogicPlayer modPlayer = drawPlayer.GetModPlayer<EntrogicPlayer>();
-            if (modPlayer.RebornEffectTime > 0)
-            {
-                modPlayer.RebornEffectTime--;
-                if (modPlayer.RebornEffectTime > 80)
-                    modPlayer.AnkhScale += 0.08f;
-                if (modPlayer.RebornEffectTime <= 25)
-                    modPlayer.AnkhAlpha -= 11;
-                if (modPlayer.AnkhAlpha > 255)
-                    modPlayer.AnkhAlpha = 255;
-                Texture2D texture = (Texture2D)ModTexturesTable["凝胶安卡"];
-                int drawX = (int)(drawInfo.position.X + drawPlayer.width / 2f - Main.screenPosition.X);
-                int drawY = (int)(drawInfo.position.Y + drawPlayer.height / 2f - Main.screenPosition.Y);
-
-                Main.spriteBatch.Draw(texture, new Vector2(drawX, drawY), null, new Color(modPlayer.AnkhAlpha, modPlayer.AnkhAlpha, modPlayer.AnkhAlpha, modPlayer.AnkhAlpha), 0f, texture.Size() * 0.5f, modPlayer.AnkhScale, SpriteEffects.None, 0);
-            }
-            else
-            {
-                modPlayer.AnkhScale = 0f;
-                modPlayer.AnkhAlpha = 255;
-            }
-        });
-        public static readonly PlayerLayer BookBubbleEffect = new PlayerLayer("Entrogic", "Book Bubble", PlayerLayer.MiscEffectsFront, delegate (PlayerDrawInfo drawInfo)
-        {
-            if (drawInfo.shadow != 0f)
-            {
-                return;
-            }
-            Player drawPlayer = drawInfo.drawPlayer;
-            Texture2D t = (Texture2D)ModTexturesTable["ReadingBubble"];
-            EntrogicPlayer entrogicPlayer = drawPlayer.GetModPlayer<EntrogicPlayer>();
-            if (entrogicPlayer.IsBookActive) entrogicPlayer.UseBookBubble = true;
-            if (entrogicPlayer.UseBookBubble)
-            {
-                if (!entrogicPlayer.IsClosingBook)
-                {
-                    entrogicPlayer.BookBubbleFrameCounter++;
-                    if (entrogicPlayer.BookBubbleFrameCounter >= 6)
-                    {
-                        entrogicPlayer.BookBubbleFrameCounter = 0;
-                        entrogicPlayer.BookBubbleFrame++;
-                    }
-                    if (entrogicPlayer.BookBubbleFrame >= 19) // 共19帧
-                    {
-                        entrogicPlayer.BookBubbleFrame = 4;
-                    }
-                }
-                else
-                {
-                    entrogicPlayer.BookBubbleFrameCounter++;
-                    if (entrogicPlayer.BookBubbleFrameCounter >= 6)
-                    {
-                        entrogicPlayer.BookBubbleFrameCounter = 0;
-                        entrogicPlayer.BookBubbleFrame--;
-                    }
-                    if (entrogicPlayer.BookBubbleFrame == 0)
-                    {
-                        entrogicPlayer.BookBubbleFrame = 1;
-                        entrogicPlayer.IsClosingBook = false;
-                        entrogicPlayer.UseBookBubble = false;
-                    }
-                }
-                // 帧切换结束
-                if (!entrogicPlayer.IsBookActive) // 停止后并非立刻结束，而是有一个过渡动画
-                {
-                    int frame = entrogicPlayer.BookBubbleFrame;
-                    bool IsOpeningBook = frame >= 1 && frame <= 3; // 前三帧是开书动画
-                    bool IsTurningPage = frame >= 8 && frame <= 11 || frame >= 16 && frame <= 19;
-                    bool IsStopping = !IsOpeningBook && !IsTurningPage;
-
-                    if (IsStopping)
-                    {
-                        entrogicPlayer.IsClosingBook = true;
-                    }
-                }
-                int totalFrames = 19;
-                int frameHeight = t.Height / totalFrames; // 除出来应为64
-                Rectangle _frame = new Rectangle(0, (entrogicPlayer.BookBubbleFrame - 1) * frameHeight, frameHeight, t.Width);
-                Vector2 drawPosition = drawPlayer.Center - Main.screenPosition;
-                drawPosition.Y -= 20f + frameHeight * 0.5f;
-                Vector2 origin = new Vector2(t.Width / 2, frameHeight / 2);
-                Main.spriteBatch.Draw(t,
-                    drawPosition.NoShake(),
-                    (Rectangle?)_frame,
-                    Color.White,
-                    0f,
-                    origin,
-                    1f,
-                    SpriteEffects.None,
-                    0);
-
-                if (ModHelper.MouseInRectangle(ModHelper.CreateFromVector2(drawPosition - origin, t.Width, frameHeight)) && drawPlayer.whoAmI != Main.myPlayer)
-                {
-                    Main.instance.MouseText($"{Language.GetTextValue("Mods.Entrogic.Common.Reading")}: {drawPlayer.HeldItem.Name}\n" +
-                    $"{Language.GetTextValue("Mods.Entrogic.Common.Page")}: {entrogicPlayer.PageNum * 2 - 1} ~ {entrogicPlayer.PageNum * 2}");
-                }
-            }
-        });
-        /// <summary>
-        /// Allows you to modify the drawing of the player. This is done by removing from, adding to, or rearranging the list, by setting some of the layers' visible field to false, etc.
-        /// </summary>
-        /// <param name="layers"></param>
-        public override void ModifyDrawLayers(List<PlayerLayer> layers)
-        {
-            GelAnkhEffect.visible = true;
-            layers.Add(GelAnkhEffect);
-            BookBubbleEffect.visible = true;
-            layers.Add(BookBubbleEffect);
-        }
+        public float AnkhAlpha = 1f;
+        public float AnkhScale = 0f;
 
         /// <summary>
         /// Called on the LocalPlayer when that player enters the world. SP and Client. Only called on the player who is entering. A possible use is ensuring that UI elements are reset to the configuration specified in data saved to the ModPlayer. Can also be used for informational messages.
@@ -1286,42 +1176,6 @@ namespace Entrogic
                 // 发送出去
                 packet.Send(-1, -1);
             }
-            //if (DEntrogicDebugClient.Instance.AuthorMode) { Main.NewText(PlayerFolder); }
-            //if (BEntrogicConfigServer.Instance.ClearNewPlayersCard && Main.netMode == NetmodeID.MultiplayerClient)
-            //{
-            //    if (!Directory.Exists(PlayerFolder))
-            //    {
-            //        Directory.CreateDirectory(PlayerFolder);
-            //    }
-            //    ModHelper.GetWorldPathFromName(Main.worldName, SocialAPI.Cloud != null, out string worldName);
-            //    string savePath = string.Format(PlayerFolder + "CardData" + worldName + ".entini");
-            //    if (!File.Exists(savePath))
-            //    {
-            //        for (int i = 0; i < CardType.Length; i++)
-            //        {
-            //            CardType[i] = 0;
-            //        }
-            //        SaveCardData(savePath);
-            //        LoadCardData(savePath);
-            //    }
-            //    else
-            //    {
-            //        LoadCardData(savePath);
-            //    }
-            //}
-            //else if (!Main.dedServ)
-            //{
-            //    if (!Directory.Exists(PlayerFolder))
-            //    {
-            //        Directory.CreateDirectory(PlayerFolder);
-            //    }
-            //    string path = string.Format(PlayerFolder + "CardData.entini");
-            //    if (!File.Exists(path))
-            //    {
-            //        SaveCardData(path);
-            //    }
-            //    LoadCardData(path);
-            //}
 
             for (int i = 0; i < CardReadyType.Length; i++)
             {
@@ -1337,7 +1191,7 @@ namespace Entrogic
             {
                 CardGraveType[i] = 0;
             }
-            Instance.CardInventoryUI.UpdateSlots();
+            EntrogicModSystem.Instance.CardInventoryUI.UpdateSlots();
         }
 
         public override void PostBuyItem(NPC vendor, Item[] shopInventory, Item item)
@@ -1366,33 +1220,15 @@ namespace Entrogic
             HasReborned = false;
         }
 
-        public override void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
-        {
-            if (!Main.dedServ)
-            {
-                //if (EntrogicWorld.SnowZoneTiles > 80)
-                //{
-                //    Filters.Scene.Activate("Entrogic:IceScreen", Vector2.Zero);
-                //    Filters.Scene["Entrogic:IceScreen"].GetShader().UseProgress(MathHelper.Min((float)(EntrogicWorld.SnowZoneTiles - 80) / 520f, 1.1f));
-                //}
-                //else if (Filters.Scene["Entrogic:IceScreen"].IsActive())
-                //{
-                //    Filters.Scene["Entrogic:IceScreen"].Deactivate();
-                //}
-            }
-
-            base.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
-        }
-
         public override bool ShiftClickSlot(Item[] inventory, int context, int slot)
         {
             int slotCard = ModHelper.FindFirst(CardType, 0);
-            if (inventory[slot].type != ItemID.None && !inventory[slot].IsAir && inventory[slot].GetGlobalItem<EntrogicItem>().card && slotCard != -1 && Instance.CardInventoryUI.slotActive)
+            if (inventory[slot].type != ItemID.None && !inventory[slot].IsAir && inventory[slot].GetGlobalItem<EntrogicItem>().card && slotCard != -1 && EntrogicModSystem.Instance.CardInventoryUI.slotActive)
             {
-                if (!CardInventoryGridSlot.AllowPutin(Instance.CardInventoryUI.Grid[slotCard].inventoryItem, inventory[slot], slotCard))
+                if (!CardInventoryGridSlot.AllowPutin(EntrogicModSystem.Instance.CardInventoryUI.Grid[slotCard].inventoryItem, inventory[slot], slotCard))
                     return false;
                 CardType[slotCard] = inventory[slot].type;
-                Instance.CardInventoryUI.UpdateSlots(slotCard);
+                EntrogicModSystem.Instance.CardInventoryUI.UpdateSlots(slotCard);
                 inventory[slot].stack--;
                 if (inventory[slot].stack <= 0)
                 {

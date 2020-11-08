@@ -8,6 +8,10 @@ namespace Entrogic.Items.VoluGels
     [AutoloadEquip(EquipType.Head)]
     public class VolutioMask : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        }
         public override void SetDefaults()
         {
             item.width = 18;

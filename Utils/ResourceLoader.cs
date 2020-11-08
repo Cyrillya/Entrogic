@@ -13,8 +13,9 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-
 using Terraria;
+using Terraria.ID;
+using Terraria.Audio;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
@@ -26,6 +27,9 @@ namespace Entrogic
 {
 	public static class ResourceLoader
 	{
+		// 如果variations不为0，则选取的文件为XXX{variations}
+		public static readonly SoundStyle CGChangeTurn = new ModSoundStyle("Entrogic", "Assets/Sounds/UI/CGChangeTurn", 0);
+		public static readonly SoundStyle CGHurt = new ModSoundStyle("Entrogic", "Assets/Sounds/UI/CGHurt", 0);
 		public static int OldGlowMasksLength;
 
 		public static void LoadAllTextures()
@@ -52,7 +56,7 @@ namespace Entrogic
 
 		private static void AddIntoTextureTable(string name)
 		{
-			Entrogic.ModTexturesTable.Add(name, Entrogic.Instance.GetTexture($"Images/{name}"));
+			Entrogic.ModTexturesTable.Add(name, Entrogic.Instance.GetTexture($"Assets/Images/{name}"));
 		}
 		private static void LoadTextures()
 		{
@@ -142,7 +146,7 @@ namespace Entrogic
 		{
 			try
 			{
-				PixelShader = null;
+				WhiteBlur = null;
 				LoadShaders();
 			}
 			catch (Exception ex)
@@ -150,7 +154,7 @@ namespace Entrogic
 				MessageBox.Show(ex.ToString());
 			}
 		}
-		public static Effect PixelShader;
+		public static ShaderData WhiteBlur;
 		private static void LoadShaders()
 		{
 			Filters.Scene["Entrogic:RainyDaysScreen"] = new Filter(new PollutionElementalScreenShaderData("FilterMiniTower").UseColor(0.2f, 0.2f, 0.4f).UseOpacity(0.3f), EffectPriority.VeryHigh);
@@ -159,24 +163,25 @@ namespace Entrogic
 			SkyManager.Instance["Entrogic:GrayScreen"] = new GrayScreen();
 			Filters.Scene["Entrogic:MagicStormScreen"] = new Filter(new ScreenShaderData("FilterBloodMoon").UseColor(-0.4f, -0.2f, 1.6f).UseOpacity(0.6f), EffectPriority.Medium);
 			SkyManager.Instance["Entrogic:MagicStormScreen"] = new MagicStormScreen();
-			GameShaders.Misc["ExampleMod:DeathAnimation"] = new MiscShaderData(new Ref<Effect>((Effect)Entrogic.Instance.GetEffect("Effects/ExampleEffectDeath")), "DeathAnimation").UseImage0("Images/Misc/Perlin");
-			GameShaders.Misc["Entrogic:WhiteBlur"] = new MiscShaderData(new Ref<Effect>((Effect)Entrogic.Instance.GetEffect("Effects/WhiteBlur")), "WhiteBlur");
+			GameShaders.Misc["ExampleMod:DeathAnimation"] = new MiscShaderData(new Ref<Effect>((Effect)Entrogic.Instance.GetEffect("Assets/Effects/ExampleEffectDeath")), "DeathAnimation").UseImage0("Images/Misc/Perlin");
 			//GameShaders.Misc["Entrogic:PixelShader"] = new MiscShaderData(new Ref<Effect>(GetEffect("Effects/PixelShader")), "PixelShader");
 			// First, you load in your shader file.
 			// You'll have to do this regardless of what kind of shader it is,
 			// and you'll have to do it for every shader file.
 			// This example assumes you have screen shaders.
-			Ref<Effect> screenRef = new Ref<Effect>((Effect)Entrogic.Instance.GetEffect("Effects/IceScreen"));
+			Ref<Effect> screenRef = new Ref<Effect>(Entrogic.Instance.GetEffect("Assets/Effects/IceScreen").Value);
 			Filters.Scene["Entrogic:IceScreen"] = new Filter(new ScreenShaderData(screenRef, "IceScreen"), EffectPriority.High);
 			Filters.Scene["Entrogic:IceScreen"].Load();
-			Ref<Effect> screenRef2 = new Ref<Effect>((Effect)Entrogic.Instance.GetEffect("Effects/ReallyDark"));
+			Ref<Effect> screenRef2 = new Ref<Effect>(Entrogic.Instance.GetEffect("Assets/Effects/ReallyDark").Value);
 			Filters.Scene["Entrogic:ReallyDark"] = new Filter(new ScreenShaderData(screenRef2, "ReallyDark"), EffectPriority.VeryHigh);
 			Filters.Scene["Entrogic:ReallyDark"].Load();
-			Ref<Effect> screenRef3 = new Ref<Effect>((Effect)Entrogic.Instance.GetEffect("Effects/GooddShader"));
+			Ref<Effect> screenRef3 = new Ref<Effect>(Entrogic.Instance.GetEffect("Assets/Effects/GooddShader").Value);
 			Filters.Scene["Entrogic:GooddShader"] = new Filter(new ScreenShaderData(screenRef3, "GooddShader"), EffectPriority.VeryHigh);
 			Filters.Scene["Entrogic:GooddShader"].Load();
-			Filters.Scene["Entrogic:Blur"] = new Filter(new ScreenShaderData(new Ref<Effect>((Effect)Entrogic.Instance.GetEffect("Effects/Blur")), "Blur"), EffectPriority.VeryHigh);
+			Filters.Scene["Entrogic:Blur"] = new Filter(new ScreenShaderData(new Ref<Effect>(Entrogic.Instance.GetEffect("Assets/Effects/Blur").Value), "Blur"), EffectPriority.VeryHigh);
 			Filters.Scene["Entrogic:Blur"].Load();
+
+			WhiteBlur = new ShaderData(new Ref<Effect>(Entrogic.Instance.GetEffect("Assets/Effects/WhiteBlur").Value), "WhiteBlur");
 		}
 	}
 }

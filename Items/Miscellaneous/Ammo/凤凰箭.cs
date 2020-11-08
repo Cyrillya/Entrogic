@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -10,6 +11,7 @@ namespace Entrogic.Items.Miscellaneous.Ammo
 		public override void SetStaticDefaults()
 		{
 			Tooltip.SetDefault("“圣火永不灭”");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 99;
 		}
 
 		public override void SetDefaults()

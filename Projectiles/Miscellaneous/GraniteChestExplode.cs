@@ -11,7 +11,7 @@ namespace Entrogic.Projectiles.Miscellaneous
 {
     public class GraniteChestExplode : ModProjectile
     {
-        public override string Texture => "Entrogic/Images/Block";
+        public override string Texture => "Entrogic/Assets/Images/Block";
         public override void SetStaticDefaults()
         {
 			DisplayName.SetDefault("Granite Chest");

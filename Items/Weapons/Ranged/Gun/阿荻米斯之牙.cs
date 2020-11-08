@@ -21,6 +21,7 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         {
             Tooltip.SetDefault("汇聚了泰拉大陆上最顶尖的技术（迫真）\n" +
                 "“还处于试验阶段”");
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
         public override void SetDefaults()

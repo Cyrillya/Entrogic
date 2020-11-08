@@ -21,6 +21,7 @@ namespace Entrogic.Items.Equipables.Accessories
             Tooltip.SetDefault("人物移动速度与伤害随时间发生周期性变化，\n" +
                 "且固定有一个魔法回复加快的增益\n" +
                 "“毁灭后的新秩序”");
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
         public override void SetDefaults()
         {

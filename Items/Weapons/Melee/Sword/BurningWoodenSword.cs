@@ -12,6 +12,7 @@ namespace Entrogic.Items.Weapons.Melee.Sword
         {
             Tooltip.SetDefault("“十分的烫手”\n" +
                 "点燃你的敌人");
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
         public override void SetDefaults()
         {

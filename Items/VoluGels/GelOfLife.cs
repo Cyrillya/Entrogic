@@ -11,8 +11,8 @@ namespace Entrogic.Items.VoluGels
     {
         public override void SetStaticDefaults()
         {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 25;
             Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(6, 4));//后面那个是frame，前面那个是delay
-
             Tooltip.SetDefault("“生命的本源，近乎完美的魔法介质”\n" +
                 "“生命总会找到自己的出路”");
         }

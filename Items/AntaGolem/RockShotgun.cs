@@ -12,6 +12,7 @@ namespace Entrogic.Items.AntaGolem
         {
             Tooltip.SetDefault("“它上面刻有许多象形文字...‘谨慎使用’”");
             DisplayName.SetDefault("岩石猎枪");
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
         public override Vector2? HoldoutOffset()
         {

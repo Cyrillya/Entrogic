@@ -5,6 +5,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Microsoft.Xna.Framework;
+using Entrogic.Common;
 
 namespace Entrogic.NPCs.Boss.凝胶Java盾
 {
@@ -30,13 +31,13 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
             npc.width = 148;
             npc.height = 170;
             npc.lifeMax = 1800;
-            if (Entrogic.IsCalamityLoaded)
+            if (CrossModHandler.ModLoaded("CalamityMod"))
             {
-                if (Entrogic.IsCalamityModRevengenceMode)
+                if (CrossModHandler.IsCalamityModRevengenceMode)
                 {
                     npc.lifeMax = 2400;
                 }
-                if (Entrogic.IsCalamityModDeathMode)
+                if (CrossModHandler.IsCalamityModDeathMode)
                 {
                     npc.lifeMax = 4800;
                 }

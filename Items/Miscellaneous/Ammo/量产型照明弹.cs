@@ -1,6 +1,7 @@
 using Entrogic.Projectiles.Ammos;
 
 using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -13,6 +14,7 @@ namespace Entrogic.Items.Miscellaneous.Ammo
 		{
 			Tooltip.SetDefault("可以用于小范围照明\n" +
                 "“简陋的工艺，过硬的品质”");
+			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 99;
 		}
 
 		public override void SetDefaults()

@@ -132,7 +132,7 @@ namespace Entrogic.Projectiles.Arcane
     }
     public class UndeadHeal : ArcaneProjectile
     {
-        public override string Texture => "Entrogic/Images/Block";
+        public override string Texture => "Entrogic/Assets/Images/Block";
         public override void ArcaneDefaults()
         {
             projectile.width = 8;

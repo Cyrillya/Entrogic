@@ -10,7 +10,11 @@ namespace Entrogic.Items.Weapons.Magic.Staff
 {
     public class HellquartzRod : ModItem
     {
-        public override void SetStaticDefaults() { Item.staff[item.type] = true; }
+        public override void SetStaticDefaults() 
+        { 
+            Item.staff[item.type] = true;
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        }
         public override void SetDefaults()
         {
             item.UseSound = SoundID.Item20;

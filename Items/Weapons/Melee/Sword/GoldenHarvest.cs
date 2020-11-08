@@ -10,6 +10,10 @@ namespace Entrogic.Items.Weapons.Melee.Sword
 {
     public class GoldenHarvest : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        }
         public override void SetDefaults()
         {
             item.UseSound = SoundID.Item1;

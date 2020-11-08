@@ -14,6 +14,10 @@ namespace Entrogic.Items.VoluGels
 {
     public class GelCultureFlask : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
+        }
         public override void SetDefaults()
         {
             item.width = 22;
@@ -68,6 +72,10 @@ namespace Entrogic.Items.VoluGels
     }
     public class EmbryoCultureFlask : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
+        }
         public override string Texture => "Entrogic/Items/VoluGels/GelCultureFlask";
         public override void SetDefaults()
         {

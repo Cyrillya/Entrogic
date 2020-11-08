@@ -25,7 +25,7 @@ namespace Entrogic.Projectiles.Ranged.Bullets
 			{
 				MiscShaderData miscShaderData = GameShaders.Misc["RainbowRod"];
 				miscShaderData.UseSaturation(-2.8f);
-				miscShaderData.UseOpacity(40f);
+				miscShaderData.UseOpacity(3f);
 				miscShaderData.Apply(null);
 				_vertexStrip.PrepareStripWithProceduralPadding(proj.oldPos, proj.oldRot, new VertexStrip.StripColorFunction(this.StripColors), new VertexStrip.StripHalfWidthFunction(this.StripWidth), -Main.screenPosition + proj.Size / 2f, false);
 				_vertexStrip.DrawTrail();

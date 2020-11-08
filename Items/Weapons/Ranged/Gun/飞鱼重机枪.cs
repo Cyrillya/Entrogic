@@ -15,6 +15,7 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("“人的成长就是战胜自己不成熟的过去”");
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
         public override void SetDefaults()

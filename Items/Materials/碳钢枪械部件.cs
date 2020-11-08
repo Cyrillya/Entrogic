@@ -10,6 +10,7 @@ namespace Entrogic.Items.Materials
 		public override void SetStaticDefaults()
 		{
 			Tooltip.SetDefault("强大枪械的必备材料");
+			Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 5;
 		}
 
 		public override void SetDefaults()

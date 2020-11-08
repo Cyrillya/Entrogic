@@ -1,4 +1,5 @@
 ﻿using System;
+using Entrogic.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -34,7 +35,7 @@ namespace Entrogic.UI.CardGame
             EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(clientPlayer);
             if (clientModPlayer.CardGamePlayerTurn)
             {
-                Entrogic.Instance.CardGameUI.PlayerTurnOver = true;
+                EntrogicModSystem.Instance.CardGameUI.PlayerTurnOver = true;
                 Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuTick);
             }
         }

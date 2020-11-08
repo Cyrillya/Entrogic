@@ -38,7 +38,7 @@ namespace Entrogic.NPCs.Enemies.PE
         {
             if (npc.life <= 0)
             {
-                Gore.NewGore(npc.Center, npc.velocity, Mod.GetGoreSlot("Gores/污染虫尸体2"), 1.4f);
+                //Gore.NewGore(npc.Center, npc.velocity, Mod.GetGoreSlot("Gores/污染虫尸体2"), 1.4f);
             }
         }
         public override void AI()
@@ -84,7 +84,7 @@ namespace Entrogic.NPCs.Enemies.PE
         {
             if (npc.life <= 0)
             {
-                Gore.NewGore(npc.Center, npc.velocity, Mod.GetGoreSlot("Gores/污染虫尸体2"), 1.2f);
+                //Gore.NewGore(npc.Center, npc.velocity, Mod.GetGoreSlot("Gores/污染虫尸体2"), 1.2f);
             }
         }
         public override void AI()
@@ -130,7 +130,7 @@ namespace Entrogic.NPCs.Enemies.PE
         {
             if (npc.life <= 0)
             {
-                Gore.NewGore(npc.Center, npc.velocity, Mod.GetGoreSlot("Gores/污染虫尸体2"), 1f);
+                //Gore.NewGore(npc.Center, npc.velocity, Mod.GetGoreSlot("Gores/污染虫尸体2"), 1f);
             }
         }
         public override void AI()

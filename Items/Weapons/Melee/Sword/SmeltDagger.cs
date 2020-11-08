@@ -12,6 +12,7 @@ namespace Entrogic.Items.Weapons.Melee.Sword
     {
         public override void SetStaticDefaults()
         {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
             Tooltip.SetDefault("“新鲜出炉”\n" +
                 "有可能会有点软化");
         }

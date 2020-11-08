@@ -1,4 +1,6 @@
-﻿using Entrogic.Items.AntaGolem;
+﻿using Entrogic.Assets.Gores;
+using Entrogic.Common;
+using Entrogic.Items.AntaGolem;
 using Entrogic.Items.Miscellaneous.Placeable.Trophy;
 using Entrogic.NPCs.Boss.AntaGolem.Projectiles;
 using Microsoft.Xna.Framework;
@@ -54,13 +56,13 @@ namespace Entrogic.NPCs.Boss.AntaGolem
             npc.lifeMax = 1640;
             npc.defense = 15;
             npc.damage = 41;
-            if (Entrogic.IsCalamityLoaded)
+            if (CrossModHandler.ModLoaded("CalamityMod"))
             {
-                if (Entrogic.IsCalamityModRevengenceMode)
+                if (CrossModHandler.IsCalamityModRevengenceMode)
                 {
                     npc.lifeMax = 2100;
                 }
-                if (Entrogic.IsCalamityModDeathMode)
+                if (CrossModHandler.IsCalamityModDeathMode)
                 {
                     npc.lifeMax = 3000;
                     npc.damage = 45;
@@ -82,7 +84,7 @@ namespace Entrogic.NPCs.Boss.AntaGolem
             npc.HitSound = SoundID.NPCHit3;
             npc.DeathSound = SoundID.NPCDeath37;
             npc.timeLeft = NPC.activeTime * 30;
-            music = Mod.GetSoundSlot(SoundType.Music, "Sounds/Music/狂気の瞳");
+            //music = Mod.GetSoundSlot(SoundType.Music, "Sounds/Music/狂気の瞳");
             musicPriority = MusicPriority.BossLow;
             bossBag = ItemType<AthanasyTreasureBag>();
             npc.alpha = 255;
@@ -119,16 +121,16 @@ namespace Entrogic.NPCs.Boss.AntaGolem
         {
             if (npc.life <= 0)
             {
-                Gore.NewGore(npc.Center, npc.velocity * 0.7f, Mod.GetGoreSlot("Gores/衰落魔像Gore"), 1f);
-                Gore.NewGore(npc.Center, npc.velocity * 0.8f, Mod.GetGoreSlot("Gores/衰落魔像Gore2"), 1f);
-                Gore.NewGore(npc.Center, npc.velocity * 0.9f, Mod.GetGoreSlot("Gores/衰落魔像Gore2"), 1f);
-                Gore.NewGore(npc.Center, npc.velocity, Mod.GetGoreSlot("Gores/衰落魔像Gore3"), 1f);
+                Gore.NewGore(npc.Center, npc.velocity * 0.7f, ModContent.GoreType<AthanasyGore>(), 1f);
+                Gore.NewGore(npc.Center, npc.velocity * 0.8f, ModContent.GoreType<AthanasyGore2>(), 1f);
+                Gore.NewGore(npc.Center, npc.velocity * 0.9f, ModContent.GoreType<AthanasyGore2>(), 1f);
+                Gore.NewGore(npc.Center, npc.velocity, ModContent.GoreType<AthanasyGore3>(), 1f);
                 if (!EntrogicWorld.downedAthanasy)
                 {
                     Item.NewItem(npc.getRect(), ItemType<AthanasyTrophy>());
                     for (int i = 0; i < 80; i++)
                     {
-                        Gore.NewGore(npc.Center, npc.velocity * i / 80, Mod.GetGoreSlot("Gores/衰落魔像Gore3"), 1f);
+                        Gore.NewGore(npc.Center, npc.velocity * i / 80, ModContent.GoreType<AthanasyGore3>(), 1f);
                     }
                     EntrogicWorld.downedAthanasy = true;
                     if (Main.netMode == NetmodeID.Server) NetMessage.SendData(MessageID.WorldData);
@@ -145,14 +147,14 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                 target.AddBuff(BuffID.Bleeding, 270);
             if (!target.stoned && Main.rand.NextBool(2))
                 target.AddBuff(BuffID.Stoned, Main.rand.Next(30, 90));
-            if (Entrogic.IsCalamityLoaded && Entrogic.IsCalamityModDeathMode)
+            if (CrossModHandler.ModLoaded("CalamityMod") && CrossModHandler.IsCalamityModDeathMode)
                     target.AddBuff(BuffID.Confused, 180);
         }
         public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
-            if (Entrogic.IsCalamityLoaded)
+            if (CrossModHandler.ModLoaded("CalamityMod"))
             {
-                if (Entrogic.IsCalamityModDeathMode)
+                if (CrossModHandler.IsCalamityModDeathMode)
                 {
                     damage = (int)(damage * 0.75f);
                 }
@@ -216,10 +218,10 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                             npc.dontTakeDamage = true;
                         }
                         int findTimer = 75;
-                        if (Entrogic.IsCalamityLoaded)
+                        if (CrossModHandler.ModLoaded("CalamityMod"))
                         {
                             findTimer = 60;
-                            if (Entrogic.IsCalamityModDeathMode)
+                            if (CrossModHandler.IsCalamityModDeathMode)
                             {
                                 findTimer = 50;
                             }

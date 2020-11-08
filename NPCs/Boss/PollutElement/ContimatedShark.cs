@@ -1,6 +1,4 @@
-﻿using CalamityMod.Projectiles.Ranged;
-
-using Terraria;
+﻿using Terraria;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,7 +9,6 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using System.Collections.Generic;
 using Terraria.ID;
-using System.Windows.Forms;
 
 namespace Entrogic.NPCs.Boss.PollutElement
 {

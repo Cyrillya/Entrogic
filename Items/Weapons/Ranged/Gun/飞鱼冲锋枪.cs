@@ -15,6 +15,7 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("“来自东亚弧形群岛的美食”");
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
         public override void SetDefaults()

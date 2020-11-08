@@ -10,6 +10,10 @@ namespace Entrogic.Items.Miscellaneous.Placeable.Tiles
 {
     public class BlackMeteoriteItem : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 100;
+        }
         public override void SetDefaults()
         {
             item.CloneDefaults(ItemID.Obsidian);

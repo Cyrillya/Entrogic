@@ -11,6 +11,7 @@ namespace Entrogic.Items.PollutElement
     {
         public override void SetStaticDefaults()
         {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
             DisplayName.SetDefault("污痕长弓");
             Tooltip.SetDefault("“别忘了穿防化服”\n" +
                 "把木箭变成腐蚀飞箭");

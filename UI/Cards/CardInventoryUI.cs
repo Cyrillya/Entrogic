@@ -63,10 +63,14 @@ namespace Entrogic.UI.Cards
             }
             if (!slotActive)
                 return;
+            Vector2 grid = new Vector2(64f, 64f);
             for (int i = 0; i < 9; i++)
             {
                 if (Grid[i] == null)
                     continue;
+                float posX = statPoint.X + 32f + inventory.X + grid.X * (-0.5f + (int)(i % 3)) + (int)(i % 3) * 10f;
+                float posY = statPoint.Y + 18f + grid.Y * (-0.5f + (int)(i / 3)) + (int)(i / 3) * 10f;
+                Grid[i].uiPosition = new Vector2(posX, posY);
                 Grid[i].uiColor = new Color(215, 215, 215, 215);
                 if (ModHelper.MouseInRectangle(Grid[i].uiRectangle))
                 {

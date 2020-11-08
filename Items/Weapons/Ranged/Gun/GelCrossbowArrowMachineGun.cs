@@ -14,6 +14,7 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
     {
         public override void SetStaticDefaults()
         {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
             DisplayName.SetDefault("凝胶弩箭机枪");
             Tooltip.SetDefault("“没错，一把射箭的机枪”\n" +
                 "小心枪口过热");

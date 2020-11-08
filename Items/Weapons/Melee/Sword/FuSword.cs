@@ -8,6 +8,10 @@ namespace Entrogic.Items.Weapons.Melee.Sword
 {
     public class FuSword : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 114514;
+        }
         public override void SetDefaults()
         {
             item.width = 54;

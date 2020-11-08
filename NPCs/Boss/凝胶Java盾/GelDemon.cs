@@ -7,6 +7,7 @@ using static Terraria.ModLoader.ModContent;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Entrogic.NPCs.Boss.凝胶Java盾.Projectiles;
+using Entrogic.Common;
 
 namespace Entrogic.NPCs.Boss.凝胶Java盾
 {
@@ -27,14 +28,14 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
             npc.knockBackResist = 0f;
             npc.lifeMax = 105;
             npc.damage = 24;
-            if (Entrogic.IsCalamityLoaded)
+            if (CrossModHandler.ModLoaded("CalamityMod"))
             {
-                if (Entrogic.IsCalamityModRevengenceMode)
+                if (CrossModHandler.IsCalamityModRevengenceMode)
                 {
                     npc.lifeMax *= 2;
                     npc.damage *= 2;
                 }
-                else if (Entrogic.IsCalamityModDeathMode)
+                else if (CrossModHandler.IsCalamityModDeathMode)
                 {
                     npc.lifeMax *= 3;
                     npc.damage *= 3;

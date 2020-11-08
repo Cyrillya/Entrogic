@@ -12,6 +12,10 @@ namespace Entrogic.Items.AntaGolem
 {
     public class TitansOrder : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
+        }
         public override void SetDefaults()
         {
             item.width = 22;

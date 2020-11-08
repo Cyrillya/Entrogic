@@ -10,6 +10,10 @@ namespace Entrogic.Items.Weapons.Melee.Sword
 {
     public class CuteLittleSword : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        }
         public override void SetDefaults()
         {
             item.damage = 51;           //The damage of your weapon 武器的伤害

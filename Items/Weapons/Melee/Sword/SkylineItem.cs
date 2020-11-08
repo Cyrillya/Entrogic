@@ -12,6 +12,7 @@ namespace Entrogic.Items.Weapons.Melee.Sword
     {
         public override void SetStaticDefaults()
         {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
             Tooltip.SetDefault("黎明的利刃将永夜撕裂");
         }
 

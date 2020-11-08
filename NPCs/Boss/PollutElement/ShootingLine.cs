@@ -1,6 +1,4 @@
-﻿using CalamityMod.Projectiles.Ranged;
-
-using Terraria;
+﻿using Terraria;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,14 +9,13 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using System.Collections.Generic;
 using Terraria.ID;
-using System.Windows.Forms;
 
 namespace Entrogic.NPCs.Boss.PollutElement
 {
     public class ShootingLine : ModProjectile
     {
         private List<float> rotates = new List<float>();
-        public override string Texture => "Entrogic/Images/Block";
+        public override string Texture => "Entrogic/Assets/Images/Block";
         public override void SetDefaults()
         {
             projectile.hostile = true;

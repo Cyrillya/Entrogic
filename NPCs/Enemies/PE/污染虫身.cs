@@ -44,7 +44,7 @@ namespace Entrogic.NPCs.Enemies.PE
         {
             if (npc.life <= 0)
             {
-                Gore.NewGore(npc.Center, npc.velocity, Mod.GetGoreSlot("Gores/污染虫尸体3"), 1.4f);
+                //Gore.NewGore(npc.Center, npc.velocity, Mod.GetGoreSlot("Gores/污染虫尸体3"), 1.4f);
             }
         }
         public override void AI()
@@ -109,7 +109,7 @@ namespace Entrogic.NPCs.Enemies.PE
         {
             if (npc.life <= 0)
             {
-                Gore.NewGore(npc.Center, npc.velocity, Mod.GetGoreSlot("Gores/污染虫尸体3"), 1.2f);
+                //Gore.NewGore(npc.Center, npc.velocity, Mod.GetGoreSlot("Gores/污染虫尸体3"), 1.2f);
             }
         }
         public override void AI()
@@ -174,7 +174,7 @@ namespace Entrogic.NPCs.Enemies.PE
         {
             if (npc.life <= 0)
             {
-                Gore.NewGore(npc.Center, npc.velocity, Mod.GetGoreSlot("Gores/污染虫尸体3"), 1f);
+                //Gore.NewGore(npc.Center, npc.velocity, Mod.GetGoreSlot("Gores/污染虫尸体3"), 1f);
             }
         }
         public override void AI()
@@ -204,7 +204,7 @@ namespace Entrogic.NPCs.Enemies.PE
     }
     public class 污染之虫射弹 : ModProjectile
     {
-        public override string Texture => "Entrogic/Images/Block";
+        public override string Texture => "Entrogic/Assets/Images/Block";
         public override void SetDefaults()
         {
             projectile.hostile = true;

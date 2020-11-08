@@ -1,5 +1,5 @@
 ﻿using Entrogic.Items.Materials;
-
+using Entrogic.Items.Weapons.Summon.Whip;
 using System;
 
 using Terraria;
@@ -16,6 +16,11 @@ namespace Entrogic
         public static void Load(Mod mod)
         {
             AddRecipeGroups();
+
+            // 铜鞭 => 铜短剑
+            Recipe copperShortsword = ModContent.GetInstance<Entrogic>().CreateRecipe(ItemID.CopperShortsword);
+            copperShortsword.AddIngredient(ModContent.ItemType<CopperSwordWhip>());
+            copperShortsword.Register();
 
             // 赫尔墨斯之靴
             Recipe hermers = ModContent.GetInstance<Entrogic>().CreateRecipe(ItemID.HermesBoots);

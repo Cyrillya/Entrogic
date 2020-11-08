@@ -13,6 +13,10 @@ namespace Entrogic.Items.PollutElement.Armor
     [AutoloadEquip(EquipType.Head)]
     public class HelmetofContamination : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        }
         public override void SetDefaults()
         {
             item.width = 32;

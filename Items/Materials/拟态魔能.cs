@@ -17,6 +17,7 @@ namespace Entrogic.Items.Materials
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("“变换不定的魔法”");
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 25;
             ItemID.Sets.ItemIconPulse[item.type] = true;
             ItemID.Sets.ItemNoGravity[item.type] = true;
         }

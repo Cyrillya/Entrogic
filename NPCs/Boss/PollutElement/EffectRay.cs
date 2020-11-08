@@ -17,7 +17,7 @@ namespace Entrogic.NPCs.Boss.PollutElement
             projectile.timeLeft = 20;
             projectile.alpha = 255;
         }
-        public override bool CanDamage()
+        public override bool? CanDamage()
         {
             return false;
         }

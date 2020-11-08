@@ -8,6 +8,10 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
 {
     public class 噬菌体 : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        }
         public override void SetDefaults()
         {
             item.damage = 36;

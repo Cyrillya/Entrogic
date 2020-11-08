@@ -1,4 +1,5 @@
-﻿using Entrogic.Items.Weapons.Card;
+﻿using Entrogic.Common;
+using Entrogic.Items.Weapons.Card;
 
 using Microsoft.Xna.Framework;
 
@@ -29,7 +30,7 @@ namespace Entrogic.NPCs.CardFightable
         public virtual void SetupContents(ref string ImgPath, ref Vector2 ImgPosition) { }
         public virtual void StartAttacking()
         {
-            Entrogic.Instance.CardGameUI.StartGame();
+            EntrogicModSystem.Instance.CardGameUI.StartGame();
             if (State == 0)
             {
                 Initialize();

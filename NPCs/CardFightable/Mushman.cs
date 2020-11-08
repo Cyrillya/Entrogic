@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Entrogic.Items.Consumables.Mushrooms;
 using Entrogic.NPCs.CardFightable.CardBullet;
 using Entrogic.Items.Weapons.Card.Organisms;
+using Entrogic.Common;
 
 namespace Entrogic.NPCs.CardFightable
 {
@@ -191,7 +192,7 @@ namespace Entrogic.NPCs.CardFightable
         {
             if (!playerTurn)
             {
-                Entrogic.Instance.CardGameUI.IsUseBiggerTexture = false;
+                EntrogicModSystem.Instance.CardGameUI.IsUseBiggerTexture = false;
                 int AttackMode = Main.rand.Next(2);
                 switch (AttackMode)
                 {

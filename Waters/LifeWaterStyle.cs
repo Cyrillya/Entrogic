@@ -1,4 +1,5 @@
 ﻿using Entrogic;
+using Entrogic.Assets.Gores;
 using Entrogic.Dusts;
 
 using Microsoft.Xna.Framework;
@@ -28,7 +29,7 @@ namespace Entrogic.Waters
 
         public override int GetDropletGore()
         {
-            return Entrogic.Instance.GetGoreSlot("Gores/LifeDroplet");
+            return GoreType<LifeDroplet>();
         }
 
         public override void LightColorMultiplier(ref float r, ref float g, ref float b)

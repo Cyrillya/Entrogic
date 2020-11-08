@@ -15,6 +15,7 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         }
         public override void SetStaticDefaults()
         {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
             DisplayName.SetDefault("老旧的步枪");
             Tooltip.SetDefault("“枪身上的磨痕代表着它昔日的荣耀”\n" +
                 "“伪M1-拉栓式”");

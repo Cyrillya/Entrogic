@@ -1,5 +1,3 @@
-using CalamityMod.Projectiles.Ranged;
-
 using Entrogic.Projectiles.Thrown;
 
 using Microsoft.Xna.Framework;
@@ -16,6 +14,7 @@ namespace Entrogic.Items.Weapons.Ranged.Thrown
         {
             Tooltip.SetDefault("“飞花摘叶皆可伤人”\n" +
                 "早已失传的武功");
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
         public override void SetDefaults()

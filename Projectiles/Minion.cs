@@ -33,6 +33,9 @@ namespace Entrogic.Projectiles
             return base.CanUseItem(item, player);
         }
         public override bool InstancePerEntity => true;
-        public override bool CloneNewInstances => true;
+        public override GlobalItem Clone(Item item, Item itemClone)
+        {
+            return base.Clone(item, itemClone);
+        }
     }
 }

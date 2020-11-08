@@ -157,7 +157,7 @@ namespace Entrogic.UI.Books
                 Vector2 space = new Vector2((Main.screenWidth - bookSize.X) / 2 + 38, (Main.screenHeight - bookSize.Y) / 2 + 46);
                 //Main.spriteBatch.Draw(Main.magicPixel, space.ToRectangle(), Color.Yellow * .7f);
                 //Main.spriteBatch.Draw(Main.magicPixel, GetOuterDimensions().ToRectangle(), Color.Red * .7f);
-                DynamicSpriteFont font = (DynamicSpriteFont)PixelFont;
+                DynamicSpriteFont font = (DynamicSpriteFont)FontAssets.MouseText;//(DynamicSpriteFont)PixelFont;
                 float scale = 1f;
                 string text = " ";
                 Color baseColor = Color.White;

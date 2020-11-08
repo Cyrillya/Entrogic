@@ -12,6 +12,7 @@ namespace Entrogic.Items.Miscellaneous.Placeable.Trophy
         {
             DisplayName.SetDefault("{$Mods.Entrogic.NPCName.衰落魔像} " + "{$MapObject.Trophy}");
             DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "衰落魔像纪念章");
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
         public override void SetDefaults()
         {

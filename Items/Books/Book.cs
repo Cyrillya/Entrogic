@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using static Entrogic.Entrogic;
 using Terraria.Localization;
 using ReLogic.Content;
+using Terraria.GameContent.Creative;
 
 namespace Entrogic.Items.Books
 {
@@ -23,6 +24,10 @@ namespace Entrogic.Items.Books
         public float[] lineDistance = new float[257];
         //public DynamicSpriteFont font = Entrogic.pixelFont;
         public Color textBaseColor = Color.Black;
+        public override void SetStaticDefaults()
+        {
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        }
         public virtual void BookDefaults() { }
         public sealed override void SetDefaults()
         {
@@ -95,6 +100,5 @@ namespace Entrogic.Items.Books
                 }
             }
         }
-        public override bool CloneNewInstances => true;
     }
 }

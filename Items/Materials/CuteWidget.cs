@@ -6,6 +6,10 @@ namespace Entrogic.Items.Materials
 {
 	public class CuteWidget : ModItem
 	{
+		public override void SetStaticDefaults()
+		{
+			Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 5;
+		}
 		public override void SetDefaults()
 		{
 			item.width = 14;

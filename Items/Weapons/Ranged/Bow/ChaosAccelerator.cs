@@ -15,6 +15,10 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
     public class ChaosAccelerator : ModItem
     {
         public override string Texture => "Entrogic/Items/Weapons/Ranged/Bow/ChaosAccelerator_1";
+        public override void SetStaticDefaults()
+        {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        }
         public override void SetDefaults()
         {
             item.damage = 62;

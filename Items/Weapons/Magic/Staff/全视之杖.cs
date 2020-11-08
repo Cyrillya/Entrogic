@@ -11,6 +11,7 @@ namespace Entrogic.Items.Weapons.Magic.Staff
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("远古邪神之权杖");
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
         public override void SetDefaults()

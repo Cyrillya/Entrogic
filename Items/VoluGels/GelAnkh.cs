@@ -17,6 +17,10 @@ namespace Entrogic.Items.VoluGels
     /// </summary>
     public class GelAnkh : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        }
         public override void SetDefaults()
         {
             item.Size = new Vector2(48);

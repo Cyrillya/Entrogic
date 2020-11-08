@@ -15,6 +15,7 @@ using Entrogic.Items.Weapons.Card.Undeads;
 using Entrogic.Items.Weapons.Card.Nones;
 using Entrogic.Items.Weapons.Card.Organisms;
 using Terraria.GameContent.Creative;
+using Entrogic.Projectiles.Melee.Stabs;
 
 namespace Entrogic
 {
@@ -33,6 +34,12 @@ namespace Entrogic
         }
         public override void SetDefaults(Item item)
         {
+            if (item.type == ItemID.CopperShortsword) 
+            { 
+                item.shootSpeed *= 1.6f;
+                item.useTime = (int)((double)item.useTime * 1.5f);
+                item.knockBack /= 0.6f;
+            }
             if (item.type == ItemID.BoneSword) item.damage = 26;
             if (item.type == ItemID.Bone) item.damage += 5;
             if (item.type == ItemID.WandofSparking) { item.damage += 4; item.reuseDelay = 44; item.useTime = 5; item.mana = 5; }
@@ -77,10 +84,15 @@ namespace Entrogic
         }
         public override bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
-            if (item.type == ItemID.Torch)
+            if (item.type == ItemID.CopperShortsword)
             {
-                Vector2 vec = ModHelper.GetFromToVector(position, Main.MouseWorld);
-                position -= vec * 48;
+                for (float rad = 0.0f; rad <= MathHelper.TwoPi; rad += MathHelper.TwoPi / 12f)
+                {
+                    Projectile proj = Projectile.NewProjectileDirect(position, item.shootSpeed * rad.ToRotationVector2(), ModContent.ProjectileType<ExtraCopperShortsword>(), damage, knockBack, player.whoAmI);
+                    proj.netUpdate = true;
+                    proj.rotation = (rad + MathHelper.ToRadians(45f)) * player.direction;
+                }
+                return false;
             }
             return base.Shoot(item, player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack);
         }
@@ -146,6 +158,9 @@ namespace Entrogic
             tooltips.RemoveAll((TooltipLine line) => line.mod == "Terraria" && line.Name.StartsWith("Favorite"));
         }
         public override bool InstancePerEntity => true;
-        public override bool CloneNewInstances => true;
+        public override GlobalItem Clone(Item item, Item itemClone)
+        {
+            return base.Clone(item, itemClone);
+        }
     }
 }

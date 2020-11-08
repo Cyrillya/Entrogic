@@ -16,6 +16,7 @@ namespace Entrogic.Items.Weapons.Summon
             Tooltip.SetDefault("Summons deadly spheres to fight for you");
             DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "完美球体召唤仗");
             Tooltip.AddTranslation((int)GameCulture.CultureName.Chinese, "召唤毫无瑕疵的球体为你作战");
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
         public override void SetDefaults()

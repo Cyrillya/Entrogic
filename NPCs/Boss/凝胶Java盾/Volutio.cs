@@ -1,4 +1,5 @@
-﻿using Entrogic.Items.Miscellaneous.Placeable.Furnitrue;
+﻿using Entrogic.Common;
+using Entrogic.Items.Miscellaneous.Placeable.Furnitrue;
 using Entrogic.Items.Miscellaneous.Placeable.Trophy;
 using Entrogic.Items.VoluGels;
 using Entrogic.NPCs.Boss.凝胶Java盾.Projectiles;
@@ -34,13 +35,13 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
             if (Main.expertMode)
             {
                 npc.damage = 65;
-                if (Entrogic.IsCalamityLoaded)
+                if (CrossModHandler.ModLoaded("CalamityMod"))
                 {
-                    if (Entrogic.IsCalamityModRevengenceMode)
+                    if (CrossModHandler.IsCalamityModRevengenceMode)
                     {
                         npc.damage = 85;
                     }
-                    if (Entrogic.IsCalamityModDeathMode)
+                    if (CrossModHandler.IsCalamityModDeathMode)
                     {
                         npc.damage = 120;
                     }
@@ -49,13 +50,13 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
             }
             npc.defense = 8;
             npc.lifeMax = 1175;
-            if (Entrogic.IsCalamityLoaded)
+            if (CrossModHandler.ModLoaded("CalamityMod"))
             {
-                if (Entrogic.IsCalamityModRevengenceMode)
+                if (CrossModHandler.IsCalamityModRevengenceMode)
                 {
                     npc.lifeMax = 1680;
                 }
-                if (Entrogic.IsCalamityModDeathMode)
+                if (CrossModHandler.IsCalamityModDeathMode)
                 {
                     npc.lifeMax = 2020;
                 }
@@ -376,13 +377,13 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
                     finalVec = Vector2.Normalize(finalVec);
                     npc.velocity = Vector2.Zero;
                     int damage = Main.expertMode ? 50 : 100;
-                    if (Entrogic.IsCalamityLoaded)
+                    if (CrossModHandler.ModLoaded("CalamityMod"))
                     {
-                        if (Entrogic.IsCalamityModRevengenceMode)
+                        if (CrossModHandler.IsCalamityModRevengenceMode)
                         {
                             damage = 125; // 250
                         }
-                        else if (Entrogic.IsCalamityModDeathMode)
+                        else if (CrossModHandler.IsCalamityModDeathMode)
                         {
                             damage = 300; // 600
                         }

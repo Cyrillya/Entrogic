@@ -20,6 +20,7 @@ namespace Entrogic.Items.PollutElement
     {
         public override void SetStaticDefaults()
         {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
             Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(5, 4));
         }
         public override void SetDefaults()

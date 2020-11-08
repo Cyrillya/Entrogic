@@ -13,6 +13,7 @@ namespace Entrogic.Items.Tools
 		public override void SetStaticDefaults()
 		{
 			Tooltip.SetDefault("[c/7BFFFF:小稿斧，可挖掘速度不容小觑]");
+			Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults()

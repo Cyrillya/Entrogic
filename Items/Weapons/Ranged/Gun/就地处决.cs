@@ -10,6 +10,10 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
 {
     public class 就地处决 : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        }
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-10, 0);

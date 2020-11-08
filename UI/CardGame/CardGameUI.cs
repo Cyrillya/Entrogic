@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics.Shaders;
@@ -112,7 +113,7 @@ namespace Entrogic.UI.CardGame
             //    buffer.RemoveAt(chosed);
             //}
 
-            Terraria.Audio.SoundEngine.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGChangeTurn"));
+            SoundEngine.PlaySound(ResourceLoader.CGChangeTurn);
             TimerCountdown = 0;
             AnimationTimer = 0;
             TurnText = Language.GetTextValue("Mods.Entrogic.Common.PlayerTurn");
@@ -192,7 +193,7 @@ namespace Entrogic.UI.CardGame
                             IsUseBiggerTexture = false;
                             clientModPlayer.CardGamePlayerTurn = false;
                             fightNPC.PreStartRound(false);
-                            Terraria.Audio.SoundEngine.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGChangeTurn"));
+                            SoundEngine.PlaySound(ResourceLoader.CGChangeTurn);
 
                             TimerCountdown = 0;
                             AnimationTimer = 0;
@@ -226,7 +227,7 @@ namespace Entrogic.UI.CardGame
                             clientModPlayer.CardGamePlayerTurn = true;
                             fightNPC.PreStartRound(true);
                             IsUseBiggerTexture = true;
-                            Terraria.Audio.SoundEngine.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGChangeTurn"));
+                            SoundEngine.PlaySound(ResourceLoader.CGChangeTurn);
                             for (int i = 0; i < clientModPlayer._bullets.Count; i++)
                             {
                                 if (clientModPlayer._bullets[i].IsFriendly == false)
@@ -497,7 +498,7 @@ namespace Entrogic.UI.CardGame
                         deathShader.UseOpacity(1f - (DeathTimer - 20f) / 120f);
                         if (DeathTimer % 60f == 21f)
                         {
-                            Terraria.Audio.SoundEngine.PlaySound(SoundID.NPCDeath22, npc.Center); // every second while dying, play a sound
+                            SoundEngine.PlaySound(SoundID.NPCDeath22, npc.Center); // every second while dying, play a sound
                         }
                     }
                     // Call Apply to apply the shader to the SpriteBatch. Only 1 shader can be active at a time.

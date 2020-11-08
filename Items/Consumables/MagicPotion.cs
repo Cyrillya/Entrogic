@@ -4,11 +4,16 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria.DataStructures;
 using Terraria.Localization;
+using Terraria.GameContent.Creative;
 
 namespace Entrogic.Items.Consumables
 {
     public class MagicPotion : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 20;
+        }
         public override void SetDefaults()
         {
             item.useAnimation = 30;

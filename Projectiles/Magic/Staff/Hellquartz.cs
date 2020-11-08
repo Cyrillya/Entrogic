@@ -67,7 +67,7 @@ namespace Entrogic.Projectiles.Magic.Staff
         {
             return projectile.ai[1] == 1;
         }
-        public override bool CanDamage()
+        public override bool? CanDamage()
         {
             return projectile.ai[1] == 1;
         }

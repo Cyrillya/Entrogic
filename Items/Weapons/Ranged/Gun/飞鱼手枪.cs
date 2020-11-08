@@ -18,6 +18,7 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("“什么残忍的人才会把枪管插到一只可怜的飞鱼嘴里？”");
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
         public override void SetDefaults()

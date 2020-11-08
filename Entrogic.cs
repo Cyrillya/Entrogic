@@ -57,7 +57,7 @@ namespace Entrogic
         #region Fields
         internal bool cursurIconEnabled = false;
         internal Texture2D cursorIconTexture = null;
-        internal static int mimicryFrameCounter = 8;
+        internal static int MimicryFrameCounter = 8;
         internal static List<ModItem> ModItems => new List<ModItem>(typeof(ItemLoader).GetFields(BindingFlags.Static | 
             BindingFlags.NonPublic).Where(field => field.Name == "items").First().GetValue(null) as IList<ModItem>);
         internal static List<ModTile> ModTiles => new List<ModTile>(typeof(TileLoader).GetFields(BindingFlags.Static | 
@@ -71,10 +71,6 @@ namespace Entrogic
         internal static ModHotKey HookCursorHotKey;
         internal Vector2 HookCursor;
 
-        public static bool IsCalamityLoaded = false;
-        public static bool IsCalamityModRevengenceMode => CalamityMod.World.CalamityWorld.revenge;
-        public static bool IsCalamityModDeathMode => CalamityMod.World.CalamityWorld.death;
-
         internal static Dictionary<string, Asset<Texture2D>> ModTexturesTable = new Dictionary<string, Asset<Texture2D>>();
         [Obsolete]
         internal static Dictionary<string, CardFightBullet> cfBullets = new Dictionary<string, CardFightBullet>();
@@ -86,14 +82,6 @@ namespace Entrogic
         internal static int ModTimer; 
         internal static Entrogic Instance;
         public static Asset<DynamicSpriteFont> PixelFont => Instance.GetFont("Fonts/JOJOHOTXiangSubeta");
-        internal BookUI BookUI { get; private set; }
-        private UserInterface BookUIE;
-        internal CardUI CardUI { get; private set; }
-        private UserInterface CardUIE;
-        internal CardInventoryUI CardInventoryUI { get; private set; }
-        private UserInterface CardInventoryUIE;
-        internal CardGameUI CardGameUI { get; private set; }
-        private UserInterface CardGameUIE;
 
         public static int MimicryCustomCurrencyId;
         #endregion
@@ -101,133 +89,23 @@ namespace Entrogic
         public override void AddRecipes() => RecipeManager.Load(this);
         static Entrogic()
         {
-            ModFolder = string.Format("{0}{1}Mod Configs{2}Entrogic{3}", Main.SavePath, Path.DirectorySeparatorChar, Path.DirectorySeparatorChar, Path.DirectorySeparatorChar);
+            ModFolder = $"{Main.SavePath}{Path.DirectorySeparatorChar}Mod Configs{Path.DirectorySeparatorChar}Entrogic{Path.DirectorySeparatorChar}";
         }
         public Entrogic()
         {
             Instance = this;
             Directory.CreateDirectory(ModFolder);
         }
-        public override void PostSetupContent()
-        {
-            //Main.OnPostDraw += Main_OnPostDraw;
-            //Main.OnPreDraw += Main_OnPreDraw;
-            //IL.Terraria.Main.DrawMenu += UpdateExtraWorldDiff;
-
-            //Mod bossChecklist = ModLoader.GetMod("BossChecklist");
-            //if (bossChecklist != null)
-            //{
-            //    bossChecklist.Call(
-            //"AddBoss",
-            //2.7f,
-            //new List<int>() { NPCType<Volutio>(), NPCType<Embryo>() },// Boss ID
-            //this, // Mod
-            //"$Mods.Entrogic.NPCName.Volutio", // Boss Name
-            //(Func<bool>)(() => EntrogicWorld.downedGelSymbiosis),
-            //ItemType<GelCultureFlask>(), // Summon Items
-            //new List<int> { ItemType<VolutioMask>(), ItemType<VTrophy>() }, // Collections
-            //new List<int> { ItemType<VolutioTreasureBag>(), ItemType<GelAnkh>(), ItemType<GelOfLife>() }, // Normal Loots
-            //"$Mods.Entrogic.BossSpawnInfo.GelSymb", // Spawn Info
-            //"", // Despawn Info
-            //"Entrogic/Images/GelSym_Textures");// 这里切记别用ModTexturesTable，不然服务器会炸
-
-            //    bossChecklist.Call(
-            //"AddBoss",
-            //5.7f,
-            //NPCType<Antanasy>(), // Boss ID
-            //this, // Mod
-            //"$Mods.Entrogic.NPCName.Antanasy", // Boss Name
-            //(Func<bool>)(() => EntrogicWorld.downedAthanasy),
-            //ItemType<TitansOrder>(),
-            //new List<int> { ItemType<AthanasyMask>(), ItemType<AthanasyTrophy>() },
-            //new List<int> { ItemType<AthanasyTreasureBag>(), ItemType<RockSpear>(), ItemType<RockShotgun>(), ItemType<EyeofImmortal>(), ItemType<StoneSlimeStaff>() },
-            //"$Mods.Entrogic.BossSpawnInfo.Athanasy");
-
-            //    bossChecklist.Call(
-            //"AddBoss",
-            //6.8f,
-            //NPCType<PollutionElemental>(), // Boss ID
-            //this, // Mod
-            //"$Mods.Entrogic.NPCName.PollutionElemental", // Boss Name
-            //(Func<bool>)(() => EntrogicWorld.IsDownedPollutionElemental),
-            //ItemType<ContaminatedLiquor>(),
-            //new List<int> { ItemType<PollutionElementalMask>(), ItemType<PETrophy>() },
-            //new List<int> { ItemType<ContaminatedElementalTreasureBag>(),  ItemType<BottleofStorm>(), ItemType<WaterElementalStaff>(), ItemType<ContaminatedLongbow>(), ItemType<ContaminatedCurrent>(),
-            //    ItemType<HelmetofContamination>(), ItemType<HeadgearofContamination>(), ItemType<MaskofContamination>(), ItemType<BreastplateofContamination>(), ItemType<GreavesofContamination>() },
-            //"$Mods.Entrogic.BossSpawnInfo.PollutionElement",
-            //" 在大海中继续沉睡...");
-            //}
-            //Mod fargos = ModLoader.GetMod("Fargowiltas");
-            //if (fargos != null)
-            //{
-            //    // AddSummon, order or value in terms of vanilla bosses, your mod internal name, summon  
-            //    // item internal name, inline method for retrieving downed value, price to sell for in copper
-            //    fargos.Call("AddSummon", 2.7f, "Entrogic", "EmbryoCultureFlask", (Func<bool>)(() => EntrogicWorld.downedGelSymbiosis), new Money(gold: 9).ToInt());
-            //    fargos.Call("AddSummon", 5.7f, "Entrogic", "TitansOrder", (Func<bool>)(() => EntrogicWorld.downedAthanasy), new Money(gold: 18).ToInt());
-            //    fargos.Call("AddSummon", 6.8f, "Entrogic", "ContaminatedLiquor", (Func<bool>)(() => EntrogicWorld.IsDownedPollutionElemental), new Money(gold: 32).ToInt());
-
-            //}
-        }
-
         public override void Load()
         {
             PassHotkey = RegisterHotKey("过牌快捷键", "E");
             WashHotkey = RegisterHotKey("洗牌快捷键", "Q");
             HookCursorHotKey = RegisterHotKey("设置钩爪指针快捷键", "C");
-            //On.Terraria.Player.QuickGrapple += Player_QuickGrapple;
-            //On.Terraria.Player.ItemCheck += UnderworldTransportCheck;
-            //On.Terraria.Main.DrawInterface_40_InteractItemIcon += CustomHandIcon;
+            On.Terraria.Player.QuickGrapple += Player_QuickGrapple;
+            On.Terraria.Player.ItemCheck += UnderworldTransportCheck;
+            On.Terraria.Main.DrawInterface_40_InteractItemIcon += CustomHandIcon;
             foolTexts = Main.rand.Next(3);
             Unloading = false;
-            //IsCalamityLoaded = ModLoader.GetMod("CalamityMod") != null;
-            //Mod yabhb = ModLoader.GetMod("FKBossHealthBar");
-            //if (yabhb != null)
-            //{
-            //    #region Wlta yabhb
-            //    yabhb.Call("RegisterCustomHealthBar",
-            //        NPCType<Embryo>(),
-            //        null, //ForceSmall
-            //        null, //displayName
-            //        GetTexture("UI/yabhb/瓦卢提奥血条Fill"), //fillTexture
-            //        GetTexture("UI/yabhb/瓦卢提奥血条头"),
-            //        GetTexture("UI/yabhb/瓦卢提奥血条条"),
-            //        GetTexture("UI/yabhb/瓦卢提奥血条尾"),
-            //        null, //midBarOffsetX
-            //        0, //midBarOffsetY
-            //        null, //fillDecoOffsetX
-            //        32, //bossHeadCentreOffsetX
-            //        30, //bossHeadCentreOffsetY
-            //        null, //fillTextureSM
-            //        null, //leftBarSM
-            //        null, //midBarSM
-            //        null, //rightBarSM
-            //        null, //fillDecoOffsetXSM
-            //        null, //bossHeadCentreOffsetXSM
-            //        null, //bossHeadCentreOffsetYSM
-            //        true); //LoopMidBar
-            //    yabhb.Call("RegisterCustomHealthBar",
-            //        NPCType<Volutio>(),
-            //        null, //ForceSmall
-            //        null, //displayName
-            //        GetTexture("UI/yabhb/瓦卢提奥血条Fill"), //fillTexture
-            //        GetTexture("UI/yabhb/瓦卢提奥血条头"),
-            //        GetTexture("UI/yabhb/瓦卢提奥血条条"),
-            //        GetTexture("UI/yabhb/瓦卢提奥血条尾"),
-            //        null, //midBarOffsetX
-            //        0, //midBarOffsetY
-            //        null, //fillDecoOffsetX
-            //        32, //bossHeadCentreOffsetX
-            //        32, //bossHeadCentreOffsetY
-            //        null, //fillTextureSM
-            //        null, //leftBarSM
-            //        null, //midBarSM
-            //        null, //rightBarSM
-            //        null, //fillDecoOffsetXSM
-            //        null, //bossHeadCentreOffsetXSM
-            //        null, //bossHeadCentreOffsetYSM
-            //        true); //LoopMidBar
-            //    #endregion
-            //}
             MimicryCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new EntrogicMimicryCurrency(ItemType<拟态魔能>(), 999L));
             if (!Main.dedServ)
             {
@@ -249,36 +127,6 @@ namespace Entrogic
                 AddEquipTexture(new PolluWings8(), new BottleofStorm(), EquipType.Wings, "Entrogic/Items/PollutElement/PolluWings8_Wings");
 
                 ResourceLoader.LoadAllShaders();
-
-                BookUI = new BookUI();
-                BookUI.Activate();
-                BookUIE = new UserInterface();
-                BookUIE.SetState(BookUI);
-
-                //BookPageUI = new BookPageUI();
-                //BookPageUI.Activate();
-                //BookPageUIE = new UserInterface();
-                //BookPageUIE.SetState(BookPageUI);
-
-                CardUI = new CardUI();
-                CardUI.Activate();
-                CardUIE = new UserInterface();
-                CardUIE.SetState(CardUI);
-
-                CardInventoryUI = new CardInventoryUI();
-                CardInventoryUI.Activate();
-                CardInventoryUIE = new UserInterface();
-                CardInventoryUIE.SetState(CardInventoryUI);
-
-                CardGameUI = new CardGameUI();
-                CardGameUI.Activate();
-                CardGameUIE = new UserInterface();
-                CardGameUIE.SetState(CardGameUI);
-                /*SinsBar.visible = true;
-                Sinsbar = new SinsBar();
-                Sinsbar.Activate();
-                SinsBarInterface = new UserInterface();
-                SinsBarInterface.SetState(Sinsbar);*/
             }
             Buildings.Cache("Buildings/CardShrine0.ebuilding", "Buildings/CardShrine1.ebuilding", "Buildings/UnderworldPortal.ebuilding");
             #region Armor Translations
@@ -391,7 +239,6 @@ namespace Entrogic
                 PassHotkey = null;
                 WashHotkey = null;
                 HookCursorHotKey = null;
-                IsCalamityLoaded = false;
             }
             catch (Exception e)
             {
@@ -419,107 +266,6 @@ namespace Entrogic
                 Main.mouseY = mouseY;
             }
             else orig(self);
-        }
-        public override void PostDrawInterface(SpriteBatch spriteBatch)
-        {
-            //if (Main.gamePaused && Filters.Scene["OrangeScreen"].IsActive()) Filters.Scene["OrangeScreen"].Deactivate();
-            //if (!Filters.Scene["OrangeScreen"].IsActive()/* && !Main.gamePaused*/) Filters.Scene.Activate("OrangeScreen", Vector2.Zero);
-            //Filters.Scene.Activate("ReallyDark", Vector2.Zero);
-            if (!Main.dedServ)
-            {
-                mimicryFrameCounter++;
-                if (mimicryFrameCounter >= 13 * 5)
-                {
-                    mimicryFrameCounter = 5;
-                }
-                if (AEntrogicConfigClient.Instance.HookMouse)
-                {
-                    if (HookCursorHotKey.JustPressed)
-                    {
-                        HookCursor = ModHelper.MouseScreenPos;
-                    }
-                    const float scaleMax = 1.3f;
-                    float scale = 1f + ((float)ModTimer % 100f / 99f * (scaleMax - 1f) * 2f);
-                    if (scale >= scaleMax) // scale范围[1.0, scaleMax]
-                    {
-                        scale = scaleMax - (scale - scaleMax);
-                    }
-                    spriteBatch.Draw((Texture2D)ModTexturesTable["HookCursor"], HookCursor + new Vector2(-scale * 8f), null, Color.White, 0f, Vector2.Zero, new Vector2(scale), SpriteEffects.None, 0f);
-                }
-                //if (ModHelper.ControlShift && Main.HoverItem.type != 0 && Main.HoverItem.GetGlobalItem<EntrogicItem>().card && Instance.CardInventoryUI.slotActive)
-                //{
-                //    int index = Instance.CardInventoryUI.HoverOnSlot();
-                //    int slotCard = ModHelper.FindFirst(EntrogicPlayer.ModPlayer(Main.LocalPlayer).CardType, 0);
-                //    if (index != -1)
-                //    {
-                //        Item i = new Item();
-                //        i.SetDefaults(EntrogicPlayer.ModPlayer(Main.LocalPlayer).CardType[index]);
-                //        if (Main.LocalPlayer.ItemSpace(i))
-                //        {
-                //            Main.cursorOverride = 7;
-                //        }
-                //    }
-                //    else if (slotCard != -1 && CardInventoryGridSlot.AllowPutin(Instance.CardInventoryUI.Grid[slotCard].inventoryItem, Main.HoverItem, slotCard))
-                //    {
-                //        Main.cursorOverride = 9;
-                //    }
-                //}
-            }
-            base.PostDrawInterface(spriteBatch);
-        }
-        public override void PreUpdateEntities()
-        {
-            base.PreUpdateEntities();
-        }
-        public override void MidUpdateTimeWorld()
-        {
-            ModTimer++;
-            CardInventoryUI.IsActive = Main.playerInventory;
-            base.MidUpdateTimeWorld();
-        }
-        private void Main_OnPostDraw(GameTime gameTime)
-        {
-            if (Main.dedServ)
-            {
-                return;
-            }
-            Main.spriteBatch.SafeBegin();
-            if (Main.gameMenu)
-            {
-                if (DateTime.Now.Month == 3 && DateTime.Now.Day == 20)
-                {
-                    string text = "[c/ff0000:H][c/ff2b00:a][c/ff5600:p][c/ff8100:p][c/ffa800:y] [c/ffd700:B][c/ffef00:i][c/e8f300:r][c/a6d200:t][c/63b100:h][c/219000:d][c/009021:a][c/00b163:y][c/00d2a6:,] [c/00d2ff:-][c/0090ff:C][c/004dff:y][c/000bff:r][c/1b00e3:i][c/3d00c2:l][c/5e00a1:-][c/7f0080:!]";
-                    string seeing = "Happy Birthday, -Cyril-!";
-                    Vector2 pos = new Vector2(Main.screenWidth, 0f);
-                    ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, (DynamicSpriteFont)FontAssets.MouseText, text, pos += new Vector2(-FontAssets.MouseText.MeasureString(seeing).X, 0f), Color.White, 0f, Vector2.Zero, new Vector2(1f));
-                }
-            }
-            //string textBlock = "NONONONONONONONONONONONO\nNONONONONONONONONONONONO\nNONONONONONONONONONONONO";
-            //string text = "[c/FF0000:But] [c/FF2800:E][c/FF5000:n][c/FF7800:t][c/FFA000:r][c/FFC800:o][c/FFF000:g][c/D7FF00:i][c/AFFF00:c][c/87FF00:!!!]";
-            //string seeing = "But Entrogic!!!";
-            //Vector2 pos = new Vector2(Main.screenWidth / 2f, 100f);
-            //ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, FontAssets.MouseText, textBlock, pos -= new Vector2(FontAssets.MouseText.MeasureString(textBlock).X / 2f * 1.5f, 40f), Color.Red, 0f, Vector2.Zero, new Vector2(1.5f));
-            //ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, FontAssets.MouseText, text, pos -= new Vector2(-FontAssets.MouseText.MeasureString(seeing).X, -120f), Color.White, 0f, Vector2.Zero, new Vector2(2f));
-            //string basicStr = "NO"; // Better with ■
-            //Vector2 size = FontAssets.MouseText.MeasureString(basicStr);
-            //for (float i = 0; i <= Main.screenWidth + size.X; i += size.X + 2f)
-            //{
-            //    for (float j = 0; j <= Main.screenHeight + size.Y; j += size.Y - 8f)
-            //    {
-            //        ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, FontAssets.MouseText, basicStr, new Vector2(i, j), Color.Red, 0f, Vector2.Zero, new Vector2(1));
-            //    }
-            //}
-            Main.spriteBatch.SafeEnd();
-            //Main.debuff = Debuffs;
-        }
-        private bool[] Debuffs = Main.debuff;
-        private void Main_OnPreDraw(GameTime obj)
-        {
-            //Debuffs = Main.debuff;
-            //for(int i = 0; i < Main.debuff.Length; i++)
-            //{
-            //    Main.debuff[i] = false;
-            //}
         }
 
         /// <summary>
@@ -577,123 +323,6 @@ namespace Entrogic
 
             // couldn't find the right place to insert
             throw new Exception("未在Main.DrawMenu找到if(menuMode==-7)，请将此Bug报告给作者Cyril!联系方式在Mod简介");
-        }
-        public override void UpdateUI(GameTime gameTime)
-        {
-            Player player = Main.LocalPlayer;
-            EntrogicPlayer ePlayer = player.GetModPlayer<EntrogicPlayer>();
-            if (BookUIE != null && BookUI.IsActive)
-                BookUIE.Update(gameTime);
-            //if (BookPageUIE != null && Main.LocalPlayer.GetModPlayer<EntrogicPlayer>().ActiveBook)
-            //    BookPageUIE.Update(gameTime);
-            if (CardUIE != null && CardUI.IsActive)
-                CardUIE.Update(gameTime);
-            if (CardInventoryUIE != null && CardInventoryUI.IsActive)
-                CardInventoryUIE.Update(gameTime);
-            if (CardGameUIE != null && ePlayer.CardGameActive)
-                CardGameUIE.Update(gameTime);
-            //if (Main.netMode != NetmodeID.MultiplayerClient)
-            //{
-            int texNum = mimicryFrameCounter / 5;
-            TextureAssets.Item[ItemType<拟态魔能>()] = ModTexturesTable[$"拟态魔能_{texNum.ToString()}"];
-            //}
-        }
-        public override void ModifyTransformMatrix(ref SpriteViewMatrix Transform)
-        {
-            if (Main.gameMenu)
-            {
-                return;
-            }
-        }
-        public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
-        {
-            EntrogicPlayer ePlayer = Main.LocalPlayer.GetModPlayer<EntrogicPlayer>();
-            int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
-            if (MouseTextIndex != -1)
-            {
-                layers.Insert(MouseTextIndex, new LegacyGameInterfaceLayer(
-                    "Entrogic: Book UI",
-                    delegate
-                    {
-                        if (BookUI.IsActive)
-                        {
-                            BookUIE.Draw(Main.spriteBatch, new GameTime());
-                        }
-                        return true;
-                    },
-                    InterfaceScaleType.UI)
-                );
-                //layers.Insert(MouseTextIndex, new LegacyGameInterfaceLayer(
-                //    "Entrogic: Book Page UI",
-                //    delegate
-                //    {
-                //        BookPageUIE.Draw(Main.spriteBatch, new GameTime());
-                //        return true;
-                //    },
-                //    InterfaceScaleType.UI)
-                //);
-                layers.Insert(MouseTextIndex, new LegacyGameInterfaceLayer(
-                    "Entrogic: Card UI",
-                    delegate
-                    {
-                        if (CardUI.IsActive)
-                        {
-                            CardUIE.Draw(Main.spriteBatch, new GameTime());
-                        }
-                        return true;
-                    },
-                    InterfaceScaleType.UI)
-                );
-                layers.Insert(MouseTextIndex, new LegacyGameInterfaceLayer(
-                    "Entrogic: Card Game UI",
-                    delegate
-                    {
-                        if (ePlayer.CardGameActive)
-                        {
-                            CardGameUIE.Draw(Main.spriteBatch, new GameTime());
-                        }
-                        return true;
-                    },
-                    InterfaceScaleType.UI)
-                );
-            }
-            int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
-            if (InventoryIndex != -1)
-            {
-                layers.Insert(InventoryIndex, new LegacyGameInterfaceLayer(
-                    "Entrogic: Card Inventory UI",
-                    delegate
-                    {
-                        if (CardInventoryUI.IsActive)
-                        {
-                            CardInventoryUIE.Draw(Main.spriteBatch, new GameTime());
-                        }
-                        return true;
-                    },
-                    InterfaceScaleType.UI)
-                );
-            }
-        }
-
-        public override void UpdateMusic(ref int music, ref MusicPriority priority)
-        {
-            Player player = Main.LocalPlayer;
-            if (Main.myPlayer == -1 || Main.gameMenu || !player.active)
-            {
-                return;
-            }
-            EntrogicPlayer modPlayer = EntrogicPlayer.ModPlayer(player);
-            bool magicStorm = EntrogicWorld.magicStorm;
-            if (magicStorm && player.ZoneOverworldHeight)
-            {
-                music = GetSoundSlot(SoundType.Music, "Sounds/Music/MagicStorm");
-                priority = MusicPriority.Environment;
-            }
-            if (modPlayer.CardGaming)
-            {
-                music = GetSoundSlot(SoundType.Music, "Sounds/Music/Toby Fox - Rude Buster");
-                priority = MusicPriority.BossHigh;
-            }
         }
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {

@@ -18,6 +18,7 @@ namespace Entrogic.Items.AntaGolem
             Tooltip.SetDefault("Summons a stone slime to fight for you");
             DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "岩石史莱姆法杖");
             Tooltip.AddTranslation((int)GameCulture.CultureName.Chinese, "召唤岩石史莱姆为你而战");
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
         public override void SetDefaults()
         {

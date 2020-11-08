@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -52,7 +53,7 @@ namespace Entrogic.UI.CardGame
 
                     if (!bullet.IsFriendly && bullet.GetDamage(bullet.Damage) > 0 && Hitbox.Intersects(bullet.Hitbox))
                     {
-                        Terraria.Audio.SoundEngine.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGHurt"));
+                        SoundEngine.PlaySound(ResourceLoader.CGHurt);
                         clientModPlayer.CardGamePlayerHealth -= bullet.GetDamage(bullet.Damage);
                         ImmuneTime = 1f;
                         break;

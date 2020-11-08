@@ -7,6 +7,10 @@ namespace Entrogic.Items.Weapons.Magic.Staff
 {
     public class CuteLittleStaff : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        }
         public override void SetDefaults()
         {
             item.damage = 44;

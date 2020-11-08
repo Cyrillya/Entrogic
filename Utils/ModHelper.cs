@@ -16,6 +16,7 @@ using System.Reflection;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.Enums;
 using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
@@ -365,6 +366,42 @@ namespace Entrogic
                 }
             }
             return res;
+        }
+        public static void DefaultToWhip(this Projectile proj)
+        {
+            proj.width = 18;
+            proj.height = 18;
+            proj.aiStyle = 165;
+            proj.friendly = true;
+            proj.penetrate = -1;
+            proj.tileCollide = false;
+            proj.scale = 1f;
+            proj.ownerHitCheck = true;
+            proj.extraUpdates = 1;
+            proj.usesLocalNPCImmunity = true;
+            proj.localNPCHitCooldown = -1;
+        }
+        public static void SetShopValues(this Item item, ItemRarityColor rarity, int coinValue)
+        {
+            item.rare = (int)rarity;
+            item.value = coinValue;
+        }
+        public static void DefaultToWhip(this Item item, int projectileId, int dmg, float kb, float shootspeed, int animationTotalTime = 30)
+        {
+            item.DamageType = DamageClass.Summon;
+            item.autoReuse = false;
+            item.useStyle = ItemUseStyleID.Swing;
+            item.useAnimation = animationTotalTime;
+            item.useTime = animationTotalTime;
+            item.width = 18;
+            item.height = 18;
+            item.shoot = projectileId;
+            item.UseSound = SoundID.Item152;
+            item.noMelee = true;
+            item.noUseGraphic = true;
+            item.damage = dmg;
+            item.knockBack = kb;
+            item.shootSpeed = shootspeed;
         }
         public static string GetItemName(int i)
         {

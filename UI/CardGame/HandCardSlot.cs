@@ -105,14 +105,14 @@ namespace Entrogic.UI.CardGame
                 Main.spriteBatch.End();
                 Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.UIScaleMatrix);
                 // Retrieve reference to shader
-                var whiteBlur = GameShaders.Misc["Entrogic:WhiteBlur"];
+                var whiteBlur = ResourceLoader.WhiteBlur;
                 // Reset back to default value.
-                whiteBlur.UseOpacity(0f);
+                whiteBlur.Shader.Parameters["uOpacity"].SetValue(0f);
                 if (AnimationTimer > 15f)
                 {
-                    whiteBlur.UseOpacity(MathHelper.Min((AnimationTimer - 15f) / 8f, 1f));
+                    whiteBlur.Shader.Parameters["uOpacity"].SetValue(MathHelper.Min((AnimationTimer - 15f) / 8f, 1f));
                 }
-                whiteBlur.Apply(null);
+                whiteBlur.Apply();
 
                 spriteBatch.Draw(t, AnimationPosition + fatherPosition, (Rectangle?)frame, Color.White);
 
@@ -194,14 +194,14 @@ namespace Entrogic.UI.CardGame
                 Main.spriteBatch.SafeEnd();
                 Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.UIScaleMatrix);
                 // Retrieve reference to shader
-                var whiteBlur = GameShaders.Misc["Entrogic:WhiteBlur"];
+                var whiteBlur = ResourceLoader.WhiteBlur;
                 // Reset back to default value.
-                whiteBlur.UseOpacity(0f);
+                whiteBlur.Shader.Parameters["uOpacity"].SetValue(0f);
                 if (AnimationTimer > 15f)
                 {
-                    whiteBlur.UseOpacity(MathHelper.Min((AnimationTimer - 15f) / 14f, 1f));
+                    whiteBlur.Shader.Parameters["uOpacity"].SetValue(MathHelper.Min((AnimationTimer - 15f) / 14f, 1f));
                 }
-                whiteBlur.Apply(null);
+                whiteBlur.Apply();
 
                 spriteBatch.Draw(t, AnimationPosition + fatherPosition, (Rectangle?)frame, Color.White);
 

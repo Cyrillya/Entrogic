@@ -11,6 +11,7 @@ namespace Entrogic.Items.PollutElement
     {
         public override void SetStaticDefaults()
         {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
             Tooltip.SetDefault("黑魔法的邪恶产物");
             Item.staff[item.type] = true;
         }

@@ -13,6 +13,7 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
     {
         public override void SetStaticDefaults()
         {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
             DisplayName.SetDefault("铸铁连弩");
             Tooltip.SetDefault("“精美的连弩....宛如一件艺术品”\n" +
                 "有几率多射出一发箭");

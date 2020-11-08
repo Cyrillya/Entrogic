@@ -13,6 +13,7 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("不朽圣火的力量，好好利用吧");
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
         public override void SetDefaults()

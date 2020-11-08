@@ -18,6 +18,10 @@ namespace Entrogic
             //        Item.NewItem(projectile.Center, ItemType<AstralImpact>());
             //}
         }
+        public override void SetDefaults(Projectile projectile)
+        {
+            if (projectile.type == ProjectileID.CopperShortswordStab) projectile.scale *= 1.5f;
+        }
         public override bool InstancePerEntity => true;
         public override bool CloneNewInstances => true;
     }

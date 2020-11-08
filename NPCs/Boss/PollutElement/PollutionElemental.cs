@@ -13,6 +13,7 @@ using Entrogic.Items.PollutElement.Armor;
 using Entrogic.Items.Miscellaneous.Placeable.Trophy;
 using Terraria.Utilities;
 using Terraria.GameContent.NetModules;
+using Entrogic.Common;
 
 namespace Entrogic.NPCs.Boss.PollutElement
 {
@@ -45,9 +46,9 @@ namespace Entrogic.NPCs.Boss.PollutElement
         {
             npc.aiStyle = -1;
             npc.lifeMax = 8900;
-            if (Entrogic.IsCalamityLoaded)
+            if (CrossModHandler.ModLoaded("CalamityMod"))
             {
-                if (Entrogic.IsCalamityModRevengenceMode)
+                if (CrossModHandler.IsCalamityModRevengenceMode)
                 {
                     npc.lifeMax = 11000;
                 }
@@ -66,7 +67,7 @@ namespace Entrogic.NPCs.Boss.PollutElement
             npc.buffImmune[BuffID.Bleeding] = true;
             npc.buffImmune[BuffID.Confused] = true;
             npc.timeLeft = NPC.activeTime * 30;
-            music = Mod.GetSoundSlot(SoundType.Music, "Sounds/Music/TheStormy");
+            //music = Mod.GetSoundSlot(SoundType.Music, "Sounds/Music/TheStormy");
             musicPriority = MusicPriority.BossMedium;
             bossBag = ItemType<ContaminatedElementalTreasureBag>();
             npc.alpha = 255;

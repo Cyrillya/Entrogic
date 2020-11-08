@@ -75,9 +75,9 @@ namespace Entrogic.NPCs.Boss.PollutElement
                     int num162 = Dust.NewDust(npc.Center - Vector2.One * 25f, 50, 50, 5, (float)(2 * hitDirection), -2f, 0, default(Color), 1f);
                     Main.dust[num162].velocity /= 2f;
                 }
-                Gore.NewGore(npc.Center, npc.velocity * 0.8f, Mod.GetGoreSlot("Gores/PolluSharkGore"), 1f);
-                Gore.NewGore(npc.Center, npc.velocity * 0.9f, Mod.GetGoreSlot("Gores/PolluSharkGore2"), 1f);
-                Gore.NewGore(npc.Center, npc.velocity, Mod.GetGoreSlot("Gores/PolluSharkGore3"), 1f);
+                //Gore.NewGore(npc.Center, npc.velocity * 0.8f, Mod.GetGoreSlot("Gores/PolluSharkGore"), 1f);
+                //Gore.NewGore(npc.Center, npc.velocity * 0.9f, Mod.GetGoreSlot("Gores/PolluSharkGore2"), 1f);
+                //Gore.NewGore(npc.Center, npc.velocity, Mod.GetGoreSlot("Gores/PolluSharkGore3"), 1f);
             }
         }
     }

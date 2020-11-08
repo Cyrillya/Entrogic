@@ -14,6 +14,7 @@ namespace Entrogic.Items.AntaGolem
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("“空洞的眼眶...你感觉它在盯着你”");
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
         public override void SetDefaults()
         {
@@ -31,7 +32,7 @@ namespace Entrogic.Items.AntaGolem
             projectile.CloneDefaults(ProjectileID.MedusaHead);
             projectile.aiStyle = -1;
         }
-        public override bool CanDamage()
+        public override bool? CanDamage()
         {
             return false;
         }

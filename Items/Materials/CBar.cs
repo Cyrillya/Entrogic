@@ -11,6 +11,7 @@ namespace Entrogic.Items.Materials
         public override void SetStaticDefaults()
         {
             Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(5, 7));
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 25;
         }
 
         public override void SetDefaults()
@@ -30,8 +31,8 @@ namespace Entrogic.Items.Materials
         }
         public override void AddRecipes()
         {
-            CreateRecipe()
-                .AddIngredient(ItemID.HallowedBar, 1)
+            CreateRecipe(3)
+                .AddIngredient(ItemID.HallowedBar, 3)
                 .AddIngredient(ItemID.SoulofLight, 3)
                 .AddIngredient(ItemID.SoulofNight, 3)
                 .AddTile(TileID.MythrilAnvil)

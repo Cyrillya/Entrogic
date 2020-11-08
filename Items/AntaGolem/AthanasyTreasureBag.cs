@@ -17,6 +17,7 @@ namespace Entrogic.Items.AntaGolem
         {
             DisplayName.SetDefault("宝藏袋");
             Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}");
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
         public override void SetDefaults()

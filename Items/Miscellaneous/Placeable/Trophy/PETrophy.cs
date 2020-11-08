@@ -10,6 +10,7 @@ namespace Entrogic.Items.Miscellaneous.Placeable.Trophy
     {
         public override void SetStaticDefaults()
         {
+            Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
             DisplayName.SetDefault("{$Mods.Entrogic.NPCName.污染之灵}" + "{$MapObject.Trophy}");
             DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "污染之灵纪念章");
             DisplayName.AddTranslation((int)GameCulture.CultureName.German, "Verschmutzung Element-Trophäe");

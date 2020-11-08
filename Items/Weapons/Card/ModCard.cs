@@ -42,6 +42,8 @@ namespace Entrogic.Items.Weapons.Card
             if (!glove)
             {
                 CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 2;
+                if (rare >= 3)
+                    CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
                 List<string> rareColorText = new List<string>
                 {
                     "[c/555555:",
@@ -239,6 +241,9 @@ namespace Entrogic.Items.Weapons.Card
             }
             ModifySafeTooltips(tooltips);
         }
-        public override bool CloneNewInstances => true;
+        public override ModItem Clone(Item item)
+        {
+            return base.Clone(item);
+        }
     }
 }

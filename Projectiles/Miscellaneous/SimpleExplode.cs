@@ -12,7 +12,7 @@ namespace Entrogic.Projectiles.Miscellaneous
 {
     public class SimpleExplode : ModProjectile
     {
-        public override string Texture => "Entrogic/Images/Block";
+        public override string Texture => "Entrogic/Assets/Images/Block";
         public bool useSmoke;
         public int goreTimes;
         public override void SetDefaults()

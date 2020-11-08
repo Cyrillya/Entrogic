@@ -13,6 +13,7 @@ namespace Entrogic.Items.Tools
 		public override void SetStaticDefaults()
 		{
 			Tooltip.SetDefault("[c/7BFFFF:看上去十分像一把电磁叉...]");
+			Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
 		public override void SetDefaults()

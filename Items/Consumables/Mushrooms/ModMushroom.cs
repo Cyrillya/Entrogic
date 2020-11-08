@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
@@ -7,6 +8,10 @@ namespace Entrogic.Items.Consumables.Mushrooms
 {
     public abstract class ModMushroom : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 10;
+        }
         public virtual void MushroomDefaults() { }
         public sealed override void SetDefaults()
         {
