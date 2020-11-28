@@ -10,16 +10,22 @@ using static Terraria.ModLoader.ModContent;
 
 namespace Entrogic.Waters
 {
+    public class LifeWaterfallStyle : ModWaterfallStyle
+    {
+        public static LifeWaterfallStyle Instance;
+        public override string Texture => "Entrogic/Waters/LifeWaterfallStyle";
+    }
     public class LifeWaterStyle : ModWaterStyle
     {
+        public static LifeWaterStyle Instance;
         public override bool ChooseWaterStyle()
         {
-            return Main.player[Main.myPlayer].GetModPlayer<EntrogicPlayer>().IsZoneLife;
+            return Main.player[Main.myPlayer].GetModPlayer<EntrogicPlayer>().IsZoneLife && AEntrogicConfigClient.Instance.OldWaterEffect;
         }
 
         public override int ChooseWaterfallStyle()
         {
-            return WaterStyleID.Bloodmoon;//mod.GetWaterfallStyleSlot("LifeWaterfallStyle");
+            return new LifeWaterfallStyle().Type;
         }
 
         public override int GetSplashDust()
