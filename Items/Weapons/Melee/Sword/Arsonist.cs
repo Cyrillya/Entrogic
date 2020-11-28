@@ -12,7 +12,7 @@ namespace Entrogic.Items.Weapons.Melee.Sword
     {
         public override void SetDefaults()
         {
-            item.damage = 56;           //The damage of your weapon 武器的伤害
+            item.damage = 36;           //The damage of your weapon 武器的伤害
             item.width = 42;            //Weapon's texture's width 武器材质的宽度
             item.height = 54;           //Weapon's texture's height 武器材质的高度
             item.useTime = 10;          //The time span of using the weapon. Remember in terraria, 60 frames is a second. 使用武器的速度的时间跨度(以帧为单位)。在Terraria中，60帧是一秒。

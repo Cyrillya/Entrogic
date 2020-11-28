@@ -414,7 +414,7 @@ namespace Entrogic.NPCs.CardMerchantSystem
                 {
                     CardMerchantQuest questSystem = player.GetModPlayer<CardMerchantQuest>();
                 EndMission:
-                    Main.NewText($"Count:{Entrogic.CardQuests.Count}, quest:{questSystem.quest}");
+                    //Main.NewText($"Count:{Entrogic.CardQuests.Count}, quest:{questSystem.quest}");
                     if (questSystem.quest >= Entrogic.CardQuests.Count) // 如果完成了所有任务
                     {
                         questSystem.quest = Math.Min(questSystem.quest, Entrogic.CardQuests.Count);

@@ -26,6 +26,10 @@ ItemName.RustySword=Rusty Sword
 ItemName.CastIronSword=Cast Iron Sword
 ItemName.LeafbladeItem=Leafblade
 ItemName.SkylineItem=Skyline
+ItemName.Arsonist=Arsonists
+ItemName.Dragonflow=Dragonflow
+ItemName.HellquartzRod=Hellquartz Rod
+ItemName.TheStorm=The Storm
 
 # Volutio's Items
 ItemName.VolutioMask=Volutio Mask
@@ -133,6 +137,8 @@ ItemTooltip.FuSword=这把刀可以驱散所有邪恶
 ItemTooltip.EarthElementalAffinityAgent=Gives you the ability to swim in the dirt.
 ItemTooltip.RustySword=“一把十分古老的剑，它锈迹斑斑”让你的敌人获得破伤风\n小心割到手
 ItemTooltip.CastIronSword=“沉重，但是挥起来却十分轻巧”\n给予你的敌人致命一击
+ItemTooltip.Dragonflow=将木箭转化为带10盔甲传统的烈火箭
+ItemTooltip.TheStorm=使用雪球作为弹药
 
 # Volutio's Items
 ItemTooltip.GelAnkh=允许你拥有一次满血复活机会，但复活后无法回复血量\n“以自己墓地中的玩家为对象发动。玩家在自己场上特殊召唤”

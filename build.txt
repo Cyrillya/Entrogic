@@ -1,6 +1,6 @@
 displayName = Entrogic
-author = Cyril, Harry, UniCyix, 恶龙, TwilightSparkle
-version = 4.27.201008
+author = Cyril and the Dev Team
+version = 4.28.201011
 buildIgnore = .vs\*, Properties\*, *.csproj, *.user, obj\*, bin\*, *.config, .git\*, *.vssettings
 hideCode = false
 hideResources = false

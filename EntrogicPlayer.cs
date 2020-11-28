@@ -35,14 +35,15 @@ using Microsoft.Xna.Framework.Input;
 using Entrogic.NPCs.CardFightable.CardBullet;
 using Entrogic.NPCs.CardMerchantSystem;
 using Entrogic.NPCs.CardFightable.Particles;
+using Terraria.IO;
+using Terraria.Social;
 //using Entrogic.UI;
 
 namespace Entrogic
 {
     public class EntrogicPlayer : ModPlayer
     {
-        internal string PlayerFolder => Main.PlayerPath + "/" + player.name + "/sysfile.ent/";
-        internal string ServerPlayerFolder => Main.PlayerPath + "/" + player.name + "/sysfile.ent/";
+        //internal string PlayerFolder => ModHelper.GetPlayerPathFromName(player.name, SocialAPI.Cloud == null, out string name) + "/sysfile.ent/";
 
         private KeyboardState _currentKey;
         private KeyboardState _previousKey;
@@ -255,21 +256,24 @@ namespace Entrogic
         /// <returns></returns>
         public override TagCompound Save()
         {
-            if (Main.netMode == NetmodeID.SinglePlayer)
-            {
-                string path = string.Format(PlayerFolder + "CardData.entini");
-                SaveCardData(path);
-            }
-            else if (BEntrogicConfigServer.Instance.ClearNewPlayersCard)
-            {
-                string path = string.Format(ServerPlayerFolder + "CardData" + Main.worldName + ".entini");
-                SaveCardData(path);
-            }
+            //if (Main.netMode == NetmodeID.SinglePlayer)
+            //{
+            //    string path = string.Format(PlayerFolder + "CardData.entini");
+            //    SaveCardData(path);
+            //}
+            //else if (BEntrogicConfigServer.Instance.ClearNewPlayersCard)
+            //{
+            //    ModHelper.GetWorldPathFromName(Main.worldName, SocialAPI.Cloud != null, out string worldName);
+            //    string path = string.Format(PlayerFolder + "CardData" + worldName + ".entini");
+            //    SaveCardData(path);
+            //}
+            string text = ModHelper.GetCardSlotInfo(player);
             return new TagCompound
             {
                 { "Sins", Sins },
                 { "LifeLastTime", LifeLastTime },
-                { nameof(CardUseCount), CardUseCount }
+                { nameof(CardUseCount), CardUseCount },
+                { nameof(CardType), text }
             };
         }
 
@@ -282,8 +286,51 @@ namespace Entrogic
             Sins = tag.GetInt("Sins");
             LifeLastTime = tag.GetInt("LifeLastTime");
             CardUseCount = tag.GetInt(nameof(CardUseCount));
+
+            string cardInfos = tag.GetString(nameof(CardType));
+            List<int> list = new List<int>();
+            if (cardInfos == null || cardInfos == "") list = new List<int>() { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            else
+            {
+                string[] cardInfo = cardInfos.Split('\n');
+                foreach (string card in cardInfo)
+                {
+                    if (list.Count >= 9)
+                        break;
+                    if (card == "0")
+                    {
+                        list.Add(0);
+                        continue;
+                    }
+                    string[] read = card.Split(':');
+                    Mod referenceMod = ModLoader.GetMod(read[0]);
+                    if (referenceMod != null)
+                    {
+                        try
+                        {
+                            ModItem modItem = referenceMod.GetItem(read[1]);
+                            if (modItem != null)
+                            {
+                                list.Add(modItem.item.type);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            throw e;
+                        }
+                    }
+                }
+            }
+            try
+            {
+
+                while (list.Count < 9) list.Add(0);
+                CardType = list.ToArray();
+            }
+            catch { }
         }
 
+        [Obsolete]
         public void SaveCardData(string path)
         {
             string[] directPath = path.Split('/');
@@ -293,33 +340,12 @@ namespace Entrogic
                 return;
             //写文件
             FileInfo fileInfo = new FileInfo(path);
-            Item item = new Item();
-            item.SetDefaults(CardType[0]);
-            string text = "";
-            if (CardType[0] == 0)
-            {
-                text = "0";
-            }
-            else
-            {
-                text = $"{item.modItem.mod.Name}:{item.modItem.Name}";
-            }
-            for (int i = 1; i < CardType.Length; i++)
-            {
-                if (CardType[i] == 0)
-                {
-                    text += "\n0";
-                }
-                else
-                {
-                    item.SetDefaults(CardType[i]);
-                    text += $"\n{item.modItem.mod.Name}:{item.modItem.Name}";
-                }
-            }
+            string text = ModHelper.GetCardSlotInfo(player);
             File.WriteAllText(path, text);
             Console.Read();
         }
         
+        [Obsolete]
         public void LoadCardData(string path)
         {
             if (File.Exists(path))
@@ -343,7 +369,7 @@ namespace Entrogic
                 //           + $"\r\nMain.netMode={Main.netMode}");
                 //    }
                 //}
-                // 打开数据文件 D:\data.txt逐行读入
+                // 打开数据文件 逐行读入
                 StreamReader rd = File.OpenText(path);
                 string line;
                 while ((line = rd.ReadLine()) != null)
@@ -873,30 +899,31 @@ namespace Entrogic
             CardRecentEventAlpha -= 2;
             CardRecentEventAlpha = Math.Max(80, CardRecentEventAlpha);
             // 卡牌存储
-            if (!Main.gameMenu && !Main.dedServ)
-            {
-                ticks++;
-                if ((!Main.ingameOptionsWindow && ticks > 600) || (Main.ingameOptionsWindow && !savedSinceMenuOpen))
-                {
-                    if (BEntrogicConfigServer.Instance.ClearNewPlayersCard && Main.netMode == NetmodeID.MultiplayerClient)
-                    {
-                        string path = string.Format(ServerPlayerFolder + "CardData" + Main.worldName + ".entini");
-                        SaveCardData(path);
-                    }
-                    else
-                    {
-                        string path = string.Format(PlayerFolder + "CardData.entini");
-                        SaveCardData(path);
-                    }
-                    ticks = 0;
-                }
-                if (Main.ingameOptionsWindow)
-                {
-                    savedSinceMenuOpen = true;
-                    goto GetOffCardSaving;
-                }
-                savedSinceMenuOpen = false;
-            }
+            //if (!Main.gameMenu && !Main.dedServ)
+            //{
+            //    ticks++;
+            //    if ((!Main.ingameOptionsWindow && ticks > 600) || (Main.ingameOptionsWindow && !savedSinceMenuOpen))
+            //    {
+            //        if (BEntrogicConfigServer.Instance.ClearNewPlayersCard && Main.netMode == NetmodeID.MultiplayerClient)
+            //        {
+            //            ModHelper.GetWorldPathFromName(Main.worldName, SocialAPI.Cloud != null, out string worldName);
+            //            string path = string.Format(PlayerFolder + "CardData" + worldName + ".entini");
+            //            SaveCardData(path);
+            //        }
+            //        else
+            //        {
+            //            string path = string.Format(PlayerFolder + "CardData.entini");
+            //            SaveCardData(path);
+            //        }
+            //        ticks = 0;
+            //    }
+            //    if (Main.ingameOptionsWindow)
+            //    {
+            //        savedSinceMenuOpen = true;
+            //        goto GetOffCardSaving;
+            //    }
+            //    savedSinceMenuOpen = false;
+            //}
             GetOffCardSaving:
             oldPosition[0] = player.position;
             for (int i = oldPosition.Length - 1; i >= 1; i--)
@@ -1382,42 +1409,42 @@ namespace Entrogic
                 // 发送出去
                 packet.Send(-1, -1);
             }
-            if (IsDev) { Main.NewText(PlayerFolder); }
-            if (BEntrogicConfigServer.Instance.ClearNewPlayersCard && Main.netMode == NetmodeID.MultiplayerClient)
-            {
-                if (!Directory.Exists(ServerPlayerFolder))
-                {
-                    Directory.CreateDirectory(ServerPlayerFolder);
-                }
-                string savePath = string.Format(ServerPlayerFolder + "CardData" + Main.worldName + ".entini");
-                if (!File.Exists(savePath))
-                {
-                    for (int i = 0; i < CardType.Length; i++)
-                    {
-                        CardType[i] = 0;
-                    }
-                    SaveCardData(savePath);
-                    LoadCardData(savePath);
-                }
-                else
-                {
-                    LoadCardData(savePath);
-                }
-            }
-            else if (!Main.dedServ)
-            {
-                if (!Directory.Exists(PlayerFolder))
-                {
-                    Directory.CreateDirectory(PlayerFolder);
-                }
-                string path = string.Format(PlayerFolder + "CardData.entini");
-                if (!File.Exists(path))
-                {
-                    SaveCardData(path);
-                }
-                LoadCardData(path);
-            }
-            Instance.CardInventoryUI.UpdateSlots();
+            //if (DEntrogicDebugClient.Instance.AuthorMode) { Main.NewText(PlayerFolder); }
+            //if (BEntrogicConfigServer.Instance.ClearNewPlayersCard && Main.netMode == NetmodeID.MultiplayerClient)
+            //{
+            //    if (!Directory.Exists(PlayerFolder))
+            //    {
+            //        Directory.CreateDirectory(PlayerFolder);
+            //    }
+            //    ModHelper.GetWorldPathFromName(Main.worldName, SocialAPI.Cloud != null, out string worldName);
+            //    string savePath = string.Format(PlayerFolder + "CardData" + worldName + ".entini");
+            //    if (!File.Exists(savePath))
+            //    {
+            //        for (int i = 0; i < CardType.Length; i++)
+            //        {
+            //            CardType[i] = 0;
+            //        }
+            //        SaveCardData(savePath);
+            //        LoadCardData(savePath);
+            //    }
+            //    else
+            //    {
+            //        LoadCardData(savePath);
+            //    }
+            //}
+            //else if (!Main.dedServ)
+            //{
+            //    if (!Directory.Exists(PlayerFolder))
+            //    {
+            //        Directory.CreateDirectory(PlayerFolder);
+            //    }
+            //    string path = string.Format(PlayerFolder + "CardData.entini");
+            //    if (!File.Exists(path))
+            //    {
+            //        SaveCardData(path);
+            //    }
+            //    LoadCardData(path);
+            //}
 
             for (int i = 0; i < CardReadyType.Length; i++)
             {
@@ -1433,6 +1460,7 @@ namespace Entrogic
             {
                 CardGraveType[i] = 0;
             }
+            Instance.CardInventoryUI.UpdateSlots();
         }
 
         public override void PostBuyItem(NPC vendor, Item[] shopInventory, Item item)

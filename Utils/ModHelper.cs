@@ -7,6 +7,7 @@ using ReLogic.Graphics;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Terraria;
@@ -14,7 +15,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
-
+using Terraria.Utilities;
 using static Entrogic.Entrogic;
 
 namespace Entrogic
@@ -1043,6 +1044,53 @@ namespace Entrogic
                         return Main.sign[Sign.ReadSign(r.X + i, r.Y + j)];
             return null;
         }
+        public static float GetLerpValue(float from, float to, float t, bool clamped = false)
+        {
+            if (clamped)
+            {
+                if (from < to)
+                {
+                    if (t < from)
+                    {
+                        return 0f;
+                    }
+                    if (t > to)
+                    {
+                        return 1f;
+                    }
+                }
+                else
+                {
+                    if (t < to)
+                    {
+                        return 1f;
+                    }
+                    if (t > from)
+                    {
+                        return 0f;
+                    }
+                }
+            }
+            return (t - from) / (to - from);
+        }
+
+        public static Vector2 DirectionTo(this Vector2 Origin, Vector2 Target)
+        {
+            return Vector2.Normalize(Target - Origin);
+        }
+
+        // Token: 0x06000101 RID: 257 RVA: 0x000068ED File Offset: 0x00004AED
+        public static Rectangle Rectangle(this Texture2D texture)
+        {
+            return new Rectangle(0, 0, texture.Width, texture.Height);
+        }
+
+        // Token: 0x06000102 RID: 258 RVA: 0x00006902 File Offset: 0x00004B02
+        public static float Distance(this Vector2 Origin, Vector2 Target)
+        {
+            return Vector2.Distance(Origin, Target);
+        }
+
         public static void SafeBegin(this SpriteBatch sb)
         {
             try
@@ -1073,6 +1121,126 @@ namespace Entrogic
             catch (InvalidOperationException)
             {
             }
+        }
+
+        public static string GetCardSlotInfo(Player player)
+        {
+            EntrogicPlayer entrogicPlayer = player.GetModPlayer<EntrogicPlayer>();
+            Item item = new Item();
+            string text = "";
+            for (int i = 0; i < entrogicPlayer.CardType.Length; i++)
+            {
+                if (entrogicPlayer.CardType[i] == 0)
+                {
+                    text += "0\n";
+                }
+                else
+                {
+                    item.SetDefaults(entrogicPlayer.CardType[i]);
+                    text += $"{item.modItem.mod.Name}:{item.modItem.Name}\n";
+                }
+            }
+            return text;
+        }
+
+        public static string GetPlayerPathFromName(string playerName, bool cloudSave, out string trueName)
+        {
+            char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
+            string text = "";
+            if (playerName == ".")
+            {
+                playerName = "_";
+            }
+            else if (playerName == "..")
+            {
+                playerName = "__";
+            }
+            foreach (char c in playerName)
+            {
+                char c2;
+                if (invalidFileNameChars.Contains(c))
+                {
+                    c2 = '-';
+                }
+                else if (c == ' ')
+                {
+                    c2 = '_';
+                }
+                else
+                {
+                    c2 = c;
+                }
+                text += c2.ToString();
+            }
+            string text2 = cloudSave ? Main.CloudPlayerPath : Main.PlayerPath;
+            if (FileUtilities.GetFullPath($"{text2}{Path.DirectorySeparatorChar}{text}.plr", cloudSave).StartsWith("\\\\.\\", StringComparison.Ordinal))
+            {
+                text += "_";
+            }
+            if (FileUtilities.Exists($"{text2}{Path.DirectorySeparatorChar}{text}.plr", cloudSave))
+            {
+                int num = 2;
+                while (FileUtilities.Exists(string.Concat(new object[]
+                {
+                    text2,
+                    Path.DirectorySeparatorChar.ToString(),
+                    text,
+                    num,
+                    ".plr"
+                }), cloudSave))
+                {
+                    num++;
+                }
+                text += num;
+            }
+            trueName = text;
+            return $"{text2}{Path.DirectorySeparatorChar}{text}";
+        }
+
+        public static string GetWorldPathFromName(string worldName, bool cloudSave, out string trueName)
+        {
+            char[] invalidFileNameChars = Path.GetInvalidFileNameChars();
+            string text = "";
+            foreach (char c in worldName)
+            {
+                char c2;
+                if (invalidFileNameChars.Contains(c))
+                {
+                    c2 = '-';
+                }
+                else if (c == ' ')
+                {
+                    c2 = '_';
+                }
+                else
+                {
+                    c2 = c;
+                }
+                text += c2.ToString();
+            }
+            string text2 = cloudSave ? Main.CloudWorldPath : Main.WorldPath;
+            if (FileUtilities.GetFullPath($"{text2}{Path.DirectorySeparatorChar}{text}.wld", cloudSave).StartsWith("\\\\.\\", StringComparison.Ordinal))
+            {
+                text += "_";
+            }
+            if (FileUtilities.Exists($"{text2}{Path.DirectorySeparatorChar}{text}.wld", cloudSave))
+            {
+                int num = 2;
+                while (FileUtilities.Exists(string.Concat(new object[]
+                {
+                    text2,
+                    Path.DirectorySeparatorChar.ToString(),
+                    text,
+                    num,
+                    ".wld"
+                }), cloudSave))
+                {
+                    num++;
+                }
+                text += num;
+            }
+            trueName = text;
+            return $"{text2}{Path.DirectorySeparatorChar}{text}";
         }
         /// <summary>
         /// 无入侵

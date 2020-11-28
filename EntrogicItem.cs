@@ -34,6 +34,7 @@ namespace Entrogic
             if (item.type == ItemID.WandofSparking) { item.damage += 4; item.reuseDelay = 44; item.useTime = 5; item.mana = 5; }
             if (item.type == ItemID.IceBlock) item.ammo = item.type;
             if (item.type == ItemID.IceRod) { item.mana /= 2; item.useTime /= 2; item.damage += 12; }
+            if (item.type == ItemID.SpaceGun) { item.UseSound = mod.GetLegacySoundSlot(SoundType.Item, "Sounds/Item/SpaceGun1.4"); }
         }
         public override void OpenVanillaBag(string context, Player player, int arg)
         {

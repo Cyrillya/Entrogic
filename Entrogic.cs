@@ -205,39 +205,6 @@ namespace Entrogic
 
         public override void Load()
         {
-            if (!IsDev)
-            {
-                try
-                {
-                    //WebClient MyWebClient = new WebClient();
-                    //MyWebClient.UseDefaultCredentials = true; // 设置用于向Internet资源的请求进行身份验证的网络凭据
-                    //byte[] pageData = MyWebClient.DownloadData("http://134.175.161.86/Entrogic/VersionCheck.html"); // 从指定网站下载数据
-                    ////string pageHtml = Encoding.Default.GetString(pageData);  // 如果获取网站页面采用的是GB2312，则使用这句   
-                    //string pageHtml = Encoding.UTF8.GetString(pageData); // 如果获取网站页面采用的是UTF-8，则使用这句
-                    //string[] pageHtmlArray = pageHtml.Split(new string[] { "ver" }, StringSplitOptions.RemoveEmptyEntries);
-
-                    //string path = string.Format("{0}[Entrogic]请检查您的Mod版本.txt", ModFolder);
-                    ////写文件
-                    //if (pageHtmlArray[1] != Version.ToString())
-                    //{
-                    //    string URL = "http://134.175.161.86/Entrogic/VersionCheck.html";
-                    //    WriteAndOpenFile(path,
-                    //        "您当前的Mod版本为" + Version.ToString() + "，但最新的正式版为" + pageHtmlArray[1]
-                    //        + "\n已为您打开下载页面，如打开未成功\n请访问以下网址以将版本更新至最新正式版！\n"
-                    //        + "http://134.175.161.86/Entrogic/VersionCheck.html"
-                    //        + "\n你也可以通过加入我们的QQ群：798484146以下载最新版");
-                    //    Process.Start(URL);
-                    //}
-                    //else if (File.Exists(path))
-                    //{
-                    //    File.Delete(path);
-                    //}
-                }
-                catch
-                {
-
-                }
-            }
             PassHotkey = RegisterHotKey("过牌快捷键", "E");
             WashHotkey = RegisterHotKey("洗牌快捷键", "Q");
             HookCursorHotKey = RegisterHotKey("设置钩爪指针快捷键", "C");
@@ -315,29 +282,7 @@ namespace Entrogic
                 AddEquipTexture(new PolluWings7(), null, EquipType.Wings, "PolluWings7", "Entrogic/Items/PollutElement/PolluWings7_Wings");
                 AddEquipTexture(new PolluWings8(), null, EquipType.Wings, "PolluWings8", "Entrogic/Items/PollutElement/PolluWings8_Wings");
 
-                Filters.Scene["Entrogic:RainyDaysScreen"] = new Filter(new PollutionElementalScreenShaderData("FilterMiniTower").UseColor(0.2f, 0.2f, 0.4f).UseOpacity(0.3f), EffectPriority.VeryHigh);
-                SkyManager.Instance["Entrogic:RainyDaysScreen"] = new RainyDaysScreen();
-                Filters.Scene["Entrogic:GrayScreen"] = new Filter(new AthanasyScreenShaderData("FilterMiniTower").UseColor(0.2f, 0.2f, 0.2f).UseOpacity(0.7f), EffectPriority.High);
-                SkyManager.Instance["Entrogic:GrayScreen"] = new GrayScreen();
-                Filters.Scene["Entrogic:MagicStormScreen"] = new Filter(new ScreenShaderData("FilterBloodMoon").UseColor(-0.4f, -0.2f, 1.6f).UseOpacity(0.6f), EffectPriority.Medium);
-                SkyManager.Instance["Entrogic:MagicStormScreen"] = new MagicStormScreen();
-                GameShaders.Misc["ExampleMod:DeathAnimation"] = new MiscShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffectDeath")), "DeathAnimation").UseImage("Images/Misc/Perlin");
-                GameShaders.Misc["Entrogic:WhiteBlur"] = new MiscShaderData(new Ref<Effect>(GetEffect("Effects/WhiteBlur")), "WhiteBlur");
-                // First, you load in your shader file.
-                // You'll have to do this regardless of what kind of shader it is,
-                // and you'll have to do it for every shader file.
-                // This example assumes you have screen shaders.
-                Ref<Effect> screenRef = new Ref<Effect>(GetEffect("Effects/IceScreen"));
-                Filters.Scene["Entrogic:IceScreen"] = new Filter(new ScreenShaderData(screenRef, "IceScreen"), EffectPriority.High);
-                Filters.Scene["Entrogic:IceScreen"].Load();
-                Ref<Effect> screenRef2 = new Ref<Effect>(GetEffect("Effects/ReallyDark"));
-                Filters.Scene["Entrogic:ReallyDark"] = new Filter(new ScreenShaderData(screenRef2, "ReallyDark"), EffectPriority.VeryHigh);
-                Filters.Scene["Entrogic:ReallyDark"].Load();
-                Ref<Effect> screenRef3 = new Ref<Effect>(GetEffect("Effects/GooddShader"));
-                Filters.Scene["Entrogic:GooddShader"] = new Filter(new ScreenShaderData(screenRef3, "GooddShader"), EffectPriority.VeryHigh);
-                Filters.Scene["Entrogic:GooddShader"].Load();
-                Filters.Scene["Entrogic:Blur"] = new Filter(new ScreenShaderData(new Ref<Effect>(GetEffect("Effects/Blur")), "Blur"), EffectPriority.VeryHigh);
-                Filters.Scene["Entrogic:Blur"].Load();
+                ResourceLoader.LoadAllShaders();
 
                 BookUI = new BookUI();
                 BookUI.Activate();
@@ -787,11 +732,11 @@ namespace Entrogic
                 music = GetSoundSlot(SoundType.Music, "Sounds/Music/MagicStorm");
                 priority = MusicPriority.Environment;
             }
-            if (modPlayer.CardGaming)
-            {
-                music = GetSoundSlot(SoundType.Music, "Sounds/Music/Toby Fox - Rude Buster");
-                priority = MusicPriority.BossHigh;
-            }
+            //if (modPlayer.CardGaming)
+            //{
+            //    music = GetSoundSlot(SoundType.Music, "Sounds/Music/Toby Fox - Rude Buster");
+            //    priority = MusicPriority.BossHigh;
+            //}
         }
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
@@ -1032,82 +977,15 @@ namespace Entrogic
                 ((SimpleExplode)Main.projectile[explode].modProjectile).useSmoke = useSomke;
             }
         }
-
-        public override void AddRecipeGroups()
-        {
-            RecipeGroup group = new RecipeGroup(() => Language.GetTextValue("Mods.Entrogic.AdaTitBar"), new int[]
-            {
-            ItemID.AdamantiteBar,
-            ItemID.TitaniumBar
-            });
-            RecipeGroup.RegisterGroup("Entrogic:AdamantiteBar", group);
-
-            group = new RecipeGroup(() => Language.GetTextValue("Mods.Entrogic.RCAV"), new int[]
-
-            {
-            ItemID.RottenChunk,
-            ItemID.Vertebrae
-            });
-            RecipeGroup.RegisterGroup("Entrogic:RCAV", group);
-
-            group = new RecipeGroup(() => Language.GetTextValue("Mods.Entrogic.CriDemBar"), new int[]
-
-            {
-            ItemID.CrimtaneBar,
-            ItemID.DemoniteBar
-            });
-            RecipeGroup.RegisterGroup("Entrogic:DemBar", group);
-
-            group = new RecipeGroup(() => Language.GetTextValue("Mods.Entrogic.GolPlaBar"), new int[]
-
-            {
-            ItemID.PlatinumBar,
-            ItemID.GoldBar
-            });
-            RecipeGroup.RegisterGroup("Entrogic:GoldBar", group);
-
-            group = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " " + Language.GetTextValue("Mods.Entrogic.Emblems"), new int[]
-            {
-            ItemID.RangerEmblem,
-            ItemID.SorcererEmblem,
-            ItemID.SummonerEmblem,
-            ItemID.WarriorEmblem
-            });
-            RecipeGroup.RegisterGroup("Entrogic:FourEmblem", group);
-        }
-
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(this);
-            recipe.AddRecipeGroup("Entrogic:FourEmblem");
-            recipe.AddTile(TileID.TinkerersWorkbench);
-            recipe.SetResult(ItemID.RangerEmblem);
-            recipe.AddRecipe();
-
-            recipe = new ModRecipe(this);
-            recipe.AddRecipeGroup("Entrogic:FourEmblem");
-            recipe.AddTile(TileID.TinkerersWorkbench);
-            recipe.SetResult(ItemID.SorcererEmblem);
-            recipe.AddRecipe();
-
-            recipe = new ModRecipe(this);
-            recipe.AddRecipeGroup("Entrogic:FourEmblem");
-            recipe.AddTile(TileID.TinkerersWorkbench);
-            recipe.SetResult(ItemID.SummonerEmblem);
-            recipe.AddRecipe();
-
-            recipe = new ModRecipe(this);
-            recipe.AddRecipeGroup("Entrogic:FourEmblem");
-            recipe.AddTile(TileID.TinkerersWorkbench);
-            recipe.SetResult(ItemID.WarriorEmblem);
-            recipe.AddRecipe();
-
-            recipe = new ModRecipe(this);
-            recipe.AddIngredient(ItemID.BugNet);
-            recipe.AddRecipeGroup("Entrogic:GoldBar", 5);
-            recipe.AddTile(TileID.TinkerersWorkbench);
-            recipe.SetResult(ItemID.GoldenBugNet);
-            recipe.AddRecipe();
+            base.AddRecipes();
+            RecipeManager.AddRecipes();
+        }
+        public override void AddRecipeGroups()
+        {
+            base.AddRecipeGroups();
+            RecipeManager.AddRecipeGroups();
         }
     }
 }

@@ -26,6 +26,10 @@ ItemName.RustySword=生锈的长剑
 ItemName.CastIronSword=铸铁重剑
 ItemName.LeafbladeItem=飞叶
 ItemName.SkylineItem=天际
+ItemName.Arsonist=纵火者
+ItemName.Dragonflow=龙流
+ItemName.HellquartzRod=狱晶法杖
+ItemName.TheStorm=风暴
 
 # Volutio's Items
 ItemName.VolutioMask=凝胶共生体面具
@@ -128,6 +132,8 @@ ItemTooltip.FuSword=这把刀可以驱散所有邪恶
 ItemTooltip.EarthElementalAffinityAgent=给予你行走在泥土中的能力
 ItemTooltip.RustySword=“一把十分古老的剑，它锈迹斑斑”让你的敌人获得破伤风\n小心割到手
 ItemTooltip.CastIronSword=“沉重，但是挥起来却十分轻巧”\n给予你的敌人致命一击
+ItemTooltip.Dragonflow=将木箭转化为带10盔甲传统的烈火箭
+ItemTooltip.TheStorm=使用雪球作为弹药
 
 # Cards
 ItemTooltip.RandomCard=抽卡！来一张吧！
