@@ -5,7 +5,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Terraria;
 using System;
+<<<<<<< HEAD
 using Terraria.GameContent;
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 
 namespace Entrogic
 {
@@ -37,7 +40,11 @@ namespace Entrogic
             // PS：255是不透明，0是完全透明
             // PSS：不要用TR自己的东西，自己自定义长度吧
             // PSSS：考虑环境光，我死了几亿次了
+<<<<<<< HEAD
             Texture2D texture = (Texture2D)TextureAssets.Npc[npc.type];
+=======
+            Texture2D texture = Main.npcTexture[npc.type];
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             SpriteEffects effects = (npc.spriteDirection == -1) ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             int b = npc.alpha;
             int n = length;

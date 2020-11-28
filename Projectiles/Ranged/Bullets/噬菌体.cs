@@ -63,7 +63,11 @@ namespace Entrogic.Projectiles.Ranged.Bullets
 
         public override void Kill(int timeLeft)
         {
+<<<<<<< HEAD
             Terraria.Audio.SoundEngine.PlaySound(SoundID.Dig, (int)projectile.position.X, (int)projectile.position.Y, 1, 0.65f); // Play a death sound
+=======
+            Main.PlaySound(SoundID.Dig, (int)projectile.position.X, (int)projectile.position.Y, 1, 0.65f); // Play a death sound
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 
             const int DUST_AMOUNTS = 10;
             for (int i = 0; i < DUST_AMOUNTS; i++)

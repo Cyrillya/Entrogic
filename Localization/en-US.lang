@@ -279,8 +279,11 @@ Common.PlayerTurn=Player Turn
 Common.NPCTurn=Enemy Turn
 Common.YouWin=You Win!
 Common.YouLost=You Lost!
+<<<<<<< HEAD
 Common.You=You
 Common.ArcaneDamage=arcane damage
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 
 
 # English Only

@@ -29,7 +29,11 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             item.height = 32;
             item.useTime = 20;
             item.useAnimation = 20;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Shoot;
+=======
+            item.useStyle = ItemUseStyleID.HoldingOut;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 
             item.noMelee = true;
             item.knockBack = 4;
@@ -43,6 +47,7 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         }
         public override void AddRecipes()
         {
+<<<<<<< HEAD
             CreateRecipe()
                 .AddIngredient(ItemID.ZephyrFish, 1)//飞鱼宠物
                 .AddIngredient(ItemType<GelOfLife>(), 3)
@@ -50,6 +55,16 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
                 .AddIngredient(ItemID.Handgun,1)
                 .AddTile(TileType<MagicDiversionPlatformTile>())
                 .Register();
+=======
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.ZephyrFish, 1);//飞鱼宠物
+            recipe.AddIngredient(ItemType<GelOfLife>(), 3);
+            recipe.AddIngredient(ItemID.IllegalGunParts, 1);//非法枪械部件
+            recipe.AddIngredient(ItemID.Handgun,1);
+            recipe.AddTile(TileType<MagicDiversionPlatformTile>());
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         }
 
         public override bool ConsumeAmmo(Player player)

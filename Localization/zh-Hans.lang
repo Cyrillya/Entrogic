@@ -57,7 +57,11 @@ ItemName.BreastplateofContamination=污染胸甲
 
 # Cards
 ItemName.ArcaneMissle=奥术飞弹
+<<<<<<< HEAD
 ItemName.Fireball=火球术`
+=======
+ItemName.Fireball=火球术
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 ItemName.BetrayerofDarkFlame=暗焰术
 ItemName.Dragoul=龙魂
 ItemName.FlameofPineapple=焰之菠萝术
@@ -291,6 +295,10 @@ Common.Page=页码
 Common.PlayerTurn=玩家局
 Common.NPCTurn=对手局
 Common.YouWin=你赢了！
+<<<<<<< HEAD
 Common.YouLost=你输了！
 Common.You=你
 Common.ArcaneDamage=奥术伤害
+=======
+Common.YouLost=你输了！
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96

@@ -26,7 +26,11 @@ namespace Entrogic.Items.PollutElement
             item.useTime = 5;
             item.reuseDelay = item.useAnimation + 5;
             item.crit += 22;
+<<<<<<< HEAD:Items/PollutElement/ContaminatedLongbow.cs
             item.useStyle = ItemUseStyleID.Shoot;
+=======
+            item.useStyle = ItemUseStyleID.HoldingOut;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/PollutElement/污痕长弓.cs
             item.noMelee = true;
             item.knockBack = 7f;
             item.value = Item.sellPrice(0, 5);

@@ -10,17 +10,24 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
 {
     public class CuteLittleBow : ModItem
     {
+<<<<<<< HEAD
         public override void SetStaticDefaults()
         {
             Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         public override void SetDefaults()
         {
             item.damage = 43;
             item.DamageType = DamageClass.Ranged;
             item.useTime = 20;
             item.useAnimation = 20;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Shoot;
+=======
+            item.useStyle = ItemUseStyleID.HoldingOut;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             item.noMelee = true; 
             item.knockBack = 4;
             item.rare = ItemRarityID.LightPurple;

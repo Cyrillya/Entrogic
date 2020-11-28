@@ -1,5 +1,9 @@
+<<<<<<< HEAD:NPCs/Boss/凝胶Java盾/Volutio.cs
 ﻿using Entrogic.Common;
 using Entrogic.Items.Miscellaneous.Placeable.Furnitrue;
+=======
+﻿using Entrogic.Items.Miscellaneous.Placeable.Furnitrue;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/Boss/凝胶Java盾/嘉沃顿.cs
 using Entrogic.Items.Miscellaneous.Placeable.Trophy;
 using Entrogic.Items.VoluGels;
 using Entrogic.NPCs.Boss.凝胶Java盾.Projectiles;
@@ -407,7 +411,11 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
         }
         public override void OnHitPlayer(Player target, int damage, bool crit)
         {
+<<<<<<< HEAD:NPCs/Boss/凝胶Java盾/Volutio.cs
             target.AddBuff(BuffType<Buffs.Enemies.Dissolve>(), Main.rand.Next(90, 151) * (Main.expertMode ? (int)2 : 1));
+=======
+            target.AddBuff(BuffType<Buffs.Enemies.Dissolve>(), Main.rand.Next(90, 151) * (Main.expertMode ? (int)Main.expertDebuffTime : 1));
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/Boss/凝胶Java盾/嘉沃顿.cs
         }
         public override void ModifyHitByProjectile(Projectile proj, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {

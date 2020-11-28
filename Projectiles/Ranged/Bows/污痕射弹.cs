@@ -11,7 +11,11 @@ namespace Entrogic.Projectiles.Ranged.Bows
 {
     public class 污痕射弹 : ModProjectile
     {
+<<<<<<< HEAD
         public override string Texture => "Entrogic/Assets/Images/Block";
+=======
+        public override string Texture => "Entrogic/Images/Block";
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[projectile.type] = 10;    //The length of old position to be recorded

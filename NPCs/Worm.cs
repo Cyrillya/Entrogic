@@ -228,7 +228,11 @@ namespace Entrogic.NPCs
                 }
                 if (!npc.active && Main.netMode == NetmodeID.Server)
                 {
+<<<<<<< HEAD
                     NetMessage.SendData(MessageID.DamageNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
+=======
+                    NetMessage.SendData(MessageID.StrikeNPC, -1, -1, null, npc.whoAmI, -1f, 0f, 0f, 0, 0, 0);
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
                 }
             }
             int num180 = (int)(npc.position.X / 16f) - 1;

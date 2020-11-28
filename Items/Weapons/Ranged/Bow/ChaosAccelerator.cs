@@ -1,6 +1,9 @@
 using System;
 
+<<<<<<< HEAD
 using Entrogic.Items.Materials;
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 using Entrogic.Projectiles.Ammos;
 
 using Microsoft.Xna.Framework;
@@ -26,7 +29,11 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
             item.height = 30;
             item.useTime = 12;
             item.useAnimation = 12;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Shoot;
+=======
+            item.useStyle = ItemUseStyleID.HoldingOut;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             item.noMelee = true;
             item.value = Item.sellPrice(0, 5);
             item.rare = ItemRarityID.Pink;
@@ -77,7 +84,11 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
         public override void ModifyWeaponDamage(Player player, ref Modifier damage, ref float flat)
         {
             timeCounter++;
+<<<<<<< HEAD
             TextureAssets.Item[ItemType<ChaosAccelerator>()] = Entrogic.Instance.GetTexture("Items/Weapons/Ranged/Bow/ChaosAccelerator_" + timer);
+=======
+            Main.itemTexture[ItemType<ChaosAccelerator>()] = mod.GetTexture("Items/Weapons/Ranged/Bow/ChaosAccelerator_" + timer);
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             if (timeCounter >= 6)
             {
                 if (timer >= 4) timer = 0;

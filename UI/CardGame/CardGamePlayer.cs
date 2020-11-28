@@ -7,7 +7,10 @@ using Microsoft.Xna.Framework.Input;
 using System;
 
 using Terraria;
+<<<<<<< HEAD
 using Terraria.Audio;
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -27,10 +30,17 @@ namespace Entrogic.UI.CardGame
         private float WalkSpeed = 2f;
         public CardGamePlayer()
         {
+<<<<<<< HEAD
             _texture = (Texture2D)Entrogic.ModTexturesTable["CardFightPlayer_Icon_Default"];
             LifeSpan = 0.2f;
             IsFriendly = true;
             HitboxOffset = new Vector2((int)(_texture.Width / 2f - 1f), (int)(_texture.Height / 2f - 1f));
+=======
+            _texture = Entrogic.ModTexturesTable["CardFightPlayer_Icon_Default"];
+            LifeSpan = 0.2f;
+            IsFriendly = true;
+            RectangleOffset = new Vector2((int)(_texture.Width / 2f - 1f), (int)(_texture.Height / 2f - 1f));
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             Size = Vector2.One * 2f;
         }
         public override void Update(GameTime gameTime, Player attackPlayer, NPC attackNPC)
@@ -47,6 +57,7 @@ namespace Entrogic.UI.CardGame
                 foreach (var bullet in clientModPlayer._bullets)
                 {
                     if (bullet == this)
+<<<<<<< HEAD
                     {
                         continue; 
                     }
@@ -59,6 +70,18 @@ namespace Entrogic.UI.CardGame
                         break;
                     }
                 }
+=======
+                        continue;
+
+                    if (GetCollided(bullet) && !bullet.IsFriendly)
+                    {
+                        clientModPlayer.CardGamePlayerHealth -= bullet.GetDamage(bullet.Damage);
+                        ImmuneTime = 1f;
+                        Main.PlaySound(Entrogic.Instance.GetLegacySoundSlot(SoundType.Custom, "Sounds/Custom/CGHurt"));
+                    }
+                }
+
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             ImmuneTime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             ImmuneTime = Math.Max(ImmuneTime, 0f);
             if (clientModPlayer.CardGamePlayerTurn) IsRemoved = true; // 玩家局就不需要你了
@@ -68,7 +91,10 @@ namespace Entrogic.UI.CardGame
             Position.X = Math.Min(Position.X, PlaygroundSize.X - _texture.Width);
             Position.Y = Math.Max(Position.Y, 0);
             Position.Y = Math.Min(Position.Y, PlaygroundSize.Y - _texture.Height);
+<<<<<<< HEAD
             clientModPlayer.CardGamePlayerCenter = Center;
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         }
         public override void Draw(SpriteBatch spriteBatch)
         {

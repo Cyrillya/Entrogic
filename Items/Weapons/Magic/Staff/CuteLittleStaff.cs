@@ -7,10 +7,13 @@ namespace Entrogic.Items.Weapons.Magic.Staff
 {
     public class CuteLittleStaff : ModItem
     {
+<<<<<<< HEAD:Items/Weapons/Magic/Staff/CuteLittleStaff.cs
         public override void SetStaticDefaults()
         {
             Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/Weapons/Magic/Staff/可爱小杖.cs
         public override void SetDefaults()
         {
             item.damage = 44;
@@ -20,7 +23,11 @@ namespace Entrogic.Items.Weapons.Magic.Staff
             item.height = 28;
             item.useTime = 12;
             item.useAnimation = 12;
+<<<<<<< HEAD:Items/Weapons/Magic/Staff/CuteLittleStaff.cs
             item.useStyle = ItemUseStyleID.Swing;
+=======
+            item.useStyle = ItemUseStyleID.SwingThrow;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/Weapons/Magic/Staff/可爱小杖.cs
             item.noMelee = true;
             item.knockBack = 3;
             item.value = Item.sellPrice(0, 1, 50);

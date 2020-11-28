@@ -22,7 +22,7 @@ namespace Entrogic.Projectiles.Melee.Swords
             projectile.aiStyle = 5;
             projectile.friendly = true;
             projectile.hostile = false;
-            projectile.DamageType = DamageClass.Melee;
+            projectile.melee = true;
             projectile.penetrate = 1;
             projectile.timeLeft = 300;
             projectile.alpha = 0;
@@ -44,7 +44,7 @@ namespace Entrogic.Projectiles.Melee.Swords
         }
         public override void Kill(int timeLeft)
         {
-            Terraria.Audio.SoundEngine.PlaySound(SoundID.Item, (int)projectile.position.X, (int)projectile.position.Y, 14, 1f, 0f);
+            Main.PlaySound(SoundID.Item, (int)projectile.position.X, (int)projectile.position.Y, 14, 1f, 0f);
             projectile.position.X = projectile.position.X + (float)(projectile.width / 2);
             projectile.position.Y = projectile.position.Y + (float)(projectile.height / 2);
             projectile.width = 20;

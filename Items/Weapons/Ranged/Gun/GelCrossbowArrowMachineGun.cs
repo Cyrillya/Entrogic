@@ -31,7 +31,11 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             item.DamageType = DamageClass.Ranged;
             item.useTime = 5;
             item.useAnimation = 5;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Shoot;
+=======
+            item.useStyle = ItemUseStyleID.HoldingOut;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             item.noMelee = true; 
             item.knockBack = 4;
             item.rare = ItemRarityID.LightPurple;
@@ -69,6 +73,7 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         }*/
         public override void AddRecipes()
         {
+<<<<<<< HEAD
             CreateRecipe()
                 .AddIngredient(ItemID.IllegalGunParts, 1)
                 .AddIngredient(ItemID.Gel, 30)
@@ -77,6 +82,17 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
                 .AddRecipeGroup("IronBar", 10)
                 .AddTile(TileType<MagicDiversionPlatformTile>())
                 .Register();
+=======
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.IllegalGunParts, 1);
+            recipe.AddIngredient(ItemID.Gel, 30);
+            recipe.AddIngredient(ItemType<CastIronBar>(), 5);
+            recipe.AddIngredient(ItemType<GelOfLife>(), 7);
+            recipe.AddRecipeGroup("IronBar", 10);
+            recipe.AddTile(TileType<MagicDiversionPlatformTile>());
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         }
     }
 }

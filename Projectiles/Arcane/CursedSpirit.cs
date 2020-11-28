@@ -28,7 +28,11 @@ namespace Entrogic.Projectiles.Arcane
         }
         public override void Kill(int timeLeft)
         {
+<<<<<<< HEAD:Projectiles/Arcane/CursedSpirit.cs
             Terraria.Audio.SoundEngine.PlaySound(SoundID.Item);
+=======
+            Main.PlaySound(SoundID.Item);
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Projectiles/Arcane/诅咒灵体.cs
             for (int i = 0; i < 16; i++)
             {
                 int num = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 272, 0f, 0f, 100, default(Color), 2f);

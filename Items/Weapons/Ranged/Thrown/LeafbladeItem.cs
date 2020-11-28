@@ -1,3 +1,8 @@
+<<<<<<< HEAD:Items/Weapons/Ranged/Thrown/LeafbladeItem.cs
+=======
+using CalamityMod.Projectiles.Ranged;
+
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/Weapons/Thrown/飞叶.cs
 using Entrogic.Projectiles.Thrown;
 
 using Microsoft.Xna.Framework;
@@ -24,7 +29,11 @@ namespace Entrogic.Items.Weapons.Ranged.Thrown
             item.height = 22;          
             item.useTime = 12;          
             item.useAnimation = 12;     
+<<<<<<< HEAD:Items/Weapons/Ranged/Thrown/LeafbladeItem.cs
             item.useStyle = ItemUseStyleID.Swing;
+=======
+            item.useStyle = ItemUseStyleID.SwingThrow;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/Weapons/Thrown/飞叶.cs
             item.knockBack = 2;         
             item.value = Item.sellPrice(copper: 5);
             item.rare = ItemRarityID.Green;              
@@ -32,7 +41,11 @@ namespace Entrogic.Items.Weapons.Ranged.Thrown
             item.autoReuse = true;
             item.shoot = ProjectileType<Leafblade>();
             item.shootSpeed = 15f;
+<<<<<<< HEAD:Items/Weapons/Ranged/Thrown/LeafbladeItem.cs
             item.DamageType = DamageClass.Ranged;
+=======
+            item.ranged = true;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/Weapons/Thrown/飞叶.cs
             item.noUseGraphic = true;
             item.crit += 19;
             item.consumable = true;

@@ -7,11 +7,15 @@ using static Terraria.ModLoader.ModContent;
 namespace Entrogic.Items.Weapons.Melee.Sword
 {
 	public class RustySword : ModItem
+<<<<<<< HEAD
     {
         public override void SetStaticDefaults()
         {
             Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
+=======
+	{
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         public override void SetDefaults()
 		{
             item.damage = 14;
@@ -20,9 +24,15 @@ namespace Entrogic.Items.Weapons.Melee.Sword
             item.rare = ItemRarityID.Blue;
             item.useTime = 40;
             item.useAnimation = 40;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Swing;
             item.autoReuse = true;
             item.DamageType = DamageClass.Melee;
+=======
+            item.useStyle = ItemUseStyleID.SwingThrow;
+            item.autoReuse = true;
+            item.melee = true;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             item.value = Item.sellPrice(0, 0, 90, 0);
             item.UseSound = SoundID.Item1;
             item.scale = 0.9f;

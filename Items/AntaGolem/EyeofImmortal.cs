@@ -88,7 +88,11 @@ namespace Entrogic.Items.AntaGolem
             }
             if (projectile.ai[0] == 181f)
             {
+<<<<<<< HEAD:Items/AntaGolem/EyeofImmortal.cs
                 Terraria.Audio.SoundEngine.PlaySound(SoundID.NPCKilled, (int)projectile.position.X, (int)projectile.position.Y, 17, 1f, 0f);
+=======
+                Main.PlaySound(SoundID.NPCKilled, (int)projectile.position.X, (int)projectile.position.Y, 17, 1f, 0f);
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/AntaGolem/衰落之眼.cs
             }
             if (projectile.ai[0] > 10f && !flag42)
             {

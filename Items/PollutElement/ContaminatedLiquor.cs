@@ -13,10 +13,13 @@ namespace Entrogic.Items.PollutElement
 {
     public class ContaminatedLiquor : ModItem
     {
+<<<<<<< HEAD:Items/PollutElement/ContaminatedLiquor.cs
         public override void SetStaticDefaults()
         {
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
         }
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/PollutElement/污染水源.cs
         public override void SetDefaults()
         {
             item.width = 22;
@@ -25,17 +28,32 @@ namespace Entrogic.Items.PollutElement
             item.rare = RareID.LV8;
             item.useAnimation = 45;
             item.useTime = 45;
+<<<<<<< HEAD:Items/PollutElement/ContaminatedLiquor.cs
             item.useStyle = ItemUseStyleID.Shoot;
             item.consumable = true;
             item.value = Item.sellPrice(0, 0, 20);
         }
         public override bool CanUseItem(Player player) => (player.ZoneBeach || EntrogicWorld.IsDownedPollutionElemental) && !NPC.AnyNPCs(NPCType<PollutionElemental>());
+=======
+            item.useStyle = ItemUseStyleID.HoldingUp;
+            item.consumable = true;
+            item.value = Item.sellPrice(0, 0, 20);
+        }
+        public override bool CanUseItem(Player player)
+        {
+            return player.ZoneBeach && !NPC.AnyNPCs(NPCType<PollutionElemental>());
+        }
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/PollutElement/污染水源.cs
 
         public override bool UseItem(Player player)
         {
             if (player.whoAmI == Main.myPlayer && CanUseItem(player))
             {
+<<<<<<< HEAD:Items/PollutElement/ContaminatedLiquor.cs
                 Terraria.Audio.SoundEngine.PlaySound(SoundID.Roar, player.Center, 0);
+=======
+                Main.PlaySound(SoundID.Roar, player.Center, 0);
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/PollutElement/污染水源.cs
                 NPCSpawnOnPlayer(player, NPCType<PollutionElemental>());
                 return true;
             }

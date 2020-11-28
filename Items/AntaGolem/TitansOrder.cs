@@ -12,10 +12,13 @@ namespace Entrogic.Items.AntaGolem
 {
     public class TitansOrder : ModItem
     {
+<<<<<<< HEAD
         public override void SetStaticDefaults()
         {
             Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
         }
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         public override void SetDefaults()
         {
             item.width = 22;
@@ -24,7 +27,11 @@ namespace Entrogic.Items.AntaGolem
             item.rare = RareID.LV4;
             item.useAnimation = 45;
             item.useTime = 45;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.HoldUp;
+=======
+            item.useStyle = ItemUseStyleID.HoldingUp;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             item.consumable = true;
         }
         public override bool CanUseItem(Player player)
@@ -36,7 +43,11 @@ namespace Entrogic.Items.AntaGolem
         {
             if (player.whoAmI == Main.myPlayer && CanUseItem(player))
             {
+<<<<<<< HEAD
                 Terraria.Audio.SoundEngine.PlaySound(SoundID.Roar, player.Center, 0);
+=======
+                Main.PlaySound(SoundID.Roar, player.Center, 0);
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
                 NPCSpawnOnPlayer(player, NPCType<Antanasy>());
                 return true;
             }
@@ -44,12 +55,20 @@ namespace Entrogic.Items.AntaGolem
         }
         public static void NPCSpawnOnPlayer(Player player, int type)
         {
+<<<<<<< HEAD
             if (Main.netMode != NetmodeID.MultiplayerClient)
+=======
+            if (Main.netMode != 1)
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             {
                 NPC.SpawnOnPlayer(player.whoAmI, type);
                 return;
             }
+<<<<<<< HEAD
             ModPacket packet = Instance.GetPacket();
+=======
+            ModPacket packet = Entrogic.Instance.GetPacket();
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             packet.Write((byte)EntrogicModMessageType.NPCSpawnOnPlayerAction);
             packet.Write((byte)player.whoAmI);
             packet.Write((short)type);

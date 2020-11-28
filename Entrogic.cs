@@ -45,16 +45,20 @@ using Terraria.GameContent;
 using Terraria.GameContent.Tile_Entities;
 using Entrogic.NPCs.CardFightable.CardBullet;
 using Entrogic.NPCs.CardMerchantSystem;
+<<<<<<< HEAD
 using Entrogic.Projectiles.Miscellaneous;
 using Entrogic.Tiles;
 using ReLogic.Content;
 using Terraria.GameContent.NetModules;
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 
 namespace Entrogic
 {
     public class Entrogic : Mod
     {
         #region Fields
+<<<<<<< HEAD
         internal bool cursurIconEnabled = false;
         internal Texture2D cursorIconTexture = null;
         internal static int MimicryFrameCounter = 8;
@@ -66,12 +70,67 @@ namespace Entrogic
             BindingFlags.NonPublic).Where(field => field.Name == "projectiles").First().GetValue(null) as IList<ModProjectile>);
         internal static int MaxItemTypes => (int)(typeof(ItemLoader).GetFields(BindingFlags.Static |
             BindingFlags.NonPublic).Where(field => field.Name == "nextItem").First().GetValue(null));
+=======
+        internal static int mimicryFrameCounter = 8;
+        internal static List<ModItem> ModItems => new List<ModItem>(typeof(ItemLoader).GetFields(BindingFlags.Static | BindingFlags.NonPublic).Where(field => field.Name == "items").First().GetValue(null) as IList<ModItem>);
+        internal static List<ModItem> EntrogicItems
+        {
+            get
+            {
+                List<ModItem> i = ModItems;
+                i.Sort((a, b) => // 将ModCard筛选到前面
+                {
+                    if (a.mod != ModLoader.GetMod("Entrogic") && b.mod == ModLoader.GetMod("Entrogic")) return 1; //如果返回1，则a就会排到b的后面
+                if (a.mod == ModLoader.GetMod("Entrogic") && b.mod != ModLoader.GetMod("Entrogic")) return -1;//如果返回-1，则b会排到a的后面
+                if (a.mod == b.mod) return 0;
+                    return 0;
+                });
+                return i;
+            }
+        }
+        internal static int FirstModItem
+        {
+            get
+            {
+                foreach (ModItem i in ModItems)
+                {
+                    if (i.mod == ModLoader.GetMod("Entrogic"))
+                    {
+                        return ModItems.IndexOf(i);
+                    }
+                }
+                return 0;
+            }
+        }
+        internal static int CardsCount
+        {
+            get
+            {
+                int i = 0;
+                foreach (ModItem item in ModItems)
+                {
+                    if (!item.item.GetGlobalItem<EntrogicItem>().card)
+                        return i;
+                    i++;
+                }
+                return i;
+            }
+        }
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         internal static ModHotKey PassHotkey;
         internal static ModHotKey WashHotkey;
         internal static ModHotKey HookCursorHotKey;
         internal Vector2 HookCursor;
 
+<<<<<<< HEAD
         internal static Dictionary<string, Asset<Texture2D>> ModTexturesTable = new Dictionary<string, Asset<Texture2D>>();
+=======
+        public static bool IsCalamityLoaded = false;
+        public static bool IsCalamityModRevengenceMode => CalamityMod.World.CalamityWorld.revenge;
+        public static bool IsCalamityModDeathMode => CalamityMod.World.CalamityWorld.death;
+
+        internal static Dictionary<string, Texture2D> ModTexturesTable = new Dictionary<string, Texture2D>();
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         [Obsolete]
         internal static Dictionary<string, CardFightBullet> cfBullets = new Dictionary<string, CardFightBullet>();
         public static List<Quest> CardQuests = new List<Quest>();
@@ -81,7 +140,19 @@ namespace Entrogic
         internal static bool IsDev = false;
         internal static int ModTimer; 
         internal static Entrogic Instance;
+<<<<<<< HEAD
         public static Asset<DynamicSpriteFont> PixelFont => Instance.GetFont("Fonts/JOJOHOTXiangSubeta");
+=======
+        public static DynamicSpriteFont PixelFont { get { return Instance.GetFont("Fonts/JOJOHOTXiangSubeta"); } }
+        internal BookUI BookUI { get; private set; }
+        private UserInterface BookUIE;
+        internal CardUI CardUI { get; private set; }
+        private UserInterface CardUIE;
+        internal CardInventoryUI CardInventoryUI { get; private set; }
+        private UserInterface CardInventoryUIE;
+        internal CardGameUI CardGameUI { get; private set; }
+        private UserInterface CardGameUIE;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 
         public static int MimicryCustomCurrencyId;
         #endregion
@@ -96,6 +167,60 @@ namespace Entrogic
             Instance = this;
             Directory.CreateDirectory(ModFolder);
         }
+<<<<<<< HEAD
+=======
+        public override void PostSetupContent()
+        {
+            Main.OnPostDraw += Main_OnPostDraw;
+            Main.OnPreDraw += Main_OnPreDraw;
+            IL.Terraria.Main.DrawMenu += UpdateExtraWorldDiff;
+
+            Mod bossChecklist = ModLoader.GetMod("BossChecklist");
+            if (bossChecklist != null)
+            {
+                bossChecklist.Call(
+            "AddBoss",
+            2.7f,
+            new List<int>() { ModContent.NPCType<Volutio>(), ModContent.NPCType<Embryo>() },// Boss ID
+            this, // Mod
+            "$Mods.Entrogic.NPCName.嘉沃顿", // Boss Name
+            (Func<bool>)(() => EntrogicWorld.downedGelSymbiosis),
+            ModContent.ItemType<GelCultureFlask>(), // Summon Items
+            new List<int> { ModContent.ItemType<VolutioMask>(), ModContent.ItemType<VTrophy>() }, // Collections
+            new List<int> { ModContent.ItemType<GelAnkh>(), ModContent.ItemType<GelOfLife>() }, // Normal Loots
+            "$Mods.Entrogic.BossSpawnInfo.GelSymb", // Spawn Info
+            "", // Despawn Info
+            "Entrogic/Images/GelSym_Textures");// 这里切记别用ModTexturesTable，不然服务器会炸
+
+                bossChecklist.Call(
+            "AddBoss",
+            5.7f,
+            ModContent.NPCType<Antanasy>(), // Boss ID
+            this, // Mod
+            "$Mods.Entrogic.NPCName.Antanasy", // Boss Name
+            (Func<bool>)(() => EntrogicWorld.downedAthanasy),
+            ModContent.ItemType<TitansOrder>(),
+            new List<int> { ModContent.ItemType<AthanasyMask>(), ModContent.ItemType<AthanasyTrophy>() },
+            new List<int> { ModContent.ItemType<RockSpear>(), ModContent.ItemType<RockShotgun>(), ModContent.ItemType<EyeofImmortal>(), ModContent.ItemType<StoneSlimeStaff>() },
+            "$Mods.Entrogic.BossSpawnInfo.Athanasy");
+
+                bossChecklist.Call(
+            "AddBoss",
+            10.3f,
+            ModContent.NPCType<PollutionElemental>(), // Boss ID
+            this, // Mod
+            "$Mods.Entrogic.NPCName.污染之灵", // Boss Name
+            (Func<bool>)(() => EntrogicWorld.IsDownedPollutionElemental),
+            ModContent.ItemType<ContaminatedLiquor>(),
+            new List<int> { ModContent.ItemType<PollutionElementalMask>(), ModContent.ItemType<PETrophy>() },
+            new List<int> { ModContent.ItemType<BottleofStorm>(), ModContent.ItemType<WaterElementalStaff>(), ModContent.ItemType<ContaminatedLongbow>(), ModContent.ItemType<ContaminatedCurrent>(),
+                ModContent.ItemType<HelmetofContamination>(), ModContent.ItemType<HeadgearofContamination>(), ModContent.ItemType<MaskofContamination>(), ModContent.ItemType<BreastplateofContamination>(), ModContent.ItemType<GreavesofContamination>() },
+            "$Mods.Entrogic.BossSpawnInfo.PollutionElement",
+            " 在大海中继续沉睡...");
+            }
+        }
+
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         public override void Load()
         {
             PassHotkey = RegisterHotKey("过牌快捷键", "E");
@@ -106,12 +231,66 @@ namespace Entrogic
             On.Terraria.Main.DrawInterface_40_InteractItemIcon += CustomHandIcon;
             foolTexts = Main.rand.Next(3);
             Unloading = false;
+<<<<<<< HEAD
             MimicryCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new EntrogicMimicryCurrency(ItemType<拟态魔能>(), 999L));
+=======
+            IsCalamityLoaded = ModLoader.GetMod("CalamityMod") != null;
+            Mod yabhb = ModLoader.GetMod("FKBossHealthBar");
+            if (yabhb != null)
+            {
+                #region Wlta yabhb
+                yabhb.Call("RegisterCustomHealthBar",
+                    ModContent.NPCType<Embryo>(),
+                    null, //ForceSmall
+                    null, //displayName
+                    GetTexture("UI/yabhb/瓦卢提奥血条Fill"), //fillTexture
+                    GetTexture("UI/yabhb/瓦卢提奥血条头"),
+                    GetTexture("UI/yabhb/瓦卢提奥血条条"),
+                    GetTexture("UI/yabhb/瓦卢提奥血条尾"),
+                    null, //midBarOffsetX
+                    0, //midBarOffsetY
+                    null, //fillDecoOffsetX
+                    32, //bossHeadCentreOffsetX
+                    30, //bossHeadCentreOffsetY
+                    null, //fillTextureSM
+                    null, //leftBarSM
+                    null, //midBarSM
+                    null, //rightBarSM
+                    null, //fillDecoOffsetXSM
+                    null, //bossHeadCentreOffsetXSM
+                    null, //bossHeadCentreOffsetYSM
+                    true); //LoopMidBar
+                yabhb.Call("RegisterCustomHealthBar",
+                    ModContent.NPCType<Volutio>(),
+                    null, //ForceSmall
+                    null, //displayName
+                    GetTexture("UI/yabhb/瓦卢提奥血条Fill"), //fillTexture
+                    GetTexture("UI/yabhb/瓦卢提奥血条头"),
+                    GetTexture("UI/yabhb/瓦卢提奥血条条"),
+                    GetTexture("UI/yabhb/瓦卢提奥血条尾"),
+                    null, //midBarOffsetX
+                    0, //midBarOffsetY
+                    null, //fillDecoOffsetX
+                    32, //bossHeadCentreOffsetX
+                    32, //bossHeadCentreOffsetY
+                    null, //fillTextureSM
+                    null, //leftBarSM
+                    null, //midBarSM
+                    null, //rightBarSM
+                    null, //fillDecoOffsetXSM
+                    null, //bossHeadCentreOffsetXSM
+                    null, //bossHeadCentreOffsetYSM
+                    true); //LoopMidBar
+                #endregion
+            }
+            MimicryCustomCurrencyId = CustomCurrencyManager.RegisterCurrency(new EntrogicMimicryCurrency(ModContent.ItemType<拟态魔能>(), 999L));
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             if (!Main.dedServ)
             {
                 ResourceLoader.LoadAllTextures();
                 ResourceLoader.LoadAllCardMissions();
 
+<<<<<<< HEAD
                 AddEquipTexture(new PollutionElementalMask1(), new PollutionElementalMask(), EquipType.Head, "Entrogic/Items/PollutElement/PollutionElementalMask1_Head");
                 AddEquipTexture(new PollutionElementalMask2(), new PollutionElementalMask(), EquipType.Head, "Entrogic/Items/PollutElement/PollutionElementalMask2_Head");
                 AddEquipTexture(new PollutionElementalMask3(), new PollutionElementalMask(), EquipType.Head, "Entrogic/Items/PollutElement/PollutionElementalMask3_Head");
@@ -138,6 +317,84 @@ namespace Entrogic
             Translation.RegisterTranslation("cntca", GameCulture.CultureName.Chinese, "的几率不消耗弹药", " chance not to consume ammo");
             Translation.RegisterTranslation("immb", GameCulture.CultureName.Chinese, "最大魔力值增加", "Increases maximum mana by ");
             Translation.RegisterTranslation("rmub", GameCulture.CultureName.Chinese, "魔力消耗减少", "Reduces mana usage by ");
+=======
+                AddEquipTexture(new PollutionElementalMask1(), null, EquipType.Head, "PollutionElementalMask1", "Entrogic/Items/PollutElement/PollutionElementalMask1_Head");
+                AddEquipTexture(new PollutionElementalMask2(), null, EquipType.Head, "PollutionElementalMask2", "Entrogic/Items/PollutElement/PollutionElementalMask2_Head");
+                AddEquipTexture(new PollutionElementalMask3(), null, EquipType.Head, "PollutionElementalMask3", "Entrogic/Items/PollutElement/PollutionElementalMask3_Head");
+                AddEquipTexture(new PollutionElementalMask4(), null, EquipType.Head, "PollutionElementalMask4", "Entrogic/Items/PollutElement/PollutionElementalMask4_Head");
+                AddEquipTexture(new PolluWings1(), null, EquipType.Wings, "PolluWings1", "Entrogic/Items/PollutElement/PolluWings1_Wings");
+                AddEquipTexture(new PolluWings2(), null, EquipType.Wings, "PolluWings2", "Entrogic/Items/PollutElement/PolluWings2_Wings");
+                AddEquipTexture(new PolluWings3(), null, EquipType.Wings, "PolluWings3", "Entrogic/Items/PollutElement/PolluWings3_Wings");
+                AddEquipTexture(new PolluWings4(), null, EquipType.Wings, "PolluWings4", "Entrogic/Items/PollutElement/PolluWings4_Wings");
+                AddEquipTexture(new PolluWings5(), null, EquipType.Wings, "PolluWings5", "Entrogic/Items/PollutElement/PolluWings5_Wings");
+                AddEquipTexture(new PolluWings6(), null, EquipType.Wings, "PolluWings6", "Entrogic/Items/PollutElement/PolluWings6_Wings");
+                AddEquipTexture(new PolluWings7(), null, EquipType.Wings, "PolluWings7", "Entrogic/Items/PollutElement/PolluWings7_Wings");
+                AddEquipTexture(new PolluWings8(), null, EquipType.Wings, "PolluWings8", "Entrogic/Items/PollutElement/PolluWings8_Wings");
+
+                Filters.Scene["Entrogic:RainyDaysScreen"] = new Filter(new PollutionElementalScreenShaderData("FilterMiniTower").UseColor(0.2f, 0.2f, 0.4f).UseOpacity(0.3f), EffectPriority.VeryHigh);
+                SkyManager.Instance["Entrogic:RainyDaysScreen"] = new RainyDaysScreen();
+                Filters.Scene["Entrogic:GrayScreen"] = new Filter(new AthanasyScreenShaderData("FilterMiniTower").UseColor(0.2f, 0.2f, 0.2f).UseOpacity(0.7f), EffectPriority.High);
+                SkyManager.Instance["Entrogic:GrayScreen"] = new GrayScreen();
+                Filters.Scene["Entrogic:MagicStormScreen"] = new Filter(new ScreenShaderData("FilterBloodMoon").UseColor(-0.4f, -0.2f, 1.6f).UseOpacity(0.6f), EffectPriority.Medium);
+                SkyManager.Instance["Entrogic:MagicStormScreen"] = new MagicStormScreen();
+                GameShaders.Misc["ExampleMod:DeathAnimation"] = new MiscShaderData(new Ref<Effect>(GetEffect("Effects/ExampleEffectDeath")), "DeathAnimation").UseImage("Images/Misc/Perlin");
+                // First, you load in your shader file.
+                // You'll have to do this regardless of what kind of shader it is,
+                // and you'll have to do it for every shader file.
+                // This example assumes you have screen shaders.
+                Ref<Effect> screenRef = new Ref<Effect>(GetEffect("Effects/IceScreen"));
+                Filters.Scene["Entrogic:IceScreen"] = new Filter(new ScreenShaderData(screenRef, "IceScreen"), EffectPriority.High);
+                Filters.Scene["Entrogic:IceScreen"].Load();
+                Ref<Effect> screenRef2 = new Ref<Effect>(GetEffect("Effects/ReallyDark"));
+                Filters.Scene["Entrogic:ReallyDark"] = new Filter(new ScreenShaderData(screenRef2, "ReallyDark"), EffectPriority.VeryHigh);
+                Filters.Scene["Entrogic:ReallyDark"].Load();
+                Ref<Effect> screenRef3 = new Ref<Effect>(GetEffect("Effects/GooddShader"));
+                Filters.Scene["Entrogic:GooddShader"] = new Filter(new ScreenShaderData(screenRef3, "GooddShader"), EffectPriority.VeryHigh);
+                Filters.Scene["Entrogic:GooddShader"].Load();
+                Filters.Scene["Entrogic:Blur"] = new Filter(new ScreenShaderData(new Ref<Effect>(GetEffect("Effects/Blur")), "Blur"), EffectPriority.VeryHigh);
+                Filters.Scene["Entrogic:Blur"].Load();
+
+                BookUI = new BookUI();
+                BookUI.Activate();
+                BookUIE = new UserInterface();
+                BookUIE.SetState(BookUI);
+
+                //BookPageUI = new BookPageUI();
+                //BookPageUI.Activate();
+                //BookPageUIE = new UserInterface();
+                //BookPageUIE.SetState(BookPageUI);
+
+                CardUI = new CardUI();
+                CardUI.Activate();
+                CardUIE = new UserInterface();
+                CardUIE.SetState(CardUI);
+
+                CardInventoryUI = new CardInventoryUI();
+                CardInventoryUI.Activate();
+                CardInventoryUIE = new UserInterface();
+                CardInventoryUIE.SetState(CardInventoryUI);
+
+                CardGameUI = new CardGameUI();
+                CardGameUI.Activate();
+                CardGameUIE = new UserInterface();
+                CardGameUIE.SetState(CardGameUI);
+                /*SinsBar.visible = true;
+                Sinsbar = new SinsBar();
+                Sinsbar.Activate();
+                SinsBarInterface = new UserInterface();
+                SinsBarInterface.SetState(Sinsbar);*/
+            }
+            Buildings.Cache("Buildings/CardShrine0.ebuilding", "Buildings/CardShrine1.ebuilding");
+            #region Armor Translates
+            Translation.RegisterTranslation("mspeed", GameCulture.Chinese, "移动速度", " movement speed");
+            Translation.RegisterTranslation("and", GameCulture.Chinese, "与", " and");
+            Translation.RegisterTranslation("csc", GameCulture.Chinese, "暴击率", " critical strike chance");
+            Translation.RegisterTranslation("knockback", GameCulture.Chinese, "击退", " knockback");
+            Translation.RegisterTranslation("damage", GameCulture.Chinese, "伤害", " damage");
+            Translation.RegisterTranslation("cntca", GameCulture.Chinese, "的几率不消耗弹药", " chance not to consume ammo");
+            Translation.RegisterTranslation("immb", GameCulture.Chinese, "最大魔力值增加", "Increases maximum mana by ");
+            Translation.RegisterTranslation("rmub", GameCulture.Chinese, "魔力消耗减少", "Reduces mana usage by ");
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             #endregion
             #region Boss Checklist Translations
             ModTranslation bctext = CreateTranslation("BossSpawnInfo.GelSymb");
@@ -195,6 +452,7 @@ namespace Entrogic
             #endregion
         }
 
+<<<<<<< HEAD
         private void CustomHandIcon(On.Terraria.Main.orig_DrawInterface_40_InteractItemIcon orig, Main self)
         {
             if (cursurIconEnabled && cursorIconTexture != null)
@@ -211,6 +469,35 @@ namespace Entrogic
         }
 
         private void UnderworldTransportCheck(On.Terraria.Player.orig_ItemCheck orig, Player player, int i)
+=======
+        public override void Unload()
+        {
+            Unloading = true;
+            try
+            {
+                Main.OnPostDraw -= Main_OnPostDraw;
+                Main.OnPreDraw -= Main_OnPreDraw;
+                ModTexturesTable.Clear();
+                PassHotkey = null;
+                WashHotkey = null;
+                HookCursorHotKey = null;
+                IsCalamityLoaded = false;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                Instance = null;
+                GC.Collect();
+            }
+
+            base.Unload();
+
+        }
+        private void Player_QuickGrapple(On.Terraria.Player.orig_QuickGrapple orig, Player self)
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         {
             Item item = player.inventory[player.selectedItem];
             if (player.controlUseItem && player.controlUseTile && item.type == ItemID.LavaBucket && 
@@ -227,6 +514,7 @@ namespace Entrogic
                 orig(player, i);
             }
         }
+<<<<<<< HEAD
 
         public override void Unload()
         {
@@ -254,6 +542,66 @@ namespace Entrogic
 
         }
         private void Player_QuickGrapple(On.Terraria.Player.orig_QuickGrapple orig, Player self)
+=======
+        public override void PostDrawInterface(SpriteBatch spriteBatch)
+        {
+            //if (Main.gamePaused && Filters.Scene["OrangeScreen"].IsActive()) Filters.Scene["OrangeScreen"].Deactivate();
+            //if (!Filters.Scene["OrangeScreen"].IsActive()/* && !Main.gamePaused*/) Filters.Scene.Activate("OrangeScreen", Vector2.Zero);
+            //Filters.Scene.Activate("ReallyDark", Vector2.Zero);
+            if (!Main.dedServ)
+            {
+                mimicryFrameCounter++;
+                if (mimicryFrameCounter >= 13 * 5)
+                {
+                    mimicryFrameCounter = 5;
+                }
+                if (AEntrogicConfigClient.Instance.HookMouse)
+                {
+                    if (HookCursorHotKey.JustPressed)
+                    {
+                        HookCursor = ModHelper.MouseScreenPos;
+                    }
+                    const float scaleMax = 1.3f;
+                    float scale = 1f + ((float)ModTimer % 100f / 99f * (scaleMax - 1f) * 2f);
+                    if (scale >= scaleMax) // scale范围[1.0, scaleMax]
+                    {
+                        scale = scaleMax - (scale - scaleMax);
+                    }
+                    spriteBatch.Draw(ModTexturesTable["HookCursor"], HookCursor + new Vector2(-scale * 8f), null, Color.White, 0f, Vector2.Zero, new Vector2(scale), SpriteEffects.None, 0f);
+                }
+                //if (ModHelper.ControlShift && Main.HoverItem.type != 0 && Main.HoverItem.GetGlobalItem<EntrogicItem>().card && Instance.CardInventoryUI.slotActive)
+                //{
+                //    int index = Instance.CardInventoryUI.HoverOnSlot();
+                //    int slotCard = ModHelper.FindFirst(EntrogicPlayer.ModPlayer(Main.LocalPlayer).CardType, 0);
+                //    if (index != -1)
+                //    {
+                //        Item i = new Item();
+                //        i.SetDefaults(EntrogicPlayer.ModPlayer(Main.LocalPlayer).CardType[index]);
+                //        if (Main.LocalPlayer.ItemSpace(i))
+                //        {
+                //            Main.cursorOverride = 7;
+                //        }
+                //    }
+                //    else if (slotCard != -1 && CardInventoryGridSlot.AllowPutin(Instance.CardInventoryUI.Grid[slotCard].inventoryItem, Main.HoverItem, slotCard))
+                //    {
+                //        Main.cursorOverride = 9;
+                //    }
+                //}
+            }
+            base.PostDrawInterface(spriteBatch);
+        }
+        public override void PreUpdateEntities()
+        {
+            base.PreUpdateEntities();
+        }
+        public override void MidUpdateTimeWorld()
+        {
+            ModTimer++;
+            CardInventoryUI.IsActive = Main.playerInventory;
+            base.MidUpdateTimeWorld();
+        }
+        private void Main_OnPostDraw(GameTime gameTime)
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         {
             if (AEntrogicConfigClient.Instance.HookMouse)
             {
@@ -265,7 +613,36 @@ namespace Entrogic
                 Main.mouseX = mouseX;
                 Main.mouseY = mouseY;
             }
+<<<<<<< HEAD
             else orig(self);
+=======
+            //string textBlock = "NONONONONONONONONONONONO\nNONONONONONONONONONONONO\nNONONONONONONONONONONONO";
+            //string text = "[c/FF0000:But] [c/FF2800:E][c/FF5000:n][c/FF7800:t][c/FFA000:r][c/FFC800:o][c/FFF000:g][c/D7FF00:i][c/AFFF00:c][c/87FF00:!!!]";
+            //string seeing = "But Entrogic!!!";
+            //Vector2 pos = new Vector2(Main.screenWidth / 2f, 100f);
+            //ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, Main.fontMouseText, textBlock, pos -= new Vector2(Main.fontMouseText.MeasureString(textBlock).X / 2f * 1.5f, 40f), Color.Red, 0f, Vector2.Zero, new Vector2(1.5f));
+            //ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, Main.fontMouseText, text, pos -= new Vector2(-Main.fontMouseText.MeasureString(seeing).X, -120f), Color.White, 0f, Vector2.Zero, new Vector2(2f));
+            //string basicStr = "NO"; // Better with ■
+            //Vector2 size = Main.fontMouseText.MeasureString(basicStr);
+            //for (float i = 0; i <= Main.screenWidth + size.X; i += size.X + 2f)
+            //{
+            //    for (float j = 0; j <= Main.screenHeight + size.Y; j += size.Y - 8f)
+            //    {
+            //        ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, Main.fontMouseText, basicStr, new Vector2(i, j), Color.Red, 0f, Vector2.Zero, new Vector2(1));
+            //    }
+            //}
+            Main.spriteBatch.SafeEnd();
+            //Main.debuff = Debuffs;
+        }
+        private bool[] Debuffs = Main.debuff;
+        private void Main_OnPreDraw(GameTime obj)
+        {
+            //Debuffs = Main.debuff;
+            //for(int i = 0; i < Main.debuff.Length; i++)
+            //{
+            //    Main.debuff[i] = false;
+            //}
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         }
 
         /// <summary>
@@ -324,6 +701,165 @@ namespace Entrogic
             // couldn't find the right place to insert
             throw new Exception("未在Main.DrawMenu找到if(menuMode==-7)，请将此Bug报告给作者Cyril!联系方式在Mod简介");
         }
+<<<<<<< HEAD
+        public override void HandlePacket(BinaryReader reader, int whoAmI)
+        {
+            EntrogicModMessageType msgType = (EntrogicModMessageType)reader.ReadByte();
+            switch (msgType)
+=======
+        public override void UpdateUI(GameTime gameTime)
+        {
+            Player player = Main.LocalPlayer;
+            EntrogicPlayer ePlayer = player.GetModPlayer<EntrogicPlayer>();
+            if (BookUIE != null && BookUI.IsActive)
+                BookUIE.Update(gameTime);
+            //if (BookPageUIE != null && Main.LocalPlayer.GetModPlayer<EntrogicPlayer>().ActiveBook)
+            //    BookPageUIE.Update(gameTime);
+            if (CardUIE != null && CardUI.IsActive)
+                CardUIE.Update(gameTime);
+            if (CardInventoryUIE != null && CardInventoryUI.IsActive)
+                CardInventoryUIE.Update(gameTime);
+            if (CardGameUIE != null && ePlayer.CardGameActive)
+                CardGameUIE.Update(gameTime);
+            //if (Main.netMode != NetmodeID.MultiplayerClient)
+            //{
+            int texNum = mimicryFrameCounter / 5;
+            Main.itemTexture[ModContent.ItemType<拟态魔能>()] = ModTexturesTable[$"拟态魔能_{texNum.ToString()}"];
+            //}
+        }
+        public override void ModifyTransformMatrix(ref SpriteViewMatrix Transform)
+        {
+            if (Main.gameMenu)
+            {
+                return;
+            }
+        }
+        public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
+        {
+            EntrogicPlayer ePlayer = Main.LocalPlayer.GetModPlayer<EntrogicPlayer>();
+            int MouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
+            if (MouseTextIndex != -1)
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
+            {
+                case EntrogicModMessageType.ReceiveMagicStormRequest: // 由服务器通告全体客户端
+                    {
+<<<<<<< HEAD
+                        EntrogicWorld.magicStorm = reader.ReadBoolean();
+                        break;
+                    }
+                case EntrogicModMessageType.ReceiveMagicStormMPC: // 客户端发出接受请求，服务器发送参数
+                    if (Main.dedServ) // 在服务器下
+                    {
+                        ModPacket packet = GetPacket();
+                        packet.Write((byte)EntrogicModMessageType.ReceiveMagicStormMPC);
+                        packet.Write(EntrogicWorld.magicStorm);
+                        // 发回给发送者
+                        packet.Send(whoAmI, -1);
+                        break;
+                    }
+                    else // 客户端下接收
+                    {
+                        EntrogicWorld.magicStorm = reader.ReadBoolean();
+                        if (EntrogicWorld.magicStorm == true/*规范！*/) // 肯定是要开始了才提示啊，不然提示什么东西哦
+                            Main.NewText("魔力开始涌动...", 150, 150, 250); // 补一个提示
+                        break;
+                    }
+                case EntrogicModMessageType.FindUWTeleporter:
+                    {
+                        if (Main.dedServ) // 在服务器下
+=======
+                        if (BookUI.IsActive)
+                        {
+                            BookUIE.Draw(Main.spriteBatch, new GameTime());
+                        }
+                        return true;
+                    },
+                    InterfaceScaleType.UI)
+                );
+                //layers.Insert(MouseTextIndex, new LegacyGameInterfaceLayer(
+                //    "Entrogic: Book Page UI",
+                //    delegate
+                //    {
+                //        BookPageUIE.Draw(Main.spriteBatch, new GameTime());
+                //        return true;
+                //    },
+                //    InterfaceScaleType.UI)
+                //);
+                layers.Insert(MouseTextIndex, new LegacyGameInterfaceLayer(
+                    "Entrogic: Card UI",
+                    delegate
+                    {
+                        if (CardUI.IsActive)
+                        {
+                            CardUIE.Draw(Main.spriteBatch, new GameTime());
+                        }
+                        return true;
+                    },
+                    InterfaceScaleType.UI)
+                );
+                layers.Insert(MouseTextIndex, new LegacyGameInterfaceLayer(
+                    "Entrogic: Card Game UI",
+                    delegate
+                    {
+                        if (ePlayer.CardGameActive)
+                        {
+                            CardGameUIE.Draw(Main.spriteBatch, new GameTime());
+                        }
+                        return true;
+                    },
+                    InterfaceScaleType.UI)
+                );
+            }
+            int InventoryIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Inventory"));
+            if (InventoryIndex != -1)
+            {
+                layers.Insert(InventoryIndex, new LegacyGameInterfaceLayer(
+                    "Entrogic: Card Inventory UI",
+                    delegate
+                    {
+                        if (CardInventoryUI.IsActive)
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
+                        {
+                            int i = reader.ReadInt32();
+                            int j = reader.ReadInt32();
+                            int playernum = reader.ReadInt32();
+                            UnderworldPortal.HandleTransportion(i, j, playernum, true);
+                            break;
+                        }
+<<<<<<< HEAD
+                        else // 在客户端下，其实就是给玩家回复提示信息
+                        {
+                            string warn = reader.ReadString();
+                            Main.NewText(warn);
+                        }
+=======
+                        return true;
+                    },
+                    InterfaceScaleType.UI)
+                );
+            }
+        }
+
+        public override void UpdateMusic(ref int music, ref MusicPriority priority)
+        {
+            Player player = Main.LocalPlayer;
+            if (Main.myPlayer == -1 || Main.gameMenu || !player.active)
+            {
+                return;
+            }
+            EntrogicPlayer modPlayer = EntrogicPlayer.ModPlayer(player);
+            bool magicStorm = EntrogicWorld.magicStorm;
+            if (magicStorm && player.ZoneOverworldHeight)
+            {
+                music = GetSoundSlot(SoundType.Music, "Sounds/Music/MagicStorm");
+                priority = MusicPriority.Environment;
+            }
+            if (modPlayer.CardGaming)
+            {
+                music = GetSoundSlot(SoundType.Music, "Sounds/Music/Toby Fox - Rude Buster");
+                priority = MusicPriority.BossHigh;
+            }
+        }
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
             EntrogicModMessageType msgType = (EntrogicModMessageType)reader.ReadByte();
@@ -349,23 +885,7 @@ namespace Entrogic
                         EntrogicWorld.magicStorm = reader.ReadBoolean();
                         if (EntrogicWorld.magicStorm == true/*规范！*/) // 肯定是要开始了才提示啊，不然提示什么东西哦
                             Main.NewText("魔力开始涌动...", 150, 150, 250); // 补一个提示
-                        break;
-                    }
-                case EntrogicModMessageType.FindUWTeleporter:
-                    {
-                        if (Main.dedServ) // 在服务器下
-                        {
-                            int i = reader.ReadInt32();
-                            int j = reader.ReadInt32();
-                            int playernum = reader.ReadInt32();
-                            UnderworldPortal.HandleTransportion(i, j, playernum, true);
-                            break;
-                        }
-                        else // 在客户端下，其实就是给玩家回复提示信息
-                        {
-                            string warn = reader.ReadString();
-                            Main.NewText(warn);
-                        }
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
                         break;
                     }
                 case EntrogicModMessageType.NPCSpawnOnPlayerAction:
@@ -378,6 +898,7 @@ namespace Entrogic
                         }
                         break;
                     }
+<<<<<<< HEAD
                 case EntrogicModMessageType.NPCSpawn:
                     {
                         if (Main.netMode == NetmodeID.MultiplayerClient) break;
@@ -414,6 +935,10 @@ namespace Entrogic
                     }
                 case EntrogicModMessageType.SyncCardGamingInfos:
                     {
+=======
+                case EntrogicModMessageType.SyncCardGamingInfos:
+                    {
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
                         int playernumber = reader.ReadByte();
                         EntrogicPlayer entrogicPlayer = Main.player[playernumber].GetModPlayer<EntrogicPlayer>();
                         // 如何传输List？首先传输一个List.Count，然后遍历传输List数值，接收者根据List.Count逐个接收，最后List.Add发给第三方
@@ -453,6 +978,7 @@ namespace Entrogic
                             MessageHelper.SendCardMission(playernumber, cardMerchantQuest.Complete, -1, playernumber);
                         }
                         break;
+<<<<<<< HEAD
                     }
                 case EntrogicModMessageType.BuildBuilding:
                     {
@@ -461,6 +987,8 @@ namespace Entrogic
                         bool useAir = reader.ReadBoolean();
                         Buildings.Build(name, pos, useAir);
                         break;
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
                     }
                 default:
                     Logger.WarnFormat("Entrogic: Unknown Message type: {0}", msgType);
@@ -471,6 +999,7 @@ namespace Entrogic
         {
             ReceiveMagicStormRequest,
             ReceiveMagicStormMPC,
+<<<<<<< HEAD
             FindUWTeleporter,
             NPCSpawnOnPlayerAction,
             NPCSpawn,
@@ -479,6 +1008,12 @@ namespace Entrogic
             SyncCardGamingInfos,
             SendCompletedCardMerchantMissionRequest,
             BuildBuilding
+=======
+            NPCSpawnOnPlayerAction,
+            SyncBookBubbleInfo,
+            SyncCardGamingInfos,
+            SendCompletedCardMerchantMissionRequest
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         }
         public static void DebugModeNewText(string message, bool debug = false)
         {
@@ -530,6 +1065,7 @@ namespace Entrogic
         /// <param name="friendly">0为敌对，1为友好，2为全部伤害</param>
         internal static void Explode(Vector2 position, Vector2 size, int damage, int friendly = 0, int goreTimes = 1, bool useSomke = true)
         {
+<<<<<<< HEAD
             Terraria.Audio.SoundEngine.PlaySound(SoundID.Item14, position);
             if (friendly == 2)
             {
@@ -561,6 +1097,37 @@ namespace Entrogic
                 Main.projectile[explode].position = position - size / 2f;
                 ((SimpleExplode)Main.projectile[explode].modProjectile).goreTimes = goreTimes;
                 ((SimpleExplode)Main.projectile[explode].modProjectile).useSmoke = useSomke;
+=======
+            Main.PlaySound(SoundID.Item14, position);
+            position.X = position.X - (float)(size.X / 2);
+            position.Y = position.Y - (float)(size.Y / 2);
+            Rectangle hitbox = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
+            damage = Main.DamageVar(damage);
+            foreach (NPC npc in Main.npc)
+            {
+                if (npc != null && npc.type != NPCID.None && npc.friendly != friendly && npc.getRect().Intersects(hitbox))
+                {
+                    npc.StrikeNPC(damage, 3f, (npc.Center.X - hitbox.Center.X) > 0 ? 1 : -1);
+                    if (Main.dedServ)
+                    {
+                        NetMessage.SendData(MessageID.StrikeNPC, -1, -1, null, npc.whoAmI);
+                    }
+                }
+            }
+            if (!friendly)
+            {
+                foreach (Player player in Main.player)
+                {
+                    if (player.active && !player.dead && player.getRect().Intersects(hitbox))
+                    {
+                        player.Hurt(PlayerDeathReason.ByOther(3), damage, (player.Center.X - hitbox.Center.X) > 0 ? 1 : -1);
+                        if (Main.dedServ)
+                        {
+                            NetMessage.SendData(MessageID.PlayerHurtV2, -1, -1, null, player.whoAmI);
+                        }
+                    }
+                }
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             }
         }
     }

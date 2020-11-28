@@ -27,11 +27,20 @@ namespace Entrogic.Items.Books
         }
         public override void AddRecipes()
         {
+<<<<<<< HEAD
             CreateRecipe()
                 .AddRecipeGroup("Wood")
                 .AddIngredient(ItemType<SoulOfPure>(), 5)
                 .AddTile(TileID.Sawmill)
                 .Register();
+=======
+            ModRecipe r = new ModRecipe(mod);
+            r.anyWood = true;
+            r.AddIngredient(ItemType<SoulOfPure>(), 5);
+            r.AddTile(TileID.Sawmill);
+            r.SetResult(this);
+            r.AddRecipe();
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         }
     }
 }

@@ -18,7 +18,11 @@ namespace Entrogic.UI.Cards
     {
         internal bool slotActive = false;
         internal static bool IsActive = false;//UI开启的bool
+<<<<<<< HEAD
         internal Vector2 statPoint => new Vector2(Main.GameModeInfo.IsJourneyMode ? 80f : 40f, 283f);
+=======
+        internal Vector2 statPoint = new Vector2(40f, 280f);
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         UIHoverImageButton InventoryHighlight = new UIHoverImageButton(GetTexture("Entrogic/UI/Cards/Inventory_Highlight"), "卡牌背包");
         UIHoverImageButton Inventory = new UIHoverImageButton(GetTexture("Entrogic/UI/Cards/Inventory"), "卡牌背包");
         public List<CardInventoryGridSlot> Grid = new List<CardInventoryGridSlot>();

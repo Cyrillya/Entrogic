@@ -15,8 +15,11 @@ using Entrogic.Items.Books;
 using Terraria.UI.Chat;
 using System.Linq;
 using static Entrogic.Entrogic;
+<<<<<<< HEAD
 using ReLogic.Content;
 using Terraria.GameContent;
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 
 namespace Entrogic.UI.Books
 {

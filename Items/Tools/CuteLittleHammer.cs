@@ -25,7 +25,11 @@ namespace Entrogic.Items.Tools
 			item.useTime = 16;
 			item.useAnimation = 20;
             item.hammer = 70;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Swing;
+=======
+            item.useStyle = ItemUseStyleID.SwingThrow;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 			item.knockBack = 5;
 			item.value = 30000;
 			item.rare = ItemRarityID.LightPurple;

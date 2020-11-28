@@ -43,9 +43,15 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾.Projectiles
 
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
+<<<<<<< HEAD:NPCs/Boss/凝胶Java盾/Projectiles/SymbioisDeathLaser.cs
             DrawLaser(spriteBatch, (Texture2D)Terraria.GameContent.TextureAssets.Projectile[projectile.type], Main.npc[(int)projectile.ai[1]].Center + new Vector2(0f, 100f),
                 projectile.velocity, 10, projectile.damage, -1.57f, 1f, 1000f, Color.White, (int)MoveDistance);
             DrawLaserOut(spriteBatch, (Texture2D)Entrogic.Instance.GetTexture("NPCs/Boss/凝胶Java盾/Projectiles/LaserFilm"), Main.npc[(int)projectile.ai[1]].Center + new Vector2(0f, 100f),
+=======
+            DrawLaser(spriteBatch, Main.projectileTexture[projectile.type], Main.npc[(int)projectile.ai[1]].Center + new Vector2(0f, 100f),
+                projectile.velocity, 10, projectile.damage, -1.57f, 1f, 1000f, Color.White, (int)MoveDistance);
+            DrawLaserOut(spriteBatch, Entrogic.Instance.GetTexture("NPCs/Boss/凝胶Java盾/Projectiles/LaserFilm"), Main.npc[(int)projectile.ai[1]].Center + new Vector2(0f, 100f),
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/Boss/凝胶Java盾/Projectiles/共生体死光.cs
                 projectile.velocity, 10, projectile.damage, -1.57f, 1f, 1000f, new Color(50, 50, 50, 50), (int)MoveDistance);
             return false;
         }
@@ -228,7 +234,11 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾.Projectiles
 
         public override void OnHitPlayer(Player target, int damage, bool crit)
         {
+<<<<<<< HEAD:NPCs/Boss/凝胶Java盾/Projectiles/SymbioisDeathLaser.cs
             target.AddBuff(BuffType<Buffs.Enemies.Dissolve>(), (int)(Main.rand.Next(90, 151) * Main.GameModeInfo.DebuffTimeMultiplier));
+=======
+            target.AddBuff(BuffType<Buffs.Enemies.Dissolve>(), Main.rand.Next(90, 151) * (Main.expertMode ? (int)Main.expertDebuffTime : 1));
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/Boss/凝胶Java盾/Projectiles/共生体死光.cs
         }
     }
 }

@@ -19,7 +19,11 @@ namespace Entrogic.Items.Weapons.Magic.Staff
             item.UseSound = SoundID.Item20;
             item.Size = new Vector2(74, 76);
             item.useTime = item.useAnimation = 30;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Shoot;
+=======
+            item.useStyle = ItemUseStyleID.HoldingOut;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             item.knockBack = 8f;
             item.value = Item.sellPrice(0, 5);
             item.rare = RareID.LV6;

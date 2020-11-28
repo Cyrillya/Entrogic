@@ -21,7 +21,11 @@ namespace Entrogic.Items.Materials
             item.maxStack = 99;
             item.value = Item.sellPrice(silver: 55);
             item.rare = ItemRarityID.Pink;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Shoot;
+=======
+            item.useStyle = ItemUseStyleID.HoldingOut;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             item.useAnimation = 15;
             item.useTime = 10;
             item.noUseGraphic = true;

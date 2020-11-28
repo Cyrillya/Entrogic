@@ -110,8 +110,11 @@ namespace Entrogic
 					int wj = starttc.Y + j;
 					if ((ts[i, j].type != 0 && ts[i, j].active()) || useAir)
 					{
+<<<<<<< HEAD
 						if (Main.tile[wi, wj] == null)
 							Main.tile[wi, wj] = new Tile();
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 						Main.tile[wi, wj].CopyFrom(ts[i, j]);
 					}
 				}
@@ -135,7 +138,11 @@ namespace Entrogic
 						from.type = br.ReadUInt16();
 						var str = br.ReadString();
 						if (str != "")
+<<<<<<< HEAD
 							from.type = (ushort)TileType(str);
+=======
+							from.type = (ushort)Entrogic.Instance.TileType(str);
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 						from.wall = br.ReadUInt16();
 						from.liquid = br.ReadByte();
 						from.sTileHeader = br.ReadUInt16();
@@ -150,10 +157,14 @@ namespace Entrogic
 				return ts;
 			}
 		}
+<<<<<<< HEAD
 
         private static ushort TileType(string str)
         {
 			return Entrogic.ModTiles.Find(s => s.Name == str).Type;
 		}
     }
+=======
+	}
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 }

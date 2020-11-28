@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 ﻿using Terraria;
+=======
+﻿using CalamityMod.Projectiles.Ranged;
+
+using Terraria;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,6 +15,10 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using System.Collections.Generic;
 using Terraria.ID;
+<<<<<<< HEAD
+=======
+using System.Windows.Forms;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 
 namespace Entrogic.NPCs.Boss.PollutElement
 {
@@ -40,7 +50,11 @@ namespace Entrogic.NPCs.Boss.PollutElement
         public override void AI()
         {
             Timer++;
+<<<<<<< HEAD
             if (Timer == 1 && Main.netMode != NetmodeID.MultiplayerClient)
+=======
+            if (Timer == 1)
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             {
                 int proj = Projectile.NewProjectile(projectile.Center, new Vector2(0f, 1f), ProjectileType<EffectRay>(), 0, 0f, projectile.owner);
                 Main.projectile[proj].ai[0] = 12f;

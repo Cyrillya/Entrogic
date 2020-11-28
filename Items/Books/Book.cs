@@ -36,7 +36,11 @@ namespace Entrogic.Items.Books
             item.height = 1;
             item.useAnimation = 20;
             item.useTime = 20;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Shoot;
+=======
+            item.useStyle = ItemUseStyleID.HoldingOut;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             item.value = 1000;
             item.scale = 0.75f;
             item.rare = ItemRarityID.Quest;
@@ -80,7 +84,11 @@ namespace Entrogic.Items.Books
         public string WarnTexts => "[c/FF0000:请于物品栏关闭的情况下开启本书籍]";
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
+<<<<<<< HEAD
             TooltipLine line = new TooltipLine(Instance, Instance.Name, WarnTexts);
+=======
+            TooltipLine line = new TooltipLine(mod, mod.Name, WarnTexts);
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             if (Main.playerInventory)
                 tooltips.Add(line);
             if (AEntrogicConfigClient.Instance.ShowUsefulInformations && item.GetGlobalItem<EntrogicItem>().book)

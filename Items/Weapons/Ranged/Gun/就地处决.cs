@@ -27,7 +27,11 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             item.height = 20;
             item.useTime = 50;
             item.useAnimation = 50;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Shoot;
+=======
+            item.useStyle = ItemUseStyleID.HoldingOut;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             item.noMelee = true;
             item.knockBack = 18;
             item.value = Item.sellPrice(gold:1, silver:80);
@@ -51,12 +55,22 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         }
         public override void AddRecipes()
         {
+<<<<<<< HEAD
             CreateRecipe()
                 .AddIngredient(ItemType<SoulofContamination>(), 7)
                 .AddIngredient(ItemID.HallowedBar, 18)
                 .AddIngredient(ItemID.Shotgun)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
+=======
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemType<SoulofContamination>(), 7);
+            recipe.AddIngredient(ItemID.HallowedBar, 18);
+            recipe.AddIngredient(ItemID.Shotgun);
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         }
         public override void ModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
         {

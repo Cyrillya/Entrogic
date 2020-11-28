@@ -26,7 +26,11 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
             item.useTime = 25;
             item.useAnimation = 25;
             
+<<<<<<< HEAD:Items/Weapons/Ranged/Bow/Galekylin.cs
             item.useStyle = ItemUseStyleID.Shoot;
+=======
+            item.useStyle = ItemUseStyleID.HoldingOut;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/Weapons/Ranged/Bow/烈风麒麟.cs
 
             item.noMelee = true;
             item.knockBack = 7;
@@ -43,6 +47,7 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
         
         public override void AddRecipes()
         {
+<<<<<<< HEAD:Items/Weapons/Ranged/Bow/Galekylin.cs
             CreateRecipe()
                 .AddIngredient(ItemID.Tsunami, 1)
                 .AddIngredient(ItemID.DD2PhoenixBow, 1)
@@ -51,6 +56,17 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
                 .AddIngredient(ItemID.LunarBar, 18)
                 .AddTile(TileID.LunarCraftingStation)
                 .Register();
+=======
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.Tsunami, 1);
+            recipe.AddIngredient(ItemID.DD2PhoenixBow, 1);
+            recipe.AddIngredient(ItemID.FragmentVortex, 20);
+            recipe.AddIngredient(ItemID.FragmentSolar, 20);
+            recipe.AddIngredient(ItemID.LunarBar, 18);
+            recipe.AddTile(TileID.LunarCraftingStation);
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/Weapons/Ranged/Bow/烈风麒麟.cs
         }
 
         public override bool ConsumeAmmo(Player player)

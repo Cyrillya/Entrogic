@@ -70,7 +70,11 @@ namespace Entrogic.Projectiles
             projectile.height = 128;
             projectile.position.X = projectile.position.X - (float)(projectile.width / 2);
             projectile.position.Y = projectile.position.Y - (float)(projectile.height / 2);
+<<<<<<< HEAD
             Terraria.Audio.SoundEngine.PlaySound(SoundID.Item, (int)projectile.position.X, (int)projectile.position.Y, 14);
+=======
+            Main.PlaySound(SoundID.Item, (int)projectile.position.X, (int)projectile.position.Y, 14);
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             for (int num5 = 0; num5 < 30; num5++)
             {
                 int num6 = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, 31, 0f, 0f, 100, default(Color), 1.5f);

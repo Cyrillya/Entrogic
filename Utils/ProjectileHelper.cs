@@ -4,7 +4,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using System;
+<<<<<<< HEAD
 using Terraria.GameContent;
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 
 namespace Entrogic
 {
@@ -12,7 +15,11 @@ namespace Entrogic
     {
         public static void DrawShadow(this Projectile projectile, SpriteBatch spriteBatch, Color lightColor, int length = 17)
         {
+<<<<<<< HEAD
             Texture2D t = (Texture2D)TextureAssets.Projectile[projectile.type];
+=======
+            Texture2D t = Main.projectileTexture[projectile.type];
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             int frameHeight = t.Height / Main.projFrames[projectile.type];
             SpriteEffects effects = SpriteEffects.None;
             if (projectile.spriteDirection < 0) effects = SpriteEffects.FlipHorizontally;

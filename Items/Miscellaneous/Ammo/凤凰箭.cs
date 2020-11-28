@@ -31,11 +31,20 @@ namespace Entrogic.Items.Miscellaneous.Ammo
 			}
 		public override void AddRecipes()
 		{
+<<<<<<< HEAD
 			CreateRecipe(333)
 				.AddIngredient(ItemID.FragmentVortex, 5)
 				.AddIngredient(ItemID.FlamingArrow, 333)
 				.AddTile(TileID.LunarCraftingStation)
 				.Register();
+=======
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.FragmentVortex, 5);
+			recipe.AddIngredient(ItemID.FlamingArrow, 333);
+			recipe.AddTile(TileID.LunarCraftingStation);
+			recipe.SetResult(this, 333);
+			recipe.AddRecipe();
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 		}
 	}
 }

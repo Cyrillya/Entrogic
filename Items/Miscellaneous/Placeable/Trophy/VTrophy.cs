@@ -19,8 +19,12 @@ namespace Entrogic.Items.Miscellaneous.Placeable.Trophy
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("{$Mods.Entrogic.NPCName.Volutio} " + "{$MapObject.Trophy}");
+<<<<<<< HEAD
             DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "凝胶共生体纪念章");
             Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+=======
+            DisplayName.AddTranslation(GameCulture.Chinese, "凝胶共生体纪念章");
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         }
         public override void SetDefaults()
         {

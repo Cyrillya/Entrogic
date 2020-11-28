@@ -17,12 +17,20 @@ namespace Entrogic.NPCs.Banners
             item.autoReuse = true;
             item.useAnimation = 15;
             item.useTime = 10;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Swing;
+=======
+            item.useStyle = ItemUseStyleID.SwingThrow;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             item.consumable = true;
             item.rare = ItemRarityID.Blue;
             item.value = Item.sellPrice(0, 0, 10, 0);
             item.createTile = TileType<MonsterBanner>();
+<<<<<<< HEAD
             item.placeStyle = 1;
+=======
+            item.placeStyle = 2;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         }
     }
 }

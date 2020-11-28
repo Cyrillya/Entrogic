@@ -20,6 +20,7 @@ namespace Entrogic.Items.PollutElement.Armor
     /// </summary>
     [AutoloadEquip(EquipType.Body)]
     public class BreastplateofContamination : ModItem
+<<<<<<< HEAD:Items/PollutElement/Armor/BreastplateofContamination.cs
     {
         public override void SetStaticDefaults()
         {
@@ -32,6 +33,18 @@ namespace Entrogic.Items.PollutElement.Armor
             modTranslation.AddTranslation((int)GameCulture.CultureName.Chinese, "提高仆从数量上限");
             modTranslation.SetDefault("Young man, there are still many things you don't understand");
             Mod.AddTranslation(modTranslation);
+=======
+    {
+        public override void SetStaticDefaults()
+        {
+            ModTranslation modTranslation = mod.CreateTranslation("PArmorBonus");
+            modTranslation.AddTranslation(GameCulture.Chinese, "召唤一个圈为你抵挡三次伤害，30秒后重新充能");
+            modTranslation.SetDefault("Young man, there are still many things you don't understand");
+            mod.AddTranslation(modTranslation);
+            modTranslation = mod.CreateTranslation("PArmorBonus2");
+            modTranslation.AddTranslation(GameCulture.Chinese, "提高仆从数量上限");
+            modTranslation.SetDefault("Young man, there are still many things you don't understand");
+            mod.AddTranslation(modTranslation);
         }
         public override void SetDefaults()
         {
@@ -44,11 +57,10 @@ namespace Entrogic.Items.PollutElement.Armor
         public override void UpdateEquip(Player player)
         {
             int critpoint = 15;
-            player.GetCrit(DamageClass.Summon) += critpoint;
-            player.GetCrit(DamageClass.Magic) += critpoint;
-            player.GetCrit(DamageClass.Ranged) += critpoint;
-            player.GetCrit(DamageClass.Melee) += critpoint;
-            player.GetCrit(DamageClass.Throwing) += critpoint;
+            player.magicCrit += critpoint;
+            player.meleeCrit += critpoint;
+            player.rangedCrit += critpoint;
+            player.thrownCrit += critpoint;
         }
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {
@@ -75,6 +87,107 @@ namespace Entrogic.Items.PollutElement.Armor
         public bool EffectEnable = false;
         public int pCounter = 0;
         public override void ResetEffects()
+        {
+            EffectEnable = false;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Utils/pUnDamage.cs
+        }
+        public override void SetDefaults()
+        {
+<<<<<<< HEAD:Items/PollutElement/Armor/BreastplateofContamination.cs
+            item.width = 32;
+            item.height = 30;
+            item.value = Item.sellPrice(0, 6);
+            item.rare = RareID.LV8;
+            item.defense = 16;
+        }
+        public override void UpdateEquip(Player player)
+        {
+            int critpoint = 15;
+            player.GetCrit(DamageClass.Summon) += critpoint;
+            player.GetCrit(DamageClass.Magic) += critpoint;
+            player.GetCrit(DamageClass.Ranged) += critpoint;
+            player.GetCrit(DamageClass.Melee) += critpoint;
+            player.GetCrit(DamageClass.Throwing) += critpoint;
+        }
+        public override bool IsArmorSet(Item head, Item body, Item legs)
+        {
+            return (head.type == ItemType<HelmetofContamination>() || head.type == ItemType<CrownofContamination>() || head.type == ItemType<MaskofContamination>() || head.type == ItemType<HeadgearofContamination>()) && legs.type == ItemType<GreavesofContamination>();
+        }
+        public override void UpdateArmorSet(Player player)
+=======
+            EffectEnable = false;
+        }
+
+        public float fRingScale = 1f;
+        public float flameRingRot = 0f;
+        public static readonly PlayerLayer MiscEffects = new PlayerLayer("Entrogic", "PollutionEffects", PlayerLayer.MiscEffectsFront, delegate (PlayerDrawInfo drawInfo)
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Utils/pUnDamage.cs
+        {
+            string bonus2 = "";
+            PollutionArmorSet modPlayer = player.GetModPlayer<PollutionArmorSet>();
+            modPlayer.EffectEnable = true;
+            if (player.head == ItemType<CrownofContamination>())
+            {
+                bonus2 = "Mods.Entrogic.PArmorBonus2";
+                player.maxMinions += 2;
+            }
+<<<<<<< HEAD:Items/PollutElement/Armor/BreastplateofContamination.cs
+            player.setBonus = Language.GetTextValue("Mods.Entrogic.PArmorBonus") + "\n" +
+                Language.GetTextValue(bonus2);
+        }
+    }
+    public class PollutionArmorSet : ModPlayer
+    {
+        public int pTimer = 1800;
+        public bool pEffect = false;
+        public bool EffectEnable = false;
+        public int pCounter = 0;
+        public override void ResetEffects()
+=======
+            Player drawPlayer = drawInfo.drawPlayer;
+            PollutionArmorSet modPlayer = drawPlayer.GetModPlayer<PollutionArmorSet>();
+            if (modPlayer.pEffect && modPlayer.EffectEnable)
+            {
+                Texture2D texture = Entrogic.ModTexturesTable["PollutionArmorSetEffect"];
+                int frameSize = texture.Height / 3;
+                int drawX = (int)(drawInfo.position.X + drawPlayer.width / 2f - Main.screenPosition.X);
+                int drawY = (int)(drawInfo.position.Y + drawPlayer.height / 2f - Main.screenPosition.Y);
+
+                float num = 0.1f;
+                float num2 = 0.9f;
+                modPlayer.fRingScale += 0.004f;
+                float flameRingScale;
+                if (modPlayer.fRingScale < 1f)
+                {
+                    flameRingScale = modPlayer.fRingScale;
+                }
+                else
+                {
+                    modPlayer.fRingScale = 0.8f;
+                    flameRingScale = modPlayer.fRingScale;
+                }
+                modPlayer.flameRingRot += 0.05f;
+                if (modPlayer.flameRingRot > 6.28318548f)
+                {
+                    modPlayer.flameRingRot -= 6.28318548f;
+                }
+                if (modPlayer.flameRingRot < -6.28318548f)
+                {
+                    modPlayer.flameRingRot += 6.28318548f;
+                }
+                float num3 = flameRingScale + num;
+                if (num3 > 1f)
+                {
+                    num3 -= num * 2f;
+                }
+                float num4 = MathHelper.Lerp(0.8f, 0f, Math.Abs(num3 - num2) * 10f);
+                DrawData data = new DrawData(texture, new Vector2(drawX, drawY), new Rectangle(0, 0, texture.Width, frameSize), new Color(num4, num4, num4, num4 / 2f), modPlayer.flameRingRot, new Vector2(texture.Width / 2f, frameSize / 2f), num3 * 0.6f, SpriteEffects.None, 0);
+                Main.playerDrawData.Add(data);
+                modPlayer.fRingScale = 1f;
+            }
+        });
+        public override void ModifyDrawLayers(List<PlayerLayer> layers)
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Utils/pUnDamage.cs
         {
             EffectEnable = false;
         }

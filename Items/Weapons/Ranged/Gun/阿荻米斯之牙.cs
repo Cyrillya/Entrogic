@@ -32,7 +32,11 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             item.height = 36;
             item.useTime = 7;
             item.useAnimation = 28;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Shoot;
+=======
+            item.useStyle = ItemUseStyleID.HoldingOut;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 
             item.noMelee = true;
             item.knockBack = 4;
@@ -71,12 +75,22 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         }
         public override void AddRecipes()
         {
+<<<<<<< HEAD
             CreateRecipe()
                 .AddIngredient(ItemID.Megashark, 1)//巨兽鲨
                 .AddRecipeGroup("Entrogic:AdamantiteBar", 12)
                 .AddIngredient(ItemType<碳钢枪械部件>(), 1)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
+=======
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.Megashark,1);//巨兽鲨
+            recipe.AddRecipeGroup("Entrogic:AdamantiteBar", 12);
+            recipe.AddIngredient(ItemType<碳钢枪械部件>(), 1);
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         }
 
         private void AddRecipeGroup(string v1, int v2)

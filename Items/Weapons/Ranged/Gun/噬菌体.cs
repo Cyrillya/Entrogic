@@ -20,7 +20,11 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             item.DamageType = DamageClass.Ranged;
             item.useTime = 15;
             item.useAnimation = 15;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Shoot;
+=======
+            item.useStyle = ItemUseStyleID.HoldingOut;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             item.shootSpeed = 10f;
             item.noMelee = true;
             item.shoot = Bullet;

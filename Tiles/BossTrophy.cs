@@ -4,7 +4,10 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using Terraria.ObjectData;
 using Entrogic.Items.Miscellaneous.Placeable.Trophy;
+<<<<<<< HEAD
 using Terraria.ID;
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 
 namespace Entrogic.Tiles
 {

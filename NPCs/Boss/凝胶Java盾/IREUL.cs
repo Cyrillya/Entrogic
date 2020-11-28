@@ -126,7 +126,11 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
         public override void OnHitPlayer(Player target, int damage, bool crit)
         {
             if (Main.rand.NextBool(2))
+<<<<<<< HEAD:NPCs/Boss/凝胶Java盾/IREUL.cs
                 target.AddBuff(BuffType<Buffs.Enemies.Dissolve>(), (int)(Main.rand.Next(90, 151) * Main.GameModeInfo.DebuffTimeMultiplier));
+=======
+                target.AddBuff(BuffType<Buffs.Enemies.Dissolve>(), Main.rand.Next(90, 151) * (Main.expertMode ? (int)Main.expertDebuffTime : 1));
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/Boss/凝胶Java盾/IREUL细胞.cs
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
         {
@@ -239,7 +243,11 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
         public override void OnHitPlayer(Player target, int damage, bool crit)
         {
             if (Main.rand.NextBool(2))
+<<<<<<< HEAD:NPCs/Boss/凝胶Java盾/IREUL.cs
                 target.AddBuff(BuffType<Buffs.Enemies.Dissolve>(), (int)(Main.rand.Next(90, 151) * Main.GameModeInfo.DebuffTimeMultiplier));
+=======
+                target.AddBuff(BuffType<Buffs.Enemies.Dissolve>(), Main.rand.Next(90, 151) * (Main.expertMode ? (int)Main.expertDebuffTime : 1));
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/Boss/凝胶Java盾/IREUL细胞.cs
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
         {

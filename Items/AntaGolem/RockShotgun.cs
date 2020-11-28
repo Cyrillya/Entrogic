@@ -26,7 +26,11 @@ namespace Entrogic.Items.AntaGolem
             item.width = 32;
             item.height = 20;
             item.useTime = item.useAnimation = 18;
+<<<<<<< HEAD:Items/AntaGolem/RockShotgun.cs
             item.useStyle = ItemUseStyleID.Shoot;
+=======
+            item.useStyle = ItemUseStyleID.HoldingOut;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/AntaGolem/岩石猎枪.cs
             item.noMelee = true;
             item.knockBack = 3;
             item.value = Item.sellPrice(0, 3, 50);

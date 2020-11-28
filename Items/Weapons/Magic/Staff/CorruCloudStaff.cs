@@ -15,7 +15,11 @@ namespace Entrogic.Items.Weapons.Magic.Staff
         {
             item.mana = 10;
             item.damage = 52;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Swing;
+=======
+            item.useStyle = ItemUseStyleID.SwingThrow;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             item.shootSpeed = 16f;
             item.shoot = ProjectileType<Projectiles.Magic.Staff.CorruCloud>();
             item.width = 26;

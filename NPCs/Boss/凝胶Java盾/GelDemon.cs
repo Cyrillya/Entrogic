@@ -7,7 +7,10 @@ using static Terraria.ModLoader.ModContent;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Entrogic.NPCs.Boss.凝胶Java盾.Projectiles;
+<<<<<<< HEAD:NPCs/Boss/凝胶Java盾/GelDemon.cs
 using Entrogic.Common;
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/Boss/凝胶Java盾/凝胶恶魔.cs
 
 namespace Entrogic.NPCs.Boss.凝胶Java盾
 {
@@ -55,7 +58,11 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
         public override void OnHitPlayer(Player target, int damage, bool crit)
         {
             if (Main.rand.NextBool(2))
+<<<<<<< HEAD:NPCs/Boss/凝胶Java盾/GelDemon.cs
                 target.AddBuff(BuffType<Buffs.Enemies.Dissolve>(), (int)(Main.rand.Next(90, 151) * Main.GameModeInfo.DebuffTimeMultiplier));
+=======
+                target.AddBuff(BuffType<Buffs.Enemies.Dissolve>(), Main.rand.Next(90, 151) * (Main.expertMode ? (int)Main.expertDebuffTime : 1));
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/Boss/凝胶Java盾/凝胶恶魔.cs
         }
         public override void AI()
         {
@@ -110,7 +117,11 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
             for (int i = 0; i < 200; i++)
             {
                 NPC master = Main.npc[i];
+<<<<<<< HEAD:NPCs/Boss/凝胶Java盾/GelDemon.cs
                 if (master.active && npc.ai[3] < 240 && master.type == NPCType<Embryo>())
+=======
+                if (master.active && npc.ai[3] < 240 && master.type == NPCType<Volutio>())
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/Boss/凝胶Java盾/凝胶恶魔.cs
                 {
                     Vector2 vector = new Vector2(npc.Center.X, npc.Center.Y);
                     float num = master.Center.X - vector.X;
@@ -135,6 +146,7 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
                         num = master.Center.X - vector.X;
                         num2 = master.Center.Y - vector.Y;
                         Color color = Lighting.GetColor((int)vector.X / 16, (int)(vector.Y / 16f));
+<<<<<<< HEAD:NPCs/Boss/凝胶Java盾/GelDemon.cs
                         Main.spriteBatch.Draw((Texture2D)GetTexture("NPCs/Boss/凝胶Java盾/GelChain"),
                             new Vector2(vector.X - Main.screenPosition.X, vector.Y - Main.screenPosition.Y),
                             new Rectangle?(new Rectangle(0, 0, GetTexture("NPCs/Boss/凝胶Java盾/GelChain").Width(), num3)),
@@ -142,6 +154,9 @@ namespace Entrogic.NPCs.Boss.凝胶Java盾
                             rotation,
                             new Vector2((float)GetTexture("NPCs/Boss/凝胶Java盾/GelChain").Width() * 0.5f,
                             (float)GetTexture("NPCs/Boss/凝胶Java盾/GelChain").Height() * 0.5f), 1f, SpriteEffects.None, 0f);
+=======
+                        Main.spriteBatch.Draw(mod.GetTexture("NPCs/Boss/凝胶Java盾/GelChain"), new Vector2(vector.X - Main.screenPosition.X, vector.Y - Main.screenPosition.Y), new Rectangle?(new Rectangle(0, 0, mod.GetTexture("NPCs/Boss/凝胶Java盾/GelChain").Width, num3)), color, rotation, new Vector2((float)mod.GetTexture("NPCs/Boss/凝胶Java盾/GelChain").Width * 0.5f, (float)mod.GetTexture("NPCs/Boss/凝胶Java盾/GelChain").Height * 0.5f), 1f, SpriteEffects.None, 0f);
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/Boss/凝胶Java盾/凝胶恶魔.cs
                     }
                 }
             }

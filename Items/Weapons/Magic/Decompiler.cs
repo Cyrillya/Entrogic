@@ -24,7 +24,11 @@ namespace Entrogic.Items.Weapons.Magic
             item.height = 26;
             item.useTime = 90;
             item.useAnimation = 90;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Shoot;
+=======
+            item.useStyle = ItemUseStyleID.HoldingOut;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             item.noMelee = true;
             item.crit = 0;
             item.mana = 15;

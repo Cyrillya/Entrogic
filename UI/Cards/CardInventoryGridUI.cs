@@ -124,7 +124,11 @@ namespace Entrogic.UI.Cards
                     }
                 }
             }
+<<<<<<< HEAD
             Terraria.Audio.SoundEngine.PlaySound(SoundID.Grab, -1, -1, 1, 1f, 0.0f);
+=======
+            Main.PlaySound(SoundID.Grab, -1, -1, 1, 1f, 0.0f);
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             if (player.CardType[number] != 0 && mouseItem.type == ItemID.None)
             {
                 Item item = new Item();

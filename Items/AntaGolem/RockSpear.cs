@@ -19,7 +19,11 @@ namespace Entrogic.Items.AntaGolem
         }
         public override void SetDefaults()
         {
+<<<<<<< HEAD:Items/AntaGolem/RockSpear.cs
             item.useStyle = ItemUseStyleID.Shoot;
+=======
+            item.useStyle = ItemUseStyleID.HoldingOut;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/AntaGolem/巨石长枪.cs
             item.useAnimation = 22;
             item.useTime = 22;
             item.shootSpeed = 4.6f;

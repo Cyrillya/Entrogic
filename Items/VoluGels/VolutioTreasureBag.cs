@@ -13,10 +13,13 @@ namespace Entrogic.Items.VoluGels
     /// </summary>
     public class VolutioTreasureBag : ModItem
     {
+<<<<<<< HEAD:Items/VoluGels/VolutioTreasureBag.cs
         public override void SetStaticDefaults()
         {
             Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
         }
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/VoluGels/瓦卢提奥宝藏袋.cs
         public override void SetDefaults()
         {
             item.maxStack = 999;

@@ -414,6 +414,7 @@ namespace Entrogic.NPCs.CardMerchantSystem
                 {
                     CardMerchantQuest questSystem = player.GetModPlayer<CardMerchantQuest>();
                 EndMission:
+<<<<<<< HEAD:NPCs/CardMerchantSystem/CardMerchant.cs
                     Main.NewText($"Count:{CardQuests.Count}, quest:{questSystem.quest}");
                     if (questSystem.quest >= CardQuests.Count) // 如果完成了所有任务
                     {
@@ -422,6 +423,16 @@ namespace Entrogic.NPCs.CardMerchantSystem
                         if (NewQuest < CardQuests.Count)
                         {
                             Main.npcChatText = CardQuests[NewQuest].ToString();
+=======
+                    Main.NewText($"Count:{Entrogic.CardQuests.Count}, quest:{questSystem.quest}");
+                    if (questSystem.quest >= Entrogic.CardQuests.Count) // 如果完成了所有任务
+                    {
+                        questSystem.quest = Math.Min(questSystem.quest, Entrogic.CardQuests.Count);
+                        int NewQuest = questSystem.ChooseNewQuest();
+                        if (NewQuest < Entrogic.CardQuests.Count)
+                        {
+                            Main.npcChatText = Entrogic.CardQuests[NewQuest].ToString();
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/CardMerchant.cs
                             questSystem.quest = NewQuest;
                             return;
                         }
@@ -443,12 +454,21 @@ namespace Entrogic.NPCs.CardMerchantSystem
                         if (questSystem.quest == -1) // 如果未布置任务/已完成任务
                         {
                             int NewQuest = questSystem.ChooseNewQuest();
+<<<<<<< HEAD:NPCs/CardMerchantSystem/CardMerchant.cs
                             if (NewQuest >= CardQuests.Count)
                             {
                                 goto EndMission;
                             }
                             Main.npcChatText = CardQuests[NewQuest].ToString();
                             Main.npcChatCornerItem = CardQuests[NewQuest].CornerItem;
+=======
+                            if (NewQuest >= Entrogic.CardQuests.Count)
+                            {
+                                goto EndMission;
+                            }
+                            Main.npcChatText = Entrogic.CardQuests[NewQuest].ToString();
+                            Main.npcChatCornerItem = Entrogic.CardQuests[NewQuest].CornerItem;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/CardMerchant.cs
                             questSystem.quest = NewQuest;
                             break;
                         }
@@ -457,9 +477,15 @@ namespace Entrogic.NPCs.CardMerchantSystem
                             Main.npcChatText = questSystem.GetCurrentQuest().SayThanks();
                             // 角落物品先给你整个心心，有需要再改
                             Main.npcChatCornerItem = ItemID.Heart;
+<<<<<<< HEAD:NPCs/CardMerchantSystem/CardMerchant.cs
                             Terraria.Audio.SoundEngine.PlaySound(SoundID.MenuTick, -1, -1, 1, 1f, 0f);
                             questSystem.SpawnReward(npc);
                             questSystem.Complete += "_" + CardQuests[questSystem.quest].ID;
+=======
+                            Main.PlaySound(SoundID.MenuTick, -1, -1, 1, 1f, 0f);
+                            questSystem.SpawnReward(npc);
+                            questSystem.Complete += "_" + Entrogic.CardQuests[questSystem.quest].ID;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/CardMerchant.cs
                             if (Main.netMode == NetmodeID.Server)
                             {
                                 MessageHelper.SendCardMission((byte)player.whoAmI, questSystem.Complete);
@@ -467,7 +493,11 @@ namespace Entrogic.NPCs.CardMerchantSystem
                             questSystem.quest = -1;
                             break;
                         }
+<<<<<<< HEAD:NPCs/CardMerchantSystem/CardMerchant.cs
                         if (questSystem.quest == -1 || questSystem.quest >= CardQuests.Count)
+=======
+                        if (questSystem.quest == -1 || questSystem.quest >= Entrogic.CardQuests.Count)
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/CardMerchant.cs
                         {
                             goto EndMission;
                         }
@@ -485,6 +515,7 @@ namespace Entrogic.NPCs.CardMerchantSystem
         private EntrogicPlayer entrogicPlayer => player.GetModPlayer<EntrogicPlayer>();
         public Quest GetCurrentQuest() // 获取任务
         {
+<<<<<<< HEAD:NPCs/CardMerchantSystem/CardMerchant.cs
             return CardQuests[quest];
         }
         public bool CheckQuest() // 任务未完成即为true，已完成或未布置为false
@@ -494,13 +525,28 @@ namespace Entrogic.NPCs.CardMerchantSystem
                 return false;
             }
             Quest q = CardQuests[quest];
+=======
+            return Entrogic.CardQuests[quest];
+        }
+        public bool CheckQuest() // 任务未完成即为true，已完成或未布置为false
+        {
+            if (quest == -1 || quest >= Entrogic.CardQuests.Count)
+            {
+                return false;
+            }
+            Quest q = Entrogic.CardQuests[quest];
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/CardMerchant.cs
             return q.CheckCompletion(Main.player[Main.myPlayer]);
         }
         public int ChooseNewQuest()//选择任务
         {
             string[] s = Complete.Split('_');
             Dictionary<string, bool> comp = new Dictionary<string, bool>();
+<<<<<<< HEAD:NPCs/CardMerchantSystem/CardMerchant.cs
             foreach (Quest q in CardQuests) // 先遍历一遍任务列表，添加字典中的所有键值，bool初始值为false（未完成）
+=======
+            foreach (Quest q in Entrogic.CardQuests) // 先遍历一遍任务列表，添加字典中的所有键值，bool初始值为false（未完成）
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/CardMerchant.cs
             {
                 comp.Add(q.ID, false);
             }
@@ -508,6 +554,7 @@ namespace Entrogic.NPCs.CardMerchantSystem
             {
                 comp[s[i]] = true;
             }
+<<<<<<< HEAD:NPCs/CardMerchantSystem/CardMerchant.cs
             foreach (Quest q in CardQuests)
             {
                 if (!q.CheckCompletion(player) || !comp[q.ID]) // 这里就不会找不到键值了
@@ -517,6 +564,17 @@ namespace Entrogic.NPCs.CardMerchantSystem
                 }
             }
             quest = CardQuests.Count;
+=======
+            foreach (Quest q in Entrogic.CardQuests)
+            {
+                if (!q.CheckCompletion(player) || !comp[q.ID]) // 这里就不会找不到键值了
+                {
+                    quest = Entrogic.CardQuests.IndexOf(q);
+                    return quest;
+                }
+            }
+            quest = Entrogic.CardQuests.Count;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/CardMerchant.cs
             return quest;
         }
         public override void PostUpdate()
@@ -549,7 +607,11 @@ namespace Entrogic.NPCs.CardMerchantSystem
         }
         public void SpawnReward(NPC npc)
         {
+<<<<<<< HEAD:NPCs/CardMerchantSystem/CardMerchant.cs
             Terraria.Audio.SoundEngine.PlaySound(SoundID.Chat, -1, -1, 1, 1f, 0f);
+=======
+            Main.PlaySound(SoundID.Chat, -1, -1, 1, 1f, 0f);
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/CardMerchant.cs
             GetCurrentQuest().SpawnReward(player, npc);
             if (GetCurrentQuest().RewardMoney.Platinum > 0)
             {

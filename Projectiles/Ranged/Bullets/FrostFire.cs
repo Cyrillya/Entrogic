@@ -8,7 +8,11 @@ namespace Entrogic.Projectiles.Ranged.Bullets
 {
     public class FrostFire : ModProjectile
     {
+<<<<<<< HEAD
         public override string Texture => "Entrogic/Assets/Images/Block";
+=======
+        public override string Texture => "Entrogic/Images/Block";
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         public override void SetDefaults()
         {
             projectile.CloneDefaults(ProjectileID.Flames);

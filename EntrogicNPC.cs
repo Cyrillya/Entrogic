@@ -87,7 +87,11 @@ namespace Entrogic
         {
             if (EntrogicWorld.Check(npc.position.X, npc.position.Y) && npc.wet && IsPreHardmodeSlime(npc) && Main.netMode != NetmodeID.MultiplayerClient)
             {
+<<<<<<< HEAD
                 NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, NPCType<NPCs.Boss.凝胶Java盾.Embryo>());
+=======
+                NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, NPCType<NPCs.Boss.凝胶Java盾.Volutio>());
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
                 npc.StrikeNPC(9999, 0, 0);
                 if (Main.netMode == NetmodeID.Server)
                 {

@@ -1,11 +1,18 @@
+<<<<<<< HEAD
 ﻿using Microsoft.Xna.Framework;
 
 using System;
+=======
+﻿using System;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 using System.IO;
 
 using Terraria;
 using Terraria.ID;
+<<<<<<< HEAD
 using Terraria.ModLoader;
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 
 using static Entrogic.Entrogic;
 
@@ -13,6 +20,7 @@ namespace Entrogic
 {
     public static class MessageHelper
     {
+<<<<<<< HEAD
         public static void BuildBuilding(string name, Vector2 position, bool useAir = true)
         {
             if (Main.netMode == NetmodeID.SinglePlayer) return;
@@ -33,6 +41,8 @@ namespace Entrogic
             packet.Write(playernum);
             packet.Send(-1, -1);
         }
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         /// <summary>
         /// 发送书籍是否打开的包
         /// </summary>
@@ -63,6 +73,7 @@ namespace Entrogic
             packet.Write(Complete);
             packet.Send(toClient, ignoreClient);
         }
+<<<<<<< HEAD
         public static void SendExplode(Vector2 position, Vector2 size, int damage, int toClient = -1, int ignoreClient = -1, int friendly = 0, int goreTimes = 1, bool useSomke = true)
         {
             if (Main.netMode == NetmodeID.SinglePlayer) return;
@@ -126,5 +137,7 @@ namespace Entrogic
             from.frameY = br.ReadInt16();
             return from;
         }
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
     }
 }

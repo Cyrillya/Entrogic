@@ -105,7 +105,11 @@ namespace Entrogic.Items.Equipables.Armor
         {
             if (twiceChance)
             {
+<<<<<<< HEAD:Obsolete/Armor/得摩斯头盔.cs
                 return !(player.itemAnimation < item.useAnimation - 2) && twice && item.DamageType == DamageClass.Ranged;
+=======
+                return !(player.itemAnimation < item.useAnimation - 2) && twice && item.ranged;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/Equipables/Armor/得摩斯头盔.cs
             }
             else
                 return true;

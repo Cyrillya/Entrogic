@@ -25,7 +25,11 @@ namespace Entrogic.Items.Weapons.Ranged.Bow
             item.DamageType = DamageClass.Ranged;
             item.useTime = 10;
             item.useAnimation = 30;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Shoot;
+=======
+            item.useStyle = ItemUseStyleID.HoldingOut;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             item.noMelee = true; 
             item.knockBack = 4;
             item.rare = ItemRarityID.Green;

@@ -9,12 +9,17 @@ namespace Entrogic.Items.PollutElement
 {
 	[AutoloadEquip(EquipType.Wings)]
 	public class BottleofStorm : ModItem
+<<<<<<< HEAD:Items/PollutElement/BottleofStorm.cs
     {
         public override void SetStaticDefaults()
         {
             Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
         public override void SetDefaults()
+=======
+	{
+		public override void SetDefaults()
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/PollutElement/风暴之瓶.cs
 		{
 			item.width = 120;
 			item.height = 100;

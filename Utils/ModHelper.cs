@@ -4,7 +4,10 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+<<<<<<< HEAD
 using ReLogic.Content;
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 using ReLogic.Graphics;
 
 using System;
@@ -21,6 +24,8 @@ using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
 using Terraria.Utilities;
+
+using static Entrogic.Entrogic;
 
 using static Entrogic.Entrogic;
 
@@ -62,6 +67,7 @@ namespace Entrogic
         public static float ScreenVerticalAxis => Main.screenWidth / 2;
         #endregion
 
+<<<<<<< HEAD
         public static void Return(Player player)
         {
             player.FindSpawn();
@@ -112,6 +118,8 @@ namespace Entrogic
             return ((DynamicSpriteFont)fontAsset).MeasureString(text);
         }
 
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         /// <summary>
         /// 判断鼠标是否在某个矩形上。
         /// </summary>
@@ -170,6 +178,7 @@ namespace Entrogic
                 Main.spriteBatch.DrawString(font, name, new Vector2(texPos.X, texPos.Y), Color.White);
             }
         }
+<<<<<<< HEAD
 
         public static void ProjectileExplode(this Projectile projectile, float statRangeX = 22f, float statRangeY = 22f)
         {
@@ -232,6 +241,11 @@ namespace Entrogic
         public static double GetLength(this Vector2 v)
         {
             return Math.Sqrt(Math.Pow(v.X, 2) + Math.Pow(v.Y, 2));
+=======
+        public static double GetLength(this Vector2 v)
+        {
+            return Math.Sqrt(Math.Pow(v.X,2) + Math.Pow(v.Y, 2));
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         }
         public static Rectangle CreateFromVector2(Vector2 vec, float width, float height)
         {
@@ -413,7 +427,11 @@ namespace Entrogic
         {
             while (value >= 1000000)
             {
+<<<<<<< HEAD
                 value -= 1000000;
+=======
+                value -= 1000000; 
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
                 int number = Item.NewItem(pos, ItemID.PlatinumCoin);
                 if (Main.netMode == NetmodeID.MultiplayerClient && number >= 0)
                 {
@@ -1103,6 +1121,7 @@ namespace Entrogic
                         return Main.sign[Sign.ReadSign(r.X + i, r.Y + j)];
             return null;
         }
+<<<<<<< HEAD
         public static float GetLerpValue(float from, float to, float t, bool clamped = false)
         {
             if (clamped)
@@ -1150,6 +1169,8 @@ namespace Entrogic
             return Vector2.Distance(Origin, Target);
         }
 
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         public static void SafeBegin(this SpriteBatch sb)
         {
             try

@@ -34,12 +34,22 @@ namespace Entrogic.Items.Miscellaneous.Ammo
 			}
 		public override void AddRecipes()
 		{
+<<<<<<< HEAD
 			CreateRecipe()
 				.AddIngredient(ItemID.Torch, 5)
 				.AddIngredient(ItemID.MusketBall, 125)
 				.AddIngredient(ItemID.Glass, 5)
 				.AddTile(TileID.WorkBenches)
 				.Register();
+=======
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.Torch, 5);
+			recipe.AddIngredient(ItemID.MusketBall, 125);
+            recipe.AddIngredient(ItemID.Glass, 5);
+            recipe.AddTile(TileID.WorkBenches);
+			recipe.SetResult(this, 125);
+			recipe.AddRecipe();
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 		}
 	}
 }

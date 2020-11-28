@@ -27,7 +27,11 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             item.useTime = 5;
             item.useAnimation = 5;
             
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Shoot;
+=======
+            item.useStyle = ItemUseStyleID.HoldingOut;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 
             item.noMelee = true;
             item.knockBack = 4;
@@ -43,6 +47,7 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
         
         public override void AddRecipes()
         {
+<<<<<<< HEAD
             CreateRecipe()
                 .AddIngredient(ItemID.SoulofMight, 18)
                 .AddIngredient(ItemID.SoulofFright, 18)
@@ -52,6 +57,18 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
                 .AddIngredient(null, "碳钢枪械部件", 1)//碳钢枪械部件
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
+=======
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.SoulofMight, 18);
+            recipe.AddIngredient(ItemID.SoulofFright, 18);
+            recipe.AddIngredient(ItemID.SoulofSight, 18);
+            recipe.AddIngredient(null,"飞鱼手枪", 1);
+            recipe.AddIngredient(ItemID.HallowedBar, 20);
+            recipe.AddIngredient(null, "碳钢枪械部件", 1);//碳钢枪械部件
+            recipe.AddTile(TileID.MythrilAnvil);
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         }
 
         public override bool ConsumeAmmo(Player player)

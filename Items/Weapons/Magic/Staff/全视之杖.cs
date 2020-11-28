@@ -23,7 +23,11 @@ namespace Entrogic.Items.Weapons.Magic.Staff
             item.height = 22;
             item.useTime = 25;
             item.useAnimation = 25;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Shoot;
+=======
+            item.useStyle = ItemUseStyleID.HoldingOut;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             item.noMelee = true;
             item.knockBack = 3;
             item.value = 10000;
@@ -37,12 +41,22 @@ namespace Entrogic.Items.Weapons.Magic.Staff
 
         public override void AddRecipes()
         {
+<<<<<<< HEAD
             CreateRecipe()
                 .AddIngredient(ItemID.MagicMissile, 1)//海蓝法杖
                 .AddIngredient(ItemType<GelOfLife>() ,7)
                 .AddIngredient(ItemID.Lens, 8)//晶状体
                 .AddTile(TileType<Tiles.MagicDiversionPlatformTile>())
                 .Register();
+=======
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.MagicMissile, 1);//海蓝法杖
+            recipe.AddIngredient(null,"GelOfLife" ,7);
+            recipe.AddIngredient(ItemID.Lens, 8);//晶状体
+            recipe.AddTile(TileType<Tiles.MagicDiversionPlatformTile>());
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         }
     }
 }

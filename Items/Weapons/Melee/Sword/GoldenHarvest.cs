@@ -10,17 +10,24 @@ namespace Entrogic.Items.Weapons.Melee.Sword
 {
     public class GoldenHarvest : ModItem
     {
+<<<<<<< HEAD
         public override void SetStaticDefaults()
         {
             Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         public override void SetDefaults()
         {
             item.UseSound = SoundID.Item1;
             item.Size = new Vector2(168, 84);
             item.useTime = 21;
             item.useAnimation = 21;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Thrust;
+=======
+            item.useStyle = ItemUseStyleID.Stabbing;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             item.knockBack = 5f;
             item.value = Item.sellPrice(0, 1, 24, 0);
             item.rare = RareID.LV4;
@@ -30,7 +37,11 @@ namespace Entrogic.Items.Weapons.Melee.Sword
             item.shoot = ProjectileType<GoldenHarvestProjectile>();
             item.shootSpeed = 0.01f;
             item.noUseGraphic = true;
+<<<<<<< HEAD
             item.DamageType = DamageClass.Melee;
+=======
+            item.melee = true;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             item.autoReuse = true;
             return;
         }

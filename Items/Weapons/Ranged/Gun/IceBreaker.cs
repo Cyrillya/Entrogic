@@ -4,7 +4,10 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
 using Entrogic.Projectiles.Ranged.Bullets;
+<<<<<<< HEAD:Items/Weapons/Ranged/Gun/IceBreaker.cs
 using Entrogic.Items.Materials;
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/Weapons/Ranged/Gun/碎冰机.cs
 
 namespace Entrogic.Items.Weapons.Ranged.Gun
 {

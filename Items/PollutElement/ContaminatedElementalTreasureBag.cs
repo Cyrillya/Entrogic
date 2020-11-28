@@ -15,7 +15,10 @@ namespace Entrogic.Items.PollutElement
     {
         public override void SetStaticDefaults()
         {
+<<<<<<< HEAD
             Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             DisplayName.SetDefault("宝藏袋");
             Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}");
         }

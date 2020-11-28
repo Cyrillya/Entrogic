@@ -97,11 +97,20 @@ namespace Entrogic.Items.VoluGels.Armor
         }
         public override void AddRecipes()
         {
+<<<<<<< HEAD
             CreateRecipe()
                 .AddIngredient(ItemType<CastIronBar>(), 20)
                 .AddIngredient(ItemType<GelOfLife>(), 4)
                 .AddTile(TileType<MagicDiversionPlatformTile>())
                 .Register();
+=======
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemType<CastIronBar>(), 20);
+            recipe.AddIngredient(ItemType<GelOfLife>(), 4);
+            recipe.SetResult(this);
+            recipe.AddTile(TileType<MagicDiversionPlatformTile>());
+            recipe.AddRecipe();
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         }
     }
 }

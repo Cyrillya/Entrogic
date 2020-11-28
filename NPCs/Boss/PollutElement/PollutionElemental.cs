@@ -12,8 +12,11 @@ using Entrogic.Items.Materials;
 using Entrogic.Items.PollutElement.Armor;
 using Entrogic.Items.Miscellaneous.Placeable.Trophy;
 using Terraria.Utilities;
+<<<<<<< HEAD:NPCs/Boss/PollutElement/PollutionElemental.cs
 using Terraria.GameContent.NetModules;
 using Entrogic.Common;
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/Boss/PollutElement/污染之灵.cs
 
 namespace Entrogic.NPCs.Boss.PollutElement
 {
@@ -142,7 +145,10 @@ namespace Entrogic.NPCs.Boss.PollutElement
             potionType = ItemID.GreaterHealingPotion;
         }
 
+<<<<<<< HEAD:NPCs/Boss/PollutElement/PollutionElemental.cs
         private int tester;
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/Boss/PollutElement/污染之灵.cs
         private Vector2 recordedStartRoundPos;
         private bool IsState2 = false;
         public int GetState() => IsState2 ? 2 : 1;
@@ -243,7 +249,11 @@ namespace Entrogic.NPCs.Boss.PollutElement
                             {
                                 SwitchState((int)NPCState.FindingWaters);
                             }
+<<<<<<< HEAD:NPCs/Boss/PollutElement/PollutionElemental.cs
                             if ((NPCState)State == NPCState.Dash) // 冲刺Biss
+=======
+                            if ((NPCState)State == NPCState.Dash && Main.rand.NextBool(2))
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/Boss/PollutElement/污染之灵.cs
                             {
                                 switch (Main.rand.Next(2))
                                 {

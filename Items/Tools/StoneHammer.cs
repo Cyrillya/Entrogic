@@ -23,7 +23,11 @@ namespace Entrogic.Items.Tools
             item.DamageType = DamageClass.Melee;
             item.value = Item.sellPrice(0, 0, 0, 50);
             item.UseSound = SoundID.Item1;
+<<<<<<< HEAD
             item.useStyle = ItemUseStyleID.Swing;
+=======
+            item.useStyle = ItemUseStyleID.SwingThrow;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             item.width = 40;
             item.height = 40;
             item.maxStack = 1;

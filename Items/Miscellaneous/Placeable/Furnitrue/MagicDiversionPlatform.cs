@@ -29,7 +29,11 @@ namespace Entrogic.Items.Miscellaneous.Placeable.Furnitrue
             item.autoReuse = true;
             item.useAnimation = 15;
             item.useTime = 10;
+<<<<<<< HEAD:Items/Miscellaneous/Placeable/Furnitrue/MagicDiversionPlatform.cs
             item.useStyle = ItemUseStyleID.Swing;
+=======
+            item.useStyle = ItemUseStyleID.SwingThrow;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/Miscellaneous/Placeable/Furnitrue/魔力导流台.cs
             item.consumable = true;
             item.rare = RareID.LV2;
             item.value = Item.sellPrice(0, 0, 20, 0);

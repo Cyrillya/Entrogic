@@ -41,7 +41,11 @@ namespace Entrogic.Projectiles.Ammos
             {
                 //Projectile.NewProjectile(base.projectile.Center.X, base.projectile.Center.Y, 0f, 0f, ModContent.ProjectileType<MiniRocketExplosion>(), base.projectile.damage, 0f, base.projectile.owner, 0f, 0f);
             }
+<<<<<<< HEAD
             Terraria.Audio.SoundEngine.PlaySound(SoundID.Item, (int)projectile.position.X, (int)projectile.position.Y, 14, 1f, 0f);
+=======
+            Main.PlaySound(SoundID.Item, (int)projectile.position.X, (int)projectile.position.Y, 14, 1f, 0f);
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             projectile.position.X = projectile.position.X + (float)(projectile.width / 2);
             projectile.position.Y = projectile.position.Y + (float)(projectile.height / 2);
             projectile.width = 20;

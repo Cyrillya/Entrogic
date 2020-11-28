@@ -8,10 +8,13 @@ namespace Entrogic.Items.Weapons.Melee.Sword
 {
     public class CastIronSword : ModItem
     {
+<<<<<<< HEAD:Items/Weapons/Melee/Sword/CastIronSword.cs
         public override void SetStaticDefaults()
         {
             Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/Weapons/Melee/Sword/铸铁重剑.cs
         public override void SetDefaults()
         {
             item.damage = 43;
@@ -20,7 +23,11 @@ namespace Entrogic.Items.Weapons.Melee.Sword
             item.rare = ItemRarityID.Orange;
             item.useTime = 35;
             item.useAnimation = 35;
+<<<<<<< HEAD:Items/Weapons/Melee/Sword/CastIronSword.cs
             item.useStyle = ItemUseStyleID.Swing;
+=======
+            item.useStyle = ItemUseStyleID.SwingThrow;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Items/Weapons/Melee/Sword/铸铁重剑.cs
             item.autoReuse = false;
             item.DamageType = DamageClass.Melee;
             item.value = Item.sellPrice(0, 1, 50, 0);

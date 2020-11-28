@@ -26,8 +26,13 @@ namespace Entrogic.Items.Weapons.Ranged.Gun
             item.shoot = ProjectileID.PurificationPowder;
             item.shootSpeed = 13f;
             item.useAmmo = AmmoID.Bullet;
+<<<<<<< HEAD
             item.DamageType = DamageClass.Ranged;
             item.useStyle = ItemUseStyleID.Shoot;
+=======
+            item.ranged = true;
+            item.useStyle = ItemUseStyleID.HoldingOut;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             item.useTime = 65;
             item.useAnimation = 65;
             item.maxStack = 1;

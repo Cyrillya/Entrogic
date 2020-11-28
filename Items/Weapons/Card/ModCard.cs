@@ -127,7 +127,11 @@ namespace Entrogic.Items.Weapons.Card
                 item.maxStack = 1;
                 item.noUseGraphic = true;
                 item.noMelee = true;
+<<<<<<< HEAD
                 item.useStyle = ItemUseStyleID.Swing;
+=======
+                item.useStyle = ItemUseStyleID.SwingThrow;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
                 item.shoot = ProjectileID.PurificationPowder;
                 item.shootSpeed = 3f;
                 item.useTime = item.useAnimation = 20;

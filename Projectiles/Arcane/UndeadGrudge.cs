@@ -112,7 +112,11 @@ namespace Entrogic.Projectiles.Arcane
         }
         public override void Kill(int timeLeft)
         {
+<<<<<<< HEAD
             Terraria.Audio.SoundEngine.PlaySound(SoundID.Item);
+=======
+            Main.PlaySound(SoundID.Item);
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             for (int i = 0; i < 10; i++)
             {
                 int num = Dust.NewDust(new Vector2(projectile.position.X, projectile.position.Y), projectile.width, projectile.height, MyDustId.GreyPebble, 0, 0, 100, Color.LightBlue, 1.8f);
@@ -132,7 +136,11 @@ namespace Entrogic.Projectiles.Arcane
     }
     public class UndeadHeal : ArcaneProjectile
     {
+<<<<<<< HEAD
         public override string Texture => "Entrogic/Assets/Images/Block";
+=======
+        public override string Texture => "Entrogic/Images/Block";
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         public override void ArcaneDefaults()
         {
             projectile.width = 8;

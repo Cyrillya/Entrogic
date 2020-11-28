@@ -9,8 +9,11 @@ using System;
 using Microsoft.Xna.Framework.Graphics;
 using Entrogic.Items.Consumables.Mushrooms;
 using Entrogic.NPCs.CardFightable.CardBullet;
+<<<<<<< HEAD:NPCs/CardFightable/Mushman.cs
 using Entrogic.Items.Weapons.Card.Organisms;
 using Entrogic.Common;
+=======
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/蘑菇人.cs
 
 namespace Entrogic.NPCs.CardFightable
 {
@@ -166,6 +169,7 @@ namespace Entrogic.NPCs.CardFightable
             ImgPosition = new Vector2(274f, 12f);
             base.SetupContents(ref ImgPath, ref ImgPosition);
         }
+<<<<<<< HEAD:NPCs/CardFightable/Mushman.cs
 
         public override void OnSecondButtonClicked(ref bool shop)
         {
@@ -210,6 +214,55 @@ namespace Entrogic.NPCs.CardFightable
         {
             Player player = Main.player[Main.myPlayer];
             Terraria.Audio.SoundEngine.PlaySound(SoundID.Item35);
+=======
+
+        public override void OnSecondButtonClicked(ref bool shop)
+        {
+            if (Main.dedServ) return;
+            Player clienPlayer = Main.LocalPlayer;
+            EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(clienPlayer);
+            clientModPlayer.CardGameNPCIndex = npc.whoAmI;
+            StartAttacking();
+        }
+
+        public override void StartAttacking()
+        {
+            CardGameHealthMax = 1000;
+            base.StartAttacking();
+        }
+
+        public override void OnAttacking()
+        {
+            Player clientPlayer = Main.LocalPlayer;
+            EntrogicPlayer clientModPlayer = EntrogicPlayer.ModPlayer(clientPlayer);
+            if (RoundDuration >= 3.2f && Main.rand.NextBool(3))
+            {
+                CardFightBullet bullet = new MushroomBullet()
+                {
+                    Velocity = new Vector2(0f, Main.rand.NextFloat(1f, 3f)),
+                    Position = new Vector2(Main.rand.Next((int)PlaygroundSize.X), -50f),
+                    UIPosition = this.PanelPosition
+                };
+                clientModPlayer._bullets.Add(bullet);
+            }
+
+            base.OnAttacking();
+        }
+
+        public override void PreStartRound(bool playerTurn)
+        {
+            Entrogic.Instance.CardGameUI.IsUseBiggerTexture = false;
+            if (!playerTurn)
+            {
+                RoundDuration = 7.5f;
+            }
+        }
+
+        public override void OnFirstButtonClicked(ref bool shop)
+        {
+            Player player = Main.player[Main.myPlayer];
+            Main.PlaySound(SoundID.Item35);
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:NPCs/蘑菇人.cs
             if (!changed)
             {
                 int LifeC = 0;

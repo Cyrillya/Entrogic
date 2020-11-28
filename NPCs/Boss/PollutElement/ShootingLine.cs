@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 ﻿using Terraria;
+=======
+﻿using CalamityMod.Projectiles.Ranged;
+
+using Terraria;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,13 +15,21 @@ using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 using System.Collections.Generic;
 using Terraria.ID;
+<<<<<<< HEAD
+=======
+using System.Windows.Forms;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 
 namespace Entrogic.NPCs.Boss.PollutElement
 {
     public class ShootingLine : ModProjectile
     {
         private List<float> rotates = new List<float>();
+<<<<<<< HEAD
         public override string Texture => "Entrogic/Assets/Images/Block";
+=======
+        public override string Texture => "Entrogic/Images/Block";
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         public override void SetDefaults()
         {
             projectile.hostile = true;
@@ -60,8 +74,13 @@ namespace Entrogic.NPCs.Boss.PollutElement
             if (projectile.ai[0] == 1 && Main.netMode != NetmodeID.MultiplayerClient)
             {
                 // 选取
+<<<<<<< HEAD
                 float startRadius = ModHelper.GetFromToRadians(projectile.Center, player.Center);
                 float endRadius = ModHelper.GetFromToRadians(projectile.Center, player.Center) + MathHelper.TwoPi;
+=======
+                float startRadius = ModHelper.GetFromToRadius(projectile.Center, player.Center);
+                float endRadius = ModHelper.GetFromToRadius(projectile.Center, player.Center) + MathHelper.TwoPi;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
                 for (float rotation = startRadius; rotation < endRadius; rotation += MathHelper.TwoPi / 12f)
                 {
                     rotates.Add(rotation);

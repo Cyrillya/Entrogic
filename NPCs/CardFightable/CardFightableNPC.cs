@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿using Entrogic.Common;
 using Entrogic.Items.Weapons.Card;
 
@@ -5,6 +6,11 @@ using Microsoft.Xna.Framework;
 
 using System;
 using System.Collections.Generic;
+=======
+﻿using Microsoft.Xna.Framework;
+
+using System;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 
 using Terraria;
 using Terraria.ModLoader;
@@ -13,6 +19,10 @@ namespace Entrogic.NPCs.CardFightable
 {
     public abstract class CardFightableNPC : ModNPC
     {
+<<<<<<< HEAD
+=======
+        internal bool CloseChatNextFrame;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         internal int CardGameHealth;
         internal int CardGameHealthMax;
         internal float RoundDuration;
@@ -30,6 +40,7 @@ namespace Entrogic.NPCs.CardFightable
         public virtual void SetupContents(ref string ImgPath, ref Vector2 ImgPosition) { }
         public virtual void StartAttacking()
         {
+<<<<<<< HEAD
             EntrogicModSystem.Instance.CardGameUI.StartGame();
             if (State == 0)
             {
@@ -90,6 +101,15 @@ namespace Entrogic.NPCs.CardFightable
         /// </summary>
         public virtual void GameAIBefore() { }
         #endregion
+=======
+            Entrogic.Instance.CardGameUI.StartGame();
+        }
+        public virtual void OnAttacking() 
+        {
+            CardGameHealth = Math.Min(CardGameHealth, CardGameHealthMax);
+            CardGameHealth = Math.Max(CardGameHealth, 0);
+        }
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         public virtual void EndAttacking() { }
         public virtual void PreStartRound(bool playerTurn) { }
         public virtual void CardGameWin() { }

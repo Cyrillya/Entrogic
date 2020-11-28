@@ -23,7 +23,11 @@ namespace Entrogic.Projectiles.Thrown
             projectile.aiStyle = 1;
             projectile.friendly = true;
             projectile.hostile = false;
+<<<<<<< HEAD:Projectiles/Thrown/Leafblade.cs
             projectile.DamageType = DamageClass.Ranged;
+=======
+            projectile.ranged = true;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96:Projectiles/Thrown/叶片proj.cs
             projectile.penetrate = 2;
             projectile.timeLeft = 180;
             projectile.alpha = 0;

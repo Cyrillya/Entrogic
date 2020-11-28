@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 ﻿using Entrogic.Assets.Gores;
 using Entrogic.Common;
 using Entrogic.Items.AntaGolem;
+=======
+﻿using Entrogic.Items.AntaGolem;
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 using Entrogic.Items.Miscellaneous.Placeable.Trophy;
 using Entrogic.NPCs.Boss.AntaGolem.Projectiles;
 using Microsoft.Xna.Framework;
@@ -147,7 +151,11 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                 target.AddBuff(BuffID.Bleeding, 270);
             if (!target.stoned && Main.rand.NextBool(2))
                 target.AddBuff(BuffID.Stoned, Main.rand.Next(30, 90));
+<<<<<<< HEAD
             if (CrossModHandler.ModLoaded("CalamityMod") && CrossModHandler.IsCalamityModDeathMode)
+=======
+            if (Entrogic.IsCalamityLoaded && Entrogic.IsCalamityModDeathMode)
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
                     target.AddBuff(BuffID.Confused, 180);
         }
         public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
@@ -218,10 +226,17 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                             npc.dontTakeDamage = true;
                         }
                         int findTimer = 75;
+<<<<<<< HEAD
                         if (CrossModHandler.ModLoaded("CalamityMod"))
                         {
                             findTimer = 60;
                             if (CrossModHandler.IsCalamityModDeathMode)
+=======
+                        if (Entrogic.IsCalamityLoaded)
+                        {
+                            findTimer = 60;
+                            if (Entrogic.IsCalamityModDeathMode)
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
                             {
                                 findTimer = 50;
                             }
@@ -579,7 +594,11 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                 int alpha = 40 - 40 / (npc.oldPos.Length - 1) * i - (255 - npc.alpha);
                 alpha = Math.Max(0, alpha);
                 Color drawOn = drawColor * (float)(alpha / 255f);
+<<<<<<< HEAD
                 Main.spriteBatch.Draw((Texture2D)texture, drawCenter - Main.screenPosition, new Rectangle?(npc.frame), npc.GetAlpha(drawOn), 0f, origin, npc.scale, effects, 0f);
+=======
+                Main.spriteBatch.Draw(texture, drawCenter - Main.screenPosition, new Rectangle?(npc.frame), npc.GetAlpha(drawOn), 0f, origin, npc.scale, effects, 0f);
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             }
             return false;
         }
@@ -610,7 +629,11 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                     int alpha = 255 / 90 * Timer;
                     alpha = Math.Max(0, alpha);
                     Color onDrawColor = drawColor * (float)(alpha / 255f);
+<<<<<<< HEAD
                     spriteBatch.Draw((Texture2D)Entrogic.Instance.GetTexture("NPCs/Boss/AntaGolem/Antanasy_Shadow"), npc.Center - Main.screenPosition + new Vector2(0f, -8f), null, npc.GetAlpha(onDrawColor), 0f, texture.Size() * 0.5f, npc.scale, effects, 0f);
+=======
+                    spriteBatch.Draw(Entrogic.Instance.GetTexture("NPCs/Boss/AntaGolem/Antanasy_Shadow"), npc.Center - Main.screenPosition + new Vector2(0f, -8f), null, npc.GetAlpha(onDrawColor), 0f, texture.Size() * 0.5f, npc.scale, effects, 0f);
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
                     break;
                 case NPCState.Dash_Strong:
                     if (Timer >= 10)
@@ -629,8 +652,13 @@ namespace Entrogic.NPCs.Boss.AntaGolem
                     break;
             }
             drawColor = drawColor * (float)(npc.alpha / 255f);
+<<<<<<< HEAD
             spriteBatch.Draw((Texture2D)texture, npc.Center - Main.screenPosition + new Vector2(0f, -8f), null, npc.GetAlpha(drawColor), npc.rotation, texture.Size() * 0.5f, npc.scale, effects, 0f);
             Texture2D tex = (Texture2D)Entrogic.Instance.GetTexture("NPCs/Boss/AntaGolem/Antanasy_HighLight_SD");
+=======
+            spriteBatch.Draw(texture, npc.Center - Main.screenPosition + new Vector2(0f, -8f), null, npc.GetAlpha(drawColor), npc.rotation, texture.Size() * 0.5f, npc.scale, effects, 0f);
+            Texture2D tex = Entrogic.Instance.GetTexture("NPCs/Boss/AntaGolem/Antanasy_HighLight_SD");
+>>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
             if (drawHighLight)
                 spriteBatch.Draw(tex, npc.Center - Main.screenPosition + new Vector2(0f, -8f), null, npc.GetAlpha(drawColor), npc.rotation, tex.Size() * 0.5f, npc.scale, effects, 0f);
         }
