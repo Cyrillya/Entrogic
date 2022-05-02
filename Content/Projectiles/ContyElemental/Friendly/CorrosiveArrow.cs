@@ -29,7 +29,7 @@
 
         public override void AI()
         {
-            Dust d = Dust.NewDustPerfect(Projectile.Center, MyDustId.White, Projectile.velocity, 50, new Color(56, 114, 80), 1.5f);
+            Dust d = Dust.NewDustPerfect(Projectile.Center, MyDustID.White, Projectile.velocity, 50, new Color(56, 114, 80), 1.5f);
             d.noGravity = true;
             d.velocity *= 0.3f;
         }

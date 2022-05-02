@@ -5,13 +5,11 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
 {
     public class IceBreaker : ModItem
     {
-        public override void SetStaticDefaults()
-        {
+        public override void SetStaticDefaults() {
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
-        public override void SetDefaults()
-        {
+        public override void SetDefaults() {
             Item.CloneDefaults(ItemID.Flamethrower);
             Item.useAmmo = ItemID.IceBlock;
             Item.shoot = ModContent.ProjectileType<FrostFire>();
@@ -27,10 +25,9 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
             position += velocity.ToRotation().ToRotationVector2() * 5.2f * 16f;
         }
 
-        public override bool CanConsumeAmmo(Player player) => Main.rand.NextFloat() >= .10f;
+        public override bool CanConsumeAmmo(Player player) => Main.rand.NextFloat() >= .10f && player.itemAnimation == player.itemAnimationMax;
 
-        public override void AddRecipes()
-        {
+        public override void AddRecipes() {
             CreateRecipe()
                 .AddIngredient(ItemID.SnowballCannon)
                 .AddIngredient(ItemID.FrostCore)
@@ -40,6 +37,6 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
                 .Register();
         }
 
-        public override Vector2? HoldoutOffset() => new Vector2(-6.0f, 0.0f);
+        public override Vector2? HoldoutOffset() => new(-6.0f, 0.0f);
     }
 }

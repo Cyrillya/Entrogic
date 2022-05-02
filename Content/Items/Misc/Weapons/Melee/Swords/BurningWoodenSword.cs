@@ -10,22 +10,15 @@ namespace Entrogic.Content.Items.Misc.Weapons.Melee.Swords
         }
 
         public override void SetDefaults() {
+            Item.CloneDefaults(ItemID.WoodenSword);
             Item.damage = 8;
             Item.knockBack = 2f;
-            Item.crit += 9;
-            Item.rare = ItemRarityID.White;
-            Item.useTime = 30;
-            Item.useAnimation = 30;
-            Item.useStyle = ItemUseStyleID.Swing;
-            Item.DamageType = DamageClass.Melee;
+            Item.crit = 9;
             Item.value = Item.sellPrice(0, 0, 60, 0);
-            Item.UseSound = SoundID.Item1;
             Item.scale = 1.4f;
             Item.width = 40;
             Item.height = 34;
-            Item.maxStack = 1;
-            Item.autoReuse = false;
-            Item.useTurn = true;
+            Item.useTurn = false;
         }
 
         public override void AddRecipes() => CreateRecipe()

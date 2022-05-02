@@ -2,8 +2,6 @@
 {
     public class Sand : ModDust
     {
-        public override string Texture => ResourceManager.Dusts + Name;
-
         public override void OnSpawn(Dust dust) {
             dust.noGravity = true;
             dust.noLight = true;

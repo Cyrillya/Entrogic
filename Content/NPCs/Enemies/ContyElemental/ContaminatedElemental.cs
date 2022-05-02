@@ -1,11 +1,6 @@
 ﻿using Entrogic.Common.ItemDropRules;
 using Entrogic.Content.Items.ContyElemental;
 using Entrogic.Content.Items.ContyElemental.Armors;
-using Entrogic.Content.Items.ContyElemental.Armors.Arcane;
-using Entrogic.Content.Items.ContyElemental.Armors.Magic;
-using Entrogic.Content.Items.ContyElemental.Armors.Melee;
-using Entrogic.Content.Items.ContyElemental.Armors.Ranged;
-using Entrogic.Content.Items.ContyElemental.Armors.Summoner;
 using Entrogic.Content.Items.ContyElemental.Weapons;
 using Entrogic.Content.NPCs.BaseTypes;
 using Entrogic.Content.Projectiles.ContyElemental.Hostile;
@@ -18,7 +13,7 @@ using Terraria.GameContent.NetModules;
 namespace Entrogic.Content.NPCs.Enemies.ContyElemental
 {
     [AutoloadBossHead]
-    internal class ContaminatedElemental : FSM_NPC
+    internal class ContaminatedElemental : NPCBase
     {
         public const string DownedMessageKey = "Mods.Entrogic.PollutionAccumulation";
 
@@ -53,7 +48,7 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
             //Add this in for bosses that have a summon item, requires corresponding code in the item
             NPCID.Sets.MPAllowedEnemies[Type] = true;
 
-            NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
+            NPCID.Sets.NPCBestiaryDrawModifiers value = new(0) { //Influences how the NPC looks in the Bestiary
                 Position = new Vector2(0f, 40f),
                 PortraitPositionXOverride = 0f,
                 PortraitPositionYOverride = 80f,
@@ -62,7 +57,7 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
             NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);
 
             //Specify the debuffs it is immune to
-            NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData {
+            NPCDebuffImmunityData debuffData = new() {
                 SpecificallyImmuneTo = new int[] {
                     BuffID.Confused,
                     BuffID.Bleeding,
@@ -104,6 +99,7 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
         // private bool IsRevengenceMode => CrossModHandler.ModLoaded("CalamityMod") && CrossModHandler.IsCalamityModRevengenceMode
 
         public override void SetDefaults() {
+            NPC.CloneDefaults(NPCID.EyeofCthulhu);
             NPC.aiStyle = -1;
             NPC.lifeMax = /*IsRevengenceMode ? 11000 :*/ 7600;
             NPC.damage = 52;
@@ -116,22 +112,11 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
             NPC.knockBackResist = 0f;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath1;
-            NPC.timeLeft = NPC.activeTime * 30;
             NPC.SpawnWithHigherTime(30);
             NPC.alpha = 0;
             NPC.scale = 0.6f;
-
-            BossBag = ModContent.ItemType<ContaminatedElementalTreasureBag>();
         }
 
-        //public override bool? CanBeHitByProjectile(Projectile Projectile)
-        //{
-        //    return Main.rand.NextBool(2);
-        //}
-        //public override bool? CanBeHitByItem(Player player, Item Item)
-        //{
-        //    return Main.rand.NextBool(2);
-        //}
         public override void ScaleExpertStats(int numPlayers, float bossLifeScale) {
             float bossAdjustment = 1f;
             if (Main.masterMode)
@@ -156,10 +141,10 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
         public override void ModifyNPCLoot(NPCLoot npcLoot) {
             base.ModifyNPCLoot(npcLoot);
 
-            npcLoot.Add(ItemDropRule.BossBag(BossBag));
+            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ContaminatedElementalTreasureBag>()));
             npcLoot.Add(ItemDropRule.ByCondition(new CustomConditions.DownedContyElemental(), ModContent.ItemType<ContyElementalTrophy>(), 10));
 
-            LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+            LeadingConditionRule notExpertRule = new(new Conditions.NotExpert());
             // OnSuccess：当指定条件满足/指定物品成功掉落
             // OneFromOptions：从中选取其一掉落
             IItemDropRule itemDropRule = ItemDropRule.OneFromOptions(1,
@@ -318,7 +303,7 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
                             }
                         }
                         if (Timer % 95 == 0 && MigrantCount <= 10 && Main.netMode != NetmodeID.MultiplayerClient) {
-                            NPC migrant = Main.npc[NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Migrant>())];
+                            NPC migrant = Main.npc[NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Migrant>())];
                             migrant.scale = 1f + (float)Water / (float)_waterMax * 0.4f;
                             Water -= 32;
                             if (Main.netMode == NetmodeID.Server) {
@@ -361,7 +346,7 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
                             Water -= 2;
                         }
                         if (Timer == 40 && Main.netMode != NetmodeID.MultiplayerClient) {
-                            NPC migrant = Main.npc[NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Migrant>())];
+                            NPC migrant = Main.npc[NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Migrant>())];
                             migrant.scale = 1f + (float)Water / (float)_waterMax * 0.4f;
                             Water -= 32;
                             if (Main.netMode == NetmodeID.Server) {
@@ -386,7 +371,7 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
                             for (int i = 0; i < NPC.width / 16; i++)
                                 for (int j = 0; j < NPC.height / 16; j++) {
                                     Tile tile = Main.tile[i + (int)NPC.position.X / 16, j + (int)NPC.position.Y / 16];
-                                    if (Main.tileSolid[tile.type] && tile.IsActive && tile != null)
+                                    if (Main.tileSolid[tile.TileType] && tile.HasUnactuatedTile && tile != null)
                                         insideTiles++;
                                 }
                             if (insideTiles >= 12) {
@@ -457,7 +442,7 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
                         NPC.velocity = ModHelper.GetFromToVectorNormalized(NPC.Center, player.Center) * 8.2f;
                         Timer++;
                         if ((Timer - 30) % 50 == 0 && Timer > 60 && Main.netMode != NetmodeID.MultiplayerClient) {
-                            int proj = Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<ShootingLine>(), 0, 0f, 255, 0f, NPC.whoAmI);
+                            int proj = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<ShootingLine>(), 0, 0f, 255, 0f, NPC.whoAmI);
                             Main.projectile[proj].ai[1] = NPC.whoAmI;
                             if (Main.dedServ) {
                                 NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, proj);
@@ -499,7 +484,7 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
                         if (Timer % 40 == 0 && Timer >= 70 && Main.netMode != NetmodeID.MultiplayerClient) {
                             int offset = Timer % 80 == 40 ? 120 : 0;
                             for (float pos = -1600f; pos <= 1600f; pos += 320f) {
-                                int proj = Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), player.Center - new Vector2(pos + offset, 1000f), Vector2.Zero, ModContent.ProjectileType<ContaShark>(), (int)(GetSpikeDamage() * 1.2f), 3f, 255, 0f, 0f);
+                                int proj = Projectile.NewProjectile(NPC.GetSource_FromAI(), player.Center - new Vector2(pos + offset, 1000f), Vector2.Zero, ModContent.ProjectileType<ContaShark>(), (int)(GetSpikeDamage() * 1.2f), 3f, 255, 0f, 0f);
                                 if (Main.dedServ) {
                                     NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, proj);
                                 }
@@ -561,7 +546,7 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
                                     Vector2 _velocity = new Vector2(16f) * _radians.ToRotationVector2();
                                     _position += _velocity;
                                     // 生成粒子
-                                    Dust d = Dust.NewDustDirect(_position, 4, 4, MyDustId.LightBlueParticle);
+                                    Dust d = Dust.NewDustDirect(_position, 4, 4, MyDustID.LightBlueParticle);
                                     d.noGravity = true;
                                 }
                             }
@@ -638,7 +623,7 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
             int SpikeDamage = GetSpikeDamage();
             switch (type) {
                 case 0: {
-                        int shot = Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), position, ((target - position).ToRotation() + rad).ToRotationVector2() * speed, ModContent.ProjectileType<ContaSpike>(), SpikeDamage, 0f, 255, type);
+                        int shot = Projectile.NewProjectile(NPC.GetSource_FromAI(), position, ((target - position).ToRotation() + rad).ToRotationVector2() * speed, ModContent.ProjectileType<ContaSpike>(), SpikeDamage, 0f, 255, type);
                         Projectile shots = Main.projectile[shot];
                         shots.scale = 1f + (float)Water / (float)_waterMax * 1.5f;
                         NPC.netUpdate = true;
@@ -651,7 +636,7 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
                 case 1: {
                         target.Y += 32;
                         Vector2 sVelo = ((target - position).ToRotation() + rad).ToRotationVector2() * speed;
-                        NPC shark = Main.npc[NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<PolluShark>(), 0, 0, 0, sVelo.Y - 5f, sVelo.X)];
+                        NPC shark = Main.npc[NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<PolluShark>(), 0, 0, 0, sVelo.Y - 5f, sVelo.X)];
                         shark.scale = 1f + (float)Water / (float)_waterMax * 0.43f;
                         if (Main.netMode == NetmodeID.Server) {
                             NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, shark.whoAmI, -1f, 0f, 0f, 0, 0, 0);
@@ -685,7 +670,7 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
                                 min = mid;
                             }
                         }
-                        NPC shark = Main.npc[NPC.NewNPC((int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<PolluShark>(), 0, 0, 0, StartY, mid)];
+                        NPC shark = Main.npc[NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<PolluShark>(), 0, 0, 0, StartY, mid)];
                         shark.scale = 1f + (float)Water / (float)_waterMax * 0.43f;
                         if (Main.netMode == NetmodeID.Server) {
                             NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, shark.whoAmI, -1f, 0f, 0f, 0, 0, 0);
@@ -699,7 +684,7 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
                         if (proj == 4) {
                             type = ModContent.ProjectileType<ContaSpike>();
                         }
-                        int shot = Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), position, ((target - position).ToRotation() + rad).ToRotationVector2() * speed, proj, SpikeDamage, 0f, 255, type);
+                        int shot = Projectile.NewProjectile(NPC.GetSource_FromAI(), position, ((target - position).ToRotation() + rad).ToRotationVector2() * speed, proj, SpikeDamage, 0f, 255, type);
                         if (speed >= 15f) {
                             Main.projectile[shot].timeLeft = 160;
                         }
@@ -773,7 +758,7 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
         internal static bool PlaceWater(int x, int y, byte amount) {
             Tile tileSafely = Framing.GetTileSafely(x, y);
             if (WorldGen.InWorld(x, y)) {
-                if (tileSafely.LiquidAmount < 230 && (!tileSafely.IsActuated || !Main.tileSolid[(int)tileSafely.type] || Main.tileSolidTop[(int)tileSafely.type]) && (tileSafely.LiquidAmount == 0 || tileSafely.LiquidType == 0)) {
+                if (tileSafely.LiquidAmount < 230 && (!tileSafely.IsActuated || !Main.tileSolid[(int)tileSafely.TileType] || Main.tileSolidTop[(int)tileSafely.TileType]) && (tileSafely.LiquidAmount == 0 || tileSafely.LiquidType == 0)) {
                     tileSafely.LiquidType = 0;
                     tileSafely.LiquidAmount = amount;
                     WorldGen.SquareTileFrame(x, y, true);
@@ -789,6 +774,7 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
         public override void HitEffect(int hitDirection, double damage) {
             Water -= Main.rand.Next(2, 6);
         }
+
         public override bool CanHitPlayer(Player target, ref int cooldownSlot) {
             return !NPC.dontTakeDamage;
         }

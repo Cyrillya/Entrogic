@@ -2,14 +2,12 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Bow
 {
     public class Galekylin : ModItem
     {
-        public override void SetStaticDefaults()
-        {
+        public override void SetStaticDefaults() {
             Tooltip.SetDefault("不朽圣火的力量，好好利用吧");
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
-        public override void SetDefaults()
-        {
+        public override void SetDefaults() {
             Item.damage = 89;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 32;
@@ -28,9 +26,8 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Bow
             Item.shootSpeed = 16f;
             Item.useAmmo = AmmoID.Arrow;
         }
-        
-        public override void AddRecipes()
-        {
+
+        public override void AddRecipes() {
             CreateRecipe()
                 .AddIngredient(ItemID.Tsunami, 1)
                 .AddIngredient(ItemID.DD2PhoenixBow, 1)
@@ -43,7 +40,7 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Bow
 
         public override bool CanConsumeAmmo(Player player) => Main.rand.NextFloat() >= .33f;
 
-        public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
             Projectile.NewProjectile(source, position, velocity, ProjectileID.DD2PhoenixBowShot, 250, knockback, player.whoAmI);
 
             float numberProjectiles = 3 + Main.rand.Next(2);

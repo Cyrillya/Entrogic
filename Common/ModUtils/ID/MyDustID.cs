@@ -6,7 +6,7 @@
     /// 带有（.）标识符说明此粒子效果会高亮显示但是不会发光
     /// 其余Dust全部都不会发光！
     /// </summary>
-    public static class MyDustId
+    public static class MyDustID
     {
         /// <summary>
         /// 土壤粒子，不发光，受重力影响。

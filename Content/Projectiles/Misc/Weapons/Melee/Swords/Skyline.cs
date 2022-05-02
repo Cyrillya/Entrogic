@@ -28,7 +28,7 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords
         }
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) {
             for (float rad = 0.0f; rad < 2 * 3.141f; rad += (float)Main.rand.Next(1, 3) / 10) {
-                Projectile.NewProjectile(Projectile.InheritSource(Projectile), Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-10, 11), Main.rand.Next(-10, 11), ProjectileID.DD2FlameBurstTowerT3Shot, 29, 0f, Projectile.owner, 0f, 0f);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center.X, Projectile.Center.Y, Main.rand.Next(-10, 11), Main.rand.Next(-10, 11), ProjectileID.DD2FlameBurstTowerT3Shot, 29, 0f, Projectile.owner, 0f, 0f);
             }
         }
         public override void Kill(int timeLeft) {
@@ -62,12 +62,9 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords
                 if (k == 2) {
                     scaleFactor = 1f;
                 }
-                int num3 = Gore.NewGore(new Vector2(Projectile.position.X + (float)(Projectile.width / 2) - 24f, Projectile.position.Y + (float)(Projectile.height / 2) - 24f), default(Vector2), Main.rand.Next(61, 64), 1f);
-                Main.gore[num3].velocity *= scaleFactor;
-                Gore gore = Main.gore[num3];
-                gore.velocity.X = gore.velocity.X + 1f;
-                Gore gore2 = Main.gore[num3];
-                gore2.velocity.Y = gore2.velocity.Y + 1f;
+                var g = Gore.NewGoreDirect(Projectile.GetSource_Death(), new Vector2(Projectile.position.X + (float)(Projectile.width / 2) - 24f, Projectile.position.Y + (float)(Projectile.height / 2) - 24f), default(Vector2), Main.rand.Next(61, 64), 1f);
+                g.velocity *= scaleFactor;
+                g.velocity += Vector2.One;
             }
         }
         public override bool PreDraw(ref Color lightColor) {
@@ -79,7 +76,7 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords
             if (Projectile.timeLeft < 297) {
                 // 火焰粒子特效
                 Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height
-                    , 174, 0f, 0f, 90, default(Color), 2f);
+                    , DustID.InfernoFork, 0f, 0f, 90, default(Color), 2f);
                 // 粒子特效不受重力
                 dust.noGravity = true;
             }

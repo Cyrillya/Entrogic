@@ -17,8 +17,8 @@ namespace Entrogic.Interfaces.UI.BookUI
 		internal Color Color;
 		internal Asset<DynamicSpriteFont> Font;
 
-		internal static readonly Vector2 LeftPagePos = new Vector2(38, 46);
-		internal static readonly Vector2 RightPagePos = new Vector2(338, 46);
+		internal static readonly Vector2 LeftPagePos = new(38, 46);
+		internal static readonly Vector2 RightPagePos = new(338, 46);
 		internal BookContent(string text, Vector2 pos, float scale = 1f, Color color = default, short extraLineDistance = 0, int textWarpWidth = 224, Asset<DynamicSpriteFont> font = null) {
 			Text = text;
 			Position = pos;

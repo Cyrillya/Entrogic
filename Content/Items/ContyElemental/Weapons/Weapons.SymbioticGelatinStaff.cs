@@ -42,7 +42,7 @@ namespace Entrogic.Content.Items.ContyElemental.Weapons
             position = Main.MouseWorld;
         }
 
-        public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
             // This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
             player.AddBuff(Item.buffType, 2);
 
@@ -53,7 +53,7 @@ namespace Entrogic.Content.Items.ContyElemental.Weapons
                 if (projectile.ModProjectile is Minion) {
                     var minion = projectile.ModProjectile as Minion;
                     minion.BossFirst = Main.rand.NextFloat() < .66f; // 66%的概率Boss优先
-                    WeightedRandom<Minion.SearchMode> mode = new WeightedRandom<Minion.SearchMode>();
+                    WeightedRandom<Minion.SearchMode> mode = new();
                     mode.Add(Minion.SearchMode.MinionClosest);
                     mode.Add(Minion.SearchMode.PlayerClosest);
                     minion.SelectedSearchMode = mode;

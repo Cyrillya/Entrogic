@@ -59,7 +59,7 @@ namespace Entrogic.Content.Items.Misc.Weapons.Melee.Swords
             base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
         }
 
-        public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
             SoundEngine.PlaySound(SoundID.DD2_DarkMageCastHeal, player.Center);
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }

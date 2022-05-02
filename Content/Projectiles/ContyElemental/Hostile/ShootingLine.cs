@@ -19,7 +19,7 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Hostile
     {
         public override string Texture => ResourceManager.Blank;
 
-        private List<float> _rotates = new List<float>();
+        private List<float> _rotates = new();
 
         public override void SetDefaults()
         {

@@ -188,19 +188,6 @@ namespace Entrogic.Content.NPCs
                 Main.EntitySpriteDraw(t, pos, NPC.frame, NPC.GetColor(drawColor), NPC.rotation, origin, NPC.scale, spriteEffects, 0);
             }
             //Main.spriteBatch.Draw(blackRender, Vector2.Zero, Color.White); // 绘制自定义的弹幕render
-            var tileLeftTop = (pos - origin + screenPos).ToTileCoordinates();
-            var tileRightBottom = (pos + origin + screenPos).ToTileCoordinates();
-            for (int i = tileLeftTop.X; i <= tileRightBottom.X; i++) {
-                for (int j = tileLeftTop.Y; j <= tileRightBottom.Y; j++) {
-                    if (!WorldGen.InWorld(i, j)) continue;
-
-                    if (Main.tile[i, j] == null)
-                        Main.tile[i, j] = new Tile();
-
-                    if (Lighting.Brightness(i, j) < 0.1f)
-                        Main.spriteBatch.Draw(TextureAssets.BlackTile.Value, new Vector2(i << 4, j << 4) - screenPos, new Rectangle(0, 0, 16, 16), Color.Black);
-                }
-            }
 
             //// 重设shader
             //Main.spriteBatch.End();

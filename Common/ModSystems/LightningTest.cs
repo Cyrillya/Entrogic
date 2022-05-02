@@ -40,8 +40,8 @@ namespace Entrogic.Common.ModSystems
 		internal bool ShouldDraw = true;
 
 		private int Timer;
-		private readonly List<Vector2> _nodes = new List<Vector2>();
-		private readonly List<Vector2> _nodeVelocity = new List<Vector2>();
+		private readonly List<Vector2> _nodes = new();
+		private readonly List<Vector2> _nodeVelocity = new();
 		public virtual void Draw() {
 			if (Timer == 0) {
 				for (int i = 1; i <= NodeAmount; i++) {
@@ -52,9 +52,9 @@ namespace Entrogic.Common.ModSystems
             }
 			Timer++;
 			if (Timer >= LifeSpan) ShouldDraw = false;
-			List<Vector2> centers = new List<Vector2>();
-			List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
-			List<CustomVertexInfo> triangleList = new List<CustomVertexInfo>();
+			List<Vector2> centers = new();
+			List<CustomVertexInfo> bars = new();
+			List<CustomVertexInfo> triangleList = new();
 			for (int i = 0; i < _nodes.Count; i++) {
 				var node = _nodes[i];
 				_nodes[i] += _nodeVelocity[i] * Main.rand.NextFloat(0.5f, 0.8f);
@@ -97,7 +97,7 @@ namespace Entrogic.Common.ModSystems
 	{
 		private GameTime _lastUpdateUiGameTime;
 		private int Timer;
-		public static List<Lightning> Lightnings = new List<Lightning>();
+		public static List<Lightning> Lightnings = new();
 
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
 			base.ModifyInterfaceLayers(layers);
@@ -145,7 +145,7 @@ namespace Entrogic.Common.ModSystems
 
 						ResourceManager.Trail.Value.CurrentTechnique.Passes[0].Apply();
 
-						List<Lightning> shouldBeDeleted = new List<Lightning>();
+						List<Lightning> shouldBeDeleted = new();
 						foreach (var light in Lightnings) {
 							light.Draw();
 							if (!light.ShouldDraw) {
@@ -173,7 +173,7 @@ namespace Entrogic.Common.ModSystems
 	// 自定义顶点数据结构，注意这个结构体里面的顺序需要和shader里面的数据相同
 	public struct CustomVertexInfo : IVertexType
 	{
-		private static VertexDeclaration _vertexDeclaration = new VertexDeclaration(new VertexElement[3]
+		private static VertexDeclaration _vertexDeclaration = new(new VertexElement[3]
 		{
 				new VertexElement(0, VertexElementFormat.Vector2, VertexElementUsage.Position, 0),
 				new VertexElement(8, VertexElementFormat.Color, VertexElementUsage.Color, 0),

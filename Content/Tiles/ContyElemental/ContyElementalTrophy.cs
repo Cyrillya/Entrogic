@@ -8,7 +8,7 @@ using static Terraria.ModLoader.ModContent;
 using Microsoft.Xna.Framework;
 using Terraria.ObjectData;
 using Entrogic.Content.Items.ContyElemental;
-using Entrogic.Tiles.BaseTypes;
+using Entrogic.Content.Tiles.BaseTypes;
 
 namespace Entrogic.Content.Tiles.ContyElemental
 {
@@ -27,8 +27,6 @@ namespace Entrogic.Content.Tiles.ContyElemental
             AddMapEntry(new Color(120, 85, 60), name);
         }
 
-        public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-            Item.NewItem(i * 16, j * 16, 48, 48, ItemType<ContyElementalTrophy>());
-        }
+        public override int? MultiTileDropItem => ItemType<ContyElementalTrophy>();
     }
 }

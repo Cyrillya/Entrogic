@@ -38,7 +38,7 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords.TwoHandSword
             get => Projectile.ai[0];
             set => Projectile.ai[0] = value;
         }
-        internal Vector2 Offset = new Vector2(0, -85);
+        internal Vector2 Offset = new(0, -85);
 
         public override void AI() {
             base.AI();
@@ -62,7 +62,7 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords.TwoHandSword
                     }
                 }
                 if (AI_Charge < AI_CHARGE_MAX)
-                    AI_Charge += 1f + (1f - player.meleeSpeed); // meleeSpeed是越少越快的
+                    AI_Charge += 1f * player.GetAttackSpeed(Projectile.DamageType); // 根据速度减少使用时间
                 if (AI_Charge > AI_CHARGE_MAX) AI_Charge = AI_CHARGE_MAX;
                 Channeling();
             }
@@ -117,7 +117,7 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords.TwoHandSword
             //Main.NewText(FindFrame(tex.Height() / frameYCount, tex.Width() / frameXCount));
             SpriteEffects spriteEffects = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
-            Vector2 origin = new Vector2(5, tex.Height() - 5);
+            Vector2 origin = new(5, tex.Height() - 5);
             Vector2 drawPos = (Projectile.position + origin) - Main.screenPosition;
             float rotation = Projectile.rotation; // 镜像翻转的问题，修正
             if (spriteEffects == SpriteEffects.FlipHorizontally) { // 修正镜像翻转问题

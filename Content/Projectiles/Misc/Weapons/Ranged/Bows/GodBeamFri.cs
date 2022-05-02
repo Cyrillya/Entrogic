@@ -39,7 +39,7 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Ranged.Bows
             for (int i = 0; i < 30; i++)
             {
                 Dust d = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height,
-                MyDustId.TransparentPurple, 0, 0, 100, Color.Pink, 1f);
+                MyDustID.TransparentPurple, 0, 0, 100, Color.Pink, 1f);
                 d.noGravity = true;
             }
         }

@@ -1,11 +1,9 @@
+using Terraria.Audio;
+
 namespace Entrogic.Content.Projectiles.Misc.Weapons.Arcane
 {
     public class ArcaneMissle : ArcaneProjectile
     {
-        public override Color? GetAlpha(Color lightColor) {
-            return ((Color)base.GetAlpha(lightColor)).MultiplyRGB(Color.Pink);
-        }
-
         public override void SetStaticDefaults() {
             DisplayName.SetDefault("°ÂÊõ·Éµ¯");     //The English name of the Projectile
             ProjectileID.Sets.TrailCacheLength[Type] = 20;    //The length of old position to be recorded
@@ -29,14 +27,17 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Arcane
         }
 
         public override void Kill(int timeLeft) {
-            Terraria.Audio.SoundEngine.PlaySound(SoundID.Item10);
-            for (int i = 0; i < 22; i++) {
-                int num = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.WitherLightning, 0f, 0f, 100, default(Color), 2f);
-                Main.dust[num].noGravity = true;
-                Main.dust[num].velocity *= 3f;
-                if (Main.rand.Next(2) == 0) {
-                    Main.dust[num].scale = 0.5f;
-                    Main.dust[num].fadeIn = 0.35f + (float)Main.rand.Next(10) * 0.1f;
+            SoundEngine.PlaySound(SoundID.Item10);
+            for (int i = 0; i < 16; i++) {
+                var d = Dust.NewDustDirect(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.WitherLightning, 0f, 0f, 100, default(Color), 2f);
+                d.noGravity = true;
+                d.velocity *= 3f;
+                if (d.dustIndex != 6000 && d.dustIndex < Main.maxDustToDraw * 0.4f) {
+                    d = Dust.CloneDust(d);
+                    d.scale /= 2f;
+                    d.fadeIn = 0.35f + (float)Main.rand.Next(10) * 0.1f;
+                    d.color = new Color(255, 255, 255, 255);
+                    d.velocity *= 0.6f;
                 }
             }
         }
@@ -47,8 +48,23 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Arcane
         }
 
         public override void AI() {
-            Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, MyDustId.PurpleLingering, 0f, 0f, 100, default(Color), 2f);
-            dust.noGravity = true;
+            if (Main.netMode != NetmodeID.Server) {
+                for (int i = 0; i < 2; i++) {
+                    Dust d = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, MyDustID.PurpleLingering, 0f, 0f, 100, default(Color), 2f);
+                    d.noGravity = true;
+                    d.fadeIn = 1.3f;
+                    d.velocity += Projectile.velocity;
+                    d.scale *= 1.2f;
+                    if (d.dustIndex != 6000) {
+                        d = Dust.CloneDust(d);
+                        d.scale /= 2f;
+                        d.fadeIn *= 0.85f;
+                        d.color = new Color(255, 255, 255, 255);
+                        d.velocity *= 0.6f;
+                    }
+                }
+            }
+
             NPC target = null;
             NPC bossTarget = null;
             float distanceMax = 800f;
@@ -61,7 +77,8 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Arcane
                             distanceMax = currentDistance;
                             target = npc;
                         }
-                    } else {
+                    }
+                    else {
                         if (currentDistance < distanceMaxBoss) {
                             distanceMaxBoss = currentDistance;
                             bossTarget = npc;
@@ -76,7 +93,8 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Arcane
                 float dif = MathHelper.WrapAngle(targetR - selfR);
                 float r = selfR + dif * 0.3f;
                 Projectile.velocity = Projectile.velocity.Length() * r.ToRotationVector2();
-            } else if (target != null) {
+            }
+            else if (target != null) {
                 var targetPos = (target == null) ? Vector2.Zero : target.Center;
                 float targetR = (targetPos - Projectile.Center).ToRotation();
                 float selfR = Projectile.velocity.ToRotation();

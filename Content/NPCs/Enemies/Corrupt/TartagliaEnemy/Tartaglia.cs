@@ -19,12 +19,12 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
     {
         internal Asset<Texture2D> LegsTexture;
         internal Asset<Texture2D> BodyTexture;
-        internal Dictionary<string, Asset<Texture2D>> WeaponsTexture = new Dictionary<string, Asset<Texture2D>>();
-        internal Rectangle handFrame = new Rectangle(0, 0, 40, 56);
-        internal Vector2 bodyOffset = new Vector2();
-        internal Rectangle bodyFrame = new Rectangle(0, 0, 40, 56);
-        internal Rectangle shoulderFrame = new Rectangle(0, 0, 40, 56);
-        internal Rectangle secondHandFrame = new Rectangle(0, 0, 40, 56);
+        internal Dictionary<string, Asset<Texture2D>> WeaponsTexture = new();
+        internal Rectangle handFrame = new(0, 0, 40, 56);
+        internal Vector2 bodyOffset = new();
+        internal Rectangle bodyFrame = new(0, 0, 40, 56);
+        internal Rectangle shoulderFrame = new(0, 0, 40, 56);
+        internal Rectangle secondHandFrame = new(0, 0, 40, 56);
         internal bool useExtraHand = false;
 
         public override void Load() {
@@ -73,7 +73,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
         internal float WeaponAniTimer { get => NPC.localAI[1]; set => NPC.localAI[1] = value; }
         internal int WeaponType { get => (int)NPC.localAI[2]; set => NPC.localAI[2] = value; }
         internal int TeleportTimer { get => (int)NPC.localAI[3]; set => NPC.localAI[3] = value; }
-        internal List<Vertex> path = new List<Vertex>();
+        internal List<Vertex> path = new();
 
         private Player player => Main.player[NPC.target];
 
@@ -103,7 +103,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
             for (int i = 0; i <= count - 1; i++) {
                 int x = reader.ReadInt32();
                 int y = reader.ReadInt32();
-                Vertex p = new Vertex(x, y);
+                Vertex p = new(x, y);
                 path.Add(p);
             }
         }
@@ -121,7 +121,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                         int damage = NPC.GetAttackDamage_ForProjectiles_MultiLerp_Exactly(90, 150, 260);
                         ShootRotation = toPlayer.ToRotation();
 
-                        var cannon = Projectile.NewProjectileDirect(NPC.GetProjectileSpawnSource(), NPC.Center, Vector2.Normalize(toPlayer) * 4f, ModContent.ProjectileType<LavaCannonHostile>(), damage, 0f, Main.myPlayer);
+                        var cannon = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Normalize(toPlayer) * 4f, ModContent.ProjectileType<LavaCannonHostile>(), damage, 0f, Main.myPlayer);
                         cannon.timeLeft = (int)(toPlayer.Length() / 4f);
 
                         ShootTimer = 60;
@@ -161,7 +161,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                     WeaponAniTimer = 15;
                     WeaponType = (int)Weapons.Glowstick;
                     if (Main.netMode != NetmodeID.MultiplayerClient) {
-                        Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), NPC.Center, new Vector2(Main.rand.NextFloat(-1, 1), -7), ProjectileID.Glowstick, 0, 0f, Main.myPlayer);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(Main.rand.NextFloat(-1, 1), -7), ProjectileID.Glowstick, 0, 0f, Main.myPlayer);
                     }
                 }
                 if (TeleportTimer == 210) {
@@ -224,7 +224,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                     toPlayer = (toPlayer.ToRotation() + MathHelper.ToRadians(Main.rand.NextFloat(-10f, 10f))).ToRotationVector2();
                     int damage = NPC.GetAttackDamage_ForProjectiles_MultiLerp_Exactly(15, 24, 35);
                     ShootRotation = toPlayer.ToRotation();
-                    Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), NPC.Center, toPlayer * 15f, ModContent.ProjectileType<PoisonedArrowHostile>(), damage, 0f, Main.myPlayer);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toPlayer * 15f, ModContent.ProjectileType<PoisonedArrowHostile>(), damage, 0f, Main.myPlayer);
                     NPC.netUpdate = true;
                     // 设置武器
                     WeaponAniTimer = 7;
@@ -310,13 +310,13 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                 const int expandY = 60;
                 int width = Math.Abs(pnpc.X - pplr.X) + expandX * 2;
                 int height = Math.Abs(pnpc.Y - pplr.Y) + expandY * 2;
-                Point leftTopTileCoord = new Point(Math.Min(pnpc.X, pplr.X) - expandX, Math.Min(pnpc.Y, pplr.Y) - expandY);
+                Point leftTopTileCoord = new(Math.Min(pnpc.X, pplr.X) - expandX, Math.Min(pnpc.Y, pplr.Y) - expandY);
                 int[,] pathData = new int[width + 1, height + 1];
-                Vertex npc = new Vertex(pnpc.X - leftTopTileCoord.X, pnpc.Y - leftTopTileCoord.Y);
-                Vertex plr = new Vertex(pplr.X - leftTopTileCoord.X, pplr.Y - leftTopTileCoord.Y);
+                Vertex npc = new(pnpc.X - leftTopTileCoord.X, pnpc.Y - leftTopTileCoord.Y);
+                Vertex plr = new(pplr.X - leftTopTileCoord.X, pplr.Y - leftTopTileCoord.Y);
 
                 while (path.Count > 0) {
-                    Point next = new Point(leftTopTileCoord.X + path[path.Count - 1].x, leftTopTileCoord.Y + path[path.Count - 1].y);
+                    Point next = new(leftTopTileCoord.X + path[path.Count - 1].x, leftTopTileCoord.Y + path[path.Count - 1].y);
                     targetCenter = next.ToWorldCoordinates();
                     if (NPC.Distance(targetCenter) <= 40) { // 能删就继续找下一个点
                         path.RemoveAt(path.Count - 1);
@@ -340,7 +340,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                                 continue;
                             }
                             Tile t = Framing.GetTileSafely(leftTopTileCoord.X + i, leftTopTileCoord.Y + j);
-                            if (Main.tileSolid[t.type] && !Main.tileSolidTop[t.type] && t.IsActive && !t.IsActuated) {
+                            if (Main.tileSolid[t.TileType] && !Main.tileSolidTop[t.TileType] && t.HasUnactuatedTile && !t.IsActuated) {
                                 pathData[i, j] = 1;
                             }
                         }
@@ -396,7 +396,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                 int tileWallHigh = 0;
                 for (int j = -amount; j <= 1; j++) {
                     Tile t = Framing.GetTileSafely((int)(NPC.Center.X + NPC.direction * 16) >> 4, LegY + j);
-                    if (Main.tileSolid[t.type] && t.IsActive && !t.IsActuated) {
+                    if (Main.tileSolid[t.TileType] && t.HasUnactuatedTile && !t.IsActuated) {
                         tileWallHigh++;
                     }
                 }
@@ -466,14 +466,14 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
         private void RocketBootVisuals() {
             for (int i = -1; i <= 1; i += 2) {
                 int num2 = (i == 0) ? 2 : (-2);
-                Rectangle r = new Rectangle((int)NPC.Center.X + 8 * i, (int)NPC.Bottom.Y - 6, 8, 8);
+                Rectangle r = new((int)NPC.Center.X + 8 * i, (int)NPC.Bottom.Y - 6, 8, 8);
                 r.X -= 6;
 
                 int type = 16;
                 float scale = 1.5f;
                 int alpha = 20;
                 float num3 = 1f;
-                Vector2 vector = new Vector2((float)(-num2) - NPC.velocity.X * 0.3f, 2f - NPC.velocity.Y * 0.3f);
+                Vector2 vector = new((float)(-num2) - NPC.velocity.X * 0.3f, 2f - NPC.velocity.Y * 0.3f);
                 Dust dust = Dust.NewDustDirect(r.TopLeft(), r.Width, r.Height, type, 0f, 0f, alpha, default(Color), scale);
                 dust.velocity += vector;
                 dust.velocity *= num3;
@@ -498,11 +498,11 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                     num194++;
                     int x = Main.rand.Next(PlrPosition.X - range, PlrPosition.X + range);
                     for (int y = Main.rand.Next(PlrPosition.Y - range, PlrPosition.Y + range); y < PlrPosition.Y + range; y++) {
-                        if (Main.tile[x, y].IsActiveUnactuated) {
+                        if (Main.tile[x, y].HasUnactuatedTile) {
                             if (Main.tile[x, y - 1].LiquidType == LiquidID.Lava)
                                 continue;
 
-                            if (Main.tileSolid[Main.tile[x, y].type] && !Collision.SolidTiles(x - 1, x + 1, y - 4, y - 1)) {
+                            if (WorldGen.SolidTile(Main.tile[x, y]) && !Collision.SolidTiles(x - 1, x + 1, y - 4, y - 1)) {
                                 NPC.Bottom = new Vector2(x * 16, y * 16);
                                 NPC.netUpdate = true;
                             }
@@ -640,7 +640,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
             }
             SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
-            Vector2 offset = new Vector2(0, 4 + NPC.gfxOffY);
+            Vector2 offset = new(0, 4 + NPC.gfxOffY);
             Vector2 finalBodyOffset = offset + bodyOffset + new Vector2(0, 2);
             Vector2 origin = new Vector2(40, 56 + (56 - NPC.height)) * 0.5f;
             bool drawNormalHand = DrawHand();
@@ -707,7 +707,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
             }
 
             SpriteEffects spriteEffects = NPC.spriteDirection == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            Vector2 offset = new Vector2(0, 4 + NPC.gfxOffY);
+            Vector2 offset = new(0, 4 + NPC.gfxOffY);
             Vector2 origin = new Vector2(40, 56 + (56 - NPC.height)) * 0.5f;
             Vector2 drawPosition = (NPC.Center - screenPos).Floor();
             Vector2 finalBodyOffset = offset + bodyOffset + new Vector2(0, 2);

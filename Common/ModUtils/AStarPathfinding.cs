@@ -61,12 +61,12 @@ namespace Entrogic
         }
 
         public List<Vertex> AStar(Vertex startVertex, Vertex endVertex, int[,] mapData, int findLimits) {
-            List<Vertex> openList = new List<Vertex>();
-            List<Vertex> closeList = new List<Vertex>();
+            List<Vertex> openList = new();
+            List<Vertex> closeList = new();
 
-            List<Vertex> vexs = new List<Vertex>();
+            List<Vertex> vexs = new();
             for (int i = 0; i < mapData.GetLength(0) * mapData.GetLength(1); ++i) {
-                Vertex vex = new Vertex();
+                Vertex vex = new();
                 vexs.Add(vex);
             }
 
@@ -130,7 +130,7 @@ namespace Entrogic
                 times++;
             }
 
-            List<Vertex> theWay = new List<Vertex>();
+            List<Vertex> theWay = new();
             Vertex v = endVertex;
             while (v.parent != null) {
                 theWay.Add(v);
@@ -154,7 +154,7 @@ namespace Entrogic
 
             start.F = start.G = start.H = 0;
 
-            AstarTestClass aStarTest = new AstarTestClass();
+            AstarTestClass aStarTest = new();
 
             List<Vertex> theWay = aStarTest.AStar(start, end, mapData, findLimits);
 

@@ -32,7 +32,7 @@ namespace Entrogic.Content.Items.ContyElemental.Weapons
             Vector2 pointPoisition = Main.MouseWorld;
             pointPoisition += offsetFromCursor;
             player.LimitPointToPlayerReachableArea(ref pointPoisition);
-            int num = Projectile.NewProjectile(player.GetProjectileSource_Item(sItem), pointPoisition, velocityOnSpawn, minionProjectileId, originalDamageNotScaledByMinionDamage, KnockBack, ownerIndex);
+            int num = Projectile.NewProjectile(player.GetSource_ItemUse(sItem), pointPoisition, velocityOnSpawn, minionProjectileId, originalDamageNotScaledByMinionDamage, KnockBack, ownerIndex);
             Main.projectile[num].originalDamage = originalDamageNotScaledByMinionDamage;
             return num;
         }

@@ -29,7 +29,7 @@
         internal static Asset<Texture2D> BookNext;
         internal static Asset<Texture2D> BookBack;
 
-        internal static Dictionary<string, Asset<Texture2D>> Miscellaneous = new Dictionary<string, Asset<Texture2D>>();
+        internal static Dictionary<string, Asset<Texture2D>> Miscellaneous = new();
 
         public delegate void SetupContentDelegate();
         public static event SetupContentDelegate SetupContentEvent;
@@ -53,7 +53,7 @@
 			foreach (var asset in from a in targetValue
                                   where
                                   a.Value is Asset<Texture2D> &&
-                                  (a.Value as Asset<Texture2D>).Name.StartsWith("Assets\\Images\\Miscellaneous\\")
+                                  (a.Value as Asset<Texture2D>).Name.StartsWith("Assets/Images/Miscellaneous/")
                                   select a) {
             }
 			*/

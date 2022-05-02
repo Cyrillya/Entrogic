@@ -9,7 +9,7 @@ using Terraria.Graphics.CameraModifiers;
 namespace Entrogic.Content.NPCs.Enemies.Athanasy
 {
     [AutoloadBossHead]
-    internal class Athanasy : FSM_NPC
+    internal class Athanasy : NPCBase
     {
         enum AIState
         {
@@ -174,8 +174,8 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                     for (int a = -1; a <= 1; a += 2) { // 左右的检测
                         var pos = new Point(centerTile.X + i * a, centerTile.Y);
                         var tile = Framing.GetTileSafely(pos);
-                        if (tile != null && tile.IsActiveUnactuated && Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type]) {
-                            Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), pos.ToWorldCoordinates(), Vector2.UnitX * -Math.Sign(a) * spearSpeed, ModContent.ProjectileType<AthanasySpear>(), wallSpearDamage, 2f, ai0: spearSpeed);
+                        if (tile != null && tile.HasUnactuatedTile && Main.tileSolid[tile.TileType] && !Main.tileSolidTop[tile.TileType]) {
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), pos.ToWorldCoordinates(), Vector2.UnitX * -Math.Sign(a) * spearSpeed, ModContent.ProjectileType<AthanasySpear>(), wallSpearDamage, 2f, ai0: spearSpeed);
                             Main.NewText(pos);
                             goto VerticalDetect;
                         }
@@ -186,8 +186,8 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                     for (int a = -1; a <= 1; a += 2) { // 上下的检测
                         var pos = new Point(centerTile.X, centerTile.Y + j * a);
                         var tile = Framing.GetTileSafely(pos);
-                        if (tile != null && tile.IsActiveUnactuated && Main.tileSolid[tile.type] && !Main.tileSolidTop[tile.type]) {
-                            Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), pos.ToWorldCoordinates(), Vector2.UnitY * -Math.Sign(a) * spearSpeed, ModContent.ProjectileType<AthanasySpear>(), wallSpearDamage, 2f, ai0: spearSpeed);
+                        if (tile != null && tile.HasUnactuatedTile && Main.tileSolid[tile.TileType] && !Main.tileSolidTop[tile.TileType]) {
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), pos.ToWorldCoordinates(), Vector2.UnitY * -Math.Sign(a) * spearSpeed, ModContent.ProjectileType<AthanasySpear>(), wallSpearDamage, 2f, ai0: spearSpeed);
                             goto AfterDetect;
                         }
                     }
@@ -221,7 +221,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                             d.velocity.Y = -5f + Main.rand.NextFloat() * -3f;
                             d.velocity.X *= 7f;
                         }
-                        PunchCameraModifier modifier4 = new PunchCameraModifier(NPC.Center, -Vector2.UnitY, 30f, 15f, 30, 2000f, "Entrogic: Athanasy");
+                        PunchCameraModifier modifier4 = new(NPC.Center, -Vector2.UnitY, 30f, 15f, 30, 2000f, "Entrogic: Athanasy");
                         Main.instance.CameraModifiers.Add(modifier4);
                     }
                     if (Timer <= 20 && Main.netMode != NetmodeID.MultiplayerClient) {// 借用一下鹿角怪的Proj
@@ -234,7 +234,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                                 rubbleVector = rubbleVector.RotatedByRandom(MathHelper.ToRadians(5));
                                 int frame = 3 + Main.rand.Next(3);
                                 var pos = new Vector2(NPC.Bottom.X + (p * Timer + Main.rand.Next((int)p + 1)) * l, NPC.Bottom.Y - 8 + offset);
-                                Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), pos, rubbleVector * (16f + Main.rand.NextFloat() * 8f), ProjectileID.DeerclopsRangedProjectile, rubbleDamage, 0f, Main.myPlayer, 0f, frame);
+                                Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, rubbleVector * (16f + Main.rand.NextFloat() * 8f), ProjectileID.DeerclopsRangedProjectile, rubbleDamage, 0f, Main.myPlayer, 0f, frame);
                             }
                             var dPos = new Vector2(NPC.Bottom.X + (p * Timer + Main.rand.Next((int)p + 1)) * l, NPC.Bottom.Y - 8);
                             for (int i = 0; i < 15; i++) { // 粒子效果
@@ -344,7 +344,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                         Dust.NewDustDirect(NPC.Bottom - new Vector2(NPC.width * 0.8f, 20f), (int)(NPC.width * 1.6f), 50, ModContent.DustType<Sand>(), 0, Main.rand.NextFloat(-5f, -1f), Main.rand.Next(255), default, Main.rand.NextFloat(1f));
                     }
                 if (NPC.velocity.Y == 0f) { // 下砸到地了
-                    PunchCameraModifier modifier4 = new PunchCameraModifier(NPC.Center, -Vector2.UnitY, 15f, 10.8f, 20, 1300f, "Entrogic: Athanasy");
+                    PunchCameraModifier modifier4 = new(NPC.Center, -Vector2.UnitY, 15f, 10.8f, 20, 1300f, "Entrogic: Athanasy");
                     Main.instance.CameraModifiers.Add(modifier4);
                     SwitchState((int)AIState.Despawn);
                     Timer = 0f;
@@ -352,7 +352,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                     NPC.netUpdate = true;
                     SoundEngine.PlaySound(SoundID.Item167, NPC.Center);
                     if (Main.netMode != NetmodeID.MultiplayerClient) // 这部分打算参考死亡细胞王手的小下砸
-                        Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), NPC.Bottom, Vector2.Zero, 922, smashDamage, 0f, Main.myPlayer);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Bottom, Vector2.Zero, 922, smashDamage, 0f, Main.myPlayer);
                 }
                 else if (Timer >= (float)smashStartTimer) { // 下砸中
                     for (int m = 0; m < 4; m++) {
@@ -460,7 +460,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                 var pos = new Vector2(NPC.position.X - screenPos.X + NPC.width / 2 - (float)t.Width * NPC.scale / 2f + origin.X * NPC.scale,
                     NPC.position.Y - screenPos.Y + NPC.height - t.Height * NPC.scale / Main.npcFrameCount[NPC.type] + 4f + extraDrawY + origin.Y * NPC.scale + NPC.gfxOffY);
 
-                Vector2 halfSize = new Vector2(t.Width / 2, t.Height / Main.npcFrameCount[Type] / 2);
+                Vector2 halfSize = new(t.Width / 2, t.Height / Main.npcFrameCount[Type] / 2);
                 var npcColor = NPC.GetNPCColorTintedByBuffs(drawColor);
                 int num183 = 7;
                 for (int num185 = 1; num185 < num183; num185 += 2) {
@@ -490,7 +490,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             NPCID.Sets.TrailingMode[Type] = 0;
             NPCID.Sets.TrailCacheLength[Type] = 7;
 
-            NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
+            NPCID.Sets.NPCBestiaryDrawModifiers value = new(0) { //Influences how the NPC looks in the Bestiary
                 Position = new Vector2(0f, 40f),
                 PortraitPositionXOverride = 0f,
                 PortraitPositionYOverride = 80f,

@@ -43,15 +43,15 @@ namespace Entrogic.Content.Projectiles.Elementals
                 if (Main.tile[num833, num834].IsHalfBlock && Projectile.velocity.Y > 0f && Math.Abs(Projectile.velocity.Y) > Math.Abs(Projectile.velocity.X)) {
                     num834--;
                 }
-                if (!Main.tile[num833, num834].IsActive && num835 >= 0) {
+                if (!Main.tile[num833, num834].HasUnactuatedTile && num835 >= 0) {
                     bool flag5 = false;
-                    if (num834 < Main.maxTilesY - 2 && Main.tile[num833, num834 + 1] != null && Main.tile[num833, num834 + 1].IsActive && Main.tile[num833, num834 + 1].type == 314) {
+                    if (num834 < Main.maxTilesY - 2 && Main.tile[num833, num834 + 1] != null && Main.tile[num833, num834 + 1].HasUnactuatedTile && Main.tile[num833, num834 + 1].TileType == 314) {
                         flag5 = true;
                     }
                     if (!flag5) {
                         WorldGen.PlaceTile(num833, num834, num835, mute: false, forced: true);
                     }
-                    if (!flag5 && Main.tile[num833, num834].IsActive && Main.tile[num833, num834].type == num835) {
+                    if (!flag5 && Main.tile[num833, num834].HasUnactuatedTile && Main.tile[num833, num834].TileType == num835) {
                         if (Main.tile[num833, num834 + 1].IsHalfBlock || Main.tile[num833, num834 + 1].Slope != 0) {
                             WorldGen.SlopeTile(num833, num834 + 1);
                             if (Main.netMode == NetmodeID.Server) {
@@ -63,11 +63,11 @@ namespace Entrogic.Content.Projectiles.Elementals
                         }
                     }
                     else if (num836 > 0) {
-                        num832 = Item.NewItem((int)Projectile.position.X, (int)Projectile.position.Y, Projectile.width, Projectile.height, num836);
+                        num832 = Item.NewItem(Projectile.GetSource_DropAsItem(), (int)Projectile.position.X, (int)Projectile.position.Y, Projectile.width, Projectile.height, num836);
                     }
                 }
                 else if (num836 > 0) {
-                    num832 = Item.NewItem((int)Projectile.position.X, (int)Projectile.position.Y, Projectile.width, Projectile.height, num836);
+                    num832 = Item.NewItem(Projectile.GetSource_DropAsItem(), (int)Projectile.position.X, (int)Projectile.position.Y, Projectile.width, Projectile.height, num836);
                 }
                 if (Main.netMode == NetmodeID.MultiplayerClient && num832 >= 0) {
                     NetMessage.SendData(MessageID.SyncItem, -1, -1, null, num832, 1f);

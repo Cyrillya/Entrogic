@@ -1,14 +1,7 @@
-﻿using System;
-using Terraria;
-using Terraria.Localization;
-using Terraria.ID;
-using System.Text;
-using Terraria.ModLoader;
-using static Terraria.ModLoader.ModContent;
-using Microsoft.Xna.Framework;
+﻿using Entrogic.Content.Items.Symbiosis;
+using Entrogic.Content.Tiles.BaseTypes;
 using Terraria.ObjectData;
-using Entrogic.Content.Items.Symbiosis;
-using Entrogic.Tiles.BaseTypes;
+using static Terraria.ModLoader.ModContent;
 
 namespace Entrogic.Content.Tiles.Symbiosis
 {
@@ -27,8 +20,6 @@ namespace Entrogic.Content.Tiles.Symbiosis
             AddMapEntry(new Color(120, 85, 60), name);
         }
 
-        public override void KillMultiTile(int i, int j, int frameX, int frameY) {
-            Item.NewItem(i * 16, j * 16, 48, 48, ItemType<SymbiosisTrophy>());
-        }
+        public override int? MultiTileDropItem => ItemType<SymbiosisTrophy>();
     }
 }

@@ -56,7 +56,7 @@ namespace Entrogic
             int b = NPC.alpha;
             int n = length;
             int frameHeight = texture.Height / Main.npcFrameCount[NPC.type];
-            Vector2 origin = new Vector2(texture.Width / 2, frameHeight / 2);
+            Vector2 origin = new(texture.Width / 2, frameHeight / 2);
             if (NPC.ichor)
                 lightColor = new Color(255, 255, 0, 255);
             for (int x = 1; x < n; x++) {
@@ -84,28 +84,6 @@ namespace Entrogic
                 NPC.scale,
                 effects,
                 0f);
-        }
-
-        /// <summary>
-        /// NPC下平台函数
-        /// </summary>
-        /// <param name="NPC">需要进行下平台操作的NPC</param>
-        public static void TryDownstairs(this NPC NPC) {
-            if (NPC.velocity.Y == 0f && Main.player[NPC.target].Bottom.Y > NPC.position.Y + NPC.height) {
-                int tileY = (int)((NPC.Bottom.Y + NPC.height + 8) / 16f) + 1; // 寻找脚底下的方块
-                                                                              // 寻找一排方块
-                for (int tileX = (int)((NPC.position.X - 8) / 16f); tileX < (int)((NPC.position.X + NPC.width + 8) / 16f); tileX++) {
-                    if (WorldGen.InWorld(tileX, tileY)) {
-                        if (Main.tile[tileX, tileY] == null) {
-                            Main.tile[tileX, tileY] = new Tile();
-                        }
-                        if ((Main.tileSolid[Main.tile[tileX, tileY].type] == true || Main.tileSolidTop[Main.tile[tileX, tileY].type] == false) && Main.tile[tileX, tileY].IsActive == true) {
-                            return; // 如果脚下方块里有任意一个方块存在且不可穿过/上方不是实体，则下平台失败
-                        }
-                    }
-                }
-                NPC.noTileCollide = true; // 开启物块穿透达到伪下平台
-            }
         }
     }
 }

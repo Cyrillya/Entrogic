@@ -41,7 +41,7 @@ namespace Entrogic.Common.ModSystems
 	public class MovingPlatformPlayer : ModPlayer
 	{
 		public int Timer { get; set; }
-		private Vector2 _platformJustStand = new Vector2();
+		private Vector2 _platformJustStand = new();
 		private bool _standing = false;
 		private int _screenMoveTimer;
 		private const int SCREEN_TIMER_MAX = 15;

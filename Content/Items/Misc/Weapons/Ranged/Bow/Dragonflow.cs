@@ -4,12 +4,10 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Bow
 {
     public class Dragonflow : ModItem
     {
-        public override void SetStaticDefaults()
-        {
+        public override void SetStaticDefaults() {
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
-        public override void SetDefaults()
-        {
+        public override void SetDefaults() {
             Item.damage = 14;
             Item.DamageType = DamageClass.Ranged;
             Item.useTime = 8;
@@ -31,7 +29,7 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Bow
 
         public override Vector2? HoldoutOffset() => new Vector2(-8f, 0f);
 
-        public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
             if (type == ProjectileID.WoodenArrowFriendly) { type = Item.shoot; damage += 10; }
             // 改自Player.cs中的海啸射击源码(1.4.0.5)
             int arrows = 3;
@@ -51,8 +49,7 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Bow
             return false;
         }
 
-        public override void AddRecipes()
-        {
+        public override void AddRecipes() {
             CreateRecipe()
                 .Register();
         }

@@ -19,8 +19,8 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Friendly
         public override void PostDraw(Color lightColor) {
             base.PostDraw(lightColor);
 
-            List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
-            List<Vector2> oldCenter = new List<Vector2>();
+            List<CustomVertexInfo> bars = new();
+            List<Vector2> oldCenter = new();
             foreach (var pos in Projectile.oldPos) {
                 if (pos == Vector2.Zero) continue;
                 oldCenter.Add(pos + Projectile.Size / 2f);
@@ -49,7 +49,7 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Friendly
                 bars.Add(new CustomVertexInfo(oldCenter[i] + normalDir * -width, color, new Vector3((float)Math.Sqrt(factor), 0, w)));
             }
 
-            List<CustomVertexInfo> triangleList = new List<CustomVertexInfo>();
+            List<CustomVertexInfo> triangleList = new();
 
             if (bars.Count > 2) {
 
@@ -134,7 +134,7 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Friendly
         // 自定义顶点数据结构，注意这个结构体里面的顺序需要和shader里面的数据相同
         private struct CustomVertexInfo : IVertexType
         {
-            private static VertexDeclaration _vertexDeclaration = new VertexDeclaration(new VertexElement[3]
+            private static VertexDeclaration _vertexDeclaration = new(new VertexElement[3]
             {
                 new VertexElement(0, VertexElementFormat.Vector2, VertexElementUsage.Position, 0),
                 new VertexElement(8, VertexElementFormat.Color, VertexElementUsage.Color, 0),
@@ -277,7 +277,7 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Friendly
             ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
         }
 
-        private List<int> _attackedList = new List<int>();
+        private List<int> _attackedList = new();
         public override void AI() {
             NPC target = null;
             Projectile.ai[1]++;

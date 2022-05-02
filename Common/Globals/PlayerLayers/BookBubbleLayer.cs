@@ -1,12 +1,4 @@
 ﻿using Entrogic.Common.Globals.Players;
-using Entrogic.Common.ModSystems;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.Localization;
-using Terraria.ModLoader;
 
 namespace Entrogic.Common.PlayerLayers
 {
@@ -31,13 +23,10 @@ namespace Entrogic.Common.PlayerLayers
             Player drawPlayer = drawInfo.drawPlayer;
             BookInfoPlayer book = drawPlayer.GetModPlayer<BookInfoPlayer>();
             if (book.IsReading) book.UseBookBubble = true;
-            if (book.UseBookBubble)
-            {
-                if (!book.IsClosingBook)
-                {
+            if (book.UseBookBubble) {
+                if (!book.IsClosingBook) {
                     book.BookBubbleFrameCounter++;
-                    if (book.BookBubbleFrameCounter >= 6)
-                    {
+                    if (book.BookBubbleFrameCounter >= 6) {
                         book.BookBubbleFrameCounter = 0;
                         book.BookBubbleFrame++;
                     }
@@ -46,16 +35,13 @@ namespace Entrogic.Common.PlayerLayers
                         book.BookBubbleFrame = 4;
                     }
                 }
-                else
-                {
+                else {
                     book.BookBubbleFrameCounter++;
-                    if (book.BookBubbleFrameCounter >= 6)
-                    {
+                    if (book.BookBubbleFrameCounter >= 6) {
                         book.BookBubbleFrameCounter = 0;
                         book.BookBubbleFrame--;
                     }
-                    if (book.BookBubbleFrame == 0)
-                    {
+                    if (book.BookBubbleFrame == 0) {
                         book.BookBubbleFrame = 1;
                         book.IsClosingBook = false;
                         book.UseBookBubble = false;
@@ -69,8 +55,7 @@ namespace Entrogic.Common.PlayerLayers
                     bool IsTurningPage = frame >= 8 && frame <= 11 || frame >= 16 && frame <= 19;
                     bool IsStopping = !IsOpeningBook && !IsTurningPage;
 
-                    if (IsStopping)
-                    {
+                    if (IsStopping) {
                         book.IsClosingBook = true;
                     }
                 }
@@ -78,11 +63,11 @@ namespace Entrogic.Common.PlayerLayers
                 int totalFrames = 19;
                 int frameHeight = Texture.Height() / totalFrames; // 除出来应为64
 
-                Rectangle _frame = new Rectangle(0, (book.BookBubbleFrame - 1) * frameHeight, frameHeight, Texture.Width());
+                Rectangle _frame = new(0, (book.BookBubbleFrame - 1) * frameHeight, frameHeight, Texture.Width());
                 Vector2 drawPosition = drawPlayer.Center - Main.screenPosition;
                 drawPosition.Y -= 20f + frameHeight * 0.5f;
 
-                Vector2 origin = new Vector2(Texture.Width() / 2, frameHeight / 2);
+                Vector2 origin = new(Texture.Width() / 2, frameHeight / 2);
                 //Queues a drawing of a sprite. Do not use SpriteBatch in drawlayers!
                 drawInfo.DrawDataCache.Add(new DrawData(
                     Texture.Value, //The texture to render.
@@ -95,8 +80,7 @@ namespace Entrogic.Common.PlayerLayers
                     SpriteEffects.None,
                     0
                 ));
-                if (ModHelper.MouseInRectangle(ModHelper.CreateFromVector2(drawPosition - origin, Texture.Width(), frameHeight)) && drawPlayer.whoAmI != Main.myPlayer)
-                {
+                if (ModHelper.MouseInRectangle(ModHelper.CreateFromVector2(drawPosition - origin, Texture.Width(), frameHeight)) && drawPlayer.whoAmI != Main.myPlayer) {
                     Main.instance.MouseText($"{Language.GetTextValue("Mods.Entrogic.Common.Reading")}: {book.BookName}\n" +
                     $"{Language.GetTextValue("Mods.Entrogic.Common.Page")}: {book.CurrentPage * 2 - 1} ~ {book.CurrentPage * 2}");
                 }

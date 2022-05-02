@@ -10,17 +10,17 @@ namespace Entrogic.Common.WorldGeneration
         protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration) {
             progress.Message = "Immortal Golem Arena Final Cleanup";
             // 陷阱房铺设岩浆（要在最后执行，否则可能被其他世界生成顶掉）
-            Point origin = new Point(ImmortalGolemRoom.TrapZone.X, ImmortalGolemRoom.TrapZone.Y);
+            Point origin = new(ImmortalGolemRoom.TrapZone.X, ImmortalGolemRoom.TrapZone.Y);
             WorldUtils.Gen(origin + new Point(5, 5), new Shapes.Rectangle(70, 30), new Actions.SetLiquid(0, 0)); // 清除所有液体
             WorldUtils.Gen(origin + new Point(5, 30), new Shapes.Rectangle(70, 5), new Actions.SetLiquid(LiquidID.Lava)); // 铺岩浆
                                                                                                                           // 在陷阱房中央生成一个小台子，为了规避原版的方块平滑所以放在最后
             for (int k = -1; k <= 1; k++)
                 for (int l = 0; l <= 2; l++) {
-                    Point pt = new Point(ImmortalGolemRoom.TrapZone.Center.X + k, ImmortalGolemRoom.TrapZone.Center.Y + l);
+                    Point pt = new(ImmortalGolemRoom.TrapZone.Center.X + k, ImmortalGolemRoom.TrapZone.Center.Y + l);
                     Tile tile = Framing.GetTileSafely(pt);
                     tile.Clear(TileDataType.Slope);
-                    tile.IsActive = true;
-                    tile.type = k == l - 1 && l == 1 ? TileID.WoodBlock : ImmortalGolemRoom.BrickType; // 特判的是中间
+                    tile.HasTile = true;
+                    tile.TileType = k == l - 1 && l == 1 ? TileID.WoodBlock : ImmortalGolemRoom.BrickType; // 特判的是中间
                     WorldGen.SquareTileFrame(ImmortalGolemRoom.TrapZone.Center.X + k, ImmortalGolemRoom.TrapZone.Center.Y + l);
                     // NOTE: SlopeID里面的方位是指 三角形物块直角所对的方位，所以应和生成位置对于中间的方位正好相反
                     if (k == -1 && l == 0) WorldGen.SlopeTile(pt.X, pt.Y, (int)SlopeType.SlopeDownRight); // 左上角
@@ -33,9 +33,9 @@ namespace Entrogic.Common.WorldGeneration
             origin = new Point(ImmortalGolemRoom.BossZone.X, ImmortalGolemRoom.BossZone.Y);                                                                                          // 在陷阱房中央生成一个小台子，为了规避原版的方块平滑所以放在最后
             for (int k = 0; k <= ImmortalGolemRoom.BossZone.Width; k++) {
                 for (int l = 0; l <= ImmortalGolemRoom.BossZone.Height; l++) {
-                    Point pt = new Point(origin.X + k, origin.Y + l);
+                    Point pt = new(origin.X + k, origin.Y + l);
                     var t = Framing.GetTileSafely(pt);
-                    if (TileID.Sets.IsAContainer[t.type]) {
+                    if (TileID.Sets.IsAContainer[t.TileType]) {
                         t.ClearTile();
                     }
                     t.RedWire = false;

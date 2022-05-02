@@ -11,8 +11,7 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }
 
-        public override void SetDefaults()
-        {
+        public override void SetDefaults() {
             Item.damage = 66;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 64;
@@ -31,8 +30,7 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
             Item.useAmmo = AmmoID.Bullet;
         }
 
-        public override void AddRecipes()
-        {
+        public override void AddRecipes() {
             //CreateRecipe()
             //    .AddIngredient(ItemID.IllegalGunParts, 2)//非法枪械部件
             //    .AddIngredient(Mod, "飞鱼冲锋枪", 1)//飞鱼冲锋枪
@@ -45,19 +43,10 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
 
         public override bool CanConsumeAmmo(Player player) => Main.rand.NextFloat() >= .80f;
 
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-            base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
-            if (type == ProjectileID.Bullet) {
-                type = ProjectileID.BulletHighVelocity;
-                velocity.RotateRandom(MathHelper.ToRadians(5));
-            }
-        }
-
-        public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
             int numberProjectiles = 1 + Main.rand.Next(2);
             for (int i = 0; i < numberProjectiles; i++) {
-                Vector2 perturbedSpeed = velocity.RotatedByRandom(MathHelper.ToRadians(4));
-                Projectile.NewProjectile(source, position, velocity, ProjectileID.BulletHighVelocity, damage, knockback, player.whoAmI);
+                Projectile.NewProjectile(source, position, velocity.RotatedByRandom(MathHelper.ToRadians(5)), ProjectileID.BulletHighVelocity, damage, knockback, player.whoAmI);
             }
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }

@@ -11,8 +11,8 @@ namespace Entrogic.Common.Netcodes
 			Dodge,
 			BookInfo
 		}
-		internal static DodgePacketHandler Dodge = new DodgePacketHandler(EntrogicMessageType.Dodge);
-		internal static BookInfoPacketHandler BookInfo = new BookInfoPacketHandler(EntrogicMessageType.BookInfo);
+		internal static DodgePacketHandler Dodge = new(EntrogicMessageType.Dodge);
+		internal static BookInfoPacketHandler BookInfo = new(EntrogicMessageType.BookInfo);
 		public static void HandlePacket(BinaryReader r, int fromWho) {
 			EntrogicMessageType msgType = (EntrogicMessageType)r.ReadByte();
 			switch (msgType) {

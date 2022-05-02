@@ -42,7 +42,7 @@
                 Main.player[Projectile.owner].direction = -1;
             for (int i = 0; i < 2; i++) {
                 if (Main.rand.NextBool(2)) {
-                    int dust = Dust.NewDust(Projectile.position + new Vector2(Main.rand.Next(18, 31) * Main.player[Projectile.owner].direction, 10f), Projectile.width, Projectile.height - 10, MyDustId.LightCyanParticle1, 8.6f * Main.player[Projectile.owner].direction, 0, 160, default(Color), 1.2f);
+                    int dust = Dust.NewDust(Projectile.position + new Vector2(Main.rand.Next(18, 31) * Main.player[Projectile.owner].direction, 10f), Projectile.width, Projectile.height - 10, MyDustID.LightCyanParticle1, 8.6f * Main.player[Projectile.owner].direction, 0, 160, default(Color), 1.2f);
                     Main.dust[dust].noGravity = true;
                 }
             }

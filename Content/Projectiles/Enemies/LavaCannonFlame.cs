@@ -36,9 +36,9 @@
 
 		public override bool PreDraw(ref Color lightColor) {
 			Asset<Texture2D> texture = TextureAssets.Projectile[Type];
-			Vector2 drawOrigin = new Vector2(texture.Width() * 0.5f, texture.Height() * 0.5f);
+			Vector2 drawOrigin = new(texture.Width() * 0.5f, texture.Height() * 0.5f);
 			for (int i = 0; i < _particleList.Count; i++) {
-				Color color = new Color(255, 69, 0, 0);
+				Color color = new(255, 69, 0, 0);
 				Vector2 drawPos = _particleList[i].position - Main.screenPosition;
 				color = Projectile.GetAlpha(color) * (0.35f + 0.65f * _particleList[i].scale);
 				for (int j = 0; j < 2; j++) {
@@ -72,7 +72,7 @@
 			Projectile.ai[0] += 1f;
 		}
 
-		private List<FireParticle> _particleList = new List<FireParticle>();
+		private List<FireParticle> _particleList = new();
 	}
 	public class FireParticle
 	{

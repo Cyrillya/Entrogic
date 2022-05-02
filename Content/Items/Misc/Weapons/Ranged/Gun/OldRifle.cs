@@ -12,7 +12,7 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
         }
 
         private void Player_ItemCheck_Inner(ILContext il) {
-            ILCursor c = new ILCursor(il);
+            ILCursor c = new(il);
             c.GotoNext(MoveType.After, i => i.MatchLdfld(typeof(Item), nameof(Item.shoot)));
             c.GotoNext(MoveType.After, i => i.MatchLdcI4(0));
             c.GotoNext(MoveType.After, i => i.MatchBle(out _));
@@ -77,7 +77,7 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
             base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
         }
 
-        public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
 

@@ -30,7 +30,7 @@ namespace Entrogic.Common.ModSystems
         }
 
         public override void NetSend(BinaryWriter writer) {
-            BitsByte flags = new BitsByte();
+            BitsByte flags = new();
             flags[0] = DownedSymbiosis;
             flags[1] = DownedAthanasy;
             flags[2] = DownedContyElemental;

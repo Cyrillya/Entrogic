@@ -1,57 +1,27 @@
 using Entrogic.Content.Items.BaseTypes;
 using Entrogic.Content.Items.ContyElemental.Armors;
 using Entrogic.Content.Items.ContyElemental.Weapons;
-using Entrogic.Content.Items.ContyElemental.Armors.Melee;
-using Entrogic.Content.Items.ContyElemental.Armors.Ranged;
-using Entrogic.Content.Items.ContyElemental.Armors.Magic;
-using Entrogic.Content.Items.ContyElemental.Armors.Summoner;
-using Entrogic.Content.Items.ContyElemental.Armors.Arcane;
 using Entrogic.Content.NPCs.Enemies.ContyElemental;
-using Terraria;
-using Terraria.Localization;
-using Terraria.ModLoader;
 using Terraria.Utilities;
 
 namespace Entrogic.Content.Items.ContyElemental
 {
-    public class ContaminatedElementalTreasureBag : ItemBase
+    public class ContaminatedElementalTreasureBag : BossBag
     {
-        public override void SetStaticDefaults()
-        {
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3;
-            DisplayName.SetDefault("Treasure Bag [Contaminated Elemental]");
-            DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "宝藏袋 [污染之灵]");
-            Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}");
-        }
-
-        public override void SetDefaults()
-        {
-            Item.maxStack = 999;
-            Item.consumable = true;
-            Item.width = 32;
-            Item.height = 32;
-            Item.rare = -12;
-            Item.expert = true;
-        }
         public override int BossBagNPC => ModContent.NPCType<ContaminatedElemental>();
 
-        public override bool CanRightClick()
-        {
-            return true;
-        }
+        public override bool PreHardmode => false;
 
-        public override void OpenBossBag(Player player)
-        {
-            player.TryGettingDevArmor(); // 开发者盔甲
-            player.QuickSpawnItem(ModContent.ItemType<SoulofContamination>(), Main.rand.Next(20, 25)); // 污染之魂
-            player.QuickSpawnItem(ModContent.ItemType<BottleofStorm>()); // 专家饰品
+        public override void BossBagLoot(IEntitySource source, Player player) {
+            player.QuickSpawnItem(source, ModContent.ItemType<SoulofContamination>(), Main.rand.Next(20, 25)); // 污染之魂
+            player.QuickSpawnItem(source, ModContent.ItemType<BottleofStorm>()); // 专家饰品
 
             var dropChooser = new WeightedRandom<int>();
             dropChooser.Add(ModContent.ItemType<ContyLongbow>());
             dropChooser.Add(ModContent.ItemType<ContyCurrent>());
             dropChooser.Add(ModContent.ItemType<SymbioticGelatinStaff>());
             int choice = dropChooser;
-            player.QuickSpawnItem(choice);
+            player.QuickSpawnItem(source, choice);
             dropChooser.Clear();
 
             var headChooser = new WeightedRandom<int>();
@@ -65,7 +35,7 @@ namespace Entrogic.Content.Items.ContyElemental
             dropChooser.Add(ModContent.ItemType<ContaBreastplate>());
             dropChooser.Add(ModContent.ItemType<ContaGraves>());
             choice = dropChooser;
-            player.QuickSpawnItem(choice);
+            player.QuickSpawnItem(source, choice);
             dropChooser.Clear();
         }
     }

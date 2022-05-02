@@ -2,16 +2,14 @@
 {
     public class FrostFire : ModProjectile
     {
-        public override void SetDefaults()
-        {
+        public override void SetDefaults() {
             Projectile.CloneDefaults(ProjectileID.Flames);
             Projectile.aiStyle = -1;
             Projectile.timeLeft = 80;
         }
 
-        public override void AI()
-        {
-            Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, MyDustId.IceTorch, 0f, 0f, 0, default, Main.rand.Next(3, 7));
+        public override void AI() {
+            Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, MyDustID.IceTorch, 0f, 0f, 0, default, Main.rand.Next(3, 7));
             dust.noGravity = true;
         }
 

@@ -27,6 +27,7 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords
 
         public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) {
             if (crit && target.lifeMax >= 10 && target.lifeMax <= 100000 && !target.friendly && target.value > 10) {
+                var hitSource = target.GetSource_OnHurt(Main.player[Projectile.owner]);
                 // 金史莱姆那抄来的假钱
                 int num27 = 7;
                 float num28 = 1.1f;
@@ -36,13 +37,13 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords
                     num28 = 1.5f;
                     num27 = 40;
                     for (int num30 = 0; num30 < 8; num30++) {
-                        int num31 = Gore.NewGore(new Vector2(target.position.X, target.Center.Y - 10f), Vector2.Zero, 1218);
+                        int num31 = Gore.NewGore(hitSource, new Vector2(target.position.X, target.Center.Y - 10f), Vector2.Zero, 1218);
                         Main.gore[num31].velocity = new Vector2((float)Main.rand.Next(1, 10) * 0.3f * 2.5f * (float)hitDirection, 0f - (3f + (float)Main.rand.Next(4) * 0.3f));
                     }
                 }
                 else {
                     for (int num32 = 0; num32 < 3; num32++) {
-                        int num33 = Gore.NewGore(new Vector2(target.position.X, target.Center.Y - 10f), Vector2.Zero, 1218);
+                        int num33 = Gore.NewGore(hitSource, new Vector2(target.position.X, target.Center.Y - 10f), Vector2.Zero, 1218);
                         Main.gore[num33].velocity = new Vector2((float)Main.rand.Next(1, 10) * 0.3f * 2f * (float)hitDirection, 0f - (2.5f + (float)Main.rand.Next(4) * 0.3f));
                     }
                 }
@@ -55,9 +56,9 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords
                 // 每次有1铜币到5银币不等的额外钱币
                 int copperCoin = Main.rand.Next(1, 100);
                 int silverCoin = Main.rand.Next(0, 5);
-                Item.NewItem(target.getRect(), ItemID.CopperCoin, copperCoin);
+                Item.NewItem(hitSource, target.getRect(), ItemID.CopperCoin, copperCoin);
                 if (silverCoin > 0)
-                    Item.NewItem(target.getRect(), ItemID.SilverCoin, silverCoin);
+                    Item.NewItem(hitSource, target.getRect(), ItemID.SilverCoin, silverCoin);
                 // 暴击设为三倍伤害，由于暴击伤害加成在此之后计算，所以是*1.5
                 damage = (int)(damage * 1.5f);
             }

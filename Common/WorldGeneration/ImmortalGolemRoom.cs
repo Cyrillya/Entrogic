@@ -38,7 +38,7 @@ namespace Entrogic.Common.WorldGeneration
             WorldUtils.Gen(Main.MouseWorld.ToTileCoordinates() + new Point(-2, -5), new Shapes.Rectangle(5, 1), Actions.Chain(new Actions.PlaceTile(19, 0), new Actions.SetFrames(frameNeighbors: true)));
         }
         private List<Point> CreatePlatformsList() {
-            List<Point> list = new List<Point>();
+            List<Point> list = new();
             for (int i = 0; i <= 5; i++) {
                 list.Add(Main.MouseWorld.ToTileCoordinates() + new Point(i, -i));
             }
@@ -47,8 +47,8 @@ namespace Entrogic.Common.WorldGeneration
         }
 
         private List<Tuple<Point, Point>> CreateStairsList() {
-            List<Tuple<Point, Point>> list = new List<Tuple<Point, Point>>();
-            List<Rectangle> Rooms = new List<Rectangle>();
+            List<Tuple<Point, Point>> list = new();
+            List<Rectangle> Rooms = new();
             var mouse = Main.MouseWorld.ToTileCoordinates();
             Rooms.Add(new Rectangle(mouse.X, mouse.Y, 16, 8));
             Rooms.Add(new Rectangle(mouse.X - 8, mouse.Y + 8, 16, 8));
@@ -87,7 +87,7 @@ namespace Entrogic.Common.WorldGeneration
             progress.Message = "Enshrining the Immortal Golem";
             ChooseDungeonColor(FindDungeonColor(out short dungeonSide), out BrickType, out WallType, out PlatformStyle); // 选择当前世界地牢搭配的砖块
 
-            List<Point> availablePositions = new List<Point>();
+            List<Point> availablePositions = new();
             progress.Set(0.1f);
             IEnumerable<Point> matches = MatchDungeonBricks(dungeonSide);
             foreach (var pos in matches) {
@@ -131,7 +131,7 @@ namespace Entrogic.Common.WorldGeneration
             for (int i = -3; i <= 0; i++) {
                 for (int j = 0; j <= 6; j++) {
                     var t = Framing.GetTileSafely(origin.X + i, origin.Y + j + 6);
-                    if (t.type == TileID.Spikes) {
+                    if (t.TileType == TileID.Spikes) {
                         t.ClearTile();
                     }
                 }
@@ -186,7 +186,7 @@ namespace Entrogic.Common.WorldGeneration
                 BrickType == TileID.PinkDungeonBrick ? (ushort)ModContent.TileType<PinkSpookyLampTile>() :
                 (ushort)ModContent.TileType<BlueSpookyLampTile>(); // 选择相应台灯样式，默认当然是蓝
             for (int i = 3; i <= length; i += 6) {
-                if (WorldGen.SolidTile(i + orig.X, orig.Y + 3) && Framing.GetTileSafely(i + orig.X + 1, orig.Y).type != TileID.TallGateClosed && Framing.GetTileSafely(i + orig.X - 1, orig.Y).type != TileID.TallGateClosed && Framing.GetTileSafely(i + orig.X, orig.Y).type != TileID.TallGateClosed) { // 地下站立的方块要Solid，不能靠着或代替高门而立
+                if (WorldGen.SolidTile(i + orig.X, orig.Y + 3) && Framing.GetTileSafely(i + orig.X + 1, orig.Y).TileType != TileID.TallGateClosed && Framing.GetTileSafely(i + orig.X - 1, orig.Y).TileType != TileID.TallGateClosed && Framing.GetTileSafely(i + orig.X, orig.Y).TileType != TileID.TallGateClosed) { // 地下站立的方块要Solid，不能靠着或代替高门而立
                     StructureGenHelper.GenerateSpookyLamp(origin + new Point(i, 0), lampType);
                 }
             }
@@ -195,8 +195,8 @@ namespace Entrogic.Common.WorldGeneration
         }
 
         private static void GeneratePlatformFromTexture(Point spawn) {
-            List<Point> platforms = new List<Point>();
-            List<Point> campfires = new List<Point>();
+            List<Point> platforms = new();
+            List<Point> campfires = new();
             for (int y = 0; y < WorldGenSystem.AthanasyPlatform.GetLength(1); y++) {
                 for (int x = 0; x < WorldGenSystem.AthanasyPlatform.GetLength(0); x++) {
                     Color c = WorldGenSystem.AthanasyPlatform[x, y];
@@ -233,7 +233,7 @@ namespace Entrogic.Common.WorldGeneration
         }
 
         private static List<Point> CreateLeftStairsList(Point spawn, byte length) {
-            List<Point> list = new List<Point>();
+            List<Point> list = new();
             for (int i = 0; i <= length; i++) {
                 list.Add(spawn + new Point(-i, -i));
             }
@@ -241,7 +241,7 @@ namespace Entrogic.Common.WorldGeneration
         }
 
         private static List<Point> CreateRightStairsList(Point spawn, byte length) {
-            List<Point> list = new List<Point>();
+            List<Point> list = new();
             for (int i = 0; i <= length; i++) {
                 list.Add(spawn + new Point(i, -i));
             }
@@ -257,7 +257,7 @@ namespace Entrogic.Common.WorldGeneration
                     int l = y + leftTop.Y;
                     if (!WorldGen.InWorld(k, l)) { Main.NewText(leftTop); return false; }
                     Tile tile = Framing.GetTileSafely(k, l);
-                    if (tile.IsActive && Main.tileDungeon[tile.type]) {
+                    if (tile.HasUnactuatedTile && Main.tileDungeon[tile.TileType]) {
                         brickAmount++;
                     }
                     if (brickAmount >= 1000) {
@@ -269,7 +269,7 @@ namespace Entrogic.Common.WorldGeneration
 
         private bool DealWithMatchStructure(Point pos, int[,] matcher) {
             // 为什么是y,x，因为原版Main.tile数组搞反了
-            //Main.NewText(Framing.GetTileSafely(pos.X, pos.Y).IsActive.ToString() + ' ' + Main.tileDungeon[Framing.GetTileSafely(pos.X, pos.Y).type]);
+            //Main.NewText(Framing.GetTileSafely(pos.X, pos.Y).HasUnactuatedTile.ToString() + ' ' + Main.tileDungeon[Framing.GetTileSafely(pos.X, pos.Y).TileType]);
             for (int y = 0; y < matcher.GetLength(0); y++) {
                 for (int x = 0; x < matcher.GetLength(1); x++) {
                     int k = pos.X + x;
@@ -277,13 +277,13 @@ namespace Entrogic.Common.WorldGeneration
                     Tile tile = Framing.GetTileSafely(k, l);
                     switch (matcher[y, x]) {
                         case 0:
-                            if (tile.IsActive || tile.LiquidAmount > 0) return false; // { Main.NewText(x + " " + y); return false; }
+                            if (tile.HasUnactuatedTile || tile.LiquidAmount > 0) return false; // { Main.NewText(x + " " + y); return false; }
                             break;
                         case 1:
-                            if (!Main.tileDungeon[tile.type]) return false; // { Main.NewText(x + " " + y); return false; }
+                            if (!Main.tileDungeon[tile.TileType]) return false; // { Main.NewText(x + " " + y); return false; }
                             break;
                         case 2:
-                            if (tile.type != TileID.Spikes) return false; // { Main.NewText(x + " " + y); return false; }
+                            if (tile.TileType != TileID.Spikes) return false; // { Main.NewText(x + " " + y); return false; }
                             break;
                     }
                 }
@@ -295,7 +295,7 @@ namespace Entrogic.Common.WorldGeneration
             for (int x = Main.maxTilesX / 2; ; x += side) {
                 if (x <= 20 || x >= Main.maxTilesX - 20) break;
                 for (int y = (int)Main.rockLayer; y <= Main.maxTilesY - 200; y++) {
-                    if (Main.tile[x, y].IsActive && Main.tileDungeon[Main.tile[x, y].type])
+                    if (Main.tile[x, y].HasUnactuatedTile && Main.tileDungeon[Main.tile[x, y].TileType])
                         yield return new Point(x, y);
                 }
             }
@@ -305,12 +305,12 @@ namespace Entrogic.Common.WorldGeneration
         private char FindDungeonColor(out short dungeonSide) {
             for (int x = 20; x <= Main.maxTilesX - 20; x++) {
                 for (int y = (int)Main.rockLayer; y <= Main.maxTilesY - 200; y++) {
-                    if (!Main.tile[x, y].IsActive || !Main.tileDungeon[Main.tile[x, y].type]) continue;
+                    if (!Main.tile[x, y].HasUnactuatedTile || !Main.tileDungeon[Main.tile[x, y].TileType]) continue;
 
                     dungeonSide = CheckSide(x);
-                    if (Main.tile[x, y].type == TileID.BlueDungeonBrick) return 'B';
-                    else if (Main.tile[x, y].type == TileID.GreenDungeonBrick) return 'G';
-                    else if (Main.tile[x, y].type == TileID.PinkDungeonBrick) return 'P';
+                    if (Main.tile[x, y].TileType == TileID.BlueDungeonBrick) return 'B';
+                    else if (Main.tile[x, y].TileType == TileID.GreenDungeonBrick) return 'G';
+                    else if (Main.tile[x, y].TileType == TileID.PinkDungeonBrick) return 'P';
                 }
             }
             dungeonSide = 0;

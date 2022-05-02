@@ -1,24 +1,14 @@
-﻿using Entrogic.Common.ModSystems;
-using Entrogic.Content.Items.Elementals;
+﻿using Entrogic.Content.Items.Elementals;
 using Entrogic.Content.NPCs.BaseTypes;
 using Entrogic.Content.Projectiles.Elementals;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
-using Terraria.ID;
-using Terraria.Localization;
-using Terraria.ModLoader;
 
 namespace Entrogic.Content.NPCs.Enemies.Elementals
 {
-    public class EarthElemental : FSM_NPC
+    public class EarthElemental : NPCBase
     {
-        private Rectangle _frame = new Rectangle();
+        private Rectangle _frame = new();
         private short _frameCounter;
         private short _drawOffsetY;
 
@@ -27,7 +17,7 @@ namespace Entrogic.Content.NPCs.Enemies.Elementals
             DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "土元素");
             Main.npcFrameCount[NPC.type] = 8;
 
-            NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
+            NPCID.Sets.NPCBestiaryDrawModifiers value = new(0) { //Influences how the NPC looks in the Bestiary
                 Position = new Vector2(0f, 5f),
                 Scale = 0.9f,
                 PortraitScale = 0.9f
@@ -87,7 +77,7 @@ namespace Entrogic.Content.NPCs.Enemies.Elementals
                         // 第九帧攻击 (也就是此阶段第32帧)
                         if (Timer == 32 && Main.netMode != NetmodeID.MultiplayerClient) {
                             // 来点二分法
-                            Vector2 shootPos = new Vector2(NPC.Center.X, NPC.Center.Y + NPC.height / 2f - 30f);
+                            Vector2 shootPos = new(NPC.Center.X, NPC.Center.Y + NPC.height / 2f - 30f);
                             // min, max和mid都表示射击角度
                             float min = -MathHelper.Pi, max = MathHelper.Pi;
                             float mid = (min + max) * 0.5f;
@@ -112,7 +102,7 @@ namespace Entrogic.Content.NPCs.Enemies.Elementals
                                     min = mid;
                                 }
                             }
-                            Projectile.NewProjectile(NPC.GetProjectileSpawnSource(), shootPos, mid.ToRotationVector2() * 15f, ModContent.ProjectileType<EarthElemental_Proj>(), NPC.damage / 2, 1f, Main.myPlayer);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), shootPos, mid.ToRotationVector2() * 15f, ModContent.ProjectileType<EarthElemental_Proj>(), NPC.damage / 2, 1f, Main.myPlayer);
                             NPC.netUpdate = true;
                         }
                         // 第12帧结束 (4*11=44)
@@ -130,16 +120,16 @@ namespace Entrogic.Content.NPCs.Enemies.Elementals
                         if (Timer == 60) {
                             NPC.TargetClosest();
                             if (player.active) {
-                                List<Point> findTile = new List<Point>();
+                                List<Point> findTile = new();
                                 for (int i = -30; i <= 30; i++) {
                                     for (int j = -30; j <= 30; j++) {
-                                        Point pos = new Point(i + (int)(player.Center.X / 16f), j + (int)(player.Center.Y / 16f));
-                                        if (WorldGen.InWorld(pos.X, pos.Y) && Main.tile[pos.X, pos.Y].IsActive && TileID.Sets.CanBeDugByShovel[Main.tile[pos.X, pos.Y].type]) {
+                                        Point pos = new(i + (int)(player.Center.X / 16f), j + (int)(player.Center.Y / 16f));
+                                        if (WorldGen.InWorld(pos.X, pos.Y) && Main.tile[pos.X, pos.Y].HasUnactuatedTile && TileID.Sets.CanBeDugByShovel[Main.tile[pos.X, pos.Y].TileType]) {
                                             bool rsafe = true;
                                             for (int k = -1; k <= 1; k++) {
                                                 for (int l = -1; l >= -3; l--) {
-                                                    Point posSafe = new Point(k + pos.X, l + pos.Y);
-                                                    if (WorldGen.InWorld(posSafe.X, posSafe.Y) && Main.tile[posSafe.X, posSafe.Y].IsActive && Main.tileSolid[Main.tile[posSafe.X, posSafe.Y].type]) {
+                                                    Point posSafe = new(k + pos.X, l + pos.Y);
+                                                    if (WorldGen.InWorld(posSafe.X, posSafe.Y) && WorldGen.SolidTile(Main.tile[pos.X, pos.Y])) {
                                                         rsafe = false;
                                                     }
                                                 }
@@ -287,7 +277,7 @@ namespace Entrogic.Content.NPCs.Enemies.Elementals
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo) {
-            Player player = spawnInfo.player;
+            Player player = spawnInfo.Player;
             if (ModHelper.NormalSpawn(spawnInfo) && player.ZoneOverworldHeight) {
                 return 0.001f;
             }

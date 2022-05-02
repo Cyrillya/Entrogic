@@ -86,7 +86,7 @@ namespace Entrogic
             proj.localNPCHitCooldown = -1;
         }
 
-        public static void ProjectileExplode(this Projectile projectile, float statRangeX = 22f, float statRangeY = 22f) {
+        public static void ProjectileExplode(this Projectile projectile, IEntitySource source, float statRangeX = 22f, float statRangeY = 22f) {
             SoundEngine.PlaySound(SoundID.Item14, projectile.position);
             projectile.position.X += (float)(projectile.width / 2);
             projectile.position.Y += (float)(projectile.height / 2);
@@ -107,7 +107,7 @@ namespace Entrogic
             }
             for (int i = -1; i <= 1; i += 2) {
                 for (int j = -1; j <= 1; j += 2) {
-                    var g = Gore.NewGoreDirect(new Vector2(projectile.position.X, projectile.position.Y), default(Vector2), Main.rand.Next(61, 64), 1f);
+                    var g = Gore.NewGoreDirect(source, new Vector2(projectile.position.X, projectile.position.Y), default(Vector2), Main.rand.Next(61, 64), 1f);
                     g.velocity *= 0.4f;
                     g.velocity.X += i;
                     g.velocity.Y += j;

@@ -35,12 +35,12 @@ namespace Entrogic.Content.Items.BaseTypes
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips) {
-            TooltipLine line = new TooltipLine(Entrogic.Instance, Entrogic.Instance.Name, BookInfoPlayer.WarnTexts) { overrideColor = Color.Red };
+            TooltipLine line = new(Entrogic.Instance, Entrogic.Instance.Name, BookInfoPlayer.WarnTexts) { OverrideColor = Color.Red };
             if (Main.playerInventory)
                 tooltips.Add(line);
             //if (AEntrogicConfigClient.Instance.ShowUsefulInformations) {
             line = new TooltipLine(Entrogic.Instance, Entrogic.Instance.Name, "总页数：" + PageMax) {
-                overrideColor = Color.Gray
+                OverrideColor = Color.Gray
             };
             tooltips.Add(line);
             //}

@@ -15,7 +15,7 @@
 
         public override void SetDefaults()
         {
-            Item refItem = new Item();
+            Item refItem = new();
             refItem.SetDefaults(ItemID.SoulofSight);
             Item.width = refItem.width;
             Item.height = refItem.height;

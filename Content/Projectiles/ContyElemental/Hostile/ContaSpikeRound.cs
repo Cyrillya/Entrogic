@@ -31,7 +31,7 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Hostile
         public override void AI() {
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
-            Color dustColor = new Color(120, 120, 120);
+            Color dustColor = new(120, 120, 120);
             if (Main.rand.Next(2) == 0)
                 Dust.NewDustDirect(Projectile.position - Projectile.velocity, Projectile.width, Projectile.height, DustID.BlueFairy, 0f, 0f, 0, dustColor, Projectile.scale).noGravity = true;
 

@@ -24,9 +24,9 @@
             Item.UseSound = SoundID.Item39;
             Item.value = Item.sellPrice(0, 1, 50, 0);
         }
-        public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
             if (Main.rand.Next(3) == 0) {
-                int numbersProjectiles = 1 + Main.rand.Next(1); 
+                int numbersProjectiles = 1 + Main.rand.Next(1);
                 for (int i = 0; i < numbersProjectiles; i++) {
                     Vector2 perturbedSpeed = velocity.RotatedByRandom(MathHelper.ToRadians(3));
                     Projectile.NewProjectile(source, position, perturbedSpeed, type, damage, knockback, player.whoAmI);

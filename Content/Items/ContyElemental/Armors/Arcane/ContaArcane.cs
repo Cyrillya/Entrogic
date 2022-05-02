@@ -2,11 +2,13 @@
 using Entrogic.Content.DamageClasses;
 using Entrogic.Content.Items.BaseTypes;
 
-namespace Entrogic.Content.Items.ContyElemental.Armors.Arcane
+namespace Entrogic.Content.Items.ContyElemental.Armors
 {
     [AutoloadEquip(EquipType.Head)]
     public class ContaArcane : Equippable
     {
+        public override string Texture => $"Entrogic/Content/Items/ContyElemental/Armors/Arcane/{Name}";
+
         public override void SetStaticDefaults() {
             base.SetStaticDefaults();
             DisplayName.SetDefault("Domino of Contamination");

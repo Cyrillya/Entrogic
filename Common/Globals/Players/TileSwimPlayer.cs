@@ -15,10 +15,10 @@ namespace Entrogic.Common.Globals.Players
 {
     public class TileSwimPlayer : ModPlayer
     {
-        public List<int> SwimTiles = new List<int>();
+        public List<int> SwimTiles = new();
 
         public override void PreUpdateMovement() {
-            Point posPoint = new Point((int)(Player.position.X / 16f), (int)(Player.position.Y / 16f));
+            Point posPoint = new((int)(Player.position.X / 16f), (int)(Player.position.Y / 16f));
             if (SwimTiles.Count > 0 && WorldGen.InWorld(posPoint.X, posPoint.Y)) {
                 int leftSafeAmount = 0;
                 int rightSafeAmount = 0;
@@ -28,10 +28,10 @@ namespace Entrogic.Common.Globals.Players
                 for (int i = 0; i < 3; i++) {
                     if (WorldGen.InWorld(posPoint.X - 1, posPoint.Y + i)) {
                         Tile t = Main.tile[posPoint.X - 1, posPoint.Y + i];
-                        if (t.IsActive && SwimTiles.Contains(t.type)) {
+                        if (t.HasUnactuatedTile && SwimTiles.Contains(t.TileType)) {
                             leftSafeAmount++;
                         }
-                        if (t.IsActive && !Main.tileSolidTop[t.type] && Main.tileSolid[t.type] && !SwimTiles.Contains(t.type)) {
+                        if (WorldGen.SolidTile(t) && !SwimTiles.Contains(t.TileType)) {
                             leftSafeAmount = 0;
                             break;
                         }
@@ -40,10 +40,10 @@ namespace Entrogic.Common.Globals.Players
                 for (int i = 0; i < 3; i++) {
                     if (WorldGen.InWorld(posPoint.X + 2, posPoint.Y + i)) {
                         Tile t = Main.tile[posPoint.X + 2, posPoint.Y + i];
-                        if (t.IsActive && SwimTiles.Contains(t.type)) {
+                        if (t.HasUnactuatedTile && SwimTiles.Contains(t.TileType)) {
                             rightSafeAmount++;
                         }
-                        if (t.IsActive && !Main.tileSolidTop[t.type] && Main.tileSolid[t.type] && !SwimTiles.Contains(t.type)) {
+                        if (WorldGen.SolidTile(t) && !SwimTiles.Contains(t.TileType)) {
                             rightSafeAmount = 0;
                             break;
                         }
@@ -52,10 +52,10 @@ namespace Entrogic.Common.Globals.Players
                 for (int i = 0; i < 2; i++) {
                     if (WorldGen.InWorld(posPoint.X + i, posPoint.Y + 3)) {
                         Tile t = Main.tile[posPoint.X + i, posPoint.Y + 3];
-                        if (t.IsActive && SwimTiles.Contains(t.type)) {
+                        if (t.HasUnactuatedTile && SwimTiles.Contains(t.TileType)) {
                             downSafeAmount++;
                         }
-                        if (t.IsActive && !Main.tileSolidTop[t.type] && Main.tileSolid[t.type] && !SwimTiles.Contains(t.type)) {
+                        if (WorldGen.SolidTile(t) && !SwimTiles.Contains(t.TileType)) {
                             downSafeAmount = 0;
                             break;
                         }
@@ -65,10 +65,10 @@ namespace Entrogic.Common.Globals.Players
                     for (int j = -1; j < 2; j++) {
                         if (WorldGen.InWorld(posPoint.X + i, posPoint.Y - j)) {
                             Tile t = Main.tile[posPoint.X + i, posPoint.Y - j];
-                            if (t.IsActive && SwimTiles.Contains(t.type)) {
+                            if (t.HasUnactuatedTile && SwimTiles.Contains(t.TileType)) {
                                 upSafeAmount++;
                             }
-                            if (t.IsActive && !Main.tileSolidTop[t.type] && Main.tileSolid[t.type] && !SwimTiles.Contains(t.type)) {
+                            if (WorldGen.SolidTile(t) && !SwimTiles.Contains(t.TileType)) {
                                 upSafeAmount = 0;
                                 break;
                             }

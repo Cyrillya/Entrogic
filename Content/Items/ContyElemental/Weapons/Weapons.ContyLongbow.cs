@@ -14,8 +14,7 @@ namespace Entrogic.Content.Items.ContyElemental.Weapons
 {
     public class ContyLongbow : ItemBase
     {
-        public override void SetStaticDefaults()
-        {
+        public override void SetStaticDefaults() {
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 
             DisplayName.SetDefault("Contamiated Longbow");
@@ -23,8 +22,7 @@ namespace Entrogic.Content.Items.ContyElemental.Weapons
             Tooltip.SetDefault("Turn wooden arrows into corrosive arrows. \n\"Don't forget to wear chemical protective clothing.\"");
             Tooltip.AddTranslation((int)GameCulture.CultureName.Chinese, "把木箭变成腐蚀飞箭。\n“别忘了穿防化服”");
         }
-        public override void SetDefaults()
-        {
+        public override void SetDefaults() {
             Item.damage = 96;
             Item.DamageType = DamageClass.Ranged;
             Item.width = 28;
@@ -47,9 +45,8 @@ namespace Entrogic.Content.Items.ContyElemental.Weapons
             return new Vector2(-6, 0);
         }
 
-        public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-            if (type == ProjectileID.WoodenArrowFriendly)
-            {
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+            if (type == ProjectileID.WoodenArrowFriendly) {
                 type = ProjectileType<CorrosiveArrow>();
             }
             Vector2 vector = player.RotatedRelativePoint(player.MountedCenter, true);
@@ -57,11 +54,9 @@ namespace Entrogic.Content.Items.ContyElemental.Weapons
             float value = 40f;
             float value2 = 110f;
             Vector2 pos = vector + Utils.ToRotationVector2(num) * MathHelper.Lerp(value, value2, Utils.NextFloat(Main.rand));
-            for (int i = 0; i < 50; i++)
-            {
+            for (int i = 0; i < 50; i++) {
                 pos = vector + Utils.ToRotationVector2(num) * MathHelper.Lerp(value, value2, Utils.NextFloat(Main.rand));
-                if (Collision.CanHit(vector, 0, 0, pos + Utils.SafeNormalize(pos - vector, Vector2.UnitX) * 8f, 0, 0))
-                {
+                if (Collision.CanHit(vector, 0, 0, pos + Utils.SafeNormalize(pos - vector, Vector2.UnitX) * 8f, 0, 0)) {
                     break;
                 }
                 num = Utils.NextFloat(Main.rand) * 6.28318548f;
@@ -75,7 +70,7 @@ namespace Entrogic.Content.Items.ContyElemental.Weapons
             float num = 16f;
             int num2 = 0;
             while ((float)num2 < num) {
-                int num3 = MyDustId.White;
+                int num3 = MyDustID.White;
                 Color color = default(Color);
                 if (num2 <= 8) color = Color.Orange;
                 Vector2 vector12 = Vector2.UnitX * 0f;
@@ -85,7 +80,7 @@ namespace Entrogic.Content.Items.ContyElemental.Weapons
                 d.scale = 1.5f;
                 d.noGravity = true;
                 d.position = pos + vector12;
-                d.velocity =  vector12.SafeNormalize(Vector2.UnitY) * 1f;
+                d.velocity = vector12.SafeNormalize(Vector2.UnitY) * 1f;
                 int num4 = num2;
                 num2 = num4 + 1;
             }

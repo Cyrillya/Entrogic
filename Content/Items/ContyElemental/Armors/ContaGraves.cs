@@ -1,9 +1,4 @@
 ﻿using Entrogic.Content.Items.BaseTypes;
-using System;
-
-using Terraria;
-using Terraria.Localization;
-using Terraria.ModLoader;
 
 namespace Entrogic.Content.Items.ContyElemental.Armors
 {

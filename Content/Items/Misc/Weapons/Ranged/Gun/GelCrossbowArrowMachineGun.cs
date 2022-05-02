@@ -2,8 +2,7 @@
 {
     public class GelCrossbowArrowMachineGun : ModItem
     {
-        public override void SetStaticDefaults()
-        {
+        public override void SetStaticDefaults() {
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
             DisplayName.SetDefault("凝胶弩箭机枪");
             Tooltip.SetDefault("“没错，一把射箭的机枪”\n" +
@@ -12,19 +11,18 @@
 
         public override Vector2? HoldoutOffset() => new Vector2(-6, 0);
 
-        public override void SetDefaults()
-        {
+        public override void SetDefaults() {
             Item.channel = true;
             Item.damage = 5;
             Item.DamageType = DamageClass.Ranged;
             Item.useTime = 5;
             Item.useAnimation = 5;
             Item.useStyle = ItemUseStyleID.Shoot;
-            Item.noMelee = true; 
+            Item.noMelee = true;
             Item.knockBack = 4;
             Item.rare = ItemRarityID.LightPurple;
             Item.autoReuse = true;
-            Item.shoot = ProjectileID.PurificationPowder; 
+            Item.shoot = ProjectileID.PurificationPowder;
             Item.shootSpeed = 20f;
             Item.useAmmo = AmmoID.Arrow;
             Item.width = 58;
@@ -34,7 +32,7 @@
             Item.value = Item.sellPrice(0, 1, 0, 0);
         }
 
-        public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
             float rotation = MathHelper.ToRadians(2);
             position += Vector2.Normalize(velocity) * 45f;
             int numbersProjectiles = 1 + Main.rand.Next(3); // [1, 3] shots
@@ -45,8 +43,7 @@
             return false;
         }
 
-        public override void AddRecipes()
-        {
+        public override void AddRecipes() {
             //CreateRecipe()
             //    .AddIngredient(ItemID.IllegalGunParts, 1)
             //    .AddIngredient(ItemID.Gel, 30)

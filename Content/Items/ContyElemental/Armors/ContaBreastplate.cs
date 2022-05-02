@@ -1,7 +1,4 @@
 ﻿using Entrogic.Content.Items.BaseTypes;
-using Terraria;
-using Terraria.Localization;
-using Terraria.ModLoader;
 
 namespace Entrogic.Content.Items.ContyElemental.Armors
 {
@@ -13,8 +10,7 @@ namespace Entrogic.Content.Items.ContyElemental.Armors
             Translation.RegisterTranslation("ArmorSetBonus.ContaminatedSet", GameCulture.CultureName.Chinese, "光环将保护你躲避3次攻击", "The aura will protect you from 3 attacks");
         }
 
-        public override void SetStaticDefaults()
-        {
+        public override void SetStaticDefaults() {
             base.SetStaticDefaults();
             DisplayName.SetDefault("Breastplate of Contamination");
             DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "污染胸甲");

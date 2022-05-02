@@ -10,11 +10,11 @@ namespace Entrogic
 {
     public static partial class ModHelper
     {
-        public static Rectangle GetTileCoordinates(Rectangle rect) => new Rectangle(rect.X << 4, rect.Y << 4, rect.Width << 4, rect.Height << 4);
+        public static Rectangle GetTileCoordinates(Rectangle rect) => new(rect.X << 4, rect.Y << 4, rect.Width << 4, rect.Height << 4);
 
-        public static Rectangle ToTileCoordinates(this Rectangle rect) => new Rectangle(rect.X << 4, rect.Y << 4, rect.Width << 4, rect.Height << 4);
+        public static Rectangle ToTileCoordinates(this Rectangle rect) => new(rect.X << 4, rect.Y << 4, rect.Width << 4, rect.Height << 4);
 
-        public static Rectangle CreateFromVector2(Vector2 vec, float width, float height) => new Rectangle((int)vec.X, (int)vec.Y, (int)width, (int)height);
+        public static Rectangle CreateFromVector2(Vector2 vec, float width, float height) => new((int)vec.X, (int)vec.Y, (int)width, (int)height);
 
         public static Rectangle CreateFromVector2(Vector2 vec, Vector2 size) => CreateFromVector2(vec, size.X, size.Y);
 
@@ -75,7 +75,7 @@ namespace Entrogic
             Vector2 mountedCenter = Main.MouseScreen;
             if (new Rectangle((int)mountedCenter.X, (int)mountedCenter.Y, 0, 0).Intersects(new Rectangle((int)X, (int)Y, Width, Hegith))) {
                 string name = text;
-                Vector2 worldPos = new Vector2(mountedCenter.X + 15, mountedCenter.Y + 15);
+                Vector2 worldPos = new(mountedCenter.X + 15, mountedCenter.Y + 15);
                 Vector2 size = font.MeasureString(name);
                 Vector2 texPos = worldPos + new Vector2(-size.X * 0.5f, name.Length);
                 Main.spriteBatch.DrawString(font, name, new Vector2(texPos.X, texPos.Y), Color.White);

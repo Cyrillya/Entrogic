@@ -34,7 +34,7 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords
             }
         }
         public override void Kill(int timeLeft) {
-            Projectile.ProjectileExplode();
+            Projectile.ProjectileExplode(Projectile.GetSource_Death());
         }
         public override bool PreDraw(ref Color lightColor) {
             Projectile.DrawShadow(lightColor);

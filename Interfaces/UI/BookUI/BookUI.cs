@@ -12,19 +12,19 @@ namespace Entrogic.Interfaces.UI.BookUI
     public class BookUI : UIState
     {
         public UIPanel Book;//新建UI
-        internal static List<BookContent> Contents = new List<BookContent>();
+        internal static List<BookContent> Contents = new();
         internal static Asset<Texture2D> Texture = ResourceManager.BookPanel;
         internal static int MaxPages = 1;
 
         private UIImage bookPanel;
-        private Vector2 bookSize = new Vector2(600f, 480f);
+        private Vector2 bookSize = new(600f, 480f);
         private string _lastBookName = "";
 
-        private Rectangle MouseRect => new Rectangle(Main.mouseX, Main.mouseY, 1, 1);
+        private Rectangle MouseRect => new(Main.mouseX, Main.mouseY, 1, 1);
 
         public override void OnInitialize()
         {
-            Vector2 bookPos = new Vector2((Main.screenWidth - bookSize.X) / 2, (Main.screenHeight - bookSize.Y) / 2);
+            Vector2 bookPos = new((Main.screenWidth - bookSize.X) / 2, (Main.screenHeight - bookSize.Y) / 2);
 
             if (!Main.dedServ)
                 bookPanel = new UIImage(ModContent.Request<Texture2D>($"{ResourceManager.BookAssets}Panel"));
@@ -48,9 +48,9 @@ namespace Entrogic.Interfaces.UI.BookUI
             Player player = Main.LocalPlayer;
             BookInfoPlayer book = player.GetModPlayer<BookInfoPlayer>();
 
-            Vector2 bookPos = new Vector2((Main.screenWidth - bookSize.X) / 2, (Main.screenHeight - bookSize.Y) / 2);
-            Rectangle rectLeft = new Rectangle((int)bookPos.X, (int)(bookPos.Y + bookSize.Y - 117), 72, 117);
-            Rectangle rectRight = new Rectangle((int)(bookPos.X + bookSize.X - 72), (int)(bookPos.Y + bookSize.Y - 117), 72, 117);
+            Vector2 bookPos = new((Main.screenWidth - bookSize.X) / 2, (Main.screenHeight - bookSize.Y) / 2);
+            Rectangle rectLeft = new((int)bookPos.X, (int)(bookPos.Y + bookSize.Y - 117), 72, 117);
+            Rectangle rectRight = new((int)(bookPos.X + bookSize.X - 72), (int)(bookPos.Y + bookSize.Y - 117), 72, 117);
             if (MouseRect.Intersects(rectLeft) && book.CurrentPage > 1)
             {
                 SoundEngine.PlaySound(SoundID.MenuOpen);
@@ -113,7 +113,7 @@ namespace Entrogic.Interfaces.UI.BookUI
                 BookInfoPlayer.ReloadBook(player);
             }
             _lastBookName = player.HeldItem.Name;
-            Vector2 bookPos = new Vector2((Main.screenWidth - bookSize.X) / 2, (Main.screenHeight - bookSize.Y) / 2);
+            Vector2 bookPos = new((Main.screenWidth - bookSize.X) / 2, (Main.screenHeight - bookSize.Y) / 2);
             bookPanel.Left.Pixels = bookPos.X;//UI距离左边
             bookPanel.Top.Pixels = bookPos.Y;//UI距离上面
 
@@ -126,9 +126,9 @@ namespace Entrogic.Interfaces.UI.BookUI
             BookInfoPlayer book = player.GetModPlayer<BookInfoPlayer>();
             base.Draw(spriteBatch);
 
-            Vector2 bookPos = new Vector2((Main.screenWidth - bookSize.X) / 2, (Main.screenHeight - bookSize.Y) / 2);
-            Rectangle rectLeft = new Rectangle((int)bookPos.X, (int)(bookPos.Y + bookSize.Y - 117), 72, 117);
-            Rectangle rectRight = new Rectangle((int)(bookPos.X + bookSize.X - 72), (int)(bookPos.Y + bookSize.Y - 117), 72, 117);
+            Vector2 bookPos = new((Main.screenWidth - bookSize.X) / 2, (Main.screenHeight - bookSize.Y) / 2);
+            Rectangle rectLeft = new((int)bookPos.X, (int)(bookPos.Y + bookSize.Y - 117), 72, 117);
+            Rectangle rectRight = new((int)(bookPos.X + bookSize.X - 72), (int)(bookPos.Y + bookSize.Y - 117), 72, 117);
             if (HookDrawReading.Hook.Invoke(spriteBatch, player.HeldItem, player)) {
                 if (MouseRect.Intersects(rectLeft) && book.CurrentPage > 1) {
                     spriteBatch.Draw(ResourceManager.BookBack.Value, new Vector2(rectLeft.X, rectLeft.Y), null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
@@ -190,8 +190,8 @@ namespace Entrogic.Interfaces.UI.BookUI
         }
         public static List<List<TextSnippet>> WordwrapStringSmart(string text, float scale, Color c, DynamicSpriteFont font, int maxWidth, int maxLines) {
             TextSnippet[] array = ChatManager.ParseMessage(text, c).ToArray();
-            List<List<TextSnippet>> finalList = new List<List<TextSnippet>>();
-            List<TextSnippet> list2 = new List<TextSnippet>();
+            List<List<TextSnippet>> finalList = new();
+            List<TextSnippet> list2 = new();
             for (int i = 0; i < array.Length; i++) {
                 TextSnippet textSnippet = array[i];
                 string[] array2 = textSnippet.Text.Split(new char[]
@@ -293,7 +293,7 @@ namespace Entrogic.Interfaces.UI.BookUI
             return finalList;
         }
 
-        public static readonly List<char> cnPuncs = new List<char>() {
+        public static readonly List<char> cnPuncs = new() {
             '–', '—', '‘', '’', '“', '”',
             '…', '、', '。', '〈', '〉', '《',
             '》', '「', '」', '『', '』', '【',

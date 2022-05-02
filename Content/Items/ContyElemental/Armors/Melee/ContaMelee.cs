@@ -1,18 +1,13 @@
 ﻿using Entrogic.Common.Globals.Players;
-using Entrogic.Common.ModSystems;
 using Entrogic.Content.Items.BaseTypes;
-using System;
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.Localization;
-using Terraria.ModLoader;
-using static Entrogic.SpecialHeadPlayer;
 
-namespace Entrogic.Content.Items.ContyElemental.Armors.Melee
+namespace Entrogic.Content.Items.ContyElemental.Armors
 {
     [AutoloadEquip(EquipType.Head)]
     public class ContaMelee : Equippable
     {
+        public override string Texture => $"Entrogic/Content/Items/ContyElemental/Armors/Melee/{Name}";
+
         public override void SetStaticDefaults() {
             base.SetStaticDefaults();
             DisplayName.SetDefault("Mask of Contamination");

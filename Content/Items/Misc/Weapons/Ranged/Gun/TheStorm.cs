@@ -20,7 +20,7 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
             Item.rare = RarityLevelID.MiddleHM;
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<SnowStormy>();
-            Item.shootSpeed = 15f;
+            Item.shootSpeed = 1.3f;
             Item.useAmmo = AmmoID.Snowball;
             Item.width = 58;
             Item.height = 22;
@@ -33,25 +33,24 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
             base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
-            if (type == ProjectileID.SnowBallFriendly) { type = Item.shoot; damage += 17; }
+            if (type == ProjectileID.SnowBallFriendly) { 
+                type = Item.shoot;
+                damage += 17;
+            }
         }
 
-        public override bool Shoot(Player player, ProjectileSource_Item_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-
-            // 改自Player.cs中的海啸射击源码(1.4.0.5)
-            int arrows = 2;
-            velocity.Normalize();
-            velocity *= 40f;
-            bool flag4 = Collision.CanHit(position, 0, 0, position + velocity, 0, 0);
-            for (int i = 0; i < arrows; i++) {
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+            // 来自海啸源码
+            var offsetVector = new Vector2(velocity.X, velocity.Y);
+            offsetVector.Normalize();
+            offsetVector *= 30f;
+            for (int i = -1; i <= 1; i += 2) {
                 float angleUnit = MathHelper.ToRadians(20f);
-                float degree = (float)i - ((float)arrows - 1f) / 2f;
-                Vector2 offsetVec = velocity.RotatedBy((double)(angleUnit * degree), default(Vector2));
-                if (!flag4) {
-                    offsetVec -= velocity;
+                Vector2 offset = offsetVector.RotatedBy((double)(angleUnit * i));
+                if (!Collision.CanHit(position, 0, 0, position + offsetVector, 0, 0)) {
+                    offset -= offsetVector;
                 }
-                int proj = Projectile.NewProjectile(source, position + offsetVec, velocity, type, damage, knockback, player.whoAmI, 0f, 0f);
-                Main.projectile[proj].noDropItem = true;
+                Projectile.NewProjectile(source, position + offset, velocity, type, damage, knockback, player.whoAmI, 0f, 0f);
             }
             return false;
         }

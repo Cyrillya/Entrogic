@@ -1,11 +1,13 @@
 ﻿using Entrogic.Common.Globals.Players;
 using Entrogic.Content.Items.BaseTypes;
 
-namespace Entrogic.Content.Items.ContyElemental.Armors.Summoner
+namespace Entrogic.Content.Items.ContyElemental.Armors
 {
     [AutoloadEquip(EquipType.Head)]
     public class ContaSummoner : Equippable
     {
+        public override string Texture => $"Entrogic/Content/Items/ContyElemental/Armors/Summoner/{Name}";
+
         public override void SetStaticDefaults() {
             base.SetStaticDefaults();
             DisplayName.SetDefault("Hood of Contamination");

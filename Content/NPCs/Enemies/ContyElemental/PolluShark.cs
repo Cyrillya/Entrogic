@@ -17,7 +17,7 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
             DisplayName.SetDefault("Contaminated Shark");
             DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "污染鲨");
 
-            NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0) { //Influences how the NPC looks in the Bestiary
+            NPCID.Sets.NPCBestiaryDrawModifiers value = new(0) { //Influences how the NPC looks in the Bestiary
                 Velocity = 1f,
                 Position = new Vector2(40, 10),
                 PortraitPositionXOverride = 10,

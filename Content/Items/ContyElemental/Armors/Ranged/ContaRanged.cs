@@ -1,14 +1,13 @@
 ﻿using Entrogic.Common.Globals.Players;
 using Entrogic.Content.Items.BaseTypes;
-using Terraria;
-using Terraria.Localization;
-using Terraria.ModLoader;
 
-namespace Entrogic.Content.Items.ContyElemental.Armors.Ranged
+namespace Entrogic.Content.Items.ContyElemental.Armors
 {
     [AutoloadEquip(EquipType.Head)]
     public class ContaRanged : Equippable
     {
+        public override string Texture => $"Entrogic/Content/Items/ContyElemental/Armors/Ranged/{Name}";
+
         public override void SetStaticDefaults() {
             base.SetStaticDefaults();
 

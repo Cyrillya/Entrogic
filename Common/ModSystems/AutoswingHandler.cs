@@ -1,14 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-
-namespace Entrogic
+﻿namespace Entrogic
 {
     public class AutoswingHandler : ModPlayer
     {
@@ -17,30 +7,20 @@ namespace Entrogic
         public bool allowAutoReuseMelee = false;
         public bool allowAutoReuseRanged = false;
 
-        public override void Load() {
-            base.Load();
-            On.Terraria.Player.TryAllowingItemReuse += Player_TryAllowingItemReuse;
-        }
-
-		private void Player_TryAllowingItemReuse(On.Terraria.Player.orig_TryAllowingItemReuse orig, Player self, Item sItem) {
-            orig(self, sItem);
-
-            if (self.GetModPlayer<AutoswingHandler>().allowAutoReuse) {
-                self.GetModPlayer<AutoswingHandler>().allowAutoReuse = false;
-                self.releaseUseItem = true;
+        public override bool? CanAutoReuseItem(Item item) {
+            if (allowAutoReuse) {
+                return true;
             }
-            if (self.GetModPlayer<AutoswingHandler>().allowAutoReuseWhip && sItem.CountsAsClass(DamageClass.Summon) && ItemID.Sets.SummonerWeaponThatScalesWithAttackSpeed[sItem.type]) {
-                self.GetModPlayer<AutoswingHandler>().allowAutoReuseWhip = false;
-                self.releaseUseItem = true;
+            if (allowAutoReuseWhip && item.CountsAsClass(DamageClass.SummonMeleeSpeed)) {
+                return true;
             }
-            if (self.GetModPlayer<AutoswingHandler>().allowAutoReuseMelee && sItem.CountsAsClass(DamageClass.Melee)) {
-                self.GetModPlayer<AutoswingHandler>().allowAutoReuseMelee = false;
-                self.releaseUseItem = true;
+            if (allowAutoReuseMelee && item.CountsAsClass(DamageClass.Melee)) {
+                return true;
             }
-            if (self.GetModPlayer<AutoswingHandler>().allowAutoReuseRanged && sItem.CountsAsClass(DamageClass.Ranged)) {
-                self.GetModPlayer<AutoswingHandler>().allowAutoReuseRanged = false;
-                self.releaseUseItem = true;
+            if (allowAutoReuseRanged && item.CountsAsClass(DamageClass.Ranged)) {
+                return true;
             }
+            return base.CanAutoReuseItem(item);
         }
     }
 }
