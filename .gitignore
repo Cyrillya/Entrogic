@@ -2,9 +2,4 @@
 # 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
 ################################################################################
 
-/.vs/Entrogic/v16/Server/sqlite3/storage.ide-shm
-/.vs/Entrogic/v16/Server/sqlite3/storage.ide-wal
-/.vs/Entrogic/v16/Server/sqlite3
-/obj
-/.vs/Entrogic
-/bin/Debug/net45
+/Assets/Effects/Microsoft.Xna.Framework.Graphics.dll
