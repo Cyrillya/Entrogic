@@ -1,0 +1,2 @@
+﻿1. 1.4更新ModSoundStyle之后把ContaEffectPlayer.cs里的offSound改回去
+2. 污染套翻译

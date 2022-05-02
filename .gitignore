@@ -3,3 +3,16 @@
 ################################################################################
 
 /Assets/Effects/Microsoft.Xna.Framework.Graphics.dll
+/Assets/Effects/Microsoft.Xna.Framework.Game.dll
+/Assets/Effects/Microsoft.Xna.Framework.dll
+/Assets/Effects/Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll
+/Assets/Effects/Microsoft.Xna.Framework.Content.Pipeline.VideoImporters.dll
+/Assets/Effects/Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll
+/Assets/Effects/Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll
+/Assets/Effects/Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll
+/Assets/Effects/Microsoft.Xna.Framework.Content.Pipeline.dll
+/Assets/Effects/Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.dll
+/Assets/Effects/logfile.txt
+/Assets/Effects/XNBCompiler.exe
+/Assets/Effects/oldStoned.txt
+/bin/Debug/net6.0

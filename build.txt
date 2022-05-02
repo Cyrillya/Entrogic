@@ -1,11 +1,7 @@
-displayName = Entrogic
+displayName = Entrogic 1.4 Update
 author = Cyril and the Dev Team
-version = 4.26.20411
-buildIgnore = .vs\*, Properties\*, *.csproj, *.user, obj\*, bin\*, *.config, .git\*, *.vssettings, Obsolete\*
+version = 1.0
+buildIgnore = .vs\*, Properties\*, *.csproj, *.user, obj\*, bin\*, *.config, .git\*, *.vssettings, Old\*, Interfaces\UI\GUIChat\*
 hideCode = false
 hideResources = false
-<<<<<<< HEAD
-=======
-weakReferences = CalamityMod@1.4.4
->>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
 includePDB = true;

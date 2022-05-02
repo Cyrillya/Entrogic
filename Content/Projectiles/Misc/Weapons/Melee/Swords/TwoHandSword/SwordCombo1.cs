@@ -1,0 +1,90 @@
+﻿using Entrogic.Content.Items.Misc.Weapons.Melee.Swords;
+
+namespace Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords.TwoHandSword
+{
+    internal class TwoHandSword_Proj : TwoHandSwordBase
+    {
+        public override void SetDefaults() {
+            base.SetDefaults();
+            LocalAI_RotateFactor_MAX = 60;
+        }
+
+        public override void Channeling() {
+            base.Channeling();
+
+            Player player = Main.player[Projectile.owner];
+            player.itemRotation = (new Vector2(0.2f * player.direction, -0.8f)).ToRotation() * player.direction;
+            Projectile.rotation = MathHelper.ToRadians(330f - LocalAI_RotateFactor);
+        }
+
+        public override void Unchanneling() {
+            base.Unchanneling();
+            Projectile.rotation += MathHelper.ToRadians(10f);
+        }
+
+        public override void SummonProjectile(out int type, out Vector2 offset, ref int direction, out float damageMult) {
+            base.SummonProjectile(out _, out _, ref direction, out _);
+
+            type = ModContent.ProjectileType<SwordCombo1>();
+            offset = new Vector2(160 * direction, -20);
+            damageMult = MathHelper.Lerp(0.8f, 2f, AI_Charge / AI_CHARGE_MAX);
+        }
+
+        public override void ComboController(Player player) {
+            base.ComboController(player);
+            player.itemRotation = (new Vector2(0.2f * player.direction, 0.8f)).ToRotation() * player.direction;
+
+            player.GetModPlayer<TwoHandSwordPlayer>().ComboMode = 0;
+            player.GetModPlayer<TwoHandSwordPlayer>().ComboTimer = 0;
+            if (AI_Charge == AI_CHARGE_MAX) {
+                player.GetModPlayer<TwoHandSwordPlayer>().ComboMode = 1;
+                player.GetModPlayer<TwoHandSwordPlayer>().ComboTimer = 60;
+            }
+        }
+    }
+    internal class SwordCombo1 : ProjectileBase
+    {
+        public override void SetDefaults() {
+            Projectile.width = 264;
+            Projectile.height = 124;
+            Projectile.aiStyle = -1;
+            Projectile.timeLeft = 18;
+            Projectile.friendly = true;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
+            Projectile.scale = 2.1f;
+            Projectile.ownerHitCheck = true;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 20; // 保证剑气只伤害怪物一次
+
+        }
+
+        public override bool ShouldUpdatePosition() {
+            return false;
+        }
+
+        private float _frame = 1;
+        private Rectangle FindFrame(int height, int width) {
+            if (!Main.player[Projectile.owner].channel) {
+                _frame += 0.33f;
+                if (_frame > 6) _frame = 6;
+            }
+            return new Rectangle(width * (int)((_frame - 1) % 4), height * (int)((_frame - 1) / 4), width, height);
+        }
+
+        public override bool PreDraw(ref Color lightColor) {
+            short frameYCount = 2; short frameXCount = 4;
+            Asset<Texture2D> tex = TextureAssets.Projectile[Type];
+            SpriteEffects spriteEffects = Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+            Main.EntitySpriteDraw(tex.Value, Projectile.position - Main.screenPosition, FindFrame(tex.Height() / frameYCount, tex.Width() / frameXCount), Color.White, 0f, Vector2.Zero, Projectile.scale, spriteEffects, 0);
+
+            //ModHelper.DrawBorderedRect(spriteBatch, new Color(0, 0, 0, 0), Color.Red, (Projectile.Hitbox.Location.ToVector2() - Main.screenPosition).Floor(), Projectile.Hitbox.Size(), 2);
+            return false;
+        }
+
+        public override bool? CanDamage() {
+            return base.CanDamage();
+        }
+    }
+}

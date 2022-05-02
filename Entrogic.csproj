@@ -1,34 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\references\tModLoader.targets" />
+  <Import Project="..\tModLoader.targets" />
   <PropertyGroup>
     <AssemblyName>Entrogic</AssemblyName>
-    <TargetFramework>net45</TargetFramework>
-    <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <TargetFramework>net6.0</TargetFramework>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <Target Name="BuildMod" AfterTargets="Build">
-<<<<<<< HEAD
-    <Exec Command="&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks)" />
-  </Target>
   <ItemGroup>
-    <Compile Remove="Obsolete\**" />
-    <EmbeddedResource Remove="Obsolete\**" />
-    <None Remove="Obsolete\**" />
+    <Compile Remove="Common\Commands\**" />
+    <Compile Remove="Old\**" />
+    <EmbeddedResource Remove="Common\Commands\**" />
+    <EmbeddedResource Remove="Old\**" />
+    <None Remove="Common\Commands\**" />
+    <None Remove="Old\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
-  </ItemGroup>
-  <ItemGroup>
-=======
-    <Exec Command="&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)" />
-  </Target>
-  <ItemGroup>
-    <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
-    <Reference Include="CalamityMod">
-      <HintPath>..\..\references\mods\CalamityMod_v1.4.4.4.dll</HintPath>
-    </Reference>
->>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
-    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 </Project>

@@ -1,53 +1,32 @@
 {
   "format": 1,
   "restore": {
-<<<<<<< HEAD
-    "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Entrogic\\Entrogic.csproj": {}
+    "F:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\Entrogic\\Entrogic.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Entrogic\\Entrogic.csproj": {
+    "F:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\Entrogic\\Entrogic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Entrogic\\Entrogic.csproj",
+        "projectUniqueName": "F:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\Entrogic\\Entrogic.csproj",
         "projectName": "Entrogic",
-        "projectPath": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Entrogic\\Entrogic.csproj",
+        "projectPath": "F:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\Entrogic\\Entrogic.csproj",
         "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Beta\\Mod Sources\\Entrogic\\obj\\",
+        "outputPath": "F:\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\Entrogic\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-=======
-    "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj": {}
-  },
-  "projects": {
-    "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj",
-        "projectName": "Entrogic",
-        "projectPath": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\Entrogic.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Administrator\\Documents\\My Games\\Terraria\\ModLoader\\Mod Sources\\Entrogic\\obj\\",
-        "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
-        ],
-        "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
->>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
         ],
         "originalTargetFrameworks": [
-          "net45"
+          "net6.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net45": {
+          "net6.0": {
+            "targetAlias": "net6.0",
             "projectReferences": {}
           }
         },
@@ -58,18 +37,30 @@
         }
       },
       "frameworks": {
-        "net45": {
+        "net6.0": {
+          "targetAlias": "net6.0",
           "dependencies": {
             "tModLoader.CodeAssist": {
               "target": "Package",
               "version": "[0.1.*, )"
             }
           },
-<<<<<<< HEAD
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
-=======
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
->>>>>>> cce2d304a6401d54e5264babee0ed98d0c73ee96
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
