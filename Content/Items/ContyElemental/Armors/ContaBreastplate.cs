@@ -14,8 +14,8 @@ namespace Entrogic.Content.Items.ContyElemental.Armors
             base.SetStaticDefaults();
             DisplayName.SetDefault("Breastplate of Contamination");
             DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "污染胸甲");
-            Tooltip.SetDefault("Increases length of invincibility after taking damage. (Cannot stack with the effects of the Cross Necklace and its derivatives)");
-            Tooltip.AddTranslation((int)GameCulture.CultureName.Chinese, "受伤后增加无敌状态时间。（与十字项链及其衍生品效果不叠加）");
+            Tooltip.SetDefault("Increases length of invincibility after taking damage\nCannot stack with the effects of the Cross Necklace and its derivatives");
+            Tooltip.AddTranslation((int)GameCulture.CultureName.Chinese, "受伤后增加无敌状态时间\n与十字项链及其衍生品效果不叠加");
             ArmorIDs.Body.Sets.HidesArms[Item.bodySlot] = false;
             ArmorIDs.Body.Sets.HidesHands[Item.bodySlot] = false;
         }

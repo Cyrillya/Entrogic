@@ -14,13 +14,20 @@
 
         public sealed override void SetStaticDefaults() {
             // 自动翻译
-            DisplayName.SetDefault(($"{{$Mods.I.CommonItemName.TreasureBag}} ({Lang.GetNPCName(BossBagNPC)})"));
+            DisplayName.SetDefault("{$Mods.Entrogic.CommonItemName.TreasureBag}");
             Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}");
 
             ItemID.Sets.PreHardmodeLikeBossBag[Type] = PreHardmode;
             ItemID.Sets.BossBag[Type] = true;
 
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3; // 旅途模式
+        }
+
+        public override void ModifyTooltips(List<TooltipLine> tooltips) {
+            TooltipLine tt = tooltips.FirstOrDefault(x => x.Name == "ItemName" && x.Mod == "Terraria");
+            if (tt is not null) {
+                tt.Text += $" ({Lang.GetNPCNameValue(BossBagNPC)})";
+            }
         }
 
         public sealed override void SetDefaults() {

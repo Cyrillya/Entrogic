@@ -1,25 +1,22 @@
-﻿namespace Entrogic
+﻿using System.Linq;
+
+namespace Entrogic
 {
     public class AutoswingHandler : ModPlayer
     {
-        public bool allowAutoReuse = false;
-        public bool allowAutoReuseWhip = false;
-        public bool allowAutoReuseMelee = false;
-        public bool allowAutoReuseRanged = false;
+        public List<DamageClass> AllowAutoSwing = new List<DamageClass>();
+
+        public override void ResetEffects() {
+            AllowAutoSwing = new();
+        }
+
+        public override void UpdateDead() {
+            AllowAutoSwing = new();
+        }
 
         public override bool? CanAutoReuseItem(Item item) {
-            if (allowAutoReuse) {
+            foreach (var c in from a in AllowAutoSwing where item.CountsAsClass(a) select a)
                 return true;
-            }
-            if (allowAutoReuseWhip && item.CountsAsClass(DamageClass.SummonMeleeSpeed)) {
-                return true;
-            }
-            if (allowAutoReuseMelee && item.CountsAsClass(DamageClass.Melee)) {
-                return true;
-            }
-            if (allowAutoReuseRanged && item.CountsAsClass(DamageClass.Ranged)) {
-                return true;
-            }
             return base.CanAutoReuseItem(item);
         }
     }

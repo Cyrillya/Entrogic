@@ -37,7 +37,7 @@ namespace Entrogic.Content.Items.ContyElemental.Armors
             CritChanceModify(DamageClass.Magic, 8);
             DamageModify(DamageClass.Magic, .13f);
 
-            armorSetExtra = $"{Language.GetTextValue("Mods.Entrogic.ArmorSetBonus.ContaminatedSet")}";
+            ArmorSetExtraTip = Language.GetTextValue("Mods.Entrogic.ArmorSetBonus.ContaminatedSet");
             if (inArmorSet) player.GetModPlayer<ContaEffectPlayer>().enable = true;
         }
     }

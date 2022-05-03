@@ -1,5 +1,7 @@
 ﻿Mods: {
 	Entrogic: {
-		CommonItemName.TreasureBag: Treasure Bag
+		CommonItemName: {
+			TreasureBag: Treasure Bag
+		}
 	}
 }

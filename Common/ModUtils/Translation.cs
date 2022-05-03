@@ -38,7 +38,7 @@
         internal static ModTranslation GetOrCreateTranslation(string key) {
             key = key.Replace(" ", "_");
             if (!translations.TryGetValue(key, out ModTranslation value)) {
-                return LocalizationLoader.CreateTranslation(key);
+                return LocalizationLoader.CreateTranslation(Entrogic.Instance, key);
             }
 
             return value;

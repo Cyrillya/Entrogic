@@ -1,11 +1,4 @@
-﻿using Entrogic.Content.DamageClasses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Entrogic.Common.Globals.GlobalItems
+﻿namespace Entrogic.Common.Globals.GlobalProjectiles
 {
     internal class ArcaneGlobalProjectile : GlobalProjectile
     {

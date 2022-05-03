@@ -32,8 +32,8 @@ namespace Entrogic.Content.Items.ContyElemental.Armors
             DamageModify(DamageClass.Ranged, .12f);
             CritChanceModify(DamageClass.Ranged, 12);
 
-            armorSetExtra = $"{Language.GetTextValue("Mods.Entrogic.ArmorSetBonus.ContaminatedSet")}";
-            armorSetDamages.autoSwingRanged = true;
+            ArmorSetExtraTip = Language.GetTextValue("Mods.Entrogic.ArmorSetBonus.ContaminatedSet");
+            AutoSwingModify(DamageClass.Ranged, true);
             if (inArmorSet) player.GetModPlayer<ContaEffectPlayer>().enable = true;
         }
     }

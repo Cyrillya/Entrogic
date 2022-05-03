@@ -28,16 +28,19 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Friendly
 
             var screenCenter = Main.screenPosition + Main.ScreenSize.ToVector2() / 2f;
             var screenSize = Main.ScreenSize.ToVector2() / Main.GameViewMatrix.Zoom;
+            if (Main.LocalPlayer.gravDir == -1) {
+                screenSize.Y = -screenSize.Y;
+            }
             var screenPos = screenCenter - screenSize / 2f;
 
             // 把所有的点都生成出来，按照顺序
             for (int i = 1; i < oldCenter.Count; ++i) {
                 //if (Projectile.oldPos[i] == Vector2.Zero) break;
-				//Main.NewText(Projectile.oldPos[i]);
-				//Main.EntitySpriteDraw(terraria.GameContent.TextureAssets.MagicPixel.Value, Projectile.oldPos[i] - Main.screenPosition,
-				//	new Rectangle(0, 0, 1, 1), Color.White, 0f, new Vector2(0.5f, 0.5f), 5f, SpriteEffects.None, 0f);
+                //Main.NewText(Projectile.oldPos[i]);
+                //Main.EntitySpriteDraw(terraria.GameContent.TextureAssets.MagicPixel.Value, Projectile.oldPos[i] - Main.screenPosition,
+                //	new Rectangle(0, 0, 1, 1), Color.White, 0f, new Vector2(0.5f, 0.5f), 5f, SpriteEffects.None, 0f);
 
-				int width = 60;
+                int width = 60;
                 var normalDir = oldCenter[i - 1] - oldCenter[i];
                 normalDir = Vector2.Normalize(new Vector2(-normalDir.Y, normalDir.X)); // 转换（单元化+PixelShader坐标系）
 
@@ -53,46 +56,46 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Friendly
 
             if (bars.Count > 2) {
 
-				// 按照顺序连接三角形
-				triangleList.Add(bars[0]);
-				var vertex = new CustomVertexInfo((bars[0].Position + bars[1].Position) * 0.5f + Vector2.Normalize(Projectile.velocity) * 30, Color.White,
-					new Vector3(0, 0.5f, 1));
-				triangleList.Add(bars[1]);
-				triangleList.Add(vertex);
-				for (int i = 0; i < bars.Count - 2; i += 2) {
-					// 这是一个四边形 [i] [i+2] [i+1] [i+3]
-					triangleList.Add(bars[i]);
-					triangleList.Add(bars[i + 2]);
-					triangleList.Add(bars[i + 1]);
+                // 按照顺序连接三角形
+                triangleList.Add(bars[0]);
+                var vertex = new CustomVertexInfo((bars[0].Position + bars[1].Position) * 0.5f + Vector2.Normalize(Projectile.velocity) * 30, Color.White,
+                    new Vector3(0, 0.5f, 1));
+                triangleList.Add(bars[1]);
+                triangleList.Add(vertex);
+                for (int i = 0; i < bars.Count - 2; i += 2) {
+                    // 这是一个四边形 [i] [i+2] [i+1] [i+3]
+                    triangleList.Add(bars[i]);
+                    triangleList.Add(bars[i + 2]);
+                    triangleList.Add(bars[i + 1]);
 
-					triangleList.Add(bars[i + 1]);
-					triangleList.Add(bars[i + 2]);
-					triangleList.Add(bars[i + 3]);
-				}
-				//var sides = 36f;
-				//var color = new Color(0.4f, 0.4f, 0.4f, 0.8f);
-				//for (int i = 0; i < sides; i++) {
-				//	var basic = MathHelper.TwoPi + 64f;
-				//	float rotat = basic / sides * i;
-				//	float rotat2 = basic / sides * (i + 1);
+                    triangleList.Add(bars[i + 1]);
+                    triangleList.Add(bars[i + 2]);
+                    triangleList.Add(bars[i + 3]);
+                }
+                //var sides = 36f;
+                //var color = new Color(0.4f, 0.4f, 0.4f, 0.8f);
+                //for (int i = 0; i < sides; i++) {
+                //	var basic = MathHelper.TwoPi + 64f;
+                //	float rotat = basic / sides * i;
+                //	float rotat2 = basic / sides * (i + 1);
 
-				//	var factor = i / (float)sides; // 遍历时以0-1递增
-				//	var w = MathHelper.Lerp(1f, 0.05f, factor); // 把factor转换为1-0.05 （?） 这个是透明度
+                //	var factor = i / (float)sides; // 遍历时以0-1递增
+                //	var w = MathHelper.Lerp(1f, 0.05f, factor); // 把factor转换为1-0.05 （?） 这个是透明度
 
-				//	var r1vertex1 = new CustomVertexInfo(screenCenter + rotat.ToRotationVector2() * 180f, color, new Vector3((float)Math.Sqrt(factor), 1, w));
-				//	var r1vertex2 = new CustomVertexInfo(screenCenter + rotat2.ToRotationVector2() * 180f, color, new Vector3((float)Math.Sqrt(factor), 0, w));
-				//	var r2vertex1 = new CustomVertexInfo(screenCenter + rotat.ToRotationVector2() * 150f, color, new Vector3((float)Math.Sqrt(factor), 0, w));
-				//	var r2vertex2 = new CustomVertexInfo(screenCenter + rotat2.ToRotationVector2() * 150f, color, new Vector3((float)Math.Sqrt(factor), 1, w));
-				//	triangleList.Add(r1vertex1);
-				//	triangleList.Add(r1vertex2);
-				//	triangleList.Add(r2vertex1);
+                //	var r1vertex1 = new CustomVertexInfo(screenCenter + rotat.ToRotationVector2() * 180f, color, new Vector3((float)Math.Sqrt(factor), 1, w));
+                //	var r1vertex2 = new CustomVertexInfo(screenCenter + rotat2.ToRotationVector2() * 180f, color, new Vector3((float)Math.Sqrt(factor), 0, w));
+                //	var r2vertex1 = new CustomVertexInfo(screenCenter + rotat.ToRotationVector2() * 150f, color, new Vector3((float)Math.Sqrt(factor), 0, w));
+                //	var r2vertex2 = new CustomVertexInfo(screenCenter + rotat2.ToRotationVector2() * 150f, color, new Vector3((float)Math.Sqrt(factor), 1, w));
+                //	triangleList.Add(r1vertex1);
+                //	triangleList.Add(r1vertex2);
+                //	triangleList.Add(r2vertex1);
 
-				//	triangleList.Add(r1vertex2);
-				//	triangleList.Add(r2vertex1);
-				//	triangleList.Add(r2vertex2);
-				//}
+                //	triangleList.Add(r1vertex2);
+                //	triangleList.Add(r2vertex1);
+                //	triangleList.Add(r2vertex2);
+                //}
 
-				Main.spriteBatch.End();
+                Main.spriteBatch.End();
                 Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
                 RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                 // 干掉注释掉就可以只显示三角形栅格
@@ -130,43 +133,14 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Friendly
             }
         }
 
-
-        // 自定义顶点数据结构，注意这个结构体里面的顺序需要和shader里面的数据相同
-        private struct CustomVertexInfo : IVertexType
-        {
-            private static VertexDeclaration _vertexDeclaration = new(new VertexElement[3]
-            {
-                new VertexElement(0, VertexElementFormat.Vector2, VertexElementUsage.Position, 0),
-                new VertexElement(8, VertexElementFormat.Color, VertexElementUsage.Color, 0),
-                new VertexElement(12, VertexElementFormat.Vector3, VertexElementUsage.TextureCoordinate, 0)
-            });
-            public Vector2 Position;
-            public Color Color;
-            public Vector3 TexCoord;
-
-            public CustomVertexInfo(Vector2 position, Color color, Vector3 texCoord) {
-                Position = position;
-                Color = color;
-                TexCoord = texCoord;
-            }
-
-            public VertexDeclaration VertexDeclaration {
-                get {
-                    return _vertexDeclaration;
-                }
-            }
-        }
-
-        private void Resize(int newWidth, int newHeight)
-        {
+        private void Resize(int newWidth, int newHeight) {
             Projectile.position = Projectile.Center;
             Projectile.width = newWidth;
             Projectile.height = newHeight;
             Projectile.Center = Projectile.position;
         }
 
-        public override void Kill(int timeLeft)
-        {
+        public override void Kill(int timeLeft) {
             SoundEngine.PlaySound(SoundID.NPCDeath3, Projectile.Center);
 
             // 烈焰火鞭的代码
@@ -178,8 +152,7 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Friendly
             Resize(width3, height3);
             SoundEngine.PlaySound(SoundID.Item10, Projectile.position);
             Vector2 target5 = Projectile.Center;
-            for (int num27 = 0; num27 < Projectile.oldPos.Length; num27++)
-            {
+            for (int num27 = 0; num27 < Projectile.oldPos.Length; num27++) {
                 Vector2 vector5 = Projectile.oldPos[num27];
                 if (vector5 == Vector2.Zero)
                     break;
@@ -196,10 +169,8 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Friendly
 
                 Vector2 value4 = vector5.DirectionTo(target5).SafeNormalize(Vector2.Zero);
                 target5 = vector5;
-                for (float num30 = 0f; num30 < (float)num28; num30++)
-                {
-                    if (Main.rand.Next(3) == 0)
-                    {
+                for (float num30 = 0f; num30 < (float)num28; num30++) {
+                    if (Main.rand.Next(3) == 0) {
                         int num31 = Dust.NewDust(vector5, Projectile.width, Projectile.height, DustID.RainbowMk2, 0f, 0f, 0, newColor3);
                         Dust dust = Main.dust[num31];
                         dust.velocity *= Main.rand.NextFloat() * 0.8f;
@@ -210,8 +181,7 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Friendly
                         dust.velocity += value4 * 8f;
                         dust = Main.dust[num31];
                         dust.scale *= num29;
-                        if (num31 != 6000)
-                        {
+                        if (num31 != 6000) {
                             Dust dust9 = Dust.CloneDust(num31);
                             dust = dust9;
                             dust.scale /= 2f;
@@ -220,12 +190,10 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Friendly
                             dust9.color = new Color(255, 255, 255, 255);
                         }
                     }
-                    else
-                    {
+                    else {
                         Dust dust10 = Dust.NewDustDirect(vector5, Projectile.width, Projectile.height, DustID.IceTorch, (0f - Projectile.velocity.X) * 0.2f, (0f - Projectile.velocity.Y) * 0.2f, 100);
                         Dust dust;
-                        if (Main.rand.Next(2) == 0)
-                        {
+                        if (Main.rand.Next(2) == 0) {
                             dust10.noGravity = true;
                             dust = dust10;
                             dust.scale *= 2.5f;
@@ -242,8 +210,7 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Friendly
                 }
             }
 
-            for (int num32 = 0; num32 < 20; num32++)
-            {
+            for (int num32 = 0; num32 < 20; num32++) {
                 Dust dust11 = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.IceTorch, (0f - Projectile.velocity.X) * 0.2f, (0f - Projectile.velocity.Y) * 0.2f, 100);
                 dust11.noGravity = true;
                 dust11.velocity = Main.rand.NextVector2Circular(1f, 1f) * 6f;

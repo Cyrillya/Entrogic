@@ -15,19 +15,15 @@ namespace Entrogic.Content.Items.Misc.Weapons.Melee.Swords
             Item.damage = 24;
             Item.width = 30;
             Item.height = 30;
-            Item.useTime = 6;
-            Item.useAnimation = 6;
-            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.useTime = 36;
+            Item.useAnimation = 36;
+            Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 3;
+            Item.scale = 2f;
             Item.value = Item.sellPrice(gold: 3);
             Item.rare = RarityLevelID.LatePHM;
             Item.UseSound = SoundID.Item1;
             Item.autoReuse = true;
-            Item.useTurn = true;
-            Item.channel = true;
-            Item.shoot = ModContent.ProjectileType<SmeltDaggerProjectile>();
-            Item.shootSpeed = 20f;
-            Item.noUseGraphic = true;
         }
 
         public override void AddRecipes() => CreateRecipe()

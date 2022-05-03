@@ -1,6 +1,7 @@
 ﻿global using Entrogic.Common.ModSystems;
 global using Entrogic.Common.Netcodes;
 global using Entrogic.Common.Statics;
+global using Entrogic.Content.DamageClasses;
 global using Entrogic.Content.Projectiles.BaseTypes;
 global using Microsoft.Xna.Framework;
 global using Microsoft.Xna.Framework.Graphics;
@@ -9,6 +10,7 @@ global using ReLogic.Graphics;
 global using System;
 global using System.Collections.Generic;
 global using System.IO;
+global using System.Linq;
 global using Terraria;
 global using Terraria.DataStructures;
 global using Terraria.GameContent;

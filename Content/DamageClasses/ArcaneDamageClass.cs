@@ -2,9 +2,13 @@
 {
     public class ArcaneDamageClass : DamageClass
     {
+        public static string ClassOnlyNameKey;
+        public static string DisplayClassName => Language.GetTextValue(ClassOnlyNameKey);
+
         public override void SetStaticDefaults() {
             ClassName.SetDefault("arcane damage");
             ClassName.AddTranslation((int)GameCulture.CultureName.Chinese, "奥术伤害");
+            ClassOnlyNameKey = Translation.RegisterTranslation("ClassOnlyName", GameCulture.CultureName.Chinese, "奥术", "arcane");
         }
 
         public override StatInheritanceData GetModifierInheritance(DamageClass damageClass) {

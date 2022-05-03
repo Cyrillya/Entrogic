@@ -32,8 +32,8 @@ namespace Entrogic.Content.Items.ContyElemental.Armors
             DamageModify(DamageClass.Melee, .11f);
             CritChanceModify(DamageClass.Melee, 12);
 
-            armorSetExtra = $"\n{Language.GetTextValue("Mods.Entrogic.ArmorSetBonus.ContaminatedSet")}";
-            armorSetDamages.meleeSpeedMultiplier = 0.4f;
+            ArmorSetExtraTip = Language.GetTextValue("Mods.Entrogic.ArmorSetBonus.ContaminatedSet");
+            SpeedModify(DamageClass.Melee, .4f, true);
             if (inArmorSet) player.GetModPlayer<ContaEffectPlayer>().enable = true;
         }
     }

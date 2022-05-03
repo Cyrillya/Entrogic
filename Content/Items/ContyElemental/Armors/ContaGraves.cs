@@ -24,7 +24,7 @@ namespace Entrogic.Content.Items.ContyElemental.Armors
             base.SetBonus(player, inArmorSet);
 
             DamageModify(DamageClass.Generic, .04f);
-            equipDamages.moveSpeedMuiltpiler = .16f;
+            EquipBenefits.MoveSpeedMuiltpiler = .16f;
         }
     }
 }

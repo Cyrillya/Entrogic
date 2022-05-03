@@ -30,13 +30,13 @@ namespace Entrogic.Content.Items.ContyElemental.Armors
             base.SetBonus(player, inArmorSet);
 
             DamageModify(DamageClass.Summon, .09f);
-            equipDamages.minionCapacityAdditive = 2;
-            equipDamages.whipRangeMultiplier = .25f;
+            EquipBenefits.MinionCapacityAdditive = 2;
+            EquipBenefits.WhipRangeMultiplier = .25f;
 
-            armorSetExtra = $"\n{Language.GetTextValue("Mods.Entrogic.ArmorSetBonus.ContaminatedSet")}";
-            armorSetDamages.whipRangeMultiplier = .25f;
-            armorSetDamages.whipSpeedMultiplier = .40f;
-            armorSetDamages.autoSwingWhip = true;
+            ArmorSetExtraTip = Language.GetTextValue("Mods.Entrogic.ArmorSetBonus.ContaminatedSet");
+            ArmorSetBenefits.WhipRangeMultiplier = .25f;
+            SpeedModify(DamageClass.SummonMeleeSpeed, .40f, true);
+            AutoSwingModify(DamageClass.SummonMeleeSpeed, true);
             if (inArmorSet) player.GetModPlayer<ContaEffectPlayer>().enable = true;
         }
     }

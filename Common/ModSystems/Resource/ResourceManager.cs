@@ -17,6 +17,11 @@
         internal static Asset<Texture2D> TrailMainColor;
         internal static Asset<Texture2D> TrailMainShape;
         internal static Asset<Texture2D> TrailMaskColor;
+        internal static Asset<Effect> BladeTrail;
+        internal static Asset<Texture2D> Heatmap;
+        internal static Asset<Texture2D> BladeTrailShape1;
+        internal static Asset<Texture2D> BladeTrailShape2;
+        internal static Asset<Texture2D> BladeTrailErosion;
 
         internal static Asset<Effect> Stoned;
         internal static Asset<Texture2D> StonedImage;
@@ -82,6 +87,11 @@
             TrailMainColor = ModContent.Request<Texture2D>($"{Trailling}Cyromap");
             TrailMainShape = ModContent.Request<Texture2D>($"{Trailling}Extra_197");
             TrailMaskColor = ModContent.Request<Texture2D>($"{Trailling}Extra_196");
+            BladeTrail = ModContent.Request<Effect>($"{EffectBase}BladeTrail");
+            Heatmap = ModContent.Request<Texture2D>($"{Trailling}Heatmap");
+            BladeTrailShape1 = ModContent.Request<Texture2D>($"{Trailling}BladeTrailShape1");
+            BladeTrailShape2 = ModContent.Request<Texture2D>($"{Trailling}BladeTrailShape2");
+            BladeTrailErosion = ModContent.Request<Texture2D>($"{Trailling}Extra_193");
         }
     }
 }
