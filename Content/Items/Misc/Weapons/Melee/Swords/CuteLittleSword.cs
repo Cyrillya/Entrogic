@@ -13,19 +13,20 @@ namespace Entrogic.Content.Items.Misc.Weapons.Melee.Swords
             Item.damage = 51;
             Item.width = 34;
             Item.height = 34;
-            Item.useTime = 6;
-            Item.useAnimation = 6;
-            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.useTime = 14;
+            Item.useAnimation = 14;
+            Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 4;
             Item.value = Item.sellPrice(0, 1, 50);
             Item.rare = RarityLevelID.EarlyHM;
             Item.autoReuse = false;
-            Item.channel = true;
-            Item.useTurn = true;
             Item.shoot = ModContent.ProjectileType<CuteBlade>();
             Item.shootSpeed = 20f;
             Item.noUseGraphic = true;
             Item.DamageType = DamageClass.Melee;
+            Item.noMelee = true;
+            Item.noUseGraphic = true;
+            Item.scale = 1.2f;
         }
 
         public override void AddRecipes() => CreateRecipe()

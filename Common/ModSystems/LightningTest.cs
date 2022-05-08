@@ -133,7 +133,7 @@ namespace Entrogic.Common.ModSystems
 
 						ResourceManager.Trail.Value.Parameters["uTransform"].SetValue(model * projection);
 						ResourceManager.Trail.Value.Parameters["uTime"].SetValue(-(float)Main.gameTimeCache.TotalGameTime.TotalMilliseconds % 30000 * 0.003f);
-						Main.instance.GraphicsDevice.Textures[0] = ResourceManager.TrailMainColor.Value;
+						Main.instance.GraphicsDevice.Textures[0] = ResourceManager.Cyromap.Value;
 						Main.instance.GraphicsDevice.Textures[1] = ResourceManager.TrailMainShape.Value;
 						Main.instance.GraphicsDevice.Textures[2] = ResourceManager.TrailMaskColor.Value;
 						Main.instance.GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;

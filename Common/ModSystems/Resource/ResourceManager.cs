@@ -14,7 +14,8 @@
         internal const string Blank = Images + "Blank";
 
         internal static Asset<Effect> Trail;
-        internal static Asset<Texture2D> TrailMainColor;
+        internal static Asset<Texture2D> Cyromap;
+        internal static Asset<Texture2D> Cyromap2;
         internal static Asset<Texture2D> TrailMainShape;
         internal static Asset<Texture2D> TrailMaskColor;
         internal static Asset<Effect> BladeTrail;
@@ -84,7 +85,8 @@
 
         private static void SetupTrailing() {
             Trail = ModContent.Request<Effect>($"{EffectBase}Trail");
-            TrailMainColor = ModContent.Request<Texture2D>($"{Trailling}Cyromap");
+            Cyromap = ModContent.Request<Texture2D>($"{Trailling}Cyromap");
+            Cyromap2 = ModContent.Request<Texture2D>($"{Trailling}Cyromap2");
             TrailMainShape = ModContent.Request<Texture2D>($"{Trailling}Extra_197");
             TrailMaskColor = ModContent.Request<Texture2D>($"{Trailling}Extra_196");
             BladeTrail = ModContent.Request<Effect>($"{EffectBase}BladeTrail");

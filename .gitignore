@@ -2,6 +2,7 @@
 # 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
 ################################################################################
 
+/.vs/Entrogic
 /Assets/Effects/Microsoft.Xna.Framework.Graphics.dll
 /Assets/Effects/Microsoft.Xna.Framework.Game.dll
 /Assets/Effects/Microsoft.Xna.Framework.dll
@@ -16,3 +17,4 @@
 /Assets/Effects/XNBCompiler.exe
 /Assets/Effects/oldStoned.txt
 /bin/Debug/net6.0
+/obj

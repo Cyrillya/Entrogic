@@ -4,6 +4,7 @@ sampler uImage2 : register(s2);
 
 float4x4 uTransform;
 float uTime;
+int uDetectMode;
 
 
 struct VSInput
@@ -34,8 +35,17 @@ float4 PixelShaderFunction(PSInput input) : COLOR0
     float4 c1 = tex2D(uImage1, float2(coord.x, coord.y));
     float4 c3 = tex2D(uImage2, float2(y, coord.y));
     c1 *= c3;
-    float4 c = tex2D(uImage0, float2(c1.r, 0));
-    if (c.r < 0.1f)
+    float detectColor = c1.r;
+    if (uDetectMode == 1)
+    {
+        detectColor = c1.g;
+    }
+    if (uDetectMode == 2)
+    {
+        detectColor = c1.b;
+    }
+    float4 c = tex2D(uImage0, float2(detectColor, 0));
+    if (detectColor < 0.1f)
         return float4(0, 0, 0, 0);
     return 2 * c * coord.z;
 
