@@ -1,0 +1,55 @@
+﻿Mods: {
+	Entrogic: {
+		ItemName: {
+			Galekylin: "烈风麒麟"
+			GodStaff: "方形法杖"
+			ChaosAccelerator: "混沌加速器"
+			ChaosSword: "复合意志"
+			CorruCloudStaff: "腐雷法杖"
+			IceBreaker: "碎冰机"
+			BurningWoodenSword: "燃烧木剑"
+			CastIronBar: "铸铁锭"
+			CastIronFlail: "铸铁连弩"
+			SoulOfPure: "纯净之魂"
+			CuteWidget: "可爱小部件"
+			CuteLittleStaff: "可爱小杖"
+			CuteLittleSword: "可爱小剑"
+			CuteLittleBow: "可爱小弓"
+			CuteLittleHammer: "可爱小锤"
+			CuteLittlePickaxeAxe: "可爱小镐斧"
+			EarthElementalAffinityAgent: "土元素亲和剂"
+			Halle: "哈雷"
+			RustySword: "生锈的长剑"
+			CastIronSword: "铸铁重剑"
+			SmeltDagger: "熔炼匕首"
+
+			# Mushrooooms
+			GrassMushroom: "草蘑菇"
+			Fungus: "木耳"
+			Ganoderma: "灵芝"
+			Flammulina: "金针菇"
+			Boletus: "牛肝菌"
+			LactariusEdulis: "绒边乳菇"
+			UmbrellaMushroom: "伞菇"
+			Twinshroom: "双生菇"
+			ToxiclessMushroom: "无毒蘑菇"
+			Voidshroom: "相位蘑菇"
+			Shiitake: "香菇"
+		}
+		ItemTooltip: {
+			MagicPotion: "不要喝掉它"
+			BurningWoodenSword: "“十分的烫手”\n点燃你的敌人"
+			Decompiler: "发射出二进制弹幕, 伤害显示为二进制(仅供视觉效果, 非实际伤害)\n“并不会给你的电脑注入病毒”"
+			Halle: "猩空中的浪子"
+			CuteWidget: "[c/7BFFFF:好可爱的简介！awsl]"
+			CuteLittleStaff: "[c/7BFFFF:嗯..挥起来很快，所以释放法术自然也快]"
+			CuteLittleSword: "[c/7BFFFF:轻盈小巧的一把短剑]\n[c/7BFFFF:使用时可以格挡部分伤害]"
+			CuteLittleBow: "[c/7BFFFF:精致的小弓，用起来格外顺手]\n[c/7BFFFF:“独特的射击风格”]"
+			FuSword: "这把刀可以驱散所有邪恶"
+			EarthElementalAffinityAgent: "给予你行走在泥土中的能力"
+			RustySword: "造成流血\n“一把十分古老的剑，它锈迹斑斑”"
+			CastIronSword: "给予你的敌人致命一击\n“沉重，但是挥起来却十分轻巧”"
+			SmeltDagger: "近战速度越快伤害越高\n可使敌人充分燃烧\n“新鲜出炉”"
+		}
+	}
+}

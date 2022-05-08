@@ -3,5 +3,80 @@
 		CommonItemName: {
 			TreasureBag: Treasure Bag
 		}
+		ItemName: {
+			# Volutio's Items
+			VolutioMask: 凝胶共生体面具
+			GelAnkh: 凝胶安卡
+			GelCultureFlask: 强活性凝胶培养瓶
+			GelOfLife: 生命凝胶
+			GelCrossbowArrowMachineGun: 凝胶弩箭机枪
+
+			# Athanasy's Items
+			TitansOrder: 巨神的旨意
+			AthanasyMask: 衰落魔像面具
+			RockShotgun: 岩石猎枪
+			RockSpear: 巨石长枪
+			EyeofImmortal: 衰落之眼
+			AthanasyTrophy: 衰落魔像纪念章
+
+			# Contamination Elemental's Items
+			BottleofStorm: 瓶中风暴
+			ContaminatedLiquor: 污染水源
+			SoulofContamination: 污染之魂
+			ContaminatedLongbow: 污痕长弓
+			ContaminatedCurrent: 污秽洋流
+			WaterElementalStaff: 水元素召唤杖
+			PollutionElementalMask: 污染之灵头套
+			CrownofContamination: 污染之冠
+			HelmetofContamination: 污染头盔
+			HeadgearofContamination: 污染头饰
+			MaskofContamination: 污染面具
+			GreavesofContamination: 污染护胫
+			BreastplateofContamination: 污染胸甲
+
+			# Cards
+			ArcaneMissle: 奥术飞弹
+			Fireball: 火球术
+			BetrayerofDarkFlame: 暗焰术
+			Dragoul: 龙魂
+			FlameofPineapple: 焰之菠萝术
+			GelofMimicry: 拟态凝胶
+			InnerRage: 怒火中烧
+			MagicalExplosion: 魔力爆发
+			PerpetuumMobileoftheFifthKind: 第五类永动机
+			TheWalkingDead: 行尸走肉
+			UndeadGrudge: 亡灵之怨
+			Worldflipper: 颠倒世界
+			Sprint: 疾跑
+			AstralImpact: 星陨冲击
+			NoviceCardPack: 新手卡包
+			DemonCovenant: 恶魔契约
+			Foresight: 远见
+			OverallFreeze: 整体冰冻
+			EnergyRecovery: 精力恢复
+			Funeral: 陪葬品
+			Strengthen: 加强
+			SpreadPlague: 散播瘟疫
+			RandomCard: 随机卡牌
+			Glove: 手套
+			BoneGlove: 骨质手套
+			MagicGatling: 魔法加特林
+			CryptTreasure: 地穴的秘宝
+			LuckyCoin: 幸运币
+			StaticWatch: 静止怀表
+
+			# Mushrooooms
+			GrassMushroom: 草蘑菇
+			Fungus: 木耳
+			Ganoderma: 灵芝
+			Flammulina: 金针菇
+			Boletus: 牛肝菌
+			LactariusEdulis: 绒边乳菇
+			UmbrellaMushroom: 伞菇
+			Twinshroom: 双生菇
+			ToxiclessMushroom: 无毒蘑菇
+			Voidshroom: 相位蘑菇
+			Shiitake: 香菇
+		}
 	}
 }

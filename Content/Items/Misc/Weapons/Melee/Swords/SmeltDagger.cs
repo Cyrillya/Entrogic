@@ -8,19 +8,17 @@ namespace Entrogic.Content.Items.Misc.Weapons.Melee.Swords
         public override void SetStaticDefaults() {
             ItemID.Sets.SkipsInitialUseSound[Type] = true;
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-            Tooltip.SetDefault("“新鲜出炉”\n" +
-                "有可能会有点软化");
         }
 
         public override void SetDefaults() {
-            Item.damage = 143;
+            Item.damage = 43;
             Item.width = 30;
             Item.height = 30;
-            Item.useTime = 20;
-            Item.useAnimation = 20;
+            Item.useTime = 28;
+            Item.useAnimation = 28;
             Item.useStyle = ItemUseStyleID.Swing;
-            Item.knockBack = 3;
-            Item.scale = 2.2f;
+            Item.knockBack = 1f;
+            Item.scale = 2.4f;
             Item.value = Item.sellPrice(gold: 3);
             Item.rare = RarityLevelID.LatePHM;
             Item.UseSound = SoundID.Item1;
@@ -45,6 +43,12 @@ namespace Entrogic.Content.Items.Misc.Weapons.Melee.Swords
                 return flag;
             }
             return orig.Invoke(self, pre);
+        }
+
+        // 根据攻速提升的伤害
+        public override void ModifyWeaponDamage(Player player, ref StatModifier damage) {
+            damage *= (float)Math.Sqrt(player.GetAttackSpeed(DamageClass.Melee));
+            base.ModifyWeaponDamage(player, ref damage);
         }
 
         public override void AddRecipes() => CreateRecipe()

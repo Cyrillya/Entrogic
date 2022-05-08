@@ -1,6 +1,5 @@
 ﻿using Terraria.Audio;
 using Terraria.Enums;
-using Terraria.ID;
 
 namespace Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords
 {
@@ -79,7 +78,12 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords
                 case 1: {
                         // 挥剑实际时长
                         float swingTimer = timeToAttackOut - finalTime - readyTime;
-                        float factor = Timer / swingTimer;
+                        // +1防止切换到最终阶段时旋转速度脱节导致刀光拉出去一块
+                        float factor = Timer / (swingTimer + 1);
+                        if (player.itemAnimationMax <= 10) {
+                            // 攻速过快选择直接干烂最终阶段，所以这里不+1
+                            factor = Timer / swingTimer;
+                        }
                         float degree = MathHelper.Lerp(startDegree, finalDegree, factor);
                         Projectile.rotation = StartRotation + MathHelper.ToRadians(degree);
                         if (Timer >= swingTimer) {
@@ -125,7 +129,7 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords
 
             // 加点粒子
             if (Stage == 1)
-                for (float r = 0f; r <= 1f; r += 0.3f) { // 平滑角度
+                for (float r = 0f; r <= 1f; r += 0.5f) { // 平滑角度
                     for (float i = 0.4f; i <= 1f; i += 0.2f) { // 向内延申粒子
                         if (Projectile.oldRot[0] == 114514 || Projectile.oldRot[1] == 114514) { // 无旋转角度
                             return;
@@ -295,8 +299,6 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords
             }
             drawRotation += MathHelper.ToRadians(45f);
 
-            var triangle = PrepareTriangleList(sourceRect);
-
             if (Timer == 1f && Stage == 0) { // 前一帧先不绘制
                 return false;
             }
@@ -305,8 +307,13 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
 
+            var triangle = PrepareTriangleList(sourceRect);
+
             if (triangle.Count > 2) {
                 DrawTrail(triangle);
+                // 重启spriteBatch以重置shader
+                Main.spriteBatch.End();
+                Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
             }
 
             Main.EntitySpriteDraw(tex, position, sourceRect, Color.OrangeRed, drawRotation, origin, Projectile.scale, SpriteEffects.None, 0);
