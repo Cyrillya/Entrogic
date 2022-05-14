@@ -11,11 +11,11 @@ namespace Entrogic.Content.Items.Misc.Weapons.Melee.Swords
         }
 
         public override void SetDefaults() {
-            Item.damage = 43;
+            Item.damage = 33;
             Item.width = 30;
             Item.height = 30;
-            Item.useTime = 28;
-            Item.useAnimation = 28;
+            Item.useTime = 26;
+            Item.useAnimation = 26;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.knockBack = 1f;
             Item.scale = 2.4f;

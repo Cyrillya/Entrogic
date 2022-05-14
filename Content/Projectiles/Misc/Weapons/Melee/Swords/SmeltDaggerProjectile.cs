@@ -3,34 +3,35 @@
     public class SmeltDaggerProjectile : BladeProjectile
     {
         public override void SelectTrailTextures(out Texture2D mainColor, out Texture2D mainShape, out Texture2D maskColor) {
-            base.SelectTrailTextures(out _, out mainShape, out maskColor);
             mainColor = ResourceManager.Heatmap.Value;
+            mainShape = ResourceManager.BladeTrailShape3.Value;
+            maskColor = ResourceManager.BladeTrailCover.Value;
         }
 
         public override void SetDefaults() {
             TrailColor = Color.Red;
             StartDegree = -120;
-            FinalDegree = 100;
+            FinalDegree = 110;
             ReadyDegree = 10;
-            EndDegree = 10;
-            ReadyTimePercent = 0.3f;
-            FinalTimePercent = 0.3f;
+            EndDegree = 2;
+            ReadyTimePercent = 0.4f;
+            FinalTimePercent = 0.4f;
             base.SetDefaults();
         }
 
         public override void PostSwingAI() {
-            // 加点粒子
             Player player = Main.player[Projectile.owner];
+            // 加点粒子
             if (Stage == 1)
                 for (float r = 0f; r <= 1f; r += 0.5f) { // 平滑角度
                     for (float i = 0.4f; i <= 1f; i += 0.2f) { // 向内延申粒子
-                        if (Projectile.oldRot[0] == 114514 || Projectile.oldRot[1] == 114514) { // 无旋转角度
+                        if (Projectile.rotation == 114514 || Projectile.oldRot[0] == 114514) { // 无旋转角度
                             return;
                         }
 
                         int length = (int)(Projectile.Size.Length() * Projectile.scale * i);
-                        float radiansPassed = Projectile.oldRot[0] - Projectile.oldRot[1];
-                        float radians = radiansPassed * r + Projectile.oldRot[1];
+                        float radiansPassed = Projectile.rotation - Projectile.oldRot[0];
+                        float radians = radiansPassed * r + Projectile.oldRot[0];
 
                         var pos = Projectile.Center + radians.ToRotationVector2() * length;
                         var velocity = (radians + MathHelper.ToRadians(90f) * player.direction * player.gravDir).ToRotationVector2() * 18f;
@@ -46,8 +47,8 @@
         }
 
         public override void GetBladeDrawStats(ref Color lightColor, out Color bladeColor, out BlendState blendState) {
-            bladeColor = Color.OrangeRed;
-            blendState = BlendState.Additive;
+            bladeColor = new Color(255, 228, 92);
+            blendState = BlendState.AlphaBlend;
         }
 
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit) => target.AddBuff(BuffID.OnFire3, 180);

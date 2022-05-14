@@ -22,6 +22,8 @@
         internal static Asset<Texture2D> Heatmap;
         internal static Asset<Texture2D> BladeTrailShape1;
         internal static Asset<Texture2D> BladeTrailShape2;
+        internal static Asset<Texture2D> BladeTrailShape3;
+        internal static Asset<Texture2D> BladeTrailCover;
         internal static Asset<Texture2D> BladeTrailErosion;
 
         internal static Asset<Effect> Stoned;
@@ -93,6 +95,8 @@
             Heatmap = ModContent.Request<Texture2D>($"{Trailling}Heatmap");
             BladeTrailShape1 = ModContent.Request<Texture2D>($"{Trailling}BladeTrailShape1");
             BladeTrailShape2 = ModContent.Request<Texture2D>($"{Trailling}BladeTrailShape2");
+            BladeTrailShape3 = ModContent.Request<Texture2D>($"{Trailling}BladeTrailShape3");
+            BladeTrailCover = ModContent.Request<Texture2D>($"{Trailling}BladeTrailCover");
             BladeTrailErosion = ModContent.Request<Texture2D>($"{Trailling}Extra_193");
         }
     }
