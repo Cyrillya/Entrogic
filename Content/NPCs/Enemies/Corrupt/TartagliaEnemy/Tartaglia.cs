@@ -64,15 +64,17 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
             Glowstick
         }
 
+
+        internal int RocketSoundDelay;
         internal const int RocketMaxTime = 60;
-        internal float Timer { get => NPC.ai[0]; set => NPC.ai[0] = value; }
-        internal int RocketTimer { get => (int)NPC.ai[1]; set => NPC.ai[1] = value; }
-        internal int ShootTimer { get => (int)NPC.ai[2]; set => NPC.ai[2] = value; }
-        internal float ShootRotation { get => NPC.ai[3]; set => NPC.ai[3] = value; }
-        internal float PathfindingTimer { get => NPC.localAI[0]; set => NPC.localAI[0] = value; }
-        internal float WeaponAniTimer { get => NPC.localAI[1]; set => NPC.localAI[1] = value; }
-        internal int WeaponType { get => (int)NPC.localAI[2]; set => NPC.localAI[2] = value; }
-        internal int TeleportTimer { get => (int)NPC.localAI[3]; set => NPC.localAI[3] = value; }
+        internal ref float Timer => ref NPC.ai[0];
+        internal ref float RocketTimer => ref NPC.ai[1];
+        internal ref float ShootTimer => ref NPC.ai[2];
+        internal ref float ShootRotation => ref NPC.ai[3];
+        internal ref float PathfindingTimer => ref NPC.localAI[0];
+        internal ref float WeaponAniTimer => ref NPC.localAI[1];
+        internal ref float WeaponType => ref NPC.localAI[2];
+        internal ref float TeleportTimer => ref NPC.localAI[3];
         internal List<Vertex> path = new();
 
         private Player player => Main.player[NPC.target];
@@ -149,7 +151,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                     // 喝药水的流的粒子
                     for (int i = 0; i < 12; i++) {
                         var drinkOffset = new Vector2(7 * NPC.spriteDirection - 3, -10);
-                        var d = Dust.NewDustDirect(NPC.Center + drinkOffset, 6, 6, 284, newColor: new Color(169, 83, 170));
+                        var d = Dust.NewDustDirect(NPC.Center + drinkOffset, 6, 6, DustID.FoodPiece, newColor: new Color(169, 83, 170));
                         d.velocity.X *= 0.1f;
                         d.velocity.Y *= 0.5f;
                     }
@@ -172,7 +174,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                     // 喝药水的流的粒子
                     for (int i = 0; i < 12; i++) {
                         var drinkOffset = new Vector2(7 * NPC.spriteDirection - 3, -10);
-                        var d = Dust.NewDustDirect(NPC.Center + drinkOffset, 6, 6, 284, newColor: new Color(169, 83, 170));
+                        var d = Dust.NewDustDirect(NPC.Center + drinkOffset, 6, 6, DustID.FoodPiece, newColor: new Color(169, 83, 170));
                         d.velocity.X *= 0.1f;
                         d.velocity.Y *= 0.5f;
                     }
@@ -180,7 +182,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                 if (TeleportTimer == 215) {
                     SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
                     for (int i = 0; i < 30; i++) {
-                        var d = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, 284, 0, 0, 200, new Color(169, 83, 170), 1.5f);
+                        var d = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.FoodPiece, 0, 0, 200, new Color(169, 83, 170), 1.5f);
                         d.noGravity = true;
                         d.velocity.X *= 1.5f;
                     }
@@ -250,7 +252,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                     // 喝药水的流的粒子
                     for (int i = 0; i < 12; i++) {
                         var drinkOffset = new Vector2(7 * NPC.spriteDirection - 3, -10);
-                        var d = Dust.NewDustDirect(NPC.Center + drinkOffset, 6, 6, 284, newColor: new Color(169, 83, 170));
+                        var d = Dust.NewDustDirect(NPC.Center + drinkOffset, 6, 6, DustID.FoodPiece, newColor: new Color(169, 83, 170));
                         d.velocity.X *= 0.1f;
                         d.velocity.Y *= 0.5f;
                     }
@@ -437,7 +439,13 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
             // 激活火箭靴后用火箭靴，玩家在下方且可以打到就不用了
             if (RocketTimer > 0 && (targetCenter.Y + 28 - NPC.Bottom.Y <= 20f || !Collision.CanHitLine(NPC.position, NPC.width, NPC.height, targetCenter - new Vector2(20, 28), player.width, player.height))) {
                 // 火箭靴声音和粒子
-                SoundEngine.PlaySound(SoundID.Item24.SoundId, (int)NPC.Bottom.X, (int)NPC.Bottom.Y, SoundID.Item24.Style, SoundID.Item24.Volume * 0.16f, SoundID.Item24.GetRandomPitch());
+                if (RocketSoundDelay <= 0) {
+                    RocketSoundDelay = 15;
+                    SoundEngine.PlaySound(SoundID.Item24, NPC.Bottom); // 另一种是Item13
+                }
+                else {
+                    RocketSoundDelay = 30;
+                }
                 RocketBootVisuals();
 
                 int tileWallHigh = WallHeightCount(2);
@@ -523,13 +531,13 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
             teleportTarget.X *= num55;
             teleportTarget.Y *= num55;
             for (int i = 0; i < 30; i++) {
-                var d = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, 284, teleportTarget.X, teleportTarget.Y, 200, new Color(169, 83, 170), 1.5f);
+                var d = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.FoodPiece, teleportTarget.X, teleportTarget.Y, 200, new Color(169, 83, 170), 1.5f);
                 d.noGravity = true;
                 d.velocity.X *= 1.5f;
             }
 
             for (int i = 0; i < 30; i++) {
-                var d = Dust.NewDustDirect(NPCOldPos - NPC.Size / 2f, NPC.width, NPC.height, 284, 0f - teleportTarget.X, 0f - teleportTarget.Y, 200, new Color(169, 83, 170), 2f);
+                var d = Dust.NewDustDirect(NPCOldPos - NPC.Size / 2f, NPC.width, NPC.height, DustID.FoodPiece, 0f - teleportTarget.X, 0f - teleportTarget.Y, 200, new Color(169, 83, 170), 2f);
                 d.noGravity = true;
                 d.velocity.X *= 1.5f;
             }

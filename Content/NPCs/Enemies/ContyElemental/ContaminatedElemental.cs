@@ -339,7 +339,7 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
                             NPC.direction = NPC.Center.X > player.Center.X ? -1 : 1;
                             NPC.spriteDirection = NPC.direction;
                             NPC.velocity.X = NPC.direction * 24;
-                            SoundEngine.PlaySound(SoundID.ForceRoar, (int)NPC.position.X, (int)NPC.position.Y, -1, 1f, 0f);
+                            SoundEngine.PlaySound(SoundID.ForceRoarPitched, NPC.position);
                         }
                         if ((Timer - 25) % 5 == 0) {
                             Shooting(0, NPC.Center, player.Center, 0f, 20f);

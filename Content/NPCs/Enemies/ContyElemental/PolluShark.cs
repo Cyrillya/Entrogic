@@ -55,7 +55,7 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
         {
             if (NPC.ai[0] == 0)
             {
-                Terraria.Audio.SoundEngine.PlaySound(SoundID.NPCKilled, (int)NPC.Center.X, (int)NPC.Center.Y, 19);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.NPCDeath19, NPC.Center);
                 NPC.ai[0]++;
                 NPC.velocity.Y = NPC.ai[2];
                 NPC.velocity.X = NPC.ai[3];
@@ -70,7 +70,7 @@ namespace Entrogic.Content.NPCs.Enemies.ContyElemental
             NPC.velocity.Y += 0.32f;
             if (Collision.SolidCollision(NPC.position, NPC.width, NPC.height))
             {
-                Terraria.Audio.SoundEngine.PlaySound(SoundID.NPCKilled, (int)NPC.position.X, (int)NPC.position.Y, 19);
+                Terraria.Audio.SoundEngine.PlaySound(SoundID.NPCDeath19, NPC.position);
                 NPC.life = 0;
                 NPC.HitEffect(0, 10.0);
                 NPC.active = false;

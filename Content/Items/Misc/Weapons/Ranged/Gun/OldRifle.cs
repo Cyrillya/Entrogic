@@ -29,8 +29,8 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
             c.EmitDelegate<Func<bool, Player, Item, bool>>((returnValue, player, item) => {
                 if (item.type == Type) { // 仅在物品是老步枪时进行修改
                     if (player.itemAnimation == 8) { // 老步枪特性
-                        if (item.UseSound != null) // 这时候才播放声音
-                            SoundEngine.PlaySound(item.UseSound, player.Center);
+                        if (item.UseSound.HasValue) // 这时候才播放声音
+                            SoundEngine.PlaySound(item.UseSound.Value, player.Center);
                         return true;
                     }
                     else if (!Main.dedServ && Main.myPlayer == player.whoAmI && player.itemAnimation > 8) {

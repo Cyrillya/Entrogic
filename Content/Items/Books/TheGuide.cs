@@ -1,6 +1,7 @@
-﻿using Entrogic.Content.Items.BaseTypes;
+﻿using Entrogic.Common.Hooks.Items;
+using Entrogic.Content.Items.BaseTypes;
 using Entrogic.Content.Items.Misc.Materials;
-using Entrogic.Interfaces.UI.BookUI;
+using Entrogic.Interfaces.UIElements;
 
 namespace Entrogic.Content.Items.Books
 {
@@ -16,8 +17,7 @@ namespace Entrogic.Content.Items.Books
             PageMax = 2;
 		}
 
-		public override void ModifyBookContent(Player player, int page, ref List<BookContent> contents) {
-			base.ModifyBookContent(player, page, ref contents);
+		public override void ModifyBookPageContent(Player player, int page, ref List<BookContent> contents) {
             contents.Clear();
             switch (page) {
                 case 1: {

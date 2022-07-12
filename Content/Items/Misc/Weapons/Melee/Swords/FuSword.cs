@@ -26,7 +26,8 @@
                 if (npc.boss)
                     return;
             Vector2 knockBackSpeed = Vector2.Zero;
-            Terraria.Audio.SoundEngine.PlaySound(target.HitSound, target.position);
+            if (target.HitSound.HasValue)
+                Terraria.Audio.SoundEngine.PlaySound(target.HitSound.Value, target.position);
             if (target.type == NPCID.TargetDummy)
                 return;
             for (int i = 0; i < 20; i++) {

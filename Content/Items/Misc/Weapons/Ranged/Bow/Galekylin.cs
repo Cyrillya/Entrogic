@@ -1,3 +1,4 @@
+﻿using Terraria;
 namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Bow
 {
     public class Galekylin : ModItem
@@ -38,7 +39,7 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Bow
                 .Register();
         }
 
-        public override bool CanConsumeAmmo(Player player) => Main.rand.NextFloat() >= .33f;
+        public override bool CanConsumeAmmo(Item ammo, Player player) => Main.rand.NextFloat() >= .33f;
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
             Projectile.NewProjectile(source, position, velocity, ProjectileID.DD2PhoenixBowShot, 250, knockback, player.whoAmI);

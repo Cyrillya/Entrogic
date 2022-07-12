@@ -1,13 +1,13 @@
 ﻿using Entrogic.Common.Globals.Players;
 using Entrogic.Common.Hooks.Items;
 using Entrogic.Content.Items.BaseTypes;
-using System.Linq;
+using Entrogic.Interfaces.UIElements;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
 using Terraria.UI.Chat;
 
-namespace Entrogic.Interfaces.UI.BookUI
+namespace Entrogic.Interfaces.GUI
 {
     public class BookUI : UIState
     {
@@ -22,8 +22,7 @@ namespace Entrogic.Interfaces.UI.BookUI
 
         private Rectangle MouseRect => new(Main.mouseX, Main.mouseY, 1, 1);
 
-        public override void OnInitialize()
-        {
+        public override void OnInitialize() {
             Vector2 bookPos = new((Main.screenWidth - bookSize.X) / 2, (Main.screenHeight - bookSize.Y) / 2);
 
             if (!Main.dedServ)
@@ -31,7 +30,7 @@ namespace Entrogic.Interfaces.UI.BookUI
             bookPanel.Left.Set(bookPos.X, 0f); // UI距离左边
             bookPanel.Top.Set(bookPos.Y, 0f); // UI距离上面
             bookPanel.OnClick += new MouseEvent(Clicked); // 尝试换页
-            bookPanel.OnRightClick += new MouseEvent((UIMouseEvent evt, UIElement listeningElement) => CloseBook(Main.LocalPlayer.GetModPlayer<BookInfoPlayer>())); // 右键关闭书籍
+            bookPanel.OnRightClick += new MouseEvent((evt, listeningElement) => CloseBook(Main.LocalPlayer.GetModPlayer<BookInfoPlayer>())); // 右键关闭书籍
             bookPanel.Width.Set(bookSize.X, 0f); // UI的宽
             bookPanel.Height.Set(bookSize.Y, 0f); // UI的高
             Append(bookPanel); // 添加UI
@@ -41,27 +40,24 @@ namespace Entrogic.Interfaces.UI.BookUI
             Texture = null;
             bookPanel = null;
             Contents.Clear();
-		}
+        }
 
-        private void Clicked(UIMouseEvent evt, UIElement listeningElement)
-        {
+        private void Clicked(UIMouseEvent evt, UIElement listeningElement) {
             Player player = Main.LocalPlayer;
             BookInfoPlayer book = player.GetModPlayer<BookInfoPlayer>();
 
             Vector2 bookPos = new((Main.screenWidth - bookSize.X) / 2, (Main.screenHeight - bookSize.Y) / 2);
             Rectangle rectLeft = new((int)bookPos.X, (int)(bookPos.Y + bookSize.Y - 117), 72, 117);
             Rectangle rectRight = new((int)(bookPos.X + bookSize.X - 72), (int)(bookPos.Y + bookSize.Y - 117), 72, 117);
-            if (MouseRect.Intersects(rectLeft) && book.CurrentPage > 1)
-            {
+            if (MouseRect.Intersects(rectLeft) && book.CurrentPage > 1) {
                 SoundEngine.PlaySound(SoundID.MenuOpen);
                 book.CurrentPage -= 1;
                 SendInfo(Main.LocalPlayer);
             }
             int MaxPage = 1;
             if (player.HeldItem?.ModItem is ItemBook)
-                    MaxPage = (player.HeldItem?.ModItem as ItemBook).PageMax;
-            if (MouseRect.Intersects(rectRight) && book.CurrentPage < MaxPage)
-            {
+                MaxPage = (player.HeldItem?.ModItem as ItemBook).PageMax;
+            if (MouseRect.Intersects(rectRight) && book.CurrentPage < MaxPage) {
                 SoundEngine.PlaySound(SoundID.MenuOpen);
                 book.CurrentPage += 1;
                 SendInfo(Main.LocalPlayer);
@@ -75,8 +71,8 @@ namespace Entrogic.Interfaces.UI.BookUI
             // 若并非书籍则不会执行本方法，故无需判断
             book.BookName = item.Name;
             Texture = ResourceManager.BookPanel;
-            HookModifyBookContent.Hook.Invoke(item.Item, player, ref Contents);
-            HookModifyBookPanel.Hook.Invoke(item.Item, player, ref Texture);
+            IModifyBookContent.Invoke(item.Item, player, ref Contents);
+            IModifyBookPanel.Invoke(item.Item, player, ref Texture);
             bookPanel.SetImage(Texture);
             MaxPages = (player.HeldItem?.ModItem as ItemBook).PageMax;
             if (book.CurrentPage > MaxPages)
@@ -94,8 +90,7 @@ namespace Entrogic.Interfaces.UI.BookUI
             ModNetHandler.BookInfo.SendPage(-1, plr.whoAmI, (byte)plr.whoAmI, book.CurrentPage, book.IsReading);
         }
 
-        public override void Update(GameTime gameTime)
-        {
+        public override void Update(GameTime gameTime) {
             base.Update(gameTime);
 
             if (new Rectangle((int)bookPanel.Left.Pixels, (int)bookPanel.Top.Pixels, (int)bookSize.X, (int)bookSize.Y).Intersects(MouseRect)) {
@@ -104,8 +99,7 @@ namespace Entrogic.Interfaces.UI.BookUI
 
             var player = Main.LocalPlayer;
             var book = player.GetModPlayer<BookInfoPlayer>();
-            if (Main.playerInventory || player.HeldItem?.IsAir == true || !(player.HeldItem?.ModItem is ItemBook))
-            {
+            if (Main.playerInventory || player.HeldItem?.IsAir == true || !(player.HeldItem?.ModItem is ItemBook)) {
                 CloseBook(book);
                 return;
             }
@@ -120,8 +114,7 @@ namespace Entrogic.Interfaces.UI.BookUI
             UpdatePageInfos();
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
+        public override void Draw(SpriteBatch spriteBatch) {
             Player player = Main.LocalPlayer;
             BookInfoPlayer book = player.GetModPlayer<BookInfoPlayer>();
             base.Draw(spriteBatch);
@@ -129,7 +122,7 @@ namespace Entrogic.Interfaces.UI.BookUI
             Vector2 bookPos = new((Main.screenWidth - bookSize.X) / 2, (Main.screenHeight - bookSize.Y) / 2);
             Rectangle rectLeft = new((int)bookPos.X, (int)(bookPos.Y + bookSize.Y - 117), 72, 117);
             Rectangle rectRight = new((int)(bookPos.X + bookSize.X - 72), (int)(bookPos.Y + bookSize.Y - 117), 72, 117);
-            if (HookDrawReading.Hook.Invoke(spriteBatch, player.HeldItem, player)) {
+            if (IDrawReading.Invoke(spriteBatch, player.HeldItem, player)) {
                 if (MouseRect.Intersects(rectLeft) && book.CurrentPage > 1) {
                     spriteBatch.Draw(ResourceManager.BookBack.Value, new Vector2(rectLeft.X, rectLeft.Y), null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
                 }
@@ -216,7 +209,7 @@ namespace Entrogic.Interfaces.UI.BookUI
                         //float stringLength2 = ChatManager.GetStringSize(font, " ", Vector2.One).X;
                         //float stringLength3 = ChatManager.GetStringSize(font, "1", Vector2.One).X;
 
-                        if (stringLength + usedWidth > (float)maxWidth) {
+                        if (stringLength + usedWidth > maxWidth) {
                             int num2 = maxWidth - (int)usedWidth;
                             if (usedWidth > 0f) {
                                 num2 -= 16;
@@ -301,7 +294,7 @@ namespace Entrogic.Interfaces.UI.BookUI
             '，', '．', '：', '；', '？'
         };
         public static bool IsChinese(char a) {
-            return (a >= 0x4E00 && a <= 0x9FA5) || cnPuncs.Contains(a);
+            return a >= 0x4E00 && a <= 0x9FA5 || cnPuncs.Contains(a);
         }
     }
 }

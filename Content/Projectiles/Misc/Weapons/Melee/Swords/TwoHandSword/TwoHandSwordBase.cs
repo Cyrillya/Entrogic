@@ -76,7 +76,7 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords.TwoHandSword
                     SummonProjectile(out int type, out Vector2 offset, ref direction, out float damageMult);
                     Projectile p = Projectile.NewProjectileDirect(Projectile.InheritSource(Projectile), Projectile.Center + offset, Vector2.Zero, type, (int)(Projectile.damage * damageMult), Projectile.knockBack, Projectile.owner);
                     p.spriteDirection = direction;
-                    SoundEngine.PlaySound(SoundID.Item, (int)Projectile.Center.X, (int)Projectile.Center.Y, Style: 71, pitchOffset: 0);
+                    SoundEngine.PlaySound(SoundID.Item71, Projectile.Center);
 
                     if (!Main.dedServ) {
                         if (AI_Charge < AI_CHARGE_MAX) {

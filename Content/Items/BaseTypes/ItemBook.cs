@@ -1,18 +1,10 @@
 ﻿using Entrogic.Common.Globals.Players;
-using Entrogic.Common.ModSystems;
-using Entrogic.Interfaces.UI.BookUI;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.GameContent.Creative;
-using Terraria.ID;
-using Terraria.ModLoader;
+using Entrogic.Common.Hooks.Items;
+using Entrogic.Interfaces.UIElements;
 
 namespace Entrogic.Content.Items.BaseTypes
 {
-    public abstract class ItemBook : ItemBase
+    public abstract class ItemBook : ItemBase, IModifyBookContent
     {
         internal int PageMax = 1;
 
@@ -46,8 +38,10 @@ namespace Entrogic.Content.Items.BaseTypes
             //}
         }
 
-        public virtual void ModifyBookPanel(Player player, int page, ref Asset<Texture2D> panelImage) { }
-        public virtual void ModifyBookContent(Player player, int page, ref List<BookContent> contents) { }
-        public virtual bool DrawReading(SpriteBatch spriteBatch, Item item, Player player) { return true; }
+        public void ModifyBookContent(Item item, Player player, ref List<BookContent> contents) {
+            ModifyBookPageContent(player, player.GetModPlayer<BookInfoPlayer>().CurrentPage, ref contents);
+        }
+
+        public abstract void ModifyBookPageContent(Player player, int page, ref List<BookContent> contents);
     }
 }

@@ -1,3 +1,2 @@
-﻿1) 1.4更新ModSoundStyle之后把ContaEffectPlayer.cs里的offSound改回去
-2) 污染套翻译
-3) 凝胶怪宝藏袋
+﻿1) 污染套翻译
+2) 凝胶怪宝藏袋

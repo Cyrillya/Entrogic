@@ -13,9 +13,9 @@ namespace Entrogic.Content.Tiles.BaseTypes
             Tile tile = Main.tile[i, j];
             if (tile.TileFrameX == 0) {
                 // We can support different light colors for different styles here: switch (tile.frameY / 54)
-                r = LightColor.R;
-                g = LightColor.G;
-                b = LightColor.B;
+                r = LightColor.R / 255f;
+                g = LightColor.G / 255f;
+                b = LightColor.B / 255f;
             }
         }
 

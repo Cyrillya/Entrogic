@@ -16,7 +16,7 @@
         /// <param name="key">文本键值</param>
         /// <returns></returns>
         internal static string RegisterTranslation(string key, GameCulture.CultureName language, string translated, string original) {
-            ModTranslation translate = GetOrCreateTranslation(key);
+            ModTranslation translate = LocalizationLoader.GetOrCreateTranslation(Entrogic.Instance, key);
             translate.SetDefault(original);
             translate.AddTranslation((int)language, translated);
             LocalizationLoader.AddTranslation(translate);

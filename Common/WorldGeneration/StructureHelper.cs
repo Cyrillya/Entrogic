@@ -1,12 +1,4 @@
-﻿using Entrogic.Content.Tiles.Furnitures;
-using Entrogic.Content.Tiles.Furnitures.SpookyLamps;
-using Microsoft.Xna.Framework;
-using System;
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.WorldBuilding;
+﻿using Terraria.WorldBuilding;
 
 namespace Entrogic.Common.WorldGeneration
 {
@@ -16,7 +8,7 @@ namespace Entrogic.Common.WorldGeneration
             if (!WorldGen.InWorld(room.X, room.Y) || !WorldGen.InWorld(room.X + room.Width, room.Y + room.Width)) return; // 之后加入一个报错提示，现在先这样
 
             // 用原版的函数生成
-            WorldUtils.Gen(new Point(room.X, room.Y), new Shapes.Rectangle(room.Width, room.Height), Actions.Chain(new Actions.SetTileKeepWall(tileType), new Actions.SetFrames(frameNeighbors: true)));
+            WorldUtils.Gen(new Point(room.X, room.Y), new Shapes.Rectangle(room.Width, room.Height), Actions.Chain(new Actions.SetTileKeepWall(tileType), new Actions.SetFrames(frameNeighbors: true), new Actions.PlaceWall(wallType)));
             WorldUtils.Gen(new Point(room.X + wallWidth, room.Y + wallHeight), new Shapes.Rectangle(room.Width - wallWidth * 2, room.Height - wallHeight * 2), Actions.Chain(new Actions.ClearTile(frameNeighbors: true), new Actions.PlaceWall(wallType)));
         }
 

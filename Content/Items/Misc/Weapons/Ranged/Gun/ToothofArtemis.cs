@@ -1,4 +1,5 @@
-using Entrogic.Content.Projectiles.Misc.Weapons.Arcane;
+﻿using Entrogic.Content.Projectiles.Misc.Weapons.Arcane;
+using Terraria;
 
 namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
 {
@@ -25,7 +26,7 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
         }
 
         // 仅在第一发消耗弹药，而且有15%几率不消耗
-        public override bool CanConsumeAmmo(Player player) => Main.rand.NextFloat() >= .15f && player.itemAnimation == player.itemAnimationMax;
+        public override bool CanConsumeAmmo(Item ammo, Player player) => Main.rand.NextFloat() >= .15f && player.itemAnimation == player.itemAnimationMax;
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
             position += Vector2.Normalize(velocity) * 16f; // 往枪口位置靠

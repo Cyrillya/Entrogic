@@ -30,7 +30,7 @@ namespace Entrogic.Content.Projectiles.Elementals
         }
 
         public override void Kill(int timeLeft) {
-            SoundEngine.PlaySound(SoundID.Dig, (int)Projectile.position.X, (int)Projectile.position.Y);
+            SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
             for (int num590 = 0; num590 < 5; num590++) {
                 Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Dirt);
             }

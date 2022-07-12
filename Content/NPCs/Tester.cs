@@ -4,7 +4,7 @@ namespace Entrogic.Content.NPCs
 {
     internal class Tester : ModNPC
     {
-        public static RenderTarget2D blackRender;
+        //public static RenderTarget2D blackRender;
         //public override void Load() {
         //    base.Load();
         //    Main.QueueMainThreadAction(delegate {

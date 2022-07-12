@@ -1,5 +1,4 @@
-﻿using Entrogic.Interfaces.UI.BookUI;
-
+﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -13,7 +12,7 @@ using Terraria.UI;
 
 namespace Entrogic.Common.ModSystems
 {
-	public struct Offset
+    public struct Offset
     {
 		internal float minX;
 		internal float maxX;
@@ -95,9 +94,9 @@ namespace Entrogic.Common.ModSystems
 	}
 	public class LightningTest : ModSystem
 	{
-		private GameTime _lastUpdateUiGameTime;
+		//private GameTime _lastUpdateUiGameTime;
 		private int Timer;
-		public static List<Lightning> Lightnings = new();
+        public static List<Lightning> Lightnings = new();
 
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
 			base.ModifyInterfaceLayers(layers);

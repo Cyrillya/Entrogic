@@ -1,6 +1,6 @@
 ﻿using Entrogic.Common.Hooks.Items;
 using Entrogic.Content.Items.BaseTypes;
-using Entrogic.Interfaces.UI.BookUI;
+using Entrogic.Interfaces.GUI;
 
 namespace Entrogic.Common.Globals.Players
 {
@@ -34,8 +34,8 @@ namespace Entrogic.Common.Globals.Players
             book.BookName = player.HeldItem.Name;
 
             BookUI.Texture = ResourceManager.BookPanel; // 重新赋值
-            HookModifyBookContent.Hook.Invoke(player.HeldItem, player, ref BookUI.Contents);
-            HookModifyBookPanel.Hook.Invoke(player.HeldItem, player, ref BookUI.Texture);
+            IModifyBookContent.Invoke(player.HeldItem, player, ref BookUI.Contents);
+            IModifyBookPanel.Invoke(player.HeldItem, player, ref BookUI.Texture);
             BookUI.MaxPages = (player.HeldItem?.ModItem as ItemBook).PageMax;
 
             ModNetHandler.BookInfo.SendPage(-1, player.whoAmI, (byte)player.whoAmI, book.CurrentPage, book.IsReading);

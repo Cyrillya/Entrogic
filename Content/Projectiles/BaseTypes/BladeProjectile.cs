@@ -130,7 +130,7 @@ namespace Entrogic.Content.Projectiles.BaseTypes
                         }
                         // 挥动音效
                         if (Timer == (int)(swingTimer / 2f) && Main.netMode != NetmodeID.Server) {
-                            SoundEngine.PlaySound(SoundID.Item, (int)Projectile.Center.X, (int)Projectile.Center.Y, volumeScale: 2f, pitchOffset: 0.2f);
+                            SoundEngine.PlaySound(SoundID.Item1.WithVolumeScale(2f).WithPitchOffset(0.2f), Projectile.Center);
                         }
                         player.itemAnimation = (int)MathHelper.Lerp(player.itemAnimationMax, 3, factor);
                         break;

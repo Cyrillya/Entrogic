@@ -1,5 +1,6 @@
 ﻿using Entrogic.Content.Items.Misc.Materials;
 using Entrogic.Content.Projectiles.Misc.Weapons.Ranged.Bullets;
+using Terraria;
 
 namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
 {
@@ -25,7 +26,7 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
             position += velocity.ToRotation().ToRotationVector2() * 5.2f * 16f;
         }
 
-        public override bool CanConsumeAmmo(Player player) => Main.rand.NextFloat() >= .10f && player.itemAnimation == player.itemAnimationMax;
+        public override bool CanConsumeAmmo(Item ammo, Player player) => Main.rand.NextFloat() >= .10f && player.itemAnimation == player.itemAnimationMax;
 
         public override void AddRecipes() {
             CreateRecipe()

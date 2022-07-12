@@ -1,3 +1,4 @@
+﻿using Terraria;
 namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
 {
     public class FlyingFishSubmachineGun : ModItem
@@ -42,7 +43,7 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
             //    .Register();
         }
 
-        public override bool CanConsumeAmmo(Player player) => Main.rand.NextFloat() >= .66f;
+        public override bool CanConsumeAmmo(Item ammo, Player player) => Main.rand.NextFloat() >= .66f;
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
             base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);

@@ -14,7 +14,10 @@ namespace Entrogic.Common.Globals.Players
 {
     public class ContaEffectPlayer : ModPlayer
 	{
-		//public ModSoundStyle offSound;
+		public static readonly SoundStyle OffSound = new($"Entrogic/Assets/Sounds/Player/ArmorConta", SoundType.Sound) {
+			Volume = 0.9f,
+			PitchRange = (-0.16f, 0.2f),
+		};
 
 		private Asset<Texture2D> effectTexture;
 		public bool enable;
@@ -27,8 +30,6 @@ namespace Entrogic.Common.Globals.Players
 
         public override void Load() {
             base.Load();
-
-			//offSound = new ModSoundStyle(nameof(Entrogic), "Assets/Sounds/Player/ArmorConta", volume: 0.9f, pitchVariance: -0.2f);
 
 			On.Terraria.Main.DrawInfernoRings += Main_DrawInfernoRings;
             On.Terraria.Player.Hurt += Player_Hurt;
@@ -47,7 +48,7 @@ namespace Entrogic.Common.Globals.Players
 				flameRingDeathTimer = 0.8f;
 				Player.SetImmuneTimeForAllTypes(160);
 				Player.AddBuff(ModContent.BuffType<ContaBuff>(), 60 * 12);
-				//SoundEngine.PlaySound(offSound);
+				SoundEngine.PlaySound(OffSound);
 			}
             else {
 				Player.AddBuff(BuffID.Obstructed, 40);

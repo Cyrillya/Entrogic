@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
@@ -8,11 +9,11 @@ namespace Entrogic.Common.Statics
 {
     internal static class QuickBlock
     {
-        public static void QuickSet(this ModTile tile, int minPick, int dustType, int soundType, Color mapColor, int drop, bool dirtMerge = false, bool stone = false, string mapName = "")
+        public static void QuickSet(this ModTile tile, int minPick, int dustType, SoundStyle soundType, Color mapColor, int drop, bool dirtMerge = false, bool stone = false, string mapName = "")
         {
             tile.MinPick = minPick;
             tile.DustType = dustType;
-            tile.SoundType = soundType;
+            tile.HitSound = soundType;
             tile.ItemDrop = drop;
             Main.tileMergeDirt[tile.Type] = dirtMerge;
             Main.tileStone[tile.Type] = stone;
@@ -26,16 +27,16 @@ namespace Entrogic.Common.Statics
             tile.AddMapEntry(mapColor, name);
         }
 
-        public static void QuickSetWall(this ModWall wall, int dustType, int soundType, int drop, bool safe, Color mapColor)
+        public static void QuickSetWall(this ModWall wall, int dustType, SoundStyle soundType, int drop, bool safe, Color mapColor)
         {
             wall.DustType = dustType;
-            wall.SoundType = soundType;
+            wall.HitSound = soundType;
             wall.ItemDrop = drop;
             Main.wallHouse[wall.Type] = safe;
             wall.AddMapEntry(mapColor);
         }
 
-        public static void QuickSetFurniture(this ModTile tile, int width, int height, int dustType, int soundType, bool tallBottom, Color mapColor, bool solidTop = false, bool solid = false, string mapName = "", AnchorData bottomAnchor = default, AnchorData topAnchor = default, int[] anchorTiles = null)
+        public static void QuickSetFurniture(this ModTile tile, int width, int height, int dustType, SoundStyle soundType, bool tallBottom, Color mapColor, bool solidTop = false, bool solid = false, string mapName = "", AnchorData bottomAnchor = default, AnchorData topAnchor = default, int[] anchorTiles = null)
         {
             Main.tileLavaDeath[tile.Type] = false;
             Main.tileFrameImportant[tile.Type] = true;
@@ -73,7 +74,7 @@ namespace Entrogic.Common.Statics
             name.SetDefault(mapName);
             tile.AddMapEntry(mapColor, name);
             tile.DustType = dustType;
-            tile.SoundType = soundType;
+            tile.HitSound = soundType;
         }
     }
 }

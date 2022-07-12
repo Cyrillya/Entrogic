@@ -52,7 +52,7 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Ranged.Bullets
         }
 
         public override void Kill(int timeLeft) {
-            SoundEngine.PlaySound(SoundID.Dig, (int)Projectile.position.X, (int)Projectile.position.Y, 1, 0.65f); // Play a death sound
+            SoundEngine.PlaySound(SoundID.Dig.WithVolumeScale(0.65f), Projectile.position); // Play a death sound
 
             const int DUST_AMOUNTS = 10;
             for (int i = 0; i < DUST_AMOUNTS; i++)
