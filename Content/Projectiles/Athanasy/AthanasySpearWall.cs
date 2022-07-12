@@ -27,25 +27,26 @@ namespace Entrogic.Content.Projectiles.Athanasy
             DrawOriginOffsetY = -4;
         }
 
-        public override bool ShouldUpdatePosition() {
-            return true;
+        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
+            if (Timer <= 60)
+                behindNPCsAndTiles.Add(index);
         }
 
         public ref float Timer => ref Projectile.ai[0];
         public float rotation;
+        public int targetPlayer = -1;
+        public float recordedYOffset;
 
         public override void AI() {
             Timer++;
+            if (Timer <= 60)
+                Projectile.hide = true;
+            else
+                Projectile.hide = false;
+
             if (Timer == 1) {
                 Projectile.netUpdate = true;
                 rotation = Projectile.velocity.ToRotation();
-                for (int i = 0; i < 8; i++) {
-                    float radians = 6.28f / 8f * i;
-                    var velocity = Vector2.One.RotatedBy(radians) * 1.4f;
-                    var d = Dust.NewDustPerfect(Projectile.Center, DustID.DungeonWater, velocity, 250);
-                    d.fadeIn = 0.4f;
-                    d.noGravity = true;
-                }
             }
 
             if (Timer <= 5 && !Main.dedServ) {
@@ -65,6 +66,19 @@ namespace Entrogic.Content.Projectiles.Athanasy
                     float factor = Utils.GetLerpValue(55, 62, Timer);
                     Projectile.velocity = rotation.ToRotationVector2() * MathHelper.Lerp(1f, 10f, factor);
                 }
+                if (!Main.dedServ && Timer == 56f) {
+                    for (int i = 0; i < 8; i++) {
+                        float radians = 6.28f / 8f * i;
+                        var velocity = Vector2.One.RotatedBy(radians) * 1.4f;
+                        var d = Dust.NewDustPerfect(Projectile.Center + rotation.ToRotationVector2() * 8f, DustID.DungeonWater, velocity, 150, Scale: 1.3f);
+                        d.fadeIn = 0.8f;
+                        d.noGravity = true;
+                    }
+                }
+            }
+
+            if (!Projectile.tileCollide && Timer >= 90f) {
+                Projectile.tileCollide = true;
             }
 
             Projectile.rotation = rotation;
@@ -79,6 +93,10 @@ namespace Entrogic.Content.Projectiles.Athanasy
         }
 
         public override bool PreDraw(ref Color lightColor) {
+            // 乐，用完DrawBehind之后lightColor直接无了
+            if (Timer <= 60)
+                lightColor = Lighting.GetColor(Projectile.position.ToTileCoordinates());
+
             var tex = TextureAssets.Projectile[Type];
             var t = tex.Value;
             int frameHeight = tex.Height() / Main.projFrames[Type];
@@ -107,9 +125,10 @@ namespace Entrogic.Content.Projectiles.Athanasy
                 }
             }
 
-            if (Timer <= 20) {
-                Color color = new(90, 70, 255, 50);
-                float factor = Utils.GetLerpValue(0f, 20f, Timer);
+            if (Timer >= 55 && Timer <= 70) {
+                float factor = Utils.GetLerpValue(55, 70, Timer);
+                Color color = new(150, 130, 255, 50);
+
                 color *= MathHelper.Lerp(0.7f, 0f, factor);
 
                 Main.spriteBatch.End();
@@ -131,13 +150,10 @@ namespace Entrogic.Content.Projectiles.Athanasy
             return true;
         }
 
-        public override bool CanHitPlayer(Player target) {
-            return base.CanHitPlayer(target) && Timer > 50f;
-        }
-
         public override void Kill(int timeLeft) {
+            Projectile.velocity *= -0.3f;
             for (int i = 0; i < 15; i++) {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Stone, Projectile.velocity.X, Projectile.velocity.Y, 120);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Stone, Projectile.velocity.X, Projectile.velocity.Y, 120, Scale: Main.rand.NextFloat(1f, 1.4f));
             }
         }
     }
