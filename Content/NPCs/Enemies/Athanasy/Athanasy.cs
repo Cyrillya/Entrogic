@@ -15,9 +15,14 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
         enum AIState
         {
             Despawn,
-            Dash,
+            Waiting,
+            First_DecideAttack,
             First_Spear,
             First_WallSpear,
+            First_StoneHand,
+            Second_DecideAttack,
+            Second_StoneHand,
+            Dash,
             SuperSmash,
             Smash,
             SpawnEffects,
@@ -56,6 +61,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
 
         internal static int SmallSpearType;
         internal static int WallSpearType;
+        internal static int StoneHandType;
 
         private Player Player => Main.player[NPC.target];
         private bool canHitPlayer = true;
@@ -67,13 +73,19 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
         private static float DashSpeed => Main.getGoodWorld ? 0.1f : 0.03f;
         private static Vector2 RoomBottom => new Vector2(ImmortalGolemRoom.BossZone.Center.X, ImmortalGolemRoom.BossZone.Bottom - 8).ToWorldCoordinates(0, 0);
 
+        private int AttackIndex { get => (int)NPC.ai[3]; set => NPC.ai[3] = value; }
+
         public override void AI() {
             base.AI();
 
             switch (State) {
                 case (int)AIState.Despawn: DespawnState(); break;
+                case (int)AIState.Waiting: WaitingState(); break;
+                case (int)AIState.First_DecideAttack: First_DecideAttack(); break;
                 case (int)AIState.First_Spear: First_SpearState(); break;
                 case (int)AIState.First_WallSpear: First_WallSpearState(); break;
+                case (int)AIState.First_StoneHand: First_StoneHandState(); break;
+                case (int)AIState.Second_StoneHand: Second_StoneHandState(); break;
                 case (int)AIState.Dash: DashState(); break;
                 case (int)AIState.SuperSmash: SuperSmashState(); break;
                 case (int)AIState.Smash: SmashState(); break;
@@ -82,13 +94,13 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
 
             if (Stage == 0) {
                 NPC.localAI[0]++;
-                for (int i = 1; i <= 4; i++) {
-                    Vector2 baseVector = Vector2.One.RotatedBy(MathHelper.ToRadians(i * 90f + NPC.localAI[0]));
+                for (int i = 1; i <= 5; i++) {
+                    Vector2 baseVector = Vector2.One.RotatedBy(MathHelper.ToRadians(i * 75f + NPC.localAI[0]));
                     float distanceFromCenter = 80f;
                     Vector2 velocity = Vector2.Zero;
                     Vector2 spawnPosition = baseVector * distanceFromCenter + NPC.Center;
                     var d = Dust.NewDustPerfect(spawnPosition, MyDustID.BlueWhiteBubble, velocity, 180, default, 1f);
-                    d.fadeIn = 1.8f;
+                    d.fadeIn = 1.4f;
                     d.noGravity = true;
                 }
 
@@ -102,65 +114,201 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             NPC.TargetClosest(true);
             Timer++;
             if (!Player.dead && Player.active) {
-                SwitchState((int)AIState.First_WallSpear);
+                SwitchState((int)AIState.First_DecideAttack);
                 Timer = 0;
             }
             else if (Timer >= 180) {
                 NPC.TargetClosest(true);
+                NPC.EncourageDespawn(10);
                 if (Player.dead || !Player.active || !Player.ZoneBeach) {
                     if (Timer <= 195)
                         NPC.alpha -= 255 / 15 + 1;
                     else NPC.active = false;
                 }
                 else {
-                    SwitchState((int)AIState.First_WallSpear);
+                    SwitchState((int)AIState.First_DecideAttack);
                     Timer = 0;
                 }
+            }
+        }
+
+        private void First_DecideAttack() {
+            // s: 对玩家石矛
+            // d: 对玩家石矛(少)
+            // y: 对玩家石矛(预判)
+            // l: 左墙石矛
+            // r: 右墙石矛
+            // h: 玩家石手
+            // w: 等待1/2秒
+            List<char> StageOneOrder = new() {
+                's', 's', 'w', 'y', 'l', 'w',
+                'h', 's', 'r', 'w', 'l', 'w',
+                'y', 's', 'd', 'h',
+                'r', 'r', 'w', 'w', 'l',
+                'w', 'w', 'w', 'd'
+            };
+
+            if (!StageOneOrder.IndexInRange(AttackIndex))
+                AttackIndex = 0;
+            //Main.NewText(AttackIndex + " " + StageOneOrder[AttackIndex]);
+            switch (StageOneOrder[AttackIndex]) {
+                case 's':
+                    SwitchState((int)AIState.First_Spear);
+                    break;
+                case 'd':
+                    NPC.ai[2] = 1f;
+                    SwitchState((int)AIState.First_Spear);
+                    break;
+                case 'y':
+                    NPC.ai[2] = 114514f;
+                    SwitchState((int)AIState.First_Spear);
+                    break;
+                case 'l':
+                    NPC.ai[2] = 1;
+                    SwitchState((int)AIState.First_WallSpear);
+                    break;
+                case 'r':
+                    NPC.ai[2] = -1;
+                    SwitchState((int)AIState.First_WallSpear);
+                    break;
+                case 'h':
+                    SwitchState((int)AIState.First_StoneHand);
+                    break;
+                case 'w':
+                    SwitchState((int)AIState.Waiting);
+                    break;
+            }
+            AttackIndex++;
+        }
+
+        private void WaitingState() {
+            Timer++;
+            if (Timer == 60) {
+                SwitchState((int)AIState.First_DecideAttack);
+                NPC.netUpdate = true;
             }
         }
 
         private void First_SpearState() {
             Timer++;
             int spearDamage = NPC.GetAttackDamage_ForProjectiles_MultiLerp_Exactly(40f, 90f, 140f);
+            int spearReduce = NPC.ai[2] != 114514f ? (int)NPC.ai[2] : 0;
             if (Timer == 10 && Main.netMode != NetmodeID.MultiplayerClient) {
-                Vector2 baseVector = NPC.DirectionTo(Player.Center);
+                Vector2 target = Player.Center;
+                if (NPC.ai[2] == 114514f)
+                    target += Player.velocity * 60f;
+                Vector2 baseVector = NPC.DirectionTo(target);
                 float distanceFromCenter = 160f;
-                float rotationAngle = MathHelper.ToRadians(30f);
+                float rotationAngle = MathHelper.ToRadians(25f);
                 int spears = Main.expertMode ? 3 : 2; // 单向矛数，实际矛数为 spears*2+1
                 for (int i = -spears; i <= spears; i++) {
+                    if (Math.Abs(i) > spears - spearReduce) // 减少矛数量
+                        continue;
                     Vector2 rotatedVector = baseVector.RotatedBy(rotationAngle / spears * i);
                     Vector2 finalSpawnPosition = rotatedVector * distanceFromCenter + NPC.Center;
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), finalSpawnPosition, rotatedVector, SmallSpearType, spearDamage, 0f);
                 }
             }
-            if (Timer == 50) {
-                SwitchState((int)AIState.Despawn);
+            if (Timer == 20) {
+                SwitchState((int)AIState.First_DecideAttack);
                 NPC.netUpdate = true;
+                NPC.ai[2] = 0f;
             }
         }
 
         private void First_WallSpearState() {
             if (Timer == 0) {
                 NPC.netUpdate = true;
-                NPC.ai[2] = Main.rand.Next(6); // 随机化生成
+                NPC.ai[2] = Main.rand.Next(9) * NPC.ai[2]; // 随机化生成，正为左墙负为右墙
             }
 
             Timer++;
+            int spearDamage = NPC.GetAttackDamage_ForProjectiles_MultiLerp_Exactly(40f, 90f, 140f);
+            bool left = Math.Sign(NPC.ai[2]) > 0;
             int top = ImmortalGolemRoom.BossZone.Top + 8;
             int bottom = ImmortalGolemRoom.BossZone.Bottom - 8;
             int distance = bottom - top;
             int i = (int)Timer % distance;
 
-            if (Timer % (int)6 == NPC.ai[2]) {
-                Vector2 finalSpawnPosition = new Point16(ImmortalGolemRoom.BossZone.Left + 9, i + top).ToWorldCoordinates();
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), finalSpawnPosition, new(1, 0), WallSpearType, 111, 0f);
+            if (Timer % 9 == Math.Abs((int)NPC.ai[2])) {
+                Vector2 finalSpawnPosition = new Vector2(ImmortalGolemRoom.BossZone.Left + 9, i + top);
+                if (!left)
+                    finalSpawnPosition.X = ImmortalGolemRoom.BossZone.Right - 9;
+                finalSpawnPosition = finalSpawnPosition.ToWorldCoordinates();
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), finalSpawnPosition, new(left ? 1 : -1, 0), WallSpearType, spearDamage, 0f);
             }
 
             if (Timer >= distance) {
-                SwitchState((int)AIState.Despawn);
+                SwitchState((int)AIState.First_DecideAttack);
                 NPC.netUpdate = true;
+                NPC.ai[2] = 0f;
             }
         }
+
+        private void First_StoneHandState() {
+            Timer++;
+            if (!Player.active || Player.dead) {
+                SwitchState((int)AIState.Despawn);
+                return;
+            }
+
+            if (Timer % 80 == 0) {
+                Point16 center = Player.Center.ToTileCoordinates16();
+                for (int i = 0; i < 30; i++) {
+                    Point tilePosition = center.ToPoint();
+                    tilePosition.Y += i;
+                    var tile = Framing.GetTileSafely(tilePosition);
+                    if (IsSaveTile(tile)) {
+                        var tileUp = Framing.GetTileSafely(new Point(tilePosition.X, tilePosition.Y - 1));
+                        var tileLeft = Framing.GetTileSafely(new Point(tilePosition.X - 1, tilePosition.Y));
+                        var tileRight = Framing.GetTileSafely(new Point(tilePosition.X + 1, tilePosition.Y));
+                        if (IsSaveTile(tileLeft) && IsSaveTile(tileRight) && !WorldGen.SolidTile(tileUp)) {
+                            var spawnPosition = tilePosition.ToWorldCoordinates(autoAddY: 2f).ToPoint();
+                            NPC.NewNPC(NPC.GetSource_FromAI(), spawnPosition.X, spawnPosition.Y, StoneHandType, ai1: 80f, ai2: NPC.Center.X, ai3: NPC.Center.Y, Target: NPC.target);
+                            break;
+                        }
+                    }
+                }
+            }
+            if (Timer == 240) {
+                SwitchState((int)AIState.First_DecideAttack);
+                NPC.netUpdate = true;
+                NPC.ai[2] = 0f;
+            }
+        }
+
+        private void Second_StoneHandState() {
+            Timer++;
+            if (Timer <= 40f && NPC.ai[2] <= 20f) {
+                Rectangle rect = ImmortalGolemRoom.BossZone;
+                rect.X += 8;
+                rect.Y += 8;
+                rect.Width -= 16;
+                rect.Height -= 16;
+                for (int i = 0; i < 10; i++) {
+                    Point tilePosition = Main.rand.NextVector2FromRectangle(rect).ToPoint();
+                    var tile = Framing.GetTileSafely(tilePosition);
+                    var tileUp = Framing.GetTileSafely(new Point(tilePosition.X, tilePosition.Y - 1));
+                    var tileLeft = Framing.GetTileSafely(new Point(tilePosition.X - 1, tilePosition.Y));
+                    var tileRight = Framing.GetTileSafely(new Point(tilePosition.X + 1, tilePosition.Y));
+                    // 平整物块表面
+                    if (IsSaveTile(tile) && IsSaveTile(tileLeft) && IsSaveTile(tileRight) && !WorldGen.SolidTile(tileUp)) {
+                        var spawnPosition = tilePosition.ToWorldCoordinates(autoAddY: 2f).ToPoint();
+                        NPC.ai[2]++;
+
+                        NPC.NewNPC(NPC.GetSource_FromAI(), spawnPosition.X, spawnPosition.Y, StoneHandType, ai1: Timer, ai2: NPC.Center.X, ai3: NPC.Center.Y, Target: NPC.target);
+                    }
+                }
+            }
+            if (Timer == 300) {
+                SwitchState((int)AIState.Second_DecideAttack);
+                NPC.netUpdate = true;
+                NPC.ai[2] = 0f;
+            }
+        }
+
+        private bool IsSaveTile(Tile t) => WorldGen.SolidTile(t) || Main.tileSolidTop[t.TileType];
+        private bool IsPlatform(Tile t) => !Main.tileSolid[t.TileType] && Main.tileSolidTop[t.TileType] && t.HasUnactuatedTile;
 
         private void DashState() {
             NPC.noTileCollide = false;
@@ -207,7 +355,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             }
 
             if (Timer >= 40f + dashingTimer + stoppingTimer) {
-                SwitchState((int)AIState.Despawn);
+                SwitchState((int)AIState.Second_DecideAttack);
                 NPC.netUpdate = true;
             }
             Timer++;
@@ -260,7 +408,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                         }
                     }
                     else {
-                        SwitchState((int)AIState.Despawn);
+                        SwitchState((int)AIState.Second_DecideAttack);
                         NPC.ai[2] = 0f;
                         NPC.netUpdate = true;
                     }
@@ -357,13 +505,13 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
 
                 // 雾气效果，尽量提前几帧出
                 if (NPC.velocity.Y <= 8f && Timer >= (float)smashStartTimer + 5)
-                    for (int l = 0; l < 30; l++) { // 粒子效果
+                    for (int l = 0; l < 30; l++) // 粒子效果
                         Dust.NewDustDirect(NPC.Bottom - new Vector2(NPC.width * 0.8f, 20f), (int)(NPC.width * 1.6f), 50, ModContent.DustType<Sand>(), 0, Main.rand.NextFloat(-5f, -1f), Main.rand.Next(255), default, Main.rand.NextFloat(1f));
-                    }
+
                 if (NPC.velocity.Y == 0f) { // 下砸到地了
                     PunchCameraModifier modifier4 = new(NPC.Center, -Vector2.UnitY, 15f, 10.8f, 20, 1300f, "Entrogic: Athanasy");
                     Main.instance.CameraModifiers.Add(modifier4);
-                    SwitchState((int)AIState.Despawn);
+                    SwitchState((int)AIState.Second_DecideAttack);
                     Timer = 0f;
                     NPC.ai[2] = 0f;
                     NPC.netUpdate = true;
@@ -500,7 +648,6 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
             if (!NPC.IsABestiaryIconDummy) {
-
                 drawColor = NPC.GetAlpha(Lighting.GetColor(NPC.Center.ToTileCoordinates()));
 
                 Texture2D t = TextureAssets.Npc[NPC.type].Value;
@@ -586,16 +733,22 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             NPC.width = 80;
             NPC.height = 120;
             NPC.value = Item.buyPrice(0, 14, 0, 0);
-            NPC.Opacity = 1f;
-            NPC.scale = 1.3f;
             NPC.lavaImmune = true;
-            NPC.hide = true; // 为了让它渲染在BehindNonSolidTiles层
+            NPC.behindTiles = false;
+            NPC.hide = false;
+            NPC.SpawnWithHigherTime(30);
+            NPC.npcSlots = 5f;
+            NPC.Opacity = 1f;
             //music = Mod.GetSoundSlot(SoundType.Music, "Sounds/Music/TheStormy");
             Music = MusicID.Boss2;
         }
 
+        public override void OnSpawn(IEntitySource source) {
+            base.OnSpawn(source);
+            NPC.Center = ImmortalGolemRoom.BossZone.Center.ToWorldCoordinates();
+        }
+
         public override void DrawBehind(int index) {
-            Main.instance.DrawCacheNPCsBehindNonSolidTiles.Add(index);
         }
 
         public override void ScaleExpertStats(int numPlayers, float bossLifeScale) {

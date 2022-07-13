@@ -11,6 +11,14 @@ namespace Entrogic
 {
     public static partial class ModHelper
     {
+        public static int GetAttackDamage_ForNPCs_MultiLerp_Exactly(this NPC NPC, float normalDamage, float expertDamage, float masterDamage) {
+            int damage = NPC.GetAttackDamage_ForProjectiles_MultiLerp(normalDamage, expertDamage, masterDamage);
+            // 普通模式1倍伤害，专家模式2倍伤害，大师模式3倍伤害
+            float divisor = Main.masterMode ? 3f : (Main.expertMode ? 2f : 1f);
+            Main.NewText(damage / divisor);
+            return (int)(damage / divisor);
+        }
+
         /// <summary>
         /// 把对应模式需要的伤害写进去，自动生成，这个直接用就行不需要考虑普通大师专家的伤害倍数了
         /// </summary>
@@ -18,7 +26,7 @@ namespace Entrogic
         /// <param name="normalDamage">普通模式伤害</param>
         /// <param name="expertDamage">专家模式伤害</param>
         /// <param name="masterDamage">大师模式伤害</param>
-        /// <returns></returns>
+        /// <returns>伤害数值</returns>
         public static int GetAttackDamage_ForProjectiles_MultiLerp_Exactly(this NPC NPC, float normalDamage, float expertDamage, float masterDamage) {
             int damage = NPC.GetAttackDamage_ForProjectiles_MultiLerp(normalDamage, expertDamage, masterDamage);
             // 普通模式2倍伤害，专家模式4倍伤害，大师模式6倍伤害
