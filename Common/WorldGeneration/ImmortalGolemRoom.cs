@@ -1,4 +1,5 @@
-﻿using Entrogic.Content.Tiles.Furnitures.SpookyLamps;
+﻿using Entrogic.Content.Tiles.Athanasy;
+using Entrogic.Content.Tiles.Furnitures.SpookyLamps;
 using Terraria.IO;
 using Terraria.ModLoader.IO;
 using Terraria.WorldBuilding;
@@ -212,7 +213,6 @@ namespace Entrogic.Common.WorldGeneration
                     if (c.G == 200) { // 左延伸平台
                         foreach (var item in CreateLeftStairsList(coord, c.R)) {
                             WorldUtils.Gen(item, new Shapes.Rectangle(1, 1), Actions.Chain(new Actions.PlaceTile(TileID.Platforms, PlatformStyle), new Actions.SetSlope(1), new Actions.SetFrames(frameNeighbors: true)));
-
                         }
                         continue;
                     }
@@ -221,6 +221,9 @@ namespace Entrogic.Common.WorldGeneration
                             WorldUtils.Gen(item, new Shapes.Rectangle(1, 1), Actions.Chain(new Actions.PlaceTile(TileID.Platforms, PlatformStyle), new Actions.SetSlope(2), new Actions.SetFrames(frameNeighbors: true)));
                         }
                         continue;
+                    }
+                    if (c.G == 255 && c.B == 255) {
+                        WorldGen.PlaceTile(coord.X, coord.Y, ModContent.TileType<RockAltar>(), mute: true);
                     }
                 }
             }

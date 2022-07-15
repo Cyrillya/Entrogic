@@ -36,7 +36,7 @@ namespace Entrogic.Common.Statics
             wall.AddMapEntry(mapColor);
         }
 
-        public static void QuickSetFurniture(this ModTile tile, int width, int height, int dustType, SoundStyle soundType, bool tallBottom, Color mapColor, bool solidTop = false, bool solid = false, string mapName = "", AnchorData bottomAnchor = default, AnchorData topAnchor = default, int[] anchorTiles = null)
+        public static void QuickSetFurniture(this ModTile tile, int width, int height, int yOffset, int dustType, SoundStyle soundType, bool tallBottom, Color mapColor, bool solidTop = false, bool solid = false, AnchorData bottomAnchor = default, AnchorData topAnchor = default, int[] anchorTiles = null)
         {
             Main.tileLavaDeath[tile.Type] = false;
             Main.tileFrameImportant[tile.Type] = true;
@@ -56,7 +56,8 @@ namespace Entrogic.Common.Statics
             TileObjectData.newTile.UsesCustomCanPlace = true;
             TileObjectData.newTile.CoordinateWidth = 16;
             TileObjectData.newTile.CoordinatePadding = 2;
-            TileObjectData.newTile.Origin = new Point16(0, 0);
+            TileObjectData.newTile.Origin = new Point16(width - 1, height - 1);
+            TileObjectData.newTile.DrawYOffset = yOffset;
 
             if (bottomAnchor != default)
                 TileObjectData.newTile.AnchorBottom = bottomAnchor;
@@ -70,9 +71,7 @@ namespace Entrogic.Common.Statics
 
             TileObjectData.addTile(tile.Type);
 
-            ModTranslation name = tile.CreateMapEntryName();
-            name.SetDefault(mapName);
-            tile.AddMapEntry(mapColor, name);
+            tile.AddMapEntry(mapColor);
             tile.DustType = dustType;
             tile.HitSound = soundType;
         }

@@ -1,18 +1,14 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Graphics;
-using System;
-using Terraria;
-using Terraria.Enums;
-using Terraria.GameContent;
-
-namespace Entrogic
+﻿namespace Entrogic
 {
     public static partial class ModHelper
     {
-        public static Rectangle GetTileCoordinates(Rectangle rect) => new(rect.X << 4, rect.Y << 4, rect.Width << 4, rect.Height << 4);
+        public static Rectangle GetWorldCoordinates(Rectangle rect) => new(rect.X << 4, rect.Y << 4, rect.Width << 4, rect.Height << 4);
 
-        public static Rectangle ToTileCoordinates(this Rectangle rect) => new(rect.X << 4, rect.Y << 4, rect.Width << 4, rect.Height << 4);
+        public static Rectangle ToWorldCoordinates(this Rectangle rect) => new(rect.X << 4, rect.Y << 4, rect.Width << 4, rect.Height << 4);
+
+        public static Rectangle GetTileCoordinates(Rectangle rect) => new(rect.X >> 4, rect.Y >> 4, rect.Width >> 4, rect.Height >> 4);
+
+        public static Rectangle ToTileCoordinates(this Rectangle rect) => new(rect.X >> 4, rect.Y >> 4, rect.Width >> 4, rect.Height >> 4);
 
         public static Rectangle CreateFromVector2(Vector2 vec, float width, float height) => new((int)vec.X, (int)vec.Y, (int)width, (int)height);
 

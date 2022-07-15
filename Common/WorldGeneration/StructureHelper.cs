@@ -8,8 +8,29 @@ namespace Entrogic.Common.WorldGeneration
             if (!WorldGen.InWorld(room.X, room.Y) || !WorldGen.InWorld(room.X + room.Width, room.Y + room.Width)) return; // 之后加入一个报错提示，现在先这样
 
             // 用原版的函数生成
-            WorldUtils.Gen(new Point(room.X, room.Y), new Shapes.Rectangle(room.Width, room.Height), Actions.Chain(new Actions.SetTileKeepWall(tileType), new Actions.SetFrames(frameNeighbors: true), new Actions.PlaceWall(wallType)));
-            WorldUtils.Gen(new Point(room.X + wallWidth, room.Y + wallHeight), new Shapes.Rectangle(room.Width - wallWidth * 2, room.Height - wallHeight * 2), Actions.Chain(new Actions.ClearTile(frameNeighbors: true), new Actions.PlaceWall(wallType)));
+            WorldUtils.Gen(
+                new Point(room.X, room.Y),
+                new Shapes.Rectangle(room.Width, room.Height),
+                Actions.Chain(
+                    new Actions.SetTileKeepWall(tileType),
+                    new Actions.SetFrames(frameNeighbors: true)
+                )
+            );
+            // 清理墙内区域
+            WorldUtils.Gen(
+                new Point(room.X + wallWidth, room.Y + wallHeight),
+                new Shapes.Rectangle(room.Width - wallWidth * 2, room.Height - wallHeight * 2),
+                Actions.Chain(
+                    new Actions.ClearTile(frameNeighbors: true),
+                    new Actions.PlaceWall(wallType)
+                )
+            );
+            // 放置其他墙体
+            WorldUtils.Gen(
+                new Point(room.X + 1, room.Y + 1),
+                new Shapes.Rectangle(room.Width - 2, room.Height - 2),
+                new Actions.PlaceWall(wallType)
+            );
         }
 
         public static bool GenerateHighGate(Point topLeft) {

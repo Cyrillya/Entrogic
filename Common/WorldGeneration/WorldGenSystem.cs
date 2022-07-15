@@ -10,10 +10,10 @@ namespace Entrogic.Common.WorldGeneration
 
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight) {
             // 衰落魔像房间，以及清除战斗房间里面的宝箱和机关，为了规避莫名其妙的把岩浆变成水就只能放后面了
-            int FinalCleanupIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Final Cleanup"));
-            if (FinalCleanupIndex != -1) {
-                tasks.Insert(FinalCleanupIndex + 1, new ImmortalGolemRoom());
-                tasks.Insert(FinalCleanupIndex + 2, new ImmortalGolemTrapRoom());
+            int LihzahrdAltarsIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Lihzahrd Altars"));
+            if (LihzahrdAltarsIndex != -1) {
+                tasks.Insert(LihzahrdAltarsIndex + 1, new ImmortalGolemRoom());
+                tasks.Insert(LihzahrdAltarsIndex + 2, new ImmortalGolemTrapRoom());
             }
         }
 

@@ -14,7 +14,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             NPC.aiStyle = -1;
             NPC.width = 54;
             NPC.height = 68;
-            NPC.damage = 100;
+            NPC.damage = 70;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
             NPC.lifeMax = 200;
@@ -31,11 +31,8 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
 
         private Vector2 AthanasyCenter => new(NPC.ai[2], NPC.ai[3]);
 
-        // 在OnSpawn才能改不同模式伤害，因为这时候才有strengthMultiplier
         public override void OnSpawn(IEntitySource source) {
-            NPC.damage = NPC.GetAttackDamage_ForProjectiles_MultiLerp(100f, 140f, 210f);
-
-            if (Main.netMode != NetmodeID.Server) {
+            if (source.Context is not null && source.Context == "Stage1" && Main.netMode != NetmodeID.Server) {
                 Vector2 vec = Utils.DirectionTo(AthanasyCenter, NPC.Center) * 120f;
                 Vector2 startPosition = AthanasyCenter + vec;
                 float distance = Vector2.Distance(startPosition, NPC.Center);

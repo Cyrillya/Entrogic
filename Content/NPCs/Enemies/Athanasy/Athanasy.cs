@@ -20,13 +20,12 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             First_Spear,
             First_WallSpear,
             First_StoneHand,
+            Second_ChangeState,
             Second_DecideAttack,
             Second_StoneHand,
-            Dash,
-            SuperSmash,
-            Smash,
-            SpawnEffects,
-            SpawnAnimation,
+            Second_Dash,
+            Second_SuperSmash,
+            Second_Smash
         }
 
         protected override void SwitchState(int state) {
@@ -40,10 +39,10 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
         }
 
         public override bool? CanFallThroughPlatforms() {
-            if (State == (int)AIState.Smash) {
+            if (State == (int)AIState.Second_Smash) {
                 return Player.Bottom.Y - NPC.Bottom.Y > 32;
             }
-            if (State == (int)AIState.SuperSmash) {
+            if (State == (int)AIState.Second_SuperSmash) {
                 return RoomBottom.Y - NPC.Bottom.Y > 40;
             }
             return false;
@@ -51,23 +50,25 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
 
         private void NPC_UpdateNPC_UpdateGravity(On.Terraria.NPC.orig_UpdateNPC_UpdateGravity orig, NPC self, out float maxFallSpeed) {
             orig.Invoke(self, out maxFallSpeed);
-            if (self.type == Type) {
+            if (self.type == Type && self.ModNPC is Athanasy) {
                 maxFallSpeed = SmashSpeedMax;
-                if (State == (int)AIState.SuperSmash) {
-                    maxFallSpeed = SmashSpeedMax * 2f;
+                if ((self.ModNPC as Athanasy).State == (int)AIState.Second_SuperSmash) {
+                    maxFallSpeed = SmashSpeedMax * 3.4f;
                 }
             }
         }
 
+        private CoroutineRunner AIRunner = new CoroutineRunner();
         internal static int SmallSpearType;
         internal static int WallSpearType;
         internal static int StoneHandType;
+        internal static int DustProjectileType;
+        internal int Stage = 0;
 
         private Player Player => Main.player[NPC.target];
         private bool canHitPlayer = true;
         private const int DespawnDistance = 300;
-        private int Stage => 0;
-        private static float SmashSpeedMax => Main.getGoodWorld ? 21.99f : 18f;
+        private static float SmashSpeedMax => Main.getGoodWorld ? 29.99f : 26f;
         private static float SmashSpeed => Main.getGoodWorld ? 2.6f : 1.5f;
         private static float DashSpeedMax => Main.getGoodWorld ? 28f : 22f;
         private static float DashSpeed => Main.getGoodWorld ? 0.1f : 0.03f;
@@ -85,29 +86,41 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                 case (int)AIState.First_Spear: First_SpearState(); break;
                 case (int)AIState.First_WallSpear: First_WallSpearState(); break;
                 case (int)AIState.First_StoneHand: First_StoneHandState(); break;
+                case (int)AIState.Second_ChangeState: Second_ChangeState(); break;
+                case (int)AIState.Second_DecideAttack: Second_DecideAttackState(); break;
                 case (int)AIState.Second_StoneHand: Second_StoneHandState(); break;
-                case (int)AIState.Dash: DashState(); break;
-                case (int)AIState.SuperSmash: SuperSmashState(); break;
-                case (int)AIState.Smash: SmashState(); break;
+                case (int)AIState.Second_Dash: Second_DashState(); break;
+                case (int)AIState.Second_SuperSmash: Second_SuperSmashState(); break;
+                case (int)AIState.Second_Smash: Second_SmashState(); break;
             }
             NPC.spriteDirection = NPC.direction;
 
             if (Stage == 0) {
                 NPC.localAI[0]++;
-                for (int i = 1; i <= 5; i++) {
-                    Vector2 baseVector = Vector2.One.RotatedBy(MathHelper.ToRadians(i * 75f + NPC.localAI[0]));
+
+                if (Main.netMode != NetmodeID.Server) {
+                    int particleCounts = Main.expertMode ? 5 : 4;
                     float distanceFromCenter = 80f;
-                    Vector2 velocity = Vector2.Zero;
-                    Vector2 spawnPosition = baseVector * distanceFromCenter + NPC.Center;
-                    var d = Dust.NewDustPerfect(spawnPosition, MyDustID.BlueWhiteBubble, velocity, 180, default, 1f);
-                    d.fadeIn = 1.4f;
-                    d.noGravity = true;
+                    if (Main.getGoodWorld) {
+                        distanceFromCenter = 150f;
+                        particleCounts += 3;
+                    }
+                    float particleGap = 360f / particleCounts;
+                    for (int i = 1; i <= particleCounts; i++) {
+                        Vector2 baseVector = Vector2.One.RotatedBy(MathHelper.ToRadians(i * particleGap + NPC.localAI[0]));
+                        Vector2 velocity = Vector2.Zero;
+                        Vector2 spawnPosition = baseVector * distanceFromCenter + NPC.Center;
+                        var d = Dust.NewDustPerfect(spawnPosition, MyDustID.BlueWhiteBubble, velocity, 180, default, 1f);
+                        d.fadeIn = 1.4f;
+                        d.noGravity = true;
+                    }
                 }
 
                 NPC.velocity = Vector2.Zero;
                 NPC.noTileCollide = true;
                 NPC.noGravity = true;
             }
+            AIRunner.Update(1);
         }
 
         private void DespawnState() {
@@ -132,14 +145,37 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             }
         }
 
+        private void WaitingState() {
+            Timer++;
+            int waitTime = Main.expertMode ? 60 : 80;
+            if (Main.getGoodWorld)
+                waitTime -= 20;
+            if (Timer >= waitTime) {
+                SwitchState((int)AIState.First_DecideAttack);
+                NPC.netUpdate = true;
+            }
+        }
+
+        #region 第一阶段
+
         private void First_DecideAttack() {
+            NPC.TargetClosest();
+
+            if (NPC.life <= NPC.lifeMax * (Main.expertMode ? 0.5f : 0.4f)) {
+                SwitchState((int)AIState.Second_ChangeState);
+                Stage = 1;
+                NPC.ai[2] = 0;
+                NPC.ai[3] = 0;
+                return;
+            }
+
             // s: 对玩家石矛
             // d: 对玩家石矛(少)
             // y: 对玩家石矛(预判)
             // l: 左墙石矛
             // r: 右墙石矛
             // h: 玩家石手
-            // w: 等待1/2秒
+            // w: 等待1秒
             List<char> StageOneOrder = new() {
                 's', 's', 'w', 'y', 'l', 'w',
                 'h', 's', 'r', 'w', 'l', 'w',
@@ -181,14 +217,6 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             AttackIndex++;
         }
 
-        private void WaitingState() {
-            Timer++;
-            if (Timer == 60) {
-                SwitchState((int)AIState.First_DecideAttack);
-                NPC.netUpdate = true;
-            }
-        }
-
         private void First_SpearState() {
             Timer++;
             int spearDamage = NPC.GetAttackDamage_ForProjectiles_MultiLerp_Exactly(40f, 90f, 140f);
@@ -201,6 +229,10 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                 float distanceFromCenter = 160f;
                 float rotationAngle = MathHelper.ToRadians(25f);
                 int spears = Main.expertMode ? 3 : 2; // 单向矛数，实际矛数为 spears*2+1
+                if (Main.getGoodWorld) {
+                    rotationAngle += MathHelper.ToRadians(10f);
+                    spears += 1;
+                }
                 for (int i = -spears; i <= spears; i++) {
                     if (Math.Abs(i) > spears - spearReduce) // 减少矛数量
                         continue;
@@ -231,7 +263,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             int i = (int)Timer % distance;
 
             if (Timer % 9 == Math.Abs((int)NPC.ai[2])) {
-                Vector2 finalSpawnPosition = new Vector2(ImmortalGolemRoom.BossZone.Left + 9, i + top);
+                Vector2 finalSpawnPosition = new(ImmortalGolemRoom.BossZone.Left + 9, i + top);
                 if (!left)
                     finalSpawnPosition.X = ImmortalGolemRoom.BossZone.Right - 9;
                 finalSpawnPosition = finalSpawnPosition.ToWorldCoordinates();
@@ -252,7 +284,10 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                 return;
             }
 
-            if (Timer % 80 == 0) {
+            int handTimer = Main.expertMode ? 80 : 100;
+            if (Main.getGoodWorld)
+                handTimer = 50;
+            if (Timer % handTimer == 0) {
                 Point16 center = Player.Center.ToTileCoordinates16();
                 for (int i = 0; i < 30; i++) {
                     Point tilePosition = center.ToPoint();
@@ -264,7 +299,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                         var tileRight = Framing.GetTileSafely(new Point(tilePosition.X + 1, tilePosition.Y));
                         if (IsSaveTile(tileLeft) && IsSaveTile(tileRight) && !WorldGen.SolidTile(tileUp)) {
                             var spawnPosition = tilePosition.ToWorldCoordinates(autoAddY: 2f).ToPoint();
-                            NPC.NewNPC(NPC.GetSource_FromAI(), spawnPosition.X, spawnPosition.Y, StoneHandType, ai1: 80f, ai2: NPC.Center.X, ai3: NPC.Center.Y, Target: NPC.target);
+                            NPC.NewNPC(NPC.GetSource_FromAI("Stage1"), spawnPosition.X, spawnPosition.Y, StoneHandType, ai1: 80f, ai2: NPC.Center.X, ai3: NPC.Center.Y, Target: NPC.target);
                             break;
                         }
                     }
@@ -275,6 +310,91 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                 NPC.netUpdate = true;
                 NPC.ai[2] = 0f;
             }
+        }
+
+        #endregion
+
+        #region 第二阶段
+
+        private void Second_ChangeState() {
+            NPC.dontTakeDamage = true;
+            NPC.localAI[0]++;
+            Timer++;
+            if (Main.netMode != NetmodeID.Server) {
+                if (Timer <= 120) {
+                    float factor = Utils.GetLerpValue(0, 120, Timer);
+                    factor *= factor;
+
+                    int particleCounts = Main.expertMode ? 5 : 4;
+                    float distanceFromCenter = MathHelper.Lerp(80f, 0f, factor);
+                    if (Main.getGoodWorld) {
+                        distanceFromCenter = MathHelper.Lerp(150f, 0f, factor);
+                        particleCounts += 3;
+                    }
+                    float particleGap = 360f / particleCounts;
+                    for (int i = 1; i <= particleCounts; i++) {
+                        Vector2 baseVector = Vector2.One.RotatedBy(MathHelper.ToRadians(i * particleGap + NPC.localAI[0]));
+                        Vector2 velocity = Vector2.Zero;
+                        Vector2 spawnPosition = baseVector * distanceFromCenter + NPC.Center;
+                        var d = Dust.NewDustPerfect(spawnPosition, MyDustID.BlueWhiteBubble, velocity, 180, default, 1f);
+                        d.fadeIn = 1.4f;
+                        d.noGravity = true;
+                    }
+                }
+            }
+
+            if (Timer < 40)
+                return;
+
+            if (Main.netMode != NetmodeID.MultiplayerClient && Timer < 1000f) {
+                if (Timer == 200f) {
+                    // 协程 发射粒子特效射弹
+                    AIRunner.Run(ProjectileEffectQuarter(0f));
+                    AIRunner.Run(ProjectileEffectQuarter(1.57f));
+                    AIRunner.Run(ProjectileEffectQuarter(3.14f));
+                    AIRunner.Run(ProjectileEffectQuarter(4.71f));
+                }
+                if (Timer > 200f && AIRunner.Count <= 0) {
+                    NPC.netUpdate = true; // 同步给其他的客户端
+                    Timer = 1000; // 下一阶段
+                }
+            }
+            if (Timer == 1155f) {
+                NPC.dontTakeDamage = false;
+                SoundEngine.PlaySound(SoundID.Item4, NPC.Center);
+                for (int i = 0; i < 80; i++) {
+                    var velocity = Main.rand.NextVector2Circular(20f, 20f);
+                    var d = Dust.NewDustPerfect(NPC.Center, DustID.FireworksRGB, velocity, 180, Color.SkyBlue, 1f);
+                    d.fadeIn = 1.4f;
+                    d.noGravity = true;
+                }
+                // 测试用代码
+                //SwitchState((int)AIState.First_DecideAttack);
+                //Stage = 0;
+                //NPC.life = (int)(NPC.lifeMax * 0.8f);
+                //return;
+                SwitchState((int)AIState.Second_SuperSmash);
+                NPC.localAI[0] = 0;
+            }
+        }
+
+        IEnumerator ProjectileEffectQuarter(float startRadians) {
+            for (float r = 0; r < 1.57f; r += 1.57f / 4f) {
+                float radians = r + startRadians;
+                var velocity = Vector2.One.RotatedBy(radians) * 10f;
+                Projectile.NewProjectile(NPC.GetSource_FromAI("EffectProjectile"),
+                                         NPC.Center,
+                                         velocity,
+                                         DustProjectileType,
+                                         0, 0f, Main.myPlayer,
+                                         ai0: Timer - 200f);
+                yield return 6;
+            }
+            yield return 0;
+        }
+
+        private void Second_DecideAttackState() {
+            SwitchState((int)AIState.Second_Dash);
         }
 
         private void Second_StoneHandState() {
@@ -307,61 +427,54 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             }
         }
 
-        private bool IsSaveTile(Tile t) => WorldGen.SolidTile(t) || Main.tileSolidTop[t.TileType];
-        private bool IsPlatform(Tile t) => !Main.tileSolid[t.TileType] && Main.tileSolidTop[t.TileType] && t.HasUnactuatedTile;
+        private static bool IsSaveTile(Tile t) => WorldGen.SolidTile(t) || Main.tileSolidTop[t.TileType];
 
-        private void DashState() {
-            NPC.noTileCollide = false;
-            NPC.noGravity = false;
-            NPCAimedTarget targetData = NPC.GetTargetData();
-            float stoppingTimer = 20;
-            float dashingTimer = 90;
-            float moveSpeed = 26f;
-            if (Timer <= 40f) {
-                // 来自光女
-                NPC.ai[2] = -Math.Sign(NPC.Center.X - targetData.Center.X);
-                NPC.noTileCollide = true;
-                NPC.noGravity = true;
-
-                if (Timer == 40f)
-                    NPC.velocity *= 0.3f;
-
-                Vector2 destination = (targetData.Invalid ? NPC.Bottom : targetData.Center + new Vector2(0f, targetData.Height / 2f)) + new Vector2(NPC.ai[2] * -550, 0);
-                NPC.velocity = destination - NPC.Bottom;
-                NPC.velocity = NPC.velocity.SafeNormalize(Vector2.Zero) * moveSpeed;
-
-                if (Vector2.Distance(NPC.Bottom, destination) <= 32) {
-                    Timer = 40f;
-                    NPC.velocity *= 0.1f;
-                }
-            }
-            else if (Timer <= 40f + dashingTimer) {
-                NPC.noTileCollide = true;
-                NPC.noGravity = true;
-                if (Timer == 40f + dashingTimer)
-                    NPC.velocity *= 0.7f;
-
-                NPC.velocity.X += DashSpeed * NPC.ai[2];
-
-                if (NPC.velocity.X >= DashSpeedMax)
-                    NPC.velocity.X = DashSpeedMax;
-
-                if (NPC.velocity.X <= -DashSpeedMax)
-                    NPC.velocity.X = -DashSpeedMax;
-                NPC.velocity.Y *= 0.7f;
-            }
-            else {
-                NPC.velocity *= 0.92f;
-            }
-
-            if (Timer >= 40f + dashingTimer + stoppingTimer) {
-                SwitchState((int)AIState.Second_DecideAttack);
-                NPC.netUpdate = true;
-            }
+        private void Second_DashState() {
             Timer++;
+            NPC.noTileCollide = true;
+            NPC.noGravity = true;
+            if (Timer == 1) {
+                for (int i = 0; i < NPC.oldPos.Length; i++) {
+                    NPC.oldPos[i] = Vector2.Zero;
+                }
+                NPC.ai[2] = Main.rand.NextBool() ? 1 : -1;
+                NPC.Center = Player.Center + new Vector2(600, 0) * NPC.ai[2];
+                NPC.velocity = Vector2.Zero;
+                NPC.netUpdate = true;
+                NPC.direction = Math.Sign(Player.Center.X - NPC.Center.X);
+            }
+            // 为啥要分开呢？我也不知道
+            if (Timer == 2 && Main.netMode != NetmodeID.Server) {
+                NPC.position += NPC.netOffset;
+                for (float r = 0; r <= 6.28f; r += 6.28f / 50f) {
+                    Vector2 velocity = Vector2.UnitY.RotatedBy(r) * 10f;
+                    var d = Dust.NewDustPerfect(NPC.Center, MyDustID.BlueWhiteBubble, velocity, 180, default, 1.6f);
+                    d.fadeIn = 1.2f;
+                    d.noGravity = true;
+                }
+                NPC.position -= NPC.netOffset;
+            }
+            if (Timer <= 23) {
+                NPC.velocity.X -= NPC.direction * 0.8f;
+                NPC.oldPos[0] = Vector2.Zero; // 不要残影捏
+            }
+
+            if (Timer == 50)
+                NPC.velocity.X = NPC.direction * 32f;
+            if (Timer >= 24 && Timer < 50) {
+                float factor = Utils.GetLerpValue(24, 50, Timer);
+                float speed = Utils.MultiLerp(factor * factor, 2f, 17f, 25f, 27f, 32f);
+                NPC.velocity.X = NPC.direction * speed;
+            }
+
+            if (Timer >= 72) {
+                NPC.velocity.X *= 0.03f;
+                SwitchState((int)AIState.Second_Smash);
+                NPC.ai[2] = 0;
+            }
         }
 
-        private void SuperSmashState() {
+        private void Second_SuperSmashState() {
             // 超级下砸，是从场地上砸到场地下方
             int smashStartDistanceY = 16 * 80;
             int smashStartDistanceX = 8;
@@ -381,7 +494,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                         Timer = 0; // 重设，给射弹用，顺便是下砸特效
                         SoundEngine.PlaySound(SoundID.Item167, NPC.Center);
                         for (int l = 0; l < 20; l++) { // 粒子效果
-                            var d = Dust.NewDustDirect(NPC.Bottom - new Vector2(NPC.width / 2, 30f), NPC.width, 30, DustID.Smoke, NPC.velocity.X, NPC.velocity.Y, 40, NPC.AI_121_QueenSlime_GetDustColor());
+                            var d = Dust.NewDustDirect(NPC.Bottom - new Vector2(NPC.width / 2, 30f), NPC.width, 30, DustID.Smoke, NPC.velocity.X, NPC.velocity.Y, 40, GetDustColor());
                             d.noGravity = true;
                             d.velocity.Y = -5f + Main.rand.NextFloat() * -3f;
                             d.velocity.X *= 7f;
@@ -389,21 +502,26 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                         PunchCameraModifier modifier4 = new(NPC.Center, -Vector2.UnitY, 30f, 15f, 30, 2000f, "Entrogic: Athanasy");
                         Main.instance.CameraModifiers.Add(modifier4);
                     }
-                    if (Timer <= 20 && Main.netMode != NetmodeID.MultiplayerClient) {// 借用一下鹿角怪的Proj
+                    if (Timer <= 20) {// 借用一下鹿角怪的Proj
                         float d = RoomBottom.Distance(ImmortalGolemRoom.BossZone.BottomLeft().ToWorldCoordinates(0, 0)); // 计算出中心到两边的距离
                         float p = d / 26f; // 分成22分给不同的ai1使用（26是考虑了墙面不需要）
-
                         for (int l = -1; l <= 1; l += 2) { // 左右都有
-                            for (int offset = 0; offset <= 180; offset += 60) { // 来多几层
-                                var rubbleVector = -Vector2.UnitY;
-                                rubbleVector = rubbleVector.RotatedByRandom(MathHelper.ToRadians(5));
-                                int frame = 3 + Main.rand.Next(3);
-                                var pos = new Vector2(NPC.Bottom.X + (p * Timer + Main.rand.Next((int)p + 1)) * l, NPC.Bottom.Y - 8 + offset);
-                                Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, rubbleVector * (16f + Main.rand.NextFloat() * 8f), ProjectileID.DeerclopsRangedProjectile, rubbleDamage, 0f, Main.myPlayer, 0f, frame);
+                            if (Main.netMode != NetmodeID.MultiplayerClient) {
+                                for (int offset = 0; offset <= 120; offset += 60) { // 来多几层
+                                    var rubbleVector = -Vector2.UnitY;
+                                    rubbleVector = rubbleVector.RotatedByRandom(MathHelper.ToRadians(5));
+                                    int frame = 3 + Main.rand.Next(3);
+                                    var pos = new Vector2(NPC.Bottom.X + (p * Timer + Main.rand.Next((int)p + 1)) * l, NPC.Bottom.Y - 8 + offset);
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, rubbleVector * (16f + Main.rand.NextFloat() * 8f), ProjectileID.DeerclopsRangedProjectile, rubbleDamage, 0f, Main.myPlayer, 0f, frame);
+                                }
                             }
-                            var dPos = new Vector2(NPC.Bottom.X + (p * Timer + Main.rand.Next((int)p + 1)) * l, NPC.Bottom.Y - 8);
-                            for (int i = 0; i < 15; i++) { // 粒子效果
-                                Dust.NewDustDirect(dPos + new Vector2(-15, -48), 30, 60, ModContent.DustType<Sand>(), 0, Main.rand.NextFloat(-5f, -1f), Main.rand.Next(255), default, Main.rand.NextFloat(1.5f));
+                            else {
+                                NPC.position += NPC.netOffset;
+                                var dPos = new Vector2(NPC.Bottom.X + (p * Timer + Main.rand.Next((int)p + 1)) * l, NPC.Bottom.Y - 8);
+                                for (int i = 0; i < 10; i++) { // 粒子效果
+                                    Dust.NewDustDirect(dPos + new Vector2(-15, -48), 30, 60, ModContent.DustType<Sand>(), 0, Main.rand.NextFloat(-5f, -1f), Main.rand.Next(255), default, Main.rand.NextFloat(1.5f));
+                                }
+                                NPC.position -= NPC.netOffset;
                             }
                         }
                     }
@@ -413,7 +531,8 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                         NPC.netUpdate = true;
                     }
                 }
-                else if (Timer >= smashStartTimer) { // 下砸中
+                else if (Timer >= smashStartTimer && Main.netMode != NetmodeID.Server) { // 下砸中
+                    NPC.position += NPC.netOffset;
                     for (int m = 0; m < 4; m++) {
                         Vector2 position = NPC.Bottom - new Vector2(Main.rand.NextFloatDirection() * 16f, Main.rand.Next(8));
                         var d = Dust.NewDustDirect(position, 2, 2, DustID.Smoke, NPC.velocity.X, NPC.velocity.Y, 40, GetDustColor(), 1.4f);
@@ -422,6 +541,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                         d.velocity.Y = NPC.velocity.Y * 0.9f;
                         d.velocity.X = ((Main.rand.NextBool(2)) ? (-10f) : 10f) + Main.rand.NextFloatDirection() * 3f;
                     }
+                    NPC.position -= NPC.netOffset;
                 }
 
                 NPC.velocity.X *= 0.7f;
@@ -439,8 +559,6 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                         NPC.velocity.Y = SmashSpeedMax * 1.4f;
                         return;
                     }
-                    if (NPC.velocity.Y >= SmashSpeedMax * 2.3f)
-                        NPC.velocity.Y = SmashSpeedMax * 2.3f;
                 }
                 else {
                     NPC.velocity.Y *= 0.001f;
@@ -456,16 +574,19 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
 
             Timer++;
 
-            float r = 70f;
-            for (int k = 0; k < 4; k++) {
-                Vector2 vector2 = NPC.Center + Main.rand.NextVector2CircularEdge(r, r);
-
-                Vector2 v = (vector2 - NPC.Center).SafeNormalize(Vector2.Zero) * -8f;
-                var d = Dust.NewDustDirect(vector2, 2, 2, DustID.Smoke, v.X, v.Y, (int)MathHelper.Lerp(120f, 190f, Main.rand.NextFloat()), GetDustColor(), 1.8f);
-                d.position = vector2;
-                d.noGravity = true;
-                d.velocity = v;
-                d.customData = this;
+            if (Main.netMode != NetmodeID.Server) {
+                float r = 70f;
+                NPC.position += NPC.netOffset;
+                for (int k = 0; k < 4; k++) {
+                    Vector2 vector2 = NPC.Center + Main.rand.NextVector2CircularEdge(r, r);
+                    Vector2 v = (vector2 - NPC.Center).SafeNormalize(Vector2.Zero) * -8f;
+                    var d = Dust.NewDustDirect(vector2, 2, 2, DustID.Smoke, v.X, v.Y, (int)MathHelper.Lerp(120f, 190f, Main.rand.NextFloat()), GetDustColor(), 1.8f);
+                    d.position = vector2;
+                    d.noGravity = true;
+                    d.velocity = v;
+                    d.customData = this;
+                }
+                NPC.position -= NPC.netOffset;
             }
             if (!(Timer >= 30)) // 30之前是在原地不动，属于是一个准备阶段吧
                 return;
@@ -489,7 +610,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             NPC.velocity = NPC.velocity.SafeNormalize(Vector2.Zero) * speed;
         }
 
-        private void SmashState() {
+        private void Second_SmashState() {
             int smashStartDistanceY = 420;
             int smashStartDistanceX = 8;
             int smashStartTimer = 15; // 下砸起始计时器
@@ -512,7 +633,6 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                     PunchCameraModifier modifier4 = new(NPC.Center, -Vector2.UnitY, 15f, 10.8f, 20, 1300f, "Entrogic: Athanasy");
                     Main.instance.CameraModifiers.Add(modifier4);
                     SwitchState((int)AIState.Second_DecideAttack);
-                    Timer = 0f;
                     NPC.ai[2] = 0f;
                     NPC.netUpdate = true;
                     SoundEngine.PlaySound(SoundID.Item167, NPC.Center);
@@ -528,6 +648,22 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                         d.velocity.Y = NPC.velocity.Y * 0.9f;
                         d.velocity.X = ((Main.rand.NextBool(2)) ? (-10f) : 10f) + Main.rand.NextFloatDirection() * 3f;
                     }
+                }
+
+                // 向下的圆形粒子
+                if (Timer == 6 && Main.netMode != NetmodeID.Server) {
+                    NPC.position += NPC.netOffset;
+                    // 别问为什么+unit，本代码依赖Bug运行
+                    float unit = 3.14f / 20f;
+                    for (float r = 0f; r <= 3.14f + unit; r += unit) {
+                        var velocity = r.ToRotationVector2() * 10f;
+                        var spawnCenter = NPC.Center;
+                        spawnCenter.Y += 50f;
+                        var d = Dust.NewDustPerfect(spawnCenter, MyDustID.BlueWhiteBubble, velocity, 180, default, 2.2f);
+                        d.fadeIn = 1.2f;
+                        d.noGravity = true;
+                    }
+                    NPC.position -= NPC.netOffset;
                 }
 
                 NPC.velocity.X *= 0.7f;
@@ -562,11 +698,11 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                 NPC.netUpdate = true;
             }
 
-            Timer += 1f;
+            Timer++;
 
-            float r = 70f;
+            float radius = 70f;
             for (int k = 0; k < 4; k++) {
-                Vector2 vector2 = NPC.Center + Main.rand.NextVector2CircularEdge(r, r);
+                Vector2 vector2 = NPC.Center + Main.rand.NextVector2CircularEdge(radius, radius);
 
                 Vector2 v = (vector2 - NPC.Center).SafeNormalize(Vector2.Zero) * -8f;
                 var d = Dust.NewDustDirect(vector2, 2, 2, DustID.Smoke, v.X, v.Y, (int)MathHelper.Lerp(120f, 190f, Main.rand.NextFloat()), GetDustColor(), 1.8f);
@@ -575,7 +711,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                 d.velocity = v;
                 d.customData = this;
             }
-            if (!(Timer >= 40f)) // 40之前是在原地不动，属于是一个准备阶段吧
+            if (!(Timer >= 10f)) // 10之前是在原地不动，属于是一个准备阶段吧
                 return;
 
             // 开始下砸
@@ -597,9 +733,11 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
 
             center.Y -= smashStartDistanceY;
             NPC.velocity = center - NPC.Center;
-            float speed = NPC.Distance(RoomBottom) <= 160 ? 12f : 18f;
+            float speed = NPC.Distance(RoomBottom) <= 160 ? 12f : 36f;
             NPC.velocity = NPC.velocity.SafeNormalize(Vector2.Zero) * speed;
         }
+
+        #endregion
 
         private static Color GetDustColor() {
             Color c = Color.Lerp(new Color(210, 210, 210), new Color(160, 160, 160), Main.rand.NextFloat());
@@ -741,11 +879,13 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             NPC.Opacity = 1f;
             //music = Mod.GetSoundSlot(SoundType.Music, "Sounds/Music/TheStormy");
             Music = MusicID.Boss2;
+            if (Main.getGoodWorld)
+                NPC.scale = 2f;
         }
 
         public override void OnSpawn(IEntitySource source) {
             base.OnSpawn(source);
-            NPC.Center = ImmortalGolemRoom.BossZone.Center.ToWorldCoordinates();
+            //NPC.Center = ImmortalGolemRoom.BossZone.Center.ToWorldCoordinates();
         }
 
         public override void DrawBehind(int index) {

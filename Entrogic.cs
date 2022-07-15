@@ -1,4 +1,5 @@
-﻿global using Entrogic.Common.ModSystems;
+﻿global using Entrogic.Common;
+global using Entrogic.Common.ModSystems;
 global using Entrogic.Common.Netcodes;
 global using Entrogic.Common.Statics;
 global using Entrogic.Content.DamageClasses;
@@ -8,6 +9,7 @@ global using Microsoft.Xna.Framework.Graphics;
 global using ReLogic.Content;
 global using ReLogic.Graphics;
 global using System;
+global using System.Collections;
 global using System.Collections.Generic;
 global using System.IO;
 global using System.Linq;
