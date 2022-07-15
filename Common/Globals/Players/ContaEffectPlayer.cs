@@ -78,7 +78,7 @@ namespace Entrogic.Common.Globals.Players
 				}
 
 				if (effectTexture == null) {
-                    effectTexture = ResourceManager.Miscellaneous["ContaEffect"];
+                    effectTexture = TextureManager.Miscellaneous["ContaEffect"];
                 }
 
 				ContaEffectPlayer flamePlayer = Main.player[i].GetModPlayer<ContaEffectPlayer>();

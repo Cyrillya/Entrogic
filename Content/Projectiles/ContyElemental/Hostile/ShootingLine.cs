@@ -17,7 +17,7 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Hostile
 {
     public class ShootingLine : ModProjectile
     {
-        public override string Texture => ResourceManager.Blank;
+        public override string Texture => TextureManager.Blank;
 
         private List<float> _rotates = new();
 

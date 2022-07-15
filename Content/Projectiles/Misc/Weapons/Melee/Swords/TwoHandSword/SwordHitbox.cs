@@ -2,7 +2,7 @@
 {
     internal class SwordHitbox : ProjectileBase
     {
-        public override string Texture => ResourceManager.Blank;
+        public override string Texture => TextureManager.Blank;
 
         public override void SetDefaults() {
             base.SetDefaults();

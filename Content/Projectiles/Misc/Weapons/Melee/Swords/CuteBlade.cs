@@ -4,9 +4,9 @@
     {
         public override void SelectTrailTextures(out Texture2D mainColor, out Texture2D mainShape, out Texture2D maskColor) {
             base.SelectTrailTextures(out _, out mainShape, out maskColor);
-            mainColor = ResourceManager.Cyromap2.Value;
+            mainColor = TextureManager.Cyromap2.Value;
             // 以rgb中b值来检测
-            ResourceManager.BladeTrail.Value.Parameters["uDetectMode"].SetValue(2);
+            EffectManager.BladeTrail.Value.Parameters["uDetectMode"].SetValue(2);
         }
 
         public override void SetDefaults() {

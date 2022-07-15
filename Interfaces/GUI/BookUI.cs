@@ -13,7 +13,7 @@ namespace Entrogic.Interfaces.GUI
     {
         public UIPanel Book;//新建UI
         internal static List<BookContent> Contents = new();
-        internal static Asset<Texture2D> Texture = ResourceManager.BookPanel;
+        internal static Asset<Texture2D> Texture = TextureManager.BookPanel;
         internal static int MaxPages = 1;
 
         private UIImage bookPanel;
@@ -26,7 +26,7 @@ namespace Entrogic.Interfaces.GUI
             Vector2 bookPos = new((Main.screenWidth - bookSize.X) / 2, (Main.screenHeight - bookSize.Y) / 2);
 
             if (!Main.dedServ)
-                bookPanel = new UIImage(ModContent.Request<Texture2D>($"{ResourceManager.BookAssets}Panel"));
+                bookPanel = new UIImage(ModContent.Request<Texture2D>($"{TextureManager.BookAssets}Panel"));
             bookPanel.Left.Set(bookPos.X, 0f); // UI距离左边
             bookPanel.Top.Set(bookPos.Y, 0f); // UI距离上面
             bookPanel.OnClick += new MouseEvent(Clicked); // 尝试换页
@@ -70,7 +70,7 @@ namespace Entrogic.Interfaces.GUI
             ItemBook item = player.HeldItem.ModItem as ItemBook;
             // 若并非书籍则不会执行本方法，故无需判断
             book.BookName = item.Name;
-            Texture = ResourceManager.BookPanel;
+            Texture = TextureManager.BookPanel;
             IModifyBookContent.Invoke(item.Item, player, ref Contents);
             IModifyBookPanel.Invoke(item.Item, player, ref Texture);
             bookPanel.SetImage(Texture);
@@ -124,7 +124,7 @@ namespace Entrogic.Interfaces.GUI
             Rectangle rectRight = new((int)(bookPos.X + bookSize.X - 72), (int)(bookPos.Y + bookSize.Y - 117), 72, 117);
             if (IDrawReading.Invoke(spriteBatch, player.HeldItem, player)) {
                 if (MouseRect.Intersects(rectLeft) && book.CurrentPage > 1) {
-                    spriteBatch.Draw(ResourceManager.BookBack.Value, new Vector2(rectLeft.X, rectLeft.Y), null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(TextureManager.BookBack.Value, new Vector2(rectLeft.X, rectLeft.Y), null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
                 }
                 else {
                     string page = (book.CurrentPage * 2 - 1).ToString();
@@ -132,7 +132,7 @@ namespace Entrogic.Interfaces.GUI
                     ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.ItemStack.Value, page, new Vector2(bookPos.X + 34 - size.X, bookPos.Y + bookSize.Y - 86 - size.Y), Color.White, 0f, Vector2.Zero, new Vector2(1f));
                 }
                 if (MouseRect.Intersects(rectRight) && book.CurrentPage < MaxPages) {
-                    spriteBatch.Draw(ResourceManager.BookNext.Value, new Vector2(rectRight.X, rectRight.Y), null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(TextureManager.BookNext.Value, new Vector2(rectRight.X, rectRight.Y), null, Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 0f);
                 }
                 else {
                     string page = (book.CurrentPage * 2).ToString();

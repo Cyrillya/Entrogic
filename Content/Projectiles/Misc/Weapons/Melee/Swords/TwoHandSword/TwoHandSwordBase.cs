@@ -133,7 +133,7 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords.TwoHandSword
 
             if (AI_Charge != AI_CHARGE_MAX) {
                 Player player = Main.player[Projectile.owner];
-                tex = ResourceManager.Miscellaneous["ComboRing"];
+                tex = TextureManager.Miscellaneous["ComboRing"];
                 if (!player.channel) {
                     Main.EntitySpriteDraw(tex.Value, player.Center - Main.screenPosition, null, Color.Red * (AI_Charge / AI_CHARGE_MAX), 0f, tex.Size() / 2f, MathHelper.Lerp(1f, 0f, AI_Charge / AI_CHARGE_MAX) + 0.1f, SpriteEffects.None, 0);
                 }

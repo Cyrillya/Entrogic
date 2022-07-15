@@ -4,7 +4,7 @@ namespace Entrogic.Common.Globals.PlayerLayers
 {
     internal class HangingDrawLayer : PlayerDrawLayer
 	{
-		private readonly Asset<Texture2D> tex = ModContent.Request<Texture2D>(ResourceManager.Images + "Hanging");
+		private readonly Asset<Texture2D> tex = ModContent.Request<Texture2D>(TextureManager.Images + "Hanging");
 
 		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
 			HangingPlayer hangingPlayer = drawInfo.drawPlayer.GetModPlayer<HangingPlayer>();

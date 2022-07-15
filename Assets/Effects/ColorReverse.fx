@@ -1,15 +1,15 @@
 ﻿sampler uImage0 : register(s0);
+bool uReverseAlpha;
 
 // 反色
-
 float4 reverse(float2 coords : TEXCOORD0) : COLOR0
 {
     float4 color = tex2D(uImage0, coords);
     if (!any(color))
         return color;
-    color.r = 1 - color.r;
-    color.g = 1 - color.g;
-    color.b = 1 - color.b;
+    color.rgb = 1 - color.rgb;
+    if (uReverseAlpha)
+        color.a = 1 - color.a;
     return color;
 }
 

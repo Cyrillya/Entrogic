@@ -2,7 +2,7 @@
 {
     public class CorrosiveArrow : ProjectileBase
     {
-        public override string Texture => ResourceManager.Blank;
+        public override string Texture => TextureManager.Blank;
         public override void SetStaticDefaults() {
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;    //The length of old position to be recorded
             ProjectileID.Sets.TrailingMode[Projectile.type] = 0;        //The recording mode

@@ -58,7 +58,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             }
         }
 
-        private CoroutineRunner AIRunner = new CoroutineRunner();
+        private readonly CoroutineRunner AIRunner = new();
         internal static int SmallSpearType;
         internal static int WallSpearType;
         internal static int StoneHandType;

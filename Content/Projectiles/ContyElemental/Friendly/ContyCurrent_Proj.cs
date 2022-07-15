@@ -4,7 +4,7 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Friendly
 {
     public class ContyCurrent_Proj : ProjectileBase
     {
-        public override string Texture => ResourceManager.Blank;
+        public override string Texture => TextureManager.Blank;
 
         public override void SetStaticDefaults() {
             base.SetStaticDefaults();
@@ -109,12 +109,12 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Friendly
 
                 // 把变换和所需信息丢给shader
 
-                ResourceManager.Trail.Value.Parameters["uCustomColor"].SetValue(false);
-                ResourceManager.Trail.Value.Parameters["uTransform"].SetValue(model * projection);
-                ResourceManager.Trail.Value.Parameters["uTime"].SetValue(-(float)Main.gameTimeCache.TotalGameTime.TotalMilliseconds % 30000 * 0.003f);
-                Main.instance.GraphicsDevice.Textures[0] = ResourceManager.Cyromap.Value;
-                Main.instance.GraphicsDevice.Textures[1] = ResourceManager.TrailMainShape.Value;
-                Main.instance.GraphicsDevice.Textures[2] = ResourceManager.TrailMainShape.Value;
+                EffectManager.Trail.Value.Parameters["uCustomColor"].SetValue(false);
+                EffectManager.Trail.Value.Parameters["uTransform"].SetValue(model * projection);
+                EffectManager.Trail.Value.Parameters["uTime"].SetValue(-(float)Main.gameTimeCache.TotalGameTime.TotalMilliseconds % 30000 * 0.003f);
+                Main.instance.GraphicsDevice.Textures[0] = TextureManager.Cyromap.Value;
+                Main.instance.GraphicsDevice.Textures[1] = TextureManager.TrailMainShape.Value;
+                Main.instance.GraphicsDevice.Textures[2] = TextureManager.TrailMainShape.Value;
                 Main.instance.GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
                 Main.instance.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
                 Main.instance.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
@@ -122,7 +122,7 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Friendly
                 //Main.graphics.GraphicsDevice.Textures[1] = Main.magicPixel;
                 //Main.graphics.GraphicsDevice.Textures[2] = Main.magicPixel;
 
-                ResourceManager.Trail.Value.CurrentTechnique.Passes[0].Apply();
+                EffectManager.Trail.Value.CurrentTechnique.Passes[0].Apply();
 
 
                 Main.instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList.ToArray(), 0, triangleList.Count / 3);

@@ -3,9 +3,9 @@
     public class SmeltDaggerProjectile : BladeProjectile
     {
         public override void SelectTrailTextures(out Texture2D mainColor, out Texture2D mainShape, out Texture2D maskColor) {
-            mainColor = ResourceManager.Heatmap.Value;
-            mainShape = ResourceManager.BladeTrailShape3.Value;
-            maskColor = ResourceManager.BladeTrailCover.Value;
+            mainColor = TextureManager.Heatmap.Value;
+            mainShape = TextureManager.BladeTrailShape3.Value;
+            maskColor = TextureManager.BladeTrailCover.Value;
         }
 
         public override void SetDefaults() {

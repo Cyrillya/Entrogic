@@ -33,7 +33,7 @@ namespace Entrogic.Common.Globals.Players
             book.CurrentPage = 1;
             book.BookName = player.HeldItem.Name;
 
-            BookUI.Texture = ResourceManager.BookPanel; // 重新赋值
+            BookUI.Texture = TextureManager.BookPanel; // 重新赋值
             IModifyBookContent.Invoke(player.HeldItem, player, ref BookUI.Contents);
             IModifyBookPanel.Invoke(player.HeldItem, player, ref BookUI.Texture);
             BookUI.MaxPages = (player.HeldItem?.ModItem as ItemBook).PageMax;

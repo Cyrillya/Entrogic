@@ -4,7 +4,7 @@ namespace Entrogic.Common.PlayerLayers
 {
     public class BookBubbleLayer : PlayerDrawLayer
     {
-        private Asset<Texture2D> Texture => ResourceManager.BookBubble;
+        private Asset<Texture2D> Texture => TextureManager.BookBubble;
 
         public override bool IsHeadLayer => false;
         public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
