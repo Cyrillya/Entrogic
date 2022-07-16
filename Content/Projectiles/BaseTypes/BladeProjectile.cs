@@ -261,9 +261,9 @@ namespace Entrogic.Content.Projectiles.BaseTypes
 
             // 把变换和所需信息丢给shader
 
-            EffectManager.BladeTrail.Value.Parameters["uDetectMode"].SetValue(0);
-            EffectManager.BladeTrail.Value.Parameters["uTransform"].SetValue(model * projection);
-            EffectManager.BladeTrail.Value.Parameters["uTime"].SetValue(-(float)Main.gameTimeCache.TotalGameTime.TotalMilliseconds % 30000 * 0.003f);
+            ShaderManager.BladeTrail.Value.Parameters["uDetectMode"].SetValue(0);
+            ShaderManager.BladeTrail.Value.Parameters["uTransform"].SetValue(model * projection);
+            ShaderManager.BladeTrail.Value.Parameters["uTime"].SetValue(-(float)Main.gameTimeCache.TotalGameTime.TotalMilliseconds % 30000 * 0.003f);
             SelectTrailTextures(out Texture2D mainColor, out Texture2D mainShape, out Texture2D maskColor);
             Main.instance.GraphicsDevice.Textures[0] = mainColor;
             Main.instance.GraphicsDevice.Textures[1] = mainShape;
@@ -272,7 +272,7 @@ namespace Entrogic.Content.Projectiles.BaseTypes
             Main.instance.GraphicsDevice.SamplerStates[1] = SamplerState.AnisotropicWrap;
             Main.instance.GraphicsDevice.SamplerStates[2] = SamplerState.AnisotropicWrap;
 
-            EffectManager.BladeTrail.Value.CurrentTechnique.Passes[0].Apply();
+            ShaderManager.BladeTrail.Value.CurrentTechnique.Passes[0].Apply();
 
             Main.instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList.ToArray(), 0, triangleList.Count / 3);
             Main.instance.GraphicsDevice.RasterizerState = originalState;

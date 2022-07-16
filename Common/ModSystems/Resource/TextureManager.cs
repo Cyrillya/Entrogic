@@ -30,11 +30,15 @@
         internal static Asset<Texture2D> BookBack;
 
         internal static Dictionary<string, Asset<Texture2D>> Miscellaneous = new();
+
+        internal static bool IsLoaded { get; private set; } = false;
+
         public override void PostSetupContent() {
             if (!Main.dedServ) {
                 SetupMiscellaneous();
                 SetupBooks();
                 SetupTrailing();
+                IsLoaded = true;
             }
             base.PostSetupContent();
         }
@@ -43,6 +47,7 @@
             static void AddMisc(string name) => Miscellaneous.Add(name, ModContent.Request<Texture2D>($"Entrogic/Assets/Images/Miscellaneous/{name}"));
             AddMisc("ComboRing");
             AddMisc("ContaEffect");
+            AddMisc("AthanasyBossRoomCutaway");
         }
 
         private static void SetupBooks() {
@@ -81,6 +86,7 @@
             BladeTrailShape3 = null;
             BladeTrailCover = null;
             BladeTrailErosion = null;
+            IsLoaded = false;
         }
     }
 }

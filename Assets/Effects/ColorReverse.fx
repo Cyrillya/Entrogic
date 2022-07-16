@@ -1,5 +1,5 @@
 ﻿sampler uImage0 : register(s0);
-bool uReverseAlpha;
+float uOpacity = 1;
 
 // 反色
 float4 reverse(float2 coords : TEXCOORD0) : COLOR0
@@ -8,8 +8,7 @@ float4 reverse(float2 coords : TEXCOORD0) : COLOR0
     if (!any(color))
         return color;
     color.rgb = 1 - color.rgb;
-    if (uReverseAlpha)
-        color.a = 1 - color.a;
+    color.a *= uOpacity;
     return color;
 }
 

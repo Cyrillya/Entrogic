@@ -1,5 +1,4 @@
 ﻿using Entrogic.Content.NPCs.BaseTypes;
-using Terraria.Audio;
 
 namespace Entrogic.Content.NPCs.Enemies.Athanasy
 {
@@ -32,22 +31,28 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
         private Vector2 AthanasyCenter => new(NPC.ai[2], NPC.ai[3]);
 
         public override void OnSpawn(IEntitySource source) {
-            if (source.Context is not null && source.Context == "Stage1" && Main.netMode != NetmodeID.Server) {
+            if (source.Context is not null && (source.Context == "Stage1" || source.Context == "Stage2") && Main.netMode != NetmodeID.Server) {
+                NPC.position += NPC.netOffset;
+
                 Vector2 vec = Utils.DirectionTo(AthanasyCenter, NPC.Center) * 120f;
                 Vector2 startPosition = AthanasyCenter + vec;
+                if (source.Context == "Stage2")
+                    goto SpawnCircleDust;
                 float distance = Vector2.Distance(startPosition, NPC.Center);
 
-                NPC.position += NPC.netOffset;
-                Dust.QuickDustLine(startPosition, NPC.Bottom, distance / 6f, Color.SkyBlue);
-                NPC.position -= NPC.netOffset;
+                Dust.QuickDustLine(startPosition, NPC.Bottom, distance / 12f, Color.SkyBlue);
 
-                for (int i = 0; i < 8; i++) {
+                SpawnCircleDust:;
+                int dusts = source.Context == "Stage2" ? 12 : 8;
+                for (int i = 0; i < dusts; i++) {
                     float radians = 6.28f / 8f * i;
                     var velocity = Vector2.One.RotatedBy(radians) * 1.4f;
-                    var d = Dust.NewDustPerfect(NPC.Center, DustID.DungeonWater, velocity, 180);
+                    var d = Dust.NewDustPerfect(NPC.Bottom, MyDustID.BlueWhiteBubble, velocity, 180, Scale: source.Context == "Stage2" ? 2f : 1f);
                     d.fadeIn = 0.4f;
                     d.noGravity = true;
                 }
+
+                NPC.position -= NPC.netOffset;
             }
         }
 
@@ -69,12 +74,20 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             //        d.velocity.X *= 7f;
             //    }
             //}
+            if (NPC.ai[2] == -1 && Timer >= 220) {
+                NPC.active = false;
+                NPC.life = 0;
+                NPC.netUpdate = true;
+            }
         }
 
         public override void FindFrame(int frameHeight) {
             // 95 100 105 110 115 120
             if (Timer >= 100 && Timer <= 120 && NPC.frameCounter <= 5 && Timer % 5 == 0) {
                 NPC.frameCounter++;
+            }
+            if (NPC.ai[2] == -1 && Timer >= 200 && Timer <= 220 && NPC.frameCounter >= 0 && Timer % 5 == 0) {
+                NPC.frameCounter--;
             }
             NPC.frame.Y = (int)NPC.frameCounter * frameHeight;
         }
@@ -92,6 +105,16 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
         }
 
         public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection) {
+            if (Main.player.IndexInRange(projectile.owner) &&
+                Main.player[projectile.owner].heldProj == projectile.whoAmI &&
+                Main.player[projectile.owner].HeldItem is not null &&
+                Main.player[projectile.owner].HeldItem.channel &&
+                Main.player[projectile.owner].HeldItem.pick > 0) {
+                damage *= 100;
+                if (damage < NPC.lifeMax + NPC.defense) {
+                    damage = Main.rand.Next(2000, 8000);
+                }
+            }
             if (damage <= NPC.lifeMax / 2f + NPC.defense) {
                 damage = Main.rand.Next(NPC.lifeMax / 2 + NPC.defense, NPC.lifeMax / 2 + NPC.defense + 100);
             }

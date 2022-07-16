@@ -50,6 +50,7 @@ namespace Entrogic.Common.ModSystems
 				}
             }
 			Timer++;
+			Timer = LifeSpan;
 			if (Timer >= LifeSpan) ShouldDraw = false;
 			List<Vector2> centers = new();
 			List<CustomVertexInfo> bars = new();
@@ -88,7 +89,7 @@ namespace Entrogic.Common.ModSystems
 				triangleList.Add(bars[ind + 3]);
 			}
 
-			EffectManager.Trail.Value.Parameters["uOpacity"].SetValue(MathHelper.Lerp(1f, 0f, (float)Timer / (float)LifeSpan));
+			ShaderManager.Trail.Value.Parameters["uOpacity"].SetValue(MathHelper.Lerp(1f, 0f, (float)Timer / (float)LifeSpan));
 			Main.instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList.ToArray(), 0, triangleList.Count / 3);
 		}
 	}
@@ -130,8 +131,8 @@ namespace Entrogic.Common.ModSystems
 
 						// 把变换和所需信息丢给shader
 
-						EffectManager.Trail.Value.Parameters["uTransform"].SetValue(model * projection);
-						EffectManager.Trail.Value.Parameters["uTime"].SetValue(-(float)Main.gameTimeCache.TotalGameTime.TotalMilliseconds % 30000 * 0.003f);
+						ShaderManager.Trail.Value.Parameters["uTransform"].SetValue(model * projection);
+						ShaderManager.Trail.Value.Parameters["uTime"].SetValue(-(float)Main.gameTimeCache.TotalGameTime.TotalMilliseconds % 30000 * 0.003f);
 						Main.instance.GraphicsDevice.Textures[0] = TextureManager.Cyromap.Value;
 						Main.instance.GraphicsDevice.Textures[1] = TextureManager.TrailMainShape.Value;
 						Main.instance.GraphicsDevice.Textures[2] = TextureManager.TrailMaskColor.Value;
@@ -142,7 +143,7 @@ namespace Entrogic.Common.ModSystems
 						//Main.graphics.GraphicsDevice.Textures[1] = Main.magicPixel;
 						//Main.graphics.GraphicsDevice.Textures[2] = Main.magicPixel;
 
-						EffectManager.Trail.Value.CurrentTechnique.Passes[0].Apply();
+						ShaderManager.Trail.Value.CurrentTechnique.Passes[0].Apply();
 
 						List<Lightning> shouldBeDeleted = new();
 						foreach (var light in Lightnings) {

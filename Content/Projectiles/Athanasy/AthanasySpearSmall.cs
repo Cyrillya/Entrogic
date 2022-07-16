@@ -16,7 +16,7 @@ namespace Entrogic.Content.Projectiles.Athanasy
             Projectile.width = 12;
             Projectile.height = 12;
             Projectile.aiStyle = -1;
-            Projectile.timeLeft = 550;
+            Projectile.timeLeft = 300;
             Projectile.tileCollide = true;
             Projectile.alpha = 0;
             DrawOffsetX = -70;

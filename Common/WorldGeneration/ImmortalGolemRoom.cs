@@ -320,7 +320,7 @@ namespace Entrogic.Common.WorldGeneration
             return '0';
         }
 
-        private void ChooseDungeonColor(char dungeonColor, out ushort brickType, out ushort wallType, out ushort platform) {
+        private static void ChooseDungeonColor(char dungeonColor, out ushort brickType, out ushort wallType, out ushort platform) {
             switch (dungeonColor) {
                 case 'B':
                     brickType = TileID.BlueDungeonBrick;

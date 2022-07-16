@@ -109,9 +109,9 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Friendly
 
                 // 把变换和所需信息丢给shader
 
-                EffectManager.Trail.Value.Parameters["uCustomColor"].SetValue(false);
-                EffectManager.Trail.Value.Parameters["uTransform"].SetValue(model * projection);
-                EffectManager.Trail.Value.Parameters["uTime"].SetValue(-(float)Main.gameTimeCache.TotalGameTime.TotalMilliseconds % 30000 * 0.003f);
+                ShaderManager.Trail.Value.Parameters["uCustomColor"].SetValue(false);
+                ShaderManager.Trail.Value.Parameters["uTransform"].SetValue(model * projection);
+                ShaderManager.Trail.Value.Parameters["uTime"].SetValue(-(float)Main.gameTimeCache.TotalGameTime.TotalMilliseconds % 30000 * 0.003f);
                 Main.instance.GraphicsDevice.Textures[0] = TextureManager.Cyromap.Value;
                 Main.instance.GraphicsDevice.Textures[1] = TextureManager.TrailMainShape.Value;
                 Main.instance.GraphicsDevice.Textures[2] = TextureManager.TrailMainShape.Value;
@@ -122,7 +122,7 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Friendly
                 //Main.graphics.GraphicsDevice.Textures[1] = Main.magicPixel;
                 //Main.graphics.GraphicsDevice.Textures[2] = Main.magicPixel;
 
-                EffectManager.Trail.Value.CurrentTechnique.Passes[0].Apply();
+                ShaderManager.Trail.Value.CurrentTechnique.Passes[0].Apply();
 
 
                 Main.instance.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList.ToArray(), 0, triangleList.Count / 3);

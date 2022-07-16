@@ -1,9 +1,4 @@
-﻿using Entrogic.Content.DamageClasses;
-using Terraria;
-using Terraria.Localization;
-using Terraria.ModLoader;
-
-namespace Entrogic.Content.Buffs
+﻿namespace Entrogic.Content.Buffs
 {
     public class ContaBuff : BuffBase
 	{
@@ -12,9 +7,6 @@ namespace Entrogic.Content.Buffs
 			DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "海洋祝福");
 			Description.SetDefault("Grants several major improvements of stats.");
 			Description.AddTranslation((int)GameCulture.CultureName.Chinese, "属性大大增强。");
-
-			Main.buffNoTimeDisplay[Type] = false;
-			Main.debuff[Type] = false; //Add this so the nurse doesn't remove the buff when healing
 		}
 
 		public override void Update(Player player, ref int buffIndex) {

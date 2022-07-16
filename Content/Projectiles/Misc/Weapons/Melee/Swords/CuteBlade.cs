@@ -6,7 +6,7 @@
             base.SelectTrailTextures(out _, out mainShape, out maskColor);
             mainColor = TextureManager.Cyromap2.Value;
             // 以rgb中b值来检测
-            EffectManager.BladeTrail.Value.Parameters["uDetectMode"].SetValue(2);
+            ShaderManager.BladeTrail.Value.Parameters["uDetectMode"].SetValue(2);
         }
 
         public override void SetDefaults() {

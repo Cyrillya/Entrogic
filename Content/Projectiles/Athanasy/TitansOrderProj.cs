@@ -29,6 +29,7 @@ namespace Entrogic.Content.Projectiles.Athanasy
             if (Timer == 150f) {
                 Projectile.hide = true;
                 Projectile.netUpdate = true;
+                AthanasySystem.TileRunner.Run(AthanasySystem.ActuateTiles(false, 10, 90));
             }
 
             if (Timer >= 150f) {
