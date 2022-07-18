@@ -1,40 +1,35 @@
-﻿using Terraria;
-using Terraria.ID;
-
-namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
+﻿namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
 {
-    public class FlyingFishPistol : ModItem
+    public class FlyingFishPistol : WeaponGun
     {
-        public override Vector2? HoldoutOffset() => new Vector2(-7, 0);
+        public override Vector2? HoldoutOffset() => new Vector2(-6, -8);
 
         public override void SetStaticDefaults() {
             DisplayName.SetDefault("Flying Fish Pistol");
             DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "飞鱼手枪");
             Tooltip.SetDefault("“什么残忍的人才会把枪管插到一只可怜的飞鱼嘴里？”");
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+            SacrificeTotal = 1;
         }
 
-        public override void SetDefaults()
-        {
-            Item.damage = 49;
-            Item.DamageType = DamageClass.Ranged;
-            Item.width = 54;
+        public override void ModifyGunDefaults(out int singleShotTime, out float shotVelocity, out bool autoReuse) {
+            singleShotTime = 16;
+            shotVelocity = 10f;
+            autoReuse = false;
+
+            Item.width = 52;
             Item.height = 32;
-            Item.useTime = 20;
-            Item.useAnimation = 20;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.noMelee = true;
             Item.knockBack = 4;
-            Item.value = Item.sellPrice(0, 1, 0, 0);
+            Item.damage = 49;
             Item.rare = ItemRarityID.Lime;
-            Item.UseSound = SoundID.Item11;
-            Item.autoReuse = false;
-            Item.shoot = ProjectileID.PurificationPowder;
-            Item.shootSpeed = 10f;
-            Item.useAmmo = AmmoID.Bullet;
+            Item.value = Item.sellPrice(0, 1, 0, 0);
+            Item.UseSound = SoundAssets.Pistol;
+            RecoilPower = 16;
+            BarrelLength = 50;
+            ShootDustDegree = 30;
+            DustCount = 6;
         }
-        public override void AddRecipes()
-        {
+
+        public override void AddRecipes() {
             //CreateRecipe()
             //    .AddIngredient(ItemID.ZephyrFish, 1)//飞鱼宠物
             //    .AddIngredient(ItemType<GelOfLife>(), 3)
@@ -44,11 +39,9 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
             //    .Register();
         }
 
-        public override bool CanConsumeAmmo(Item ammo, Player player) => Main.rand.NextFloat() >= .1f;
-
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
             base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
-            velocity.RotateRandom(MathHelper.ToRadians(2));
+            velocity.RotateRandom(MathHelper.ToRadians(5));
         }
     }
 }

@@ -1,34 +1,32 @@
-﻿using Terraria;
-namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
+﻿namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
 {
-    public class FlyingFishHeavyMachineGun : ModItem
+    public class FlyingFishHeavyMachineGun : WeaponGun
     {
-        public override Vector2? HoldoutOffset() => new Vector2(-9, 0);
+        public override Vector2? HoldoutOffset() => new Vector2(-6, -8);
 
         public override void SetStaticDefaults() {
             DisplayName.SetDefault("Flying Fish Heavy Machine Gun");
             DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "飞鱼重机枪");
             Tooltip.SetDefault("“人的成长就是战胜自己不成熟的过去”");
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+            SacrificeTotal = 1;
         }
 
-        public override void SetDefaults() {
-            Item.damage = 66;
-            Item.DamageType = DamageClass.Ranged;
+        public override void ModifyGunDefaults(out int singleShotTime, out float shotVelocity, out bool autoReuse) {
+            singleShotTime = 5;
+            shotVelocity = 10f;
+            autoReuse = true;
+
             Item.width = 64;
             Item.height = 32;
-            Item.useTime = 5;
-            Item.useAnimation = 5;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.noMelee = true;
-            Item.knockBack = 3;
-            Item.value = Item.sellPrice(0, 8, 0, 0);
+            Item.knockBack = 3f;
+            Item.damage = 66;
             Item.rare = ItemRarityID.Red;
-            Item.UseSound = SoundID.Item11;
-            Item.autoReuse = true;
-            Item.shoot = ProjectileID.PurificationPowder;
-            Item.shootSpeed = 5f;
-            Item.useAmmo = AmmoID.Bullet;
+            Item.value = Item.sellPrice(0, 8, 0, 0);
+            Item.UseSound = SoundAssets.HeavyMachineGun;
+            RecoilPower = 5;
+            BarrelLength = 56;
+            ShootDustDegree = 40;
+            DustCount = 3;
         }
 
         public override void AddRecipes() {
@@ -43,6 +41,11 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
         }
 
         public override bool CanConsumeAmmo(Item ammo, Player player) => Main.rand.NextFloat() >= .80f;
+
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+            base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
+            velocity = velocity.RotateRandom(MathHelper.ToRadians(5));
+        }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
             int numberProjectiles = 1 + Main.rand.Next(2);

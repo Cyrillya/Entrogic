@@ -18,7 +18,7 @@ namespace Entrogic.Common.Netcodes.PlayerStatus
         }
 
         public void SendContaminatedDodge(int toWho, int fromWho, byte player) {
-            ModPacket packet = GetPacket(SyncContaminatedDodge, fromWho);
+            ModPacket packet = GetPacket(SyncContaminatedDodge);
             packet.Write(player);
             packet.Send(toWho, fromWho);
         }

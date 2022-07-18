@@ -2,7 +2,7 @@
 
 namespace Entrogic.Content.Projectiles.Athanasy
 {
-    public class AthanasySpearWall : ModProjectile
+    public class AthanasySpearWall : ProjectileBase
     {
         public override string Texture => "Entrogic/Content/Projectiles/Athanasy/AthanasySpearSmall";
 

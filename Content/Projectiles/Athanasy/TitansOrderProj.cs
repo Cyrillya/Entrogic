@@ -4,7 +4,7 @@ using Terraria.Audio;
 
 namespace Entrogic.Content.Projectiles.Athanasy
 {
-    public class TitansOrderProj : ModProjectile
+    public class TitansOrderProj : ProjectileBase
     {
         public override void SetDefaults() {
             Projectile.width = 34;

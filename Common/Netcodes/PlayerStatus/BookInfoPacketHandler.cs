@@ -23,7 +23,7 @@ namespace Entrogic.Common.Netcodes.PlayerStatus
 
 		public void SendPage(int toWho, int fromWho, byte player, int page, bool open) {
 			if (Main.netMode == NetmodeID.SinglePlayer) return;
-			var packet = GetPacket(SyncPage, fromWho);
+			var packet = GetPacket(SyncPage);
 			packet.Write(player);
 			packet.Write(page);
 			packet.Write(open);
@@ -46,7 +46,7 @@ namespace Entrogic.Common.Netcodes.PlayerStatus
 
 		public void SendName(int toWho, int fromWho, byte player, string name) {
 			if (Main.netMode == NetmodeID.SinglePlayer) return;
-			var packet = GetPacket(SyncName, fromWho);
+			var packet = GetPacket(SyncName);
 			packet.Write(player);
 			packet.Write(name);
 			packet.Send(toWho, fromWho);

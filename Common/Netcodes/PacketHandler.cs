@@ -10,7 +10,7 @@
 			HandlerType = handlerType;
 		}
 
-		protected ModPacket GetPacket(byte packetType, int fromWho) {
+		protected ModPacket GetPacket(byte packetType) {
 			var p = Entrogic.Instance.GetPacket();
 			p.Write((byte)HandlerType);
 			p.Write(packetType);

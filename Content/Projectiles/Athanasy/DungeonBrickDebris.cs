@@ -1,6 +1,6 @@
 ﻿namespace Entrogic.Content.Projectiles.Athanasy
 {
-    public class DungeonBrickDebris : ModProjectile
+    public class DungeonBrickDebris : ProjectileBase
     {
         internal static int VanillaDebrisType { get; private set; }
 

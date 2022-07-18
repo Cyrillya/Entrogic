@@ -2,7 +2,7 @@
 
 namespace Entrogic.Content.Projectiles.Athanasy
 {
-    public class AthanasySpearSmall : ModProjectile
+    public class AthanasySpearSmall : ProjectileBase
     {
         public override void SetStaticDefaults() {
             ProjectileID.Sets.TrailCacheLength[Type] = 8;

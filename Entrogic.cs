@@ -2,7 +2,10 @@
 global using Entrogic.Common.ModSystems;
 global using Entrogic.Common.Netcodes;
 global using Entrogic.Common.Statics;
+global using Entrogic.Common.Hooks;
+global using Entrogic.Common.Hooks.Items;
 global using Entrogic.Content.DamageClasses;
+global using Entrogic.Content.Items.BaseTypes;
 global using Entrogic.Content.Projectiles.BaseTypes;
 global using Microsoft.Xna.Framework;
 global using Microsoft.Xna.Framework.Graphics;

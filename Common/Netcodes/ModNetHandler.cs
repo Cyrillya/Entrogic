@@ -14,7 +14,7 @@ namespace Entrogic.Common.Netcodes
         }
         internal static DodgePacketHandler Dodge = new(EntrogicMessageType.Dodge);
         internal static BookInfoPacketHandler BookInfo = new(EntrogicMessageType.BookInfo);
-        internal static PlayerStatPacketHandler PlayerStat = new(EntrogicMessageType.PlayerStat);
+        internal static PlayerDataPacketHandler PlayerData = new(EntrogicMessageType.PlayerStat);
         public static void HandlePacket(BinaryReader r, int fromWho) {
             EntrogicMessageType msgType = (EntrogicMessageType)r.ReadByte();
             switch (msgType) {
@@ -25,7 +25,7 @@ namespace Entrogic.Common.Netcodes
                     BookInfo.HandlePacket(r, fromWho);
                     break;
                 case EntrogicMessageType.PlayerStat:
-                    PlayerStat.HandlePacket(r, fromWho);
+                    PlayerData.HandlePacket(r, fromWho);
                     break;
                 default:
                     Entrogic.Instance.LoggerWarn(string.Format("Entrogic: Unknown Message type: {0}", msgType));

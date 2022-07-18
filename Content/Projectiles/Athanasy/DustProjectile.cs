@@ -1,6 +1,6 @@
 ﻿namespace Entrogic.Content.Projectiles.Athanasy
 {
-    public class DustProjectile : ModProjectile
+    public class DustProjectile : ProjectileBase
     {
         public override void SetStaticDefaults() {
             NPCs.Enemies.Athanasy.Athanasy.DustProjectileType = Type;
