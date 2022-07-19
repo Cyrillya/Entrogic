@@ -1,9 +1,8 @@
 ﻿global using Entrogic.Common;
+global using Entrogic.Common.Hooks.Items;
 global using Entrogic.Common.ModSystems;
 global using Entrogic.Common.Netcodes;
 global using Entrogic.Common.Statics;
-global using Entrogic.Common.Hooks;
-global using Entrogic.Common.Hooks.Items;
 global using Entrogic.Content.DamageClasses;
 global using Entrogic.Content.Items.BaseTypes;
 global using Entrogic.Content.Projectiles.BaseTypes;
@@ -17,6 +16,7 @@ global using System.Collections.Generic;
 global using System.IO;
 global using System.Linq;
 global using Terraria;
+global using Terraria.Audio;
 global using Terraria.DataStructures;
 global using Terraria.GameContent;
 global using Terraria.GameContent.Creative;

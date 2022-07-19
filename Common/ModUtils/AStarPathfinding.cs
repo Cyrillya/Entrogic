@@ -1,38 +1,37 @@
-﻿using System.Linq;
-
-namespace Entrogic
+﻿namespace Entrogic
 {
-    class Vertex
+    public class PathVertex
     {
-        public int x, y;//顶点的X,Y坐标
-        public Vertex parent = null;//父节点（前驱节点）,默认无父节点
-        public int F, G, H; //F = G +H
-        public Vertex(int x, int y) {
+        public int x, y; // 顶点的X,Y坐标
+        public PathVertex parent = null; // 父节点（前驱节点）,默认无父节点
+        public int F, G, H; // F = G + H
+        public PathVertex(int x, int y) {
             this.x = x;
             this.y = y;
         }
-        public Vertex() {
+        public PathVertex() {
 
         }
     }
 
-    class AstarTestClass
+    public class AstarTestClass
     {
-        public int heuristicsCostEstimate(Vertex reachableV, Vertex goalV) {
+        public static int HeuristicsCostEstimate(PathVertex reachableV, PathVertex goalV) {
             int disX = reachableV.x - goalV.x;
             int disY = reachableV.y - goalV.y;
             return Math.Abs(disX) + Math.Abs(disY);
         }
 
-        public int getG(Vertex v)//当前点与父节点为上下左右的关系，距离为1（不考虑上左，上右，下左，下右）
+        public static int GetG(PathVertex v)// 当前点与父节点为上下左右的关系，距离为1（不考虑上左，上右，下左，下右）
         {
             return v.parent != null ? v.parent.G + 1 : 0;
         }
-        //从openList中查找F值最小的顶点
-        public Vertex getVexOfMinFFromOpenList(List<Vertex> openList) {
+
+        // 从openList中查找F值最小的顶点
+        public static PathVertex GetVexOfMinFFromOpenList(List<PathVertex> openList) {
             int min = openList[0].F;
-            Vertex vexOfMinF = openList[0];
-            for (int i = 1; i < openList.Count(); ++i) {
+            PathVertex vexOfMinF = openList[0];
+            for (int i = 1; i < openList.Count; ++i) {
                 if (openList[i].F < min) {
                     min = openList[i].F;
                     vexOfMinF = openList[i];
@@ -41,8 +40,8 @@ namespace Entrogic
             return vexOfMinF;
         }
 
-        public bool isInList(int x, int y, List<Vertex> list) {
-            foreach (Vertex v in list) {
+        public static bool IsInList(int x, int y, List<PathVertex> list) {
+            foreach (PathVertex v in list) {
                 if (v.x == x && v.y == y) {
                     return true;
                 }
@@ -51,27 +50,35 @@ namespace Entrogic
         }
 
 
-        public Vertex getVertexFromList(int x, int y, List<Vertex> list) {
-            foreach (Vertex v in list) {
+        public static PathVertex GetVertexFromList(int x, int y, List<PathVertex> list) {
+            foreach (PathVertex v in list) {
                 if (v.x == x && v.y == y) {
                     return v;
                 }
             }
-            return new Vertex(0, 0);//上面一定有返回值
+            return new PathVertex(0, 0);//上面一定有返回值
         }
 
-        public List<Vertex> AStar(Vertex startVertex, Vertex endVertex, int[,] mapData, int findLimits) {
-            List<Vertex> openList = new();
-            List<Vertex> closeList = new();
+        public static bool IsPathable(int x, int y) =>
+            IsSafeTile(x, y) && IsSafeTile(x, y - 1) &&
+            ((IsSafeTile(x - 1, y) && IsSafeTile(x - 1, y - 1)) ||
+            (IsSafeTile(x + 1, y) && IsSafeTile(x + 1, y - 1)));
 
-            List<Vertex> vexs = new();
-            for (int i = 0; i < mapData.GetLength(0) * mapData.GetLength(1); ++i) {
-                Vertex vex = new();
-                vexs.Add(vex);
-            }
+        public static bool IsSafeTile(int x, int y) {
+            if (!WorldGen.InWorld(x, y))
+                return false;
 
-            int vexIndex = 0;
-            int[,] direction = new int[4, 2] { { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 } };
+            var tile = Framing.GetTileSafely(x, y);
+            return !WorldGen.SolidTile(tile) || tile.IsActuated || !tile.HasTile;
+        }
+
+        public List<PathVertex> AStar(PathVertex startVertex, PathVertex endVertex, int findLimits) {
+            List<PathVertex> openList = new();
+            List<PathVertex> closeList = new();
+
+            short[,] direction = new short[4, 2] {
+                { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 }
+            };
 
             //初始化closeList
             //closeList.Add(startVertex);
@@ -80,49 +87,46 @@ namespace Entrogic
             openList.Add(startVertex);
 
             int times = 0;
-            while (openList.Count() > 0 && times <= findLimits) {//当openList不为空时
 
-
-                //遍历openList,查找F值最小的顶点
-                Vertex minVertex = getVexOfMinFFromOpenList(openList);
+            // 当openList不为空时
+            while (openList.Count > 0 && times <= findLimits) {
+                // 遍历openList,查找F值最小的顶点
+                PathVertex minVertex = GetVexOfMinFFromOpenList(openList);
 
                 if (minVertex.x == endVertex.x && minVertex.y == endVertex.y) {
                     endVertex.parent = minVertex.parent;
                     break;
                 }
 
-                //将F值最小的节点移入close表中，并将其作为当前要处理的节点
+                // 将F值最小的节点移入close表中，并将其作为当前要处理的节点
                 openList.Remove(minVertex);
                 closeList.Add(minVertex);
 
-                //对当前要处理节点的可到达节点进行检查,
+                // 对当前要处理节点的可到达节点进行检查,
                 for (int i = 0; i < 4; ++i) {
                     int nextX = minVertex.x + direction[i, 0];
                     int nextY = minVertex.y + direction[i, 1];
-
-                    //下一个顶点没有越界
-                    if (nextX >= 0 && nextX < mapData.GetLength(0) && nextY >= 0 && nextY < mapData.GetLength(1)) {
-                        if (mapData[nextX, nextY] == 0 && !isInList(nextX, nextY, closeList)) {//不是障碍物并且不在close列表中
-                            //判断是否在openList中
-                            if (!isInList(nextX, nextY, openList)) {//不在openList中，则加入，并将当前处理节点作为它的父节点，并计算其F,G,H
-                                Vertex vex = vexs[vexIndex];
-                                vex.x = nextX;
-                                vex.y = nextY;
+                    // 不是障碍物并且不在close列表中
+                    if (IsPathable(nextX, nextY) && !IsInList(nextX, nextY, closeList)) {
+                        //判断是否在openList中
+                        if (!IsInList(nextX, nextY, openList)) { // 不在openList中，则加入，并将当前处理节点作为它的父节点，并计算其F,G,H
+                            PathVertex vex = new() {
+                                x = nextX,
+                                y = nextY,
+                                parent = minVertex
+                            };
+                            vex.G = GetG(vex);
+                            vex.H = HeuristicsCostEstimate(vex, endVertex);
+                            vex.F = vex.G + vex.H;
+                            openList.Add(vex);
+                        }
+                        else {
+                            //从openList中获取该节点
+                            PathVertex vex = GetVertexFromList(nextX, nextY, openList);
+                            if (minVertex.G + 1 < vex.G) { // 如果从当前处理顶点到该顶点使得G更小
                                 vex.parent = minVertex;
-                                vex.G = getG(vex);
-                                vex.H = heuristicsCostEstimate(vex, endVertex);
+                                vex.G = minVertex.G + 1;
                                 vex.F = vex.G + vex.H;
-                                openList.Add(vex);
-                                vexIndex++;
-                            }
-                            else {
-                                //从openList中获取该节点
-                                Vertex vex = getVertexFromList(nextX, nextY, openList);
-                                if (minVertex.G + 1 < vex.G) {//如果从当前处理顶点到该顶点使得G更小
-                                    vex.parent = minVertex;
-                                    vex.G = minVertex.G + 1;
-                                    vex.F = vex.G + vex.H;
-                                }
                             }
                         }
                     }
@@ -130,37 +134,36 @@ namespace Entrogic
                 times++;
             }
 
-            List<Vertex> theWay = new();
-            Vertex v = endVertex;
+            List<PathVertex> theWay = new();
+            PathVertex v = endVertex;
             while (v.parent != null) {
                 theWay.Add(v);
                 v = v.parent;
             }
             return theWay;
         }
-
-
-
     }
 
-    class AStarPathfinding
+    public class AStarPathfinding
     {
 
-        public static List<Vertex> Pathfinding(int[,] mapData, Vertex start, Vertex end, int findLimits) {
-
+        public static List<PathVertex> Pathfinding(Point start, Point end, int findLimits) {
             //Console.WriteLine("start {0},{1}", start.x, start.y);
             //Console.WriteLine("end {0},{1}", end.x, end.y);
             //Console.WriteLine("{0} {1 }", mapData.Rank, mapData.GetLength(0));
 
-            start.F = start.G = start.H = 0;
+            PathVertex startVertex = new(start.X, start.Y);
+            PathVertex endVertex = new(end.X, end.Y);
+
+            startVertex.F = startVertex.G = startVertex.H = 0;
 
             AstarTestClass aStarTest = new();
 
-            List<Vertex> theWay = aStarTest.AStar(start, end, mapData, findLimits);
+            List<PathVertex> theWay = aStarTest.AStar(startVertex, endVertex, findLimits);
 
-            for (int i = theWay.Count() - 1; i >= 0; --i) {
-                Console.Write("{0},{1} ->", theWay[i].x, theWay[i].y);
-            }
+            //for (int i = theWay.Count() - 1; i >= 0; --i) {
+            //    Console.Write("{0},{1} ->", theWay[i].x, theWay[i].y);
+            //}
 
             return theWay;
         }

@@ -1,4 +1,5 @@
-﻿using Terraria.Graphics.Shaders;
+﻿using Terraria.Audio;
+using Terraria.Graphics.Shaders;
 
 namespace Entrogic.Content.Projectiles.Athanasy
 {
@@ -19,6 +20,7 @@ namespace Entrogic.Content.Projectiles.Athanasy
             Projectile.timeLeft = 300;
             Projectile.tileCollide = true;
             Projectile.alpha = 0;
+            Projectile.DamageType = DamageClass.Ranged;
             DrawOffsetX = -70;
             DrawOriginOffsetX = 34;
             DrawOriginOffsetY = -4;
@@ -126,7 +128,7 @@ namespace Entrogic.Content.Projectiles.Athanasy
 
                 Main.spriteBatch.End();
                 Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.ZoomMatrix);
-                GameShaders.Armor.Apply(GameShaders.Armor.GetShaderIdFromItemId(ItemID.ColorOnlyDye), Projectile, null);
+                GameShaders.Armor.Apply(ContentSamples.CommonlyUsedContentSamples.ColorOnlyShaderIndex, Projectile, null);
 
                 for (float i = 0f; i < 1f; i += 0.4f) {
                     float radians = i * MathHelper.TwoPi;
@@ -148,6 +150,8 @@ namespace Entrogic.Content.Projectiles.Athanasy
         }
 
         public override void Kill(int timeLeft) {
+            Collision.HitTiles(Projectile.position + Projectile.velocity, Projectile.velocity, Projectile.width, Projectile.height);
+            SoundEngine.PlaySound(SoundID.Item10, Projectile.position);
             Projectile.velocity *= 0.2f;
             for (int i = 0; i < 20; i++) {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.DungeonBlue, Projectile.velocity.X, Projectile.velocity.Y, 40);

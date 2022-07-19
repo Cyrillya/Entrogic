@@ -58,6 +58,9 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
 
         public override void AI() {
             Timer++;
+            if (Timer == 100 && Main.netMode != NetmodeID.Server) {
+                SoundEngine.PlaySound(SoundAssets.StoneHand, NPC.Bottom);
+            }
             if (Timer > 120) {
                 NPC.dontTakeDamage = false;
             }

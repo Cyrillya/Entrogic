@@ -75,7 +75,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
         internal ref float WeaponAniTimer => ref NPC.localAI[1];
         internal ref float WeaponType => ref NPC.localAI[2];
         internal ref float TeleportTimer => ref NPC.localAI[3];
-        internal List<Vertex> path = new();
+        internal List<PathVertex> path = new();
 
         private Player player => Main.player[NPC.target];
 
@@ -105,7 +105,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
             for (int i = 0; i <= count - 1; i++) {
                 int x = reader.ReadInt32();
                 int y = reader.ReadInt32();
-                Vertex p = new(x, y);
+                PathVertex p = new(x, y);
                 path.Add(p);
             }
         }
@@ -136,10 +136,14 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                 }
                 return;
             }
+
             NPC.Opacity = 1f;
             if (WeaponAniTimer > 0)
                 WeaponAniTimer--;
+
             var targetCenter = player.Center;
+            var targetPosition = player.position;
+
             // 在玩家死亡点上方跳三下并且丢出三个荧光棒
             Despawning:
             if (Timer == 114514) {
@@ -216,7 +220,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                 NPC.directionY = -1;
 
             // 在玩家一定范围内且可以射箭打到玩家
-            if (Collision.CanHitLine(NPC.position, NPC.width, NPC.height, targetCenter - new Vector2(20, 28), player.width, player.height)) {
+            if (Collision.CanHitLine(NPC.position, NPC.width, NPC.height, targetPosition, player.width, player.height)) {
                 TeleportTimer = 0;
                 // 发射毒箭
                 ShootTimer++;
@@ -293,7 +297,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
 
             // 寻路移动
             // 可以打到，直接跑
-            if (Collision.CanHitLine(NPC.position, NPC.width, NPC.height, targetCenter - new Vector2(20, 28), player.width, player.height)) {
+            if (Collision.CanHitLine(NPC.position, NPC.width, NPC.height, targetPosition, player.width, player.height)) {
                 // 玩家在右边
                 if (targetCenter.X - NPC.Center.X > 0) {
                     AcceRight();
@@ -305,20 +309,11 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
             }
             // 不能打到，用A*寻路
             else {
-                // 创建一个A*地图
-                Point pnpc = NPC.Center.ToTileCoordinates();
-                Point pplr = player.Center.ToTileCoordinates();
-                const int expandX = 30;
-                const int expandY = 60;
-                int width = Math.Abs(pnpc.X - pplr.X) + expandX * 2;
-                int height = Math.Abs(pnpc.Y - pplr.Y) + expandY * 2;
-                Point leftTopTileCoord = new(Math.Min(pnpc.X, pplr.X) - expandX, Math.Min(pnpc.Y, pplr.Y) - expandY);
-                int[,] pathData = new int[width + 1, height + 1];
-                Vertex npc = new(pnpc.X - leftTopTileCoord.X, pnpc.Y - leftTopTileCoord.Y);
-                Vertex plr = new(pplr.X - leftTopTileCoord.X, pplr.Y - leftTopTileCoord.Y);
+                Point npcTile = NPC.Center.ToTileCoordinates();
+                Point plrTile = player.Center.ToTileCoordinates();
 
                 while (path.Count > 0) {
-                    Point next = new(leftTopTileCoord.X + path[path.Count - 1].x, leftTopTileCoord.Y + path[path.Count - 1].y);
+                    Point next = new(path[^1].x, path[^1].y);
                     targetCenter = next.ToWorldCoordinates();
                     if (NPC.Distance(targetCenter) <= 40) { // 能删就继续找下一个点
                         path.RemoveAt(path.Count - 1);
@@ -335,20 +330,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                 }
                 // 60帧更新一次路径
                 if (PathfindingTimer % 60 == 0 && Main.netMode != NetmodeID.MultiplayerClient && NPC.Distance(player.Center) <= 16 * 60) {
-                    for (int i = 0; i <= width; i++) {
-                        for (int j = 0; j <= height; j++) {
-                            if (!WorldGen.InWorld(leftTopTileCoord.X + i, leftTopTileCoord.Y + j)) {
-                                pathData[i, j] = 1;
-                                continue;
-                            }
-                            Tile t = Framing.GetTileSafely(leftTopTileCoord.X + i, leftTopTileCoord.Y + j);
-                            if (Main.tileSolid[t.TileType] && !Main.tileSolidTop[t.TileType] && t.HasUnactuatedTile && !t.IsActuated) {
-                                pathData[i, j] = 1;
-                            }
-                        }
-                    }
-                    // 防止太卡，寻路根据NPC存在的数量变弱，虽然正常情况下不可能有2个或以上
-                    path = AStarPathfinding.Pathfinding(pathData, npc, plr, 800 / NPC.CountNPCS(Type));
+                    path = AStarPathfinding.Pathfinding(npcTile, plrTile, 600);
                     NPC.netUpdate = true;
                 }
                 PathfindingTimer++;
@@ -510,7 +492,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                             if (Main.tile[x, y - 1].LiquidType == LiquidID.Lava)
                                 continue;
 
-                            if (WorldGen.SolidTile(Main.tile[x, y]) && !Collision.SolidTiles(x - 1, x + 1, y - 4, y - 1)) {
+                            if (Main.tileSolid[Main.tile[x, y].TileType] && Main.tile[x, y].HasUnactuatedTile && !Collision.SolidTiles(x - 1, x + 1, y - 4, y - 1)) {
                                 NPC.Bottom = new Vector2(x * 16, y * 16);
                                 NPC.netUpdate = true;
                             }

@@ -1115,7 +1115,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
 
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.ZoomMatrix);
-            GameShaders.Armor.Apply(GameShaders.Armor.GetShaderIdFromItemId(ItemID.ColorOnlyDye), NPC, null);
+            GameShaders.Armor.Apply(ContentSamples.CommonlyUsedContentSamples.ColorOnlyShaderIndex, NPC, null);
 
             for (float i = 0f; i < 1f; i += 0.25f) {
                 float radians = (i + time) * MathHelper.TwoPi;
