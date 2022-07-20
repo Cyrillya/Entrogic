@@ -19,6 +19,7 @@ namespace Entrogic.Content.Projectiles.Athanasy.Weapons
 			Projectile.penetrate = -1;
 			Projectile.DamageType = DamageClass.Ranged;
 			Projectile.ignoreWater = true;
+			Projectile.netImportant = true;
 		}
 
 		private Player Player => Main.player[Projectile.owner];

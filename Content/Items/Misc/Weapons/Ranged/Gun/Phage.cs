@@ -2,14 +2,13 @@
 
 namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
 {
-    public class Phage : ModItem
+    public class Phage : ItemBase
     {
-        public override void SetStaticDefaults()
-        {
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+        public override void SetStaticDefaults() {
+            SacrificeTotal = 1;
         }
-        public override void SetDefaults()
-        {
+
+        public override void SetDefaults() {
             Item.damage = 36;
             Item.crit -= 9;
             Item.knockBack = 5f;

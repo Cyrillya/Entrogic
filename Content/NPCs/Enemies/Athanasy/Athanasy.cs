@@ -1206,8 +1206,8 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheDungeon, //Sets the spawning conditions of this NPC that is listed in the bestiary.
-                new FlavorTextBestiaryInfoElement("一只衰落魔像。") //Sets the description of this NPC that is listed in the bestiary.
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheDungeon,
+                new FlavorTextBestiaryInfoElement("Mods.Entrogic.Bestiary.Athanasy")
             });
         }
 
@@ -1231,14 +1231,6 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             Music = MusicID.Boss2;
             if (Main.getGoodWorld)
                 NPC.scale = 2f;
-        }
-
-        public override void OnSpawn(IEntitySource source) {
-            base.OnSpawn(source);
-            //NPC.Center = ImmortalGolemRoom.BossZone.Center.ToWorldCoordinates();
-        }
-
-        public override void DrawBehind(int index) {
         }
 
         public override void ScaleExpertStats(int numPlayers, float bossLifeScale) {

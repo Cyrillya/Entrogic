@@ -3,5 +3,141 @@
 		CommonItemName: {
 			TreasureBag: 宝藏袋
 		}
+		ItemName: {
+			# 凝胶怪物品
+			VolutioMask: 凝胶共生体面具
+			GelAnkh: 凝胶安卡
+			GelCultureFlask: 强活性凝胶培养瓶
+			GelOfLife: 生命凝胶
+			GelCrossbowArrowMachineGun: 凝胶弩箭机枪
+
+			# 魔像物品
+			TitansOrder: 巨神的旨意
+			AthanasyMask: 衰落魔像面具
+			AthanasyTrophy: 衰落魔像纪念章
+			RockBow: 指纹大弓
+			RockFlail: 巨神的撼地
+
+			# 污染之灵物品
+			BottleofStorm: 瓶中风暴
+			ContaminatedLiquor: 污染水源
+			SoulofContamination: 污染之魂
+			ContaminatedLongbow: 污痕长弓
+			ContaminatedCurrent: 污秽洋流
+			WaterElementalStaff: 水元素召唤杖
+			PollutionElementalMask: 污染之灵头套
+			CrownofContamination: 污染之冠
+			HelmetofContamination: 污染头盔
+			HeadgearofContamination: 污染头饰
+			MaskofContamination: 污染面具
+			GreavesofContamination: 污染护胫
+			BreastplateofContamination: 污染胸甲
+
+			# 卡牌
+			ArcaneMissle: 奥术飞弹
+			Fireball: 火球术
+			BetrayerofDarkFlame: 暗焰术
+			Dragoul: 龙魂
+			FlameofPineapple: 焰之菠萝术
+			GelofMimicry: 拟态凝胶
+			InnerRage: 怒火中烧
+			MagicalExplosion: 魔力爆发
+			PerpetuumMobileoftheFifthKind: 第五类永动机
+			TheWalkingDead: 行尸走肉
+			UndeadGrudge: 亡灵之怨
+			Worldflipper: 颠倒世界
+			Sprint: 疾跑
+			AstralImpact: 星陨冲击
+			NoviceCardPack: 新手卡包
+			DemonCovenant: 恶魔契约
+			Foresight: 远见
+			OverallFreeze: 整体冰冻
+			EnergyRecovery: 精力恢复
+			Funeral: 陪葬品
+			Strengthen: 加强
+			SpreadPlague: 散播瘟疫
+			RandomCard: 随机卡牌
+			Glove: 手套
+			BoneGlove: 骨质手套
+			MagicGatling: 魔法加特林
+			CryptTreasure: 地穴的秘宝
+			LuckyCoin: 幸运币
+			StaticWatch: 静止怀表
+
+			# Mushrooooms
+			GrassMushroom: 草蘑菇
+			Fungus: 木耳
+			Ganoderma: 灵芝
+			Flammulina: 金针菇
+			Boletus: 牛肝菌
+			LactariusEdulis: 绒边乳菇
+			UmbrellaMushroom: 伞菇
+			Twinshroom: 双生菇
+			ToxiclessMushroom: 无毒蘑菇
+			Voidshroom: 相位蘑菇
+			Shiitake: 香菇
+
+			# 其他武器
+			## 近战
+			BurningWoodenSword: 燃烧木剑
+			CastIronSword: 铸铁阔剑
+			Arsonist: 纵火者
+			## 远程
+			FlyingFishPistol: 飞鱼手枪
+			FlyingFishSubmachineGun: 飞鱼冲锋枪
+			FlyingFishHeavyMachineGun: 飞鱼重机枪
+			TheStorm: 暴风雪
+			ToothofArtemis: 阿荻米斯之牙
+			LeafbladeItem: 飞叶
+			CastIronFlail: 铸铁连弩
+			CuteLittleBow: 可爱小弓
+			Dragonflow: 龙流
+			Galekylin: 烈风麒麟
+
+			# 其他饰品
+			BrokenTail: 断尾
+			GoatHorn: 山羊角
+		}
+		CommonItemTooltip: {
+			CuteSeries: 可爱捏
+		}
+		ItemTooltip: {
+			# Athanasy's Items
+			RockBow:
+				'''
+				镀有金色纹路的巨大仪式用弓，常人无法轻易拉开
+				使用大箭作为弹药
+				按住使用以蓄力，最多可同时发射5发
+				'''
+			RockFlail:
+				'''
+				连接处做成手掌造型的精致陷阱机关巨斧，在岁月侵蚀下已布满裂痕
+				震地时弹射出刺向敌人的尖刺
+				'''
+				
+			# 其他武器
+			## 近战
+			BurningWoodenSword: 点燃被击中的敌人
+			Arsonist: “小孩子不要玩火，小心自焚”
+			## 远程
+			FlyingFishPistol: “什么残忍的人才会把枪管插到一只可怜的飞鱼嘴里？”
+			FlyingFishSubmachineGun: “来自东亚弧形群岛的美食”
+			FlyingFishHeavyMachineGun: “人的成长就是战胜自己不成熟的过去”
+			ToothofArtemis:
+				'''
+				汇聚了泰拉大陆上最顶尖的技术（迫真）
+				“还处于试验阶段”
+				'''
+			LeafbladeItem:
+				'''
+				“飞花摘叶皆可伤人”
+				早已失传的武功
+				'''
+			CastIronFlail: “精美的连弩....宛如一件艺术品”
+			Galekylin: 不朽圣火的力量，好好利用吧
+		}
+		Bestiary: {
+			Athanasy: "在古老地城毁灭于亡灵诅咒之时，地城住民们修建了这最后的神像，用以永世守护不眠之人的财富与信仰"
+		}
 	}
 }

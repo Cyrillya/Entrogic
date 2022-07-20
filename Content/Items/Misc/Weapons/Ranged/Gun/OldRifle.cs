@@ -1,10 +1,9 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using Terraria.Audio;
 
 namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
 {
-    public class OldRifle : ModItem
+    public class OldRifle : ItemBase
     {
         public override void Load() {
             base.Load();

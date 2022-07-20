@@ -4,9 +4,8 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Bow
 {
     public class Dragonflow : ModItem
     {
-        public override void SetStaticDefaults() {
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-        }
+        public override void SetStaticDefaults() => SacrificeTotal = 1;
+
         public override void SetDefaults() {
             Item.damage = 14;
             Item.DamageType = DamageClass.Ranged;

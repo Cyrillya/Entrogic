@@ -1,13 +1,8 @@
-﻿using Terraria.ID;
-
-namespace Entrogic.Content.Items.Misc.Weapons.Melee.Swords
+﻿namespace Entrogic.Content.Items.Misc.Weapons.Melee.Swords
 {
-    public class BurningWoodenSword : ModItem
+    public class BurningWoodenSword : ItemBase
     {
-        public override void SetStaticDefaults() {
-            Tooltip.SetDefault("“十分的烫手”\n点燃你的敌人");
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-        }
+        public override void SetStaticDefaults() => SacrificeTotal = 1;
 
         public override void SetDefaults() {
             Item.CloneDefaults(ItemID.WoodenSword);

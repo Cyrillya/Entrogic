@@ -4,13 +4,6 @@
     {
         public override Vector2? HoldoutOffset() => new Vector2(-6, -8);
 
-        public override void SetStaticDefaults() {
-            DisplayName.SetDefault("Flying Fish Heavy Machine Gun");
-            DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "飞鱼重机枪");
-            Tooltip.SetDefault("“人的成长就是战胜自己不成熟的过去”");
-            SacrificeTotal = 1;
-        }
-
         public override void ModifyGunDefaults(out int singleShotTime, out float shotVelocity, out bool autoReuse) {
             singleShotTime = 5;
             shotVelocity = 10f;

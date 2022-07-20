@@ -1,13 +1,12 @@
 ﻿using Entrogic.Content.Items.Misc.Materials;
 using Entrogic.Content.Projectiles.Misc.Weapons.Ranged.Bullets;
-using Terraria;
 
 namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
 {
-    public class IceBreaker : ModItem
+    public class IceBreaker : ItemBase
     {
         public override void SetStaticDefaults() {
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+            SacrificeTotal = 1;
         }
 
         public override void SetDefaults() {

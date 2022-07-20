@@ -1,7 +1,6 @@
 float3 uColor;
 float opacity;
-texture sampleTexture;
-sampler2D samplerTex = sampler_state { texture = <sampleTexture>; magfilter = LINEAR; minfilter = LINEAR; mipfilter = LINEAR; AddressU = wrap; AddressV = wrap; };
+sampler samplerTex : register(s1);
 
 float2 offset;
 

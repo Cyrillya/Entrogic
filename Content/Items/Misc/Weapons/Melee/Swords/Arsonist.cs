@@ -1,13 +1,11 @@
 using Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords;
-using Terraria.ID;
 
 namespace Entrogic.Content.Items.Misc.Weapons.Melee.Swords
 {
-    public class Arsonist : ModItem
+    public class Arsonist : ItemBase
     {
-        public override void SetStaticDefaults() {
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-        }
+        public override void SetStaticDefaults() => SacrificeTotal = 1;
+
         public override void SetDefaults() {
             Item.damage = 56;
             Item.width = 42;

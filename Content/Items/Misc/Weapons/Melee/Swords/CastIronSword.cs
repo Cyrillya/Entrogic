@@ -3,11 +3,9 @@ using Entrogic.Content.Items.Symbiosis;
 
 namespace Entrogic.Content.Items.Misc.Weapons.Melee.Swords
 {
-    public class CastIronSword : ModItem
+    public class CastIronSword : ItemBase
     {
-        public override void SetStaticDefaults() {
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-        }
+        public override void SetStaticDefaults() => SacrificeTotal = 1;
 
         public override void SetDefaults() {
             Item.damage = 43;

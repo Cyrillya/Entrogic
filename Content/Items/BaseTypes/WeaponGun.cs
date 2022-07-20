@@ -7,6 +7,8 @@ namespace Entrogic.Content.Items.BaseTypes
     {
         public abstract void ModifyGunDefaults(out int singleShotTime, out float shotVelocity, out bool autoReuse);
 
+        public override void SetStaticDefaults() => SacrificeTotal = 1;
+
         public sealed override void SetDefaults() {
             ModifyGunDefaults(out int singleShotTime, out float shotVelocity, out bool autoReuse);
             Item.DefaultToRangedWeapon(10, AmmoID.Bullet, singleShotTime, shotVelocity, autoReuse);

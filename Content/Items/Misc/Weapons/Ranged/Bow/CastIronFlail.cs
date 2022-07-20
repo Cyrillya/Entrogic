@@ -1,13 +1,8 @@
 ﻿namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Bow
 {
-    public class CastIronFlail : ModItem
+    public class CastIronFlail : ItemBase
     {
-        public override void SetStaticDefaults() {
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-            DisplayName.SetDefault("铸铁连弩");
-            Tooltip.SetDefault("“精美的连弩....宛如一件艺术品”\n" +
-                "有几率多射出几发箭");
-        }
+        public override void SetStaticDefaults() => SacrificeTotal = 1;
 
         public override void SetDefaults() {
             Item.damage = 21;

@@ -1,31 +1,19 @@
-﻿using Terraria;
-namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Bow
+﻿namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Bow
 {
-    public class Galekylin : ModItem
+    public class Galekylin : ItemBase
     {
-        public override void SetStaticDefaults() {
-            Tooltip.SetDefault("不朽圣火的力量，好好利用吧");
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-        }
+        public override void SetStaticDefaults() => SacrificeTotal = 1;
 
         public override void SetDefaults() {
-            Item.damage = 89;
-            Item.DamageType = DamageClass.Ranged;
+            Item.DefaultToBow(25, 16f, true);
+            Item.damage = 127;
+            Item.crit = 26;
             Item.width = 32;
-            Item.crit += 26;
             Item.height = 64;
-            Item.useTime = 25;
-            Item.useAnimation = 25;
-            Item.useStyle = ItemUseStyleID.Shoot;
-            Item.noMelee = true;
             Item.knockBack = 7;
             Item.value = Item.sellPrice(0, 10, 0, 0);
             Item.rare = ItemRarityID.Red;
             Item.UseSound = SoundID.Item11;
-            Item.autoReuse = true;
-            Item.shoot = ProjectileID.PurificationPowder;
-            Item.shootSpeed = 16f;
-            Item.useAmmo = AmmoID.Arrow;
         }
 
         public override void AddRecipes() {

@@ -32,16 +32,22 @@ namespace Entrogic.Common.WorldGeneration
 
         public override void Load() {
             base.Load();
-            Main.QueueMainThreadAction(delegate {
+            Main.RunOnMainThread(delegate {
                 ResourceManager_SetupContentEvent();
             });
         }
 
-        private void ResourceManager_SetupContentEvent() {
+        public override void Unload() {
+            Array.Clear(AthanasyPlatform, 0, AthanasyPlatform.Length);
+            GenList?.Clear();
+            GenList = null;
+        }
+
+        private static void ResourceManager_SetupContentEvent() {
             if (!Main.dedServ) {
                 Texture2D Platform = ModContent.Request<Texture2D>("Entrogic/Assets/Images/WorldGeneration/AthanasyPlatform", AssetRequestMode.ImmediateLoad).Value;
                 Color[] dataColors = new Color[Platform.Width * Platform.Height];
-                Platform.GetData<Color>(dataColors);
+                Platform.GetData(dataColors);
                 for (int c = 0; c < dataColors.Length; c++) {
                     int x = c % Platform.Width;
                     int y = c / Platform.Width;

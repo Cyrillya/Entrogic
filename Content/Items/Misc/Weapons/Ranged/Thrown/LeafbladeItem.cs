@@ -1,16 +1,10 @@
 using Entrogic.Content.Projectiles.Misc.Weapons.Ranged.Thrown;
-using Terraria.ID;
 
 namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Thrown
 {
-    public class LeafbladeItem : ModItem
+    public class LeafbladeItem : ItemBase
     {
-        public override void SetStaticDefaults()
-        {
-            Tooltip.SetDefault("“飞花摘叶皆可伤人”\n" +
-                "早已失传的武功");
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
-        }
+        public override void SetStaticDefaults() => SacrificeTotal = 100;
 
         public override void SetDefaults()
         {
@@ -29,29 +23,20 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Thrown
             Item.shootSpeed = 15f;
             Item.DamageType = DamageClass.Ranged;
             Item.noUseGraphic = true;
-            Item.crit += 19;
+            Item.crit = 19;
             Item.consumable = true;
             Item.maxStack = 999;
         }
         public override void AddRecipes()
         {
             CreateRecipe(15)
-                .AddRecipeGroup("Wood", 1)
+                .AddRecipeGroup(RecipeGroupID.Wood, 1)
                 .AddTile(TileID.LivingLoom)
                 .Register();
         }
 
-        public override void MeleeEffects(Player player, Rectangle hitbox)
-        {
-            if (Main.rand.Next(10) == 0)
-            {
-                Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.Grass);
-            }
-        }
-
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-            base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
-            velocity.RotatedByRandom(MathHelper.ToRadians(5));
+            velocity = velocity.RotatedByRandom(MathHelper.ToRadians(5));
         }
     }
 }

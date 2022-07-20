@@ -3,14 +3,12 @@ using Terraria;
 
 namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
 {
-    // 阿荻米斯之牙
-    public class ToothofArtemis : ModItem
+    public class ToothofArtemis : ItemBase
     {
         public override Vector2? HoldoutOffset() => new Vector2(-7, 0);
 
         public override void SetStaticDefaults() {
-            Tooltip.SetDefault("汇聚了泰拉大陆上最顶尖的技术（迫真）\n“还处于试验阶段”");
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+            SacrificeTotal = 1;
         }
 
         public override void SetDefaults() {

@@ -162,6 +162,9 @@ namespace Entrogic.Content.Projectiles.BaseTypes
 							if (Main.myPlayer == Projectile.owner)
 								Projectile.NewProjectile(Projectile.GetProjectileSource_FromThis(), Projectile.Center, Projectile.velocity, 928, Projectile.damage, Projectile.knockBack, Main.myPlayer);
 							*/
+							if (Main.myPlayer == Projectile.owner) {
+								ShootProjectile();
+							}
 							break;
 						}
 						if (shouldSwitchToRetracting) {
@@ -170,6 +173,9 @@ namespace Entrogic.Content.Projectiles.BaseTypes
 							Projectile.netUpdate = true;
 							Projectile.velocity *= 0.3f;
 							// This is also where Drippler Crippler spawns its projectile, see above code.
+							if (Main.myPlayer == Projectile.owner) {
+								ShootProjectile();
+							}
 						}
 						player.ChangeDir((player.Center.X < Projectile.Center.X) ? 1 : (-1));
 						Projectile.localNPCHitCooldown = MovingHitCooldown;
@@ -241,7 +247,9 @@ namespace Entrogic.Content.Projectiles.BaseTypes
 			}
 
 			// This is where Flower Pow launches projectiles. Decompile Terraria to view that code.
-			ThrowProjectile();
+			if (Projectile.owner == Main.myPlayer) {
+				ThrowProjectile();
+			}
 
 			Projectile.direction = (player.direction > 0f) ? 1 : -1;
 			Projectile.spriteDirection = Projectile.direction;
@@ -274,6 +282,14 @@ namespace Entrogic.Content.Projectiles.BaseTypes
 			PostAI(doFastThrowDust);
 		}
 
+		/// <summary>
+		/// 滴滴怪跛子那样的，丢出去生成射弹
+		/// </summary>
+		public virtual void ShootProjectile() { }
+
+		/// <summary>
+		/// 花冠那样的只要AI在运行就每隔一段时间生成射弹
+		/// </summary>
 		public virtual void ThrowProjectile() { }
 
 		public virtual bool ModifyRotation(ref bool freeRotation) { return true; }

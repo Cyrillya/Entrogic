@@ -19,7 +19,7 @@ namespace Entrogic.Common.ModSystems
             On.Terraria.Main.DrawInfernoRings += DrawNegative;
             On.Terraria.Main.CheckMonoliths += DrawCutawayTarget;
 
-            Main.QueueMainThreadAction(() => {
+            Main.RunOnMainThread(() => {
                 cutawayTarget = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth, Main.screenHeight, false, default, default, default, RenderTargetUsage.PreserveContents);
             });
 
@@ -50,7 +50,7 @@ namespace Entrogic.Common.ModSystems
                 if (effect is null)
                     return;
 
-                effect.Parameters["sampleTexture"].SetValue(cutawayTarget);
+                Main.graphics.GraphicsDevice.Textures[1] = cutawayTarget;
                 effect.Parameters["uColor"].SetValue(Color.Black.ToVector3());
                 effect.Parameters["opacity"].SetValue(1 - opacity);
 

@@ -17,8 +17,10 @@
             DrawOffsetX = -10;
         }
 
-        public override void ThrowProjectile() {
-            base.ThrowProjectile();
+        public override void ShootProjectile() {
+            Projectile.NewProjectile(Projectile.GetSource_FromThis("FlailProjectile"),
+                Projectile.Center, Projectile.velocity, ModContent.ProjectileType<Tornado>(),
+                (int)(Projectile.damage * 0.7f), 2f, Main.myPlayer);
         }
 
         public override bool ModifyRotation(ref bool freeRotation) {

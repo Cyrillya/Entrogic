@@ -5,10 +5,9 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
     public class TheStorm : ModItem
     {
         public override void SetStaticDefaults() {
-            DisplayName.SetDefault("The Storm");
-            DisplayName.AddTranslation((int)GameCulture.CultureName.Chinese, "暴风雪");
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+            SacrificeTotal = 1;
         }
+
         public override void SetDefaults() {
             Item.damage = 23;
             Item.DamageType = DamageClass.Ranged;

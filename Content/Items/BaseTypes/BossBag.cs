@@ -3,7 +3,7 @@
     public abstract class BossBag : ModItem
     {
         /// <summary>
-        /// 是否是肉前宝藏袋，原版的话肉前宝藏袋只有在特殊种子下才能开出开发者套，这就是拿来干这个的。注意1.4不应该单独写开发者套装代码了
+        /// 是否是肉前宝藏袋，原版的话肉前宝藏袋只有在特殊种子下才能开出开发者套，这就是拿来干这个的
         /// </summary>
         public virtual bool PreHardmode { get; }
 
@@ -20,7 +20,7 @@
             ItemID.Sets.PreHardmodeLikeBossBag[Type] = PreHardmode;
             ItemID.Sets.BossBag[Type] = true;
 
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 3; // 旅途模式
+            SacrificeTotal = 3; // 旅途模式
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips) {
@@ -39,7 +39,7 @@
             Lighting.AddLight((int)((Item.position.X + Item.width) / 16f), (int)((Item.position.Y + Item.height / 2) / 16f), 0.4f, 0.4f, 0.4f);
             bool flag82 = Item.timeSinceItemSpawned % 12 == 0;
             if (flag82) {
-                Dust dust2 = Dust.NewDustPerfect(Item.Center + new Vector2(0f, Item.height * -0.1f) + Main.rand.NextVector2CircularEdge(Item.width * 0.6f, Item.height * 0.6f) * (0.3f + Main.rand.NextFloat() * 0.5f), 279, new Vector2?(new Vector2(0f, (0f - Main.rand.NextFloat()) * 0.3f - 1.5f)), 127, default(Color), 1f);
+                Dust dust2 = Dust.NewDustPerfect(Item.Center + new Vector2(0f, Item.height * -0.1f) + Main.rand.NextVector2CircularEdge(Item.width * 0.6f, Item.height * 0.6f) * (0.3f + Main.rand.NextFloat() * 0.5f), 279, new Vector2?(new Vector2(0f, (0f - Main.rand.NextFloat()) * 0.3f - 1.5f)), 127, default, 1f);
                 dust2.scale = 0.5f;
                 dust2.fadeIn = 1.1f;
                 dust2.noGravity = true;
@@ -64,10 +64,10 @@
             }
             num4 = num4 * 0.5f + 0.5f;
             for (float num5 = 0f; num5 < 1f; num5 += 0.25f) {
-                Main.spriteBatch.Draw(texture, vector2 + new Vector2(0f, 8f).RotatedBy((num5 + num3) * 6.28318548f, default(Vector2)) * num4, new Microsoft.Xna.Framework.Rectangle?(rectangle), new Microsoft.Xna.Framework.Color(90, 70, 255, 50), num, vector, scale, SpriteEffects.None, 0f);
+                Main.spriteBatch.Draw(texture, vector2 + new Vector2(0f, 8f).RotatedBy((num5 + num3) * 6.28318548f, default) * num4, new Microsoft.Xna.Framework.Rectangle?(rectangle), new Color(90, 70, 255, 50), num, vector, scale, SpriteEffects.None, 0f);
             }
             for (float num6 = 0f; num6 < 1f; num6 += 0.34f) {
-                Main.spriteBatch.Draw(texture, vector2 + new Vector2(0f, 4f).RotatedBy((num6 + num3) * 6.28318548f, default(Vector2)) * num4, new Microsoft.Xna.Framework.Rectangle?(rectangle), new Microsoft.Xna.Framework.Color(140, 120, 255, 77), num, vector, scale, SpriteEffects.None, 0f);
+                Main.spriteBatch.Draw(texture, vector2 + new Vector2(0f, 4f).RotatedBy((num6 + num3) * 6.28318548f, default) * num4, new Microsoft.Xna.Framework.Rectangle?(rectangle), new Color(140, 120, 255, 77), num, vector, scale, SpriteEffects.None, 0f);
             }
             Main.spriteBatch.Draw(texture, vector2, new Microsoft.Xna.Framework.Rectangle?(rectangle), alphaColor, num, vector, scale, SpriteEffects.None, 0f);
             return false;
