@@ -19,6 +19,14 @@
         public static Vector2 GetFromToVectorNormalized(Vector2 v1, Vector2 v2) => Vector2.Normalize(GetFromToVector(v1, v2));
 
         public static float GetFromToRadians(Vector2 v1, Vector2 v2) => GetFromToVector(v1, v2).ToRotation();
+
+        public static bool InRange(this int value, int min, int max) => value >= min && value <= max;
+
+        public static bool InRange(this float value, float min, float max) => value >= min && value <= max;
+
+        public static void BeginGameSpriteBatch(this SpriteBatch spriteBatch, bool deferred = true, bool alphaBlend = true) =>
+            spriteBatch.Begin(deferred ? SpriteSortMode.Deferred : SpriteSortMode.Immediate, alphaBlend ? BlendState.AlphaBlend : BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+
         public static void DrawBorderedRect(SpriteBatch spriteBatch, Color color, Color borderColor, Vector2 position, Vector2 size, int borderWidth) {
             spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y), color);
             spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle((int)position.X - borderWidth, (int)position.Y - borderWidth, (int)size.X + borderWidth * 2, borderWidth), borderColor);

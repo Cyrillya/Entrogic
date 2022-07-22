@@ -246,7 +246,7 @@ namespace Entrogic.Content.Projectiles.BaseTypes
             maskColor = TextureManager.BladeTrailErosion.Value;
         }
 
-        internal void DrawTrail(List<CustomVertexInfo> triangleList) {
+        internal void DrawTrail(List<VertexInfo> triangleList) {
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
 
             var screenCenter = Main.screenPosition + Main.ScreenSize.ToVector2() / 2f;
@@ -291,8 +291,8 @@ namespace Entrogic.Content.Projectiles.BaseTypes
             }
         }
 
-        internal List<CustomVertexInfo> PrepareTriangleList(Rectangle sourceRect) {
-            List<CustomVertexInfo> bars = new();
+        internal List<VertexInfo> PrepareTriangleList(Rectangle sourceRect) {
+            List<VertexInfo> bars = new();
 
             // 平滑处理
             SmoothArray(out List<float> drawRotations, Projectile.oldRot);
@@ -309,15 +309,15 @@ namespace Entrogic.Content.Projectiles.BaseTypes
                 int weaponExLength = (int)(weaponLength * 0.35f); // 到剑身的长度，我可不想在剑柄画刀光
 
                 var rotationVector = drawRotations[i].ToRotationVector2();
-                bars.Add(new CustomVertexInfo(Projectile.Center + rotationVector * weaponLength, color, new Vector3(factor, 1, w)));
-                bars.Add(new CustomVertexInfo(Projectile.Center + rotationVector * weaponExLength, color, new Vector3(factor, 0, w)));
+                bars.Add(new VertexInfo(Projectile.Center + rotationVector * weaponLength, color, new Vector3(factor, 1, w)));
+                bars.Add(new VertexInfo(Projectile.Center + rotationVector * weaponExLength, color, new Vector3(factor, 0, w)));
 
                 // 显示三角形所有的点
                 //Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, Projectile.Center + rotationVector * weaponLength - Main.screenPosition,
                 //    new Rectangle?(new Rectangle(0, 0, 4, 4)), Color.White);
             }
 
-            List<CustomVertexInfo> triangleList = new();
+            List<VertexInfo> triangleList = new();
 
             if (bars.Count > 2) {
                 // 按照顺序连接三角形

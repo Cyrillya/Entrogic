@@ -1,4 +1,5 @@
 ﻿using Entrogic.Common.Netcodes.PlayerStatus;
+using Entrogic.Common.Netcodes.SpecialEffect;
 
 namespace Entrogic.Common.Netcodes
 {
@@ -10,11 +11,13 @@ namespace Entrogic.Common.Netcodes
         {
             Dodge,
             BookInfo,
-            PlayerStat
+            PlayerStat,
+            SpecialEffect
         }
         internal static DodgePacketHandler Dodge = new(EntrogicMessageType.Dodge);
         internal static BookInfoPacketHandler BookInfo = new(EntrogicMessageType.BookInfo);
         internal static PlayerDataPacketHandler PlayerData = new(EntrogicMessageType.PlayerStat);
+        internal static SpecialEffectPacketHandler SpecialEffect = new(EntrogicMessageType.SpecialEffect);
         public static void HandlePacket(BinaryReader r, int fromWho) {
             EntrogicMessageType msgType = (EntrogicMessageType)r.ReadByte();
             switch (msgType) {
@@ -26,6 +29,9 @@ namespace Entrogic.Common.Netcodes
                     break;
                 case EntrogicMessageType.PlayerStat:
                     PlayerData.HandlePacket(r, fromWho);
+                    break;
+                case EntrogicMessageType.SpecialEffect:
+                    SpecialEffect.HandlePacket(r, fromWho);
                     break;
                 default:
                     Entrogic.Instance.LoggerWarn(string.Format("Entrogic: Unknown Message type: {0}", msgType));

@@ -704,7 +704,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                 NPC.position += NPC.netOffset;
                 for (float r = 0; r <= 6.28f; r += 6.28f / 50f) {
                     Vector2 velocity = Vector2.UnitY.RotatedBy(r) * 10f;
-                    var d = Dust.NewDustPerfect(NPC.Center, MyDustID.BlueWhiteBubble, velocity, 180, default, 1.9f);
+                    var d = Dust.NewDustPerfect(NPC.Center, ModContent.DustType<BubbleCopy>(), velocity, 180, default, 1.9f);
                     d.fadeIn = 1.2f;
                     d.noGravity = true;
                 }
@@ -760,7 +760,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                 NPC.position += NPC.netOffset;
                 for (float r = 0; r <= 6.28f; r += 6.28f / 50f) {
                     Vector2 velocity = Vector2.UnitY.RotatedBy(r) * 10f;
-                    var d = Dust.NewDustPerfect(NPC.Center, MyDustID.BlueWhiteBubble, velocity, 180, default, 1.6f);
+                    var d = Dust.NewDustPerfect(NPC.Center, ModContent.DustType<BubbleCopy>(), velocity, 180, default, 1.6f);
                     d.fadeIn = 1.2f;
                     d.noGravity = true;
                 }
@@ -837,7 +837,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                         var velocity = r.ToRotationVector2() * 10f;
                         var spawnCenter = NPC.Center;
                         spawnCenter.Y += 50f;
-                        var d = Dust.NewDustPerfect(spawnCenter, MyDustID.BlueWhiteBubble, velocity, 180, default, 2.2f);
+                        var d = Dust.NewDustPerfect(spawnCenter, ModContent.DustType<BubbleCopy>(), velocity, 180, default, 2.2f);
                         d.fadeIn = 1.2f;
                         d.noGravity = true;
                     }
@@ -923,7 +923,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                 NPC.position += NPC.netOffset;
                 for (float r = 0; r <= 6.28f; r += 6.28f / 50f) {
                     Vector2 velocity = Vector2.UnitY.RotatedBy(r) * 10f;
-                    var d = Dust.NewDustPerfect(NPC.Center, MyDustID.BlueWhiteBubble, velocity, 180, default, 1.6f);
+                    var d = Dust.NewDustPerfect(NPC.Center, ModContent.DustType<BubbleCopy>(), velocity, 180, default, 1.6f);
                     d.fadeIn = 1.2f;
                     d.noGravity = true;
                 }
@@ -968,7 +968,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                 NPC.position += NPC.netOffset;
                 for (float r = 0; r <= 6.28f; r += 6.28f / 50f) {
                     Vector2 velocity = Vector2.UnitY.RotatedBy(r) * 16f;
-                    var d = Dust.NewDustPerfect(NPC.Center, MyDustID.BlueWhiteBubble, velocity, 180, default, 2.6f);
+                    var d = Dust.NewDustPerfect(NPC.Center, ModContent.DustType<BubbleCopy>(), velocity, 180, default, 2.6f);
                     d.fadeIn = 1.2f;
                     d.noGravity = true;
                 }

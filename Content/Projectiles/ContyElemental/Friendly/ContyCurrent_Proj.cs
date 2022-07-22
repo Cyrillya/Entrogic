@@ -19,7 +19,7 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Friendly
         public override void PostDraw(Color lightColor) {
             base.PostDraw(lightColor);
 
-            List<CustomVertexInfo> bars = new();
+            List<VertexInfo> bars = new();
             List<Vector2> oldCenter = new();
             foreach (var pos in Projectile.oldPos) {
                 if (pos == Vector2.Zero) continue;
@@ -48,17 +48,17 @@ namespace Entrogic.Content.Projectiles.ContyElemental.Friendly
                 var color = Color.Lerp(Color.White, Color.Blue, factor);
                 var w = MathHelper.Lerp(1f, 0.05f, factor); // 把factor转换为1-0.05 （?） 这个是透明度
 
-                bars.Add(new CustomVertexInfo(oldCenter[i] + normalDir * width, color, new Vector3((float)Math.Sqrt(factor), 1, w)));
-                bars.Add(new CustomVertexInfo(oldCenter[i] + normalDir * -width, color, new Vector3((float)Math.Sqrt(factor), 0, w)));
+                bars.Add(new VertexInfo(oldCenter[i] + normalDir * width, color, new Vector3((float)Math.Sqrt(factor), 1, w)));
+                bars.Add(new VertexInfo(oldCenter[i] + normalDir * -width, color, new Vector3((float)Math.Sqrt(factor), 0, w)));
             }
 
-            List<CustomVertexInfo> triangleList = new();
+            List<VertexInfo> triangleList = new();
 
             if (bars.Count > 2) {
 
                 // 按照顺序连接三角形
                 triangleList.Add(bars[0]);
-                var vertex = new CustomVertexInfo((bars[0].Position + bars[1].Position) * 0.5f + Vector2.Normalize(Projectile.velocity) * 30, Color.White,
+                var vertex = new VertexInfo((bars[0].Position + bars[1].Position) * 0.5f + Vector2.Normalize(Projectile.velocity) * 30, Color.White,
                     new Vector3(0, 0.5f, 1));
                 triangleList.Add(bars[1]);
                 triangleList.Add(vertex);

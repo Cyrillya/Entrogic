@@ -53,8 +53,8 @@ namespace Entrogic.Common.ModSystems
 			Timer = LifeSpan;
 			if (Timer >= LifeSpan) ShouldDraw = false;
 			List<Vector2> centers = new();
-			List<CustomVertexInfo> bars = new();
-			List<CustomVertexInfo> triangleList = new();
+			List<VertexInfo> bars = new();
+			List<VertexInfo> triangleList = new();
 			for (int i = 0; i < _nodes.Count; i++) {
 				var node = _nodes[i];
 				_nodes[i] += _nodeVelocity[i] * Main.rand.NextFloat(0.5f, 0.8f);
@@ -70,11 +70,11 @@ namespace Entrogic.Common.ModSystems
 				var color = Color.Blue; //Color.Lerp(Color.White, Color.Blue, factor);
 				var w = 1f; // MathHelper.Lerp(1f, 0.05f, factor); // 做1-0.05插值 这个是透明度
 
-				bars.Add(new CustomVertexInfo(centers[i] + normalDir * Width, color, new Vector3(0, 1, w)));
-				bars.Add(new CustomVertexInfo(centers[i] + normalDir * -Width, color, new Vector3(0, 0, w)));
+				bars.Add(new VertexInfo(centers[i] + normalDir * Width, color, new Vector3(0, 1, w)));
+				bars.Add(new VertexInfo(centers[i] + normalDir * -Width, color, new Vector3(0, 0, w)));
 			}
 			triangleList.Add(bars[0]);
-			var vertex = new CustomVertexInfo(Position, Color.White, new Vector3(0, 0.5f, 1));
+			var vertex = new VertexInfo(Position, Color.White, new Vector3(0, 0.5f, 1));
 			triangleList.Add(bars[1]);
 			triangleList.Add(vertex);
 			int ind;

@@ -1,4 +1,5 @@
 ﻿using Entrogic.Common.WorldGeneration;
+using Entrogic.Content.Dusts;
 using Entrogic.Content.NPCs.Enemies.Athanasy;
 using Terraria.Audio;
 using Terraria.Graphics.Shaders;
@@ -68,6 +69,10 @@ namespace Entrogic.Common.ModSystems
                     }
                 }
 
+                // 这个时候咱们有Bloom了，直接无视的
+                if (Lighting.Mode == Terraria.Graphics.Light.LightMode.White || Lighting.Mode == Terraria.Graphics.Light.LightMode.Color)
+                    return;
+
                 var rect = ImmortalGolemRoom.BossZone;
                 rect.Offset(6, 6);
                 rect = rect.OffsetSize(-12, -12);
@@ -75,7 +80,7 @@ namespace Entrogic.Common.ModSystems
                 ArmorShaderData armorShaderData = null;
                 for (int i = 0; i < Main.maxDustToDraw; i++) {
                     Dust dust = Main.dust[i];
-                    if (!dust.active || dust.type != MyDustID.BlueWhiteBubble || new Rectangle((int)dust.position.X, (int)dust.position.Y, 4, 4).Intersects(rect))
+                    if (!dust.active || dust.type != ModContent.DustType<BubbleCopy>() || new Rectangle((int)dust.position.X, (int)dust.position.Y, 4, 4).Intersects(rect))
                         continue;
                     float scale = dust.GetVisualScale();
                     if (dust.shader != armorShaderData) {

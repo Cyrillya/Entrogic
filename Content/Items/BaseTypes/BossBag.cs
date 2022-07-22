@@ -23,13 +23,6 @@
             SacrificeTotal = 3; // 旅途模式
         }
 
-        public override void ModifyTooltips(List<TooltipLine> tooltips) {
-            TooltipLine tt = tooltips.FirstOrDefault(x => x.Name == "ItemName" && x.Mod == "Terraria");
-            if (tt is not null) {
-                tt.Text += $" ({Lang.GetNPCNameValue(BossBagNPC)})";
-            }
-        }
-
         public sealed override void SetDefaults() {
             Item.CloneDefaults(ItemID.EyeOfCthulhuBossBag); // 直接复制原版Default方便快捷
             Item.rare = Rarity == 0 ? RarityLevelID.Expert : Rarity; // 自己设置稀有度
@@ -76,16 +69,5 @@
         public sealed override bool CanRightClick() {
             return true;
         }
-
-        public sealed override void OpenBossBag(Player player) {
-            BossBagLoot(player.GetSource_OpenItem(Type), player);
-        }
-
-        /// <summary>
-        /// 自定义宝藏袋开出的物品
-        /// </summary>
-        /// <param name="source">生成物品所用的Source</param>
-        /// <param name="player">开启宝藏袋的玩家</param>
-        public abstract void BossBagLoot(IEntitySource source, Player player);
     }
 }

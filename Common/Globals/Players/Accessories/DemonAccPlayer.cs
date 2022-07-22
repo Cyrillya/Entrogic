@@ -1,4 +1,5 @@
-﻿namespace Entrogic.Common.Globals.Players.Accessories
+﻿using Terraria.DataStructures;
+namespace Entrogic.Common.Globals.Players.Accessories
 {
     public class DemonAccPlayer : ModPlayer
     {
@@ -25,19 +26,19 @@
             }
         }
 
-        public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource) {
-            if (GoatHorn) {
-                damage = (int)(damage * 1.4f); // 增加40%的受伤
-            }
-            return base.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref damageSource);
-        }
+        //public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter) {
+        //    if (GoatHorn) {
+        //        damage = (int)(damage * 1.4f); // 增加40%的受伤
+        //    }
+        //    return base.PreHurt(pvp, quiet, ref damage, ref hitDirection, ref crit, ref customDamage, ref playSound, ref genGore, ref damageSource, ref cooldownCounter);
+        //}
 
         // 这里写断尾，才可以应用到immune
-        public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit) {
-            if (damage > Player.statLifeMax2 * 0.4) {
-                Player.immuneTime += 60;
-            }
-        }
+        //public override void PostHurt(bool pvp, bool quiet, double damage, int hitDirection, bool crit, int cooldownCounter) {
+        //    if (BrokenTail && damage > Player.statLifeMax2 * 0.4 && !pvp) {
+        //        Player.AddImmuneTime(cooldownCounter, 60);
+        //    }
+        //}
 
         private void Reset() {
             BrokenTail = false;

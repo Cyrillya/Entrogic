@@ -46,6 +46,7 @@ namespace Entrogic.Content.Projectiles.Athanasy.Weapons
 					SpearCount = 1;
 				}
 				UnleashSpears(Player.MountedCenter);
+				Projectile.Kill();
 
 				if (!Main.dedServ) {
 					SoundEngine.PlaySound(SoundAssets.BowReleased, Projectile.Center);
@@ -75,24 +76,10 @@ namespace Entrogic.Content.Projectiles.Athanasy.Weapons
 			var mouseWorld = Player.GetModPlayer<SyncedDataPlayer>().MouseWorld;
 			var armPosition = Player.RotatedRelativePoint(mountedCenter, reverseRotation: true, addGfxOffY: true);
 
-			DoVariableSettings(mouseWorld, armPosition);
-		}
-
-		private void DoVariableSettings(Vector2 mouseWorld, Vector2 armPosition) {
 			Projectile.timeLeft = 2;
-			Projectile.velocity = armPosition.DirectionTo(mouseWorld);
-			Projectile.spriteDirection = Projectile.direction = Math.Sign(mouseWorld.X - Player.MountedCenter.X);
-			Projectile.rotation = Projectile.velocity.ToRotation();
-			if (Projectile.spriteDirection == -1)
-				Projectile.rotation = 3.14f + Projectile.rotation;
-			Projectile.Center = armPosition + Projectile.velocity * 20f;
-
-			Player.heldProj = Projectile.whoAmI;
-			Player.SetDummyItemTime(2);
-			Player.ChangeDir(Projectile.direction);
-			Player.direction = Projectile.direction;
-			Player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
+			Projectile.QuickDirectionalHeldProj(Player, mouseWorld, armPosition);
 		}
+
 
 		private void UnleashSpears(Vector2 mountedCenter) {
 			if (Main.myPlayer != Projectile.owner)

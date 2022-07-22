@@ -1,17 +1,15 @@
-﻿using Entrogic.Content.Items.BaseTypes;
+﻿using Terraria.GameContent.ItemDropRules;
 
 namespace Entrogic.Content.Items.Symbiosis
 {
     public class VolutioTreasureBag : BossBag
     {
-        public override int BossBagNPC => NPCID.None; // 占位符
-
         public override bool PreHardmode => false;
 
-        public override void BossBagLoot(IEntitySource source, Player player) {
-            if (Main.rand.Next(7) == 0) player.QuickSpawnItem(source, ModContent.ItemType<VolutioMask>());
-            player.QuickSpawnItem(source, ModContent.ItemType<GelOfLife>(), Main.rand.Next(12, 16 + 1));//12-16个
-            player.QuickSpawnItem(source, ModContent.ItemType<GelAnkh>());
+        public override void ModifyItemLoot(ItemLoot itemLoot) {
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<VolutioMask>(), 7));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<GelOfLife>(), minimumDropped: 12, maximumDropped: 16));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<GelAnkh>()));
         }
     }
 }

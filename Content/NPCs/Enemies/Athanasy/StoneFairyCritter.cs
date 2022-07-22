@@ -31,7 +31,9 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
 			NPC.scale = 0f;
 		}
 
-        public Vector2 TargetPosition => new(NPC.ai[2], NPC.ai[3]);
+		public override void ModifyHoverBoundingBox(ref Rectangle boundingBox) => boundingBox = new();
+
+		public Vector2 TargetPosition => new(NPC.ai[2], NPC.ai[3]);
 
         public override void AI() {
 			switch (State) {

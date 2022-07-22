@@ -14,9 +14,9 @@ namespace Entrogic.Content.Tiles.Athanasy
 
         public override void SetStaticDefaults() => this.QuickSetFurniture(6, 6, 2, DustID.t_LivingWood, SoundID.Dig, false, new Color(151, 107, 75), false, false);
 
-        public override bool CanKillTile(int i, int j, ref bool blockDamaged) {
-            return true;
-        }
+        public override bool CanKillTile(int i, int j, ref bool blockDamaged) => false;
+
+        public override bool CanExplode(int i, int j) => false;
 
         public override void MouseOver(int i, int j) {
             Player player = Main.LocalPlayer;

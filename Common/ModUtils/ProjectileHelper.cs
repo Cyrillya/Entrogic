@@ -72,18 +72,20 @@ namespace Entrogic
             }
         }
 
-        public static void DefaultToWhip(this Projectile proj) {
-            proj.width = 18;
-            proj.height = 18;
-            proj.aiStyle = 165;
-            proj.friendly = true;
-            proj.penetrate = -1;
-            proj.tileCollide = false;
-            proj.scale = 1f;
-            proj.ownerHitCheck = true;
-            proj.extraUpdates = 1;
-            proj.usesLocalNPCImmunity = true;
-            proj.localNPCHitCooldown = -1;
+        public static void QuickDirectionalHeldProj(this Projectile projectile, Player player, Vector2 mouseWorld, Vector2 armPosition, float rotationOffset = 0f) {
+            projectile.velocity = armPosition.DirectionTo(mouseWorld);
+            projectile.spriteDirection = projectile.direction = Math.Sign(mouseWorld.X - player.MountedCenter.X);
+            projectile.rotation = projectile.velocity.ToRotation();
+            if (projectile.spriteDirection == -1)
+                projectile.rotation = 3.14f + projectile.rotation;
+            projectile.rotation += rotationOffset * projectile.direction;
+            projectile.Center = armPosition + projectile.velocity * 20f;
+
+            player.heldProj = projectile.whoAmI;
+            player.SetDummyItemTime(projectile.timeLeft);
+            player.ChangeDir(projectile.direction);
+            player.direction = projectile.direction;
+            player.itemRotation = (projectile.velocity * projectile.direction).ToRotation();
         }
 
         public static void ProjectileExplode(this Projectile projectile, IEntitySource source, float statRangeX = 22f, float statRangeY = 22f) {

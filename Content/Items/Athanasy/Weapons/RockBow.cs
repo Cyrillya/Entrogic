@@ -8,16 +8,15 @@ namespace Entrogic.Content.Items.Athanasy.Weapons
 		internal static int ProjectileType;
 
 		public override void SetDefaults() {
-			Item.DefaultToBow(20, 5f, false);
+			Item.DefaultToBow(20, 5f, true);
 			Item.damage = 64;
 			Item.width = 48;
 			Item.height = 132;
 			Item.noMelee = true;
 			Item.channel = true;
 			Item.knockBack = 4.25f;
-			Item.rare = ItemRarityID.Red;
+			Item.rare = RarityLevelID.EarlyHM;
 			Item.noUseGraphic = true;
-			Item.autoReuse = true;
 			Item.useAmmo = ModContent.ItemType<RockArrowSpear>();
 			Item.UseSound = SoundAssets.BowPulling;
 			Item.reuseDelay = 20;

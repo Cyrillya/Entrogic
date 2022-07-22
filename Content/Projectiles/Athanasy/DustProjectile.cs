@@ -1,4 +1,6 @@
-﻿namespace Entrogic.Content.Projectiles.Athanasy
+﻿using Entrogic.Content.Dusts;
+
+namespace Entrogic.Content.Projectiles.Athanasy
 {
     public class DustProjectile : ProjectileBase
     {
@@ -33,7 +35,7 @@
 
             if (Main.netMode != NetmodeID.Server) {
                 for (float lerp = 0f; lerp <= 1f; lerp += 0.33f) {
-                    var d = Dust.NewDustPerfect(Projectile.position - Projectile.velocity * lerp, MyDustID.BlueWhiteBubble, Projectile.velocity * 0.03f, 180, default, 1.5f);
+                    var d = Dust.NewDustPerfect(Projectile.position - Projectile.velocity * lerp, ModContent.DustType<BubbleCopy>(), Projectile.velocity * 0.03f, 180, default, 1.5f);
                     d.fadeIn = 1f;
                     d.noGravity = true;
                 }

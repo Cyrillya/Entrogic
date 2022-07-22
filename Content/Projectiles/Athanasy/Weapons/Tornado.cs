@@ -27,13 +27,13 @@
         public ref float HitCounts => ref Projectile.ai[0];
 
         public override void AI() {
-            if (Projectile.Opacity < 1f) {
+            if (Projectile.Opacity < 0.6f) {
                 Projectile.Opacity += 0.05f;
             }
 
             if (Projectile.timeLeft <= 30) {
                 float factor = Utils.GetLerpValue(0f, 30f, Projectile.timeLeft);
-                Projectile.Opacity = MathHelper.SmoothStep(0f, 1f, factor);
+                Projectile.Opacity = MathHelper.SmoothStep(0f, 0.6f, factor);
             }
 
             if (++Projectile.frameCounter >= 5) {

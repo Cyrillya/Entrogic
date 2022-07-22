@@ -1,4 +1,5 @@
 ﻿using Entrogic.Common.WorldGeneration;
+using Entrogic.Content.Dusts;
 using Entrogic.Content.NPCs.Enemies.Athanasy;
 using Terraria.Audio;
 
@@ -72,7 +73,7 @@ namespace Entrogic.Content.Projectiles.Athanasy
                     for (float r = 0; r <= 6.28f; r += 6.28f / 50f) {
                         Vector2 position = Vector2.UnitY.RotatedBy(r) * distanceFromCenter + spawnPosition;
                         Vector2 velocity = position.DirectionTo(spawnPosition) * 6f;
-                        var d = Dust.NewDustPerfect(position, MyDustID.BlueWhiteBubble, velocity, 180, default, 1.6f);
+                        var d = Dust.NewDustPerfect(position, ModContent.DustType<BubbleCopy>(), velocity, 180, default, 1.6f);
                         d.fadeIn = 0.1f + (1f - factor) * 0.6f;
                         d.noGravity = true;
                     }

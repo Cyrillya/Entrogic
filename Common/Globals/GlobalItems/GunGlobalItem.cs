@@ -1,4 +1,7 @@
-﻿namespace Entrogic.Common.Globals.GlobalItems
+﻿using Terraria.GameContent.ItemDropRules;
+using System.Reflection;
+
+namespace Entrogic.Common.Globals.GlobalItems
 {
     public class GunGlobalItem : GlobalItem
     {

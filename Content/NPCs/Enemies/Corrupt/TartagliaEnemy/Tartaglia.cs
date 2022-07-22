@@ -1,17 +1,5 @@
 ﻿using Entrogic.Content.Projectiles.Enemies;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
-using Terraria.ID;
-using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
 {
@@ -27,24 +15,24 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
         internal Rectangle secondHandFrame = new(0, 0, 40, 56);
         internal bool useExtraHand = false;
 
-        public override void Load() {
-            base.Load();
-            On.Terraria.NPC.Collision_DecideFallThroughPlatforms += NPC_Collision_DecideFallThroughPlatforms;
-        }
-
-        private bool NPC_Collision_DecideFallThroughPlatforms(On.Terraria.NPC.orig_Collision_DecideFallThroughPlatforms orig, NPC self) {
-            bool result = orig.Invoke(self);
-            if (self.type == ModContent.NPCType<Tartaglia>() && self.HasPlayerTarget && Main.player[self.target].active && !Main.player[self.target].dead && Main.player[self.target].Bottom.Y - self.Bottom.Y >= 30)
-                result = true;
-            return result;
+        public override bool? CanFallThroughPlatforms() {
+            if (NPC.HasPlayerTarget && Player.Exists() && Player.Bottom.Y - NPC.Bottom.Y >= 30)
+                return true;
+            return base.CanFallThroughPlatforms();
         }
 
         public override void SetStaticDefaults() {
-            base.SetStaticDefaults();
             Main.npcFrameCount[Type] = 20;
         }
 
         // 在血腐地刷出
+        public override float SpawnChance(NPCSpawnInfo spawnInfo) {
+            if (TileID.Sets.Corrupt[spawnInfo.SpawnTileType]) {
+                return 0.006f;
+            }
+            return 0f;
+        }
+
         public override void SetDefaults() {
             base.SetDefaults();
             NPC.CloneDefaults(NPCID.PossessedArmor);
@@ -52,7 +40,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
             NPC.lifeMax = 120;
             NPC.defense = 10;
             NPC.damage = 85;
-            NPC.knockBackResist = 0f;
+            NPC.knockBackResist = 0.4f;
             WeaponAniTimer = -999;
         }
 
@@ -77,7 +65,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
         internal ref float TeleportTimer => ref NPC.localAI[3];
         internal List<PathVertex> path = new();
 
-        private Player player => Main.player[NPC.target];
+        private Player Player => Main.player[NPC.target];
 
         public override void SendExtraAI(BinaryWriter writer) {
             base.SendExtraAI(writer);
@@ -111,7 +99,6 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
         }
 
         public override void AI() {
-            base.AI();
             // 初始潜行状态
             if (WeaponAniTimer == -999) {
                 NPC.Opacity = .2f;
@@ -141,8 +128,8 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
             if (WeaponAniTimer > 0)
                 WeaponAniTimer--;
 
-            var targetCenter = player.Center;
-            var targetPosition = player.position;
+            var targetCenter = Player.Center;
+            var targetPosition = Player.position;
 
             // 在玩家死亡点上方跳三下并且丢出三个荧光棒
             Despawning:
@@ -159,7 +146,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                         d.velocity.X *= 0.1f;
                         d.velocity.Y *= 0.5f;
                     }
-                    Teleport(player.Bottom);
+                    Teleport(Player.Bottom);
                 }
                 TeleportTimer++;
                 if (TeleportTimer % 60 == 0) {
@@ -201,10 +188,10 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                 }
                 return;
             }
-            if (NPC.target < 0 || NPC.target >= Main.maxPlayers || player.dead || !player.active) {
+            if (NPC.target < 0 || NPC.target >= Main.maxPlayers || Player.dead || !Player.active) {
                 NPC.TargetClosest();
                 // 玩家至少曾经有过
-                if (player.dead || !player.active) {
+                if (Player.dead || !Player.active) {
                     Timer = 114514;
                     TeleportTimer = 0;
                     goto Despawning;
@@ -216,16 +203,16 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                     goto Despawning;
                 }
             }
-            if (player.Bottom.Y == NPC.Bottom.Y)
+            if (Player.Bottom.Y == NPC.Bottom.Y)
                 NPC.directionY = -1;
 
             // 在玩家一定范围内且可以射箭打到玩家
-            if (Collision.CanHitLine(NPC.position, NPC.width, NPC.height, targetPosition, player.width, player.height)) {
+            if (Collision.CanHitLine(NPC.position, NPC.width, NPC.height, targetPosition, Player.width, Player.height)) {
                 TeleportTimer = 0;
                 // 发射毒箭
                 ShootTimer++;
                 if (Main.netMode != NetmodeID.MultiplayerClient && ShootTimer % 300 < 60 && ShootTimer % 6 == 0) {
-                    Vector2 toPlayer = targetCenter + player.velocity * NPC.Distance(player.Center) / 15f + new Vector2(0, (int)-Math.Abs(targetCenter.X - NPC.Center.X) >> 3) - NPC.Center;
+                    Vector2 toPlayer = targetCenter + Player.velocity * NPC.Distance(Player.Center) / 15f + new Vector2(0, (int)-Math.Abs(targetCenter.X - NPC.Center.X) >> 3) - NPC.Center;
                     toPlayer.Normalize();
                     toPlayer = (toPlayer.ToRotation() + MathHelper.ToRadians(Main.rand.NextFloat(-10f, 10f))).ToRotationVector2();
                     int damage = NPC.GetAttackDamage_ForProjectiles_MultiLerp_Exactly(15, 24, 35);
@@ -237,7 +224,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                     WeaponType = (int)Weapons.Crossbow;
                 }
                 // 硬核保持距离
-                if (NPC.Distance(player.Center) <= 260) {
+                if (NPC.Distance(Player.Center) <= 260) {
                     NPC.velocity.X *= 0.92f;
                     NPC.direction = NPC.spriteDirection = Math.Sign(targetCenter.X - NPC.Center.X);
                     return;
@@ -297,7 +284,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
 
             // 寻路移动
             // 可以打到，直接跑
-            if (Collision.CanHitLine(NPC.position, NPC.width, NPC.height, targetPosition, player.width, player.height)) {
+            if (Collision.CanHitLine(NPC.position, NPC.width, NPC.height, targetPosition, Player.width, Player.height)) {
                 // 玩家在右边
                 if (targetCenter.X - NPC.Center.X > 0) {
                     AcceRight();
@@ -310,11 +297,12 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
             // 不能打到，用A*寻路
             else {
                 Point npcTile = NPC.Center.ToTileCoordinates();
-                Point plrTile = player.Center.ToTileCoordinates();
+                Point plrTile = Player.Center.ToTileCoordinates();
 
                 while (path.Count > 0) {
                     Point next = new(path[^1].x, path[^1].y);
                     targetCenter = next.ToWorldCoordinates();
+                    targetPosition = targetCenter - new Vector2(20f, 28f);
                     if (NPC.Distance(targetCenter) <= 40) { // 能删就继续找下一个点
                         path.RemoveAt(path.Count - 1);
                     }
@@ -329,7 +317,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                     AcceLeft();
                 }
                 // 60帧更新一次路径
-                if (PathfindingTimer % 60 == 0 && Main.netMode != NetmodeID.MultiplayerClient && NPC.Distance(player.Center) <= 16 * 60) {
+                if (PathfindingTimer % 60 == 0 && Main.netMode != NetmodeID.MultiplayerClient && NPC.Distance(Player.Center) <= 16 * 60) {
                     path = AStarPathfinding.Pathfinding(npcTile, plrTile, 600);
                     NPC.netUpdate = true;
                 }
@@ -397,7 +385,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                     }
                 }
                 // 如果能直线看到玩家，就向玩家去
-                if (Collision.CanHitLine(NPC.position, NPC.width, NPC.height, targetCenter - new Vector2(20, 28), player.width, player.height)) {
+                if (Collision.CanHitLine(NPC.position, NPC.width, NPC.height, targetCenter - new Vector2(20, 28), Player.width, Player.height)) {
                     int toPlayerYTile = (int)(targetCenter.Y - NPC.Center.Y) >> 4;
                     int distanceXTile = Math.Abs((int)(targetCenter.X - NPC.Center.X) >> 4);
                     if (toPlayerYTile < -2 && distanceXTile <= 6) { // 玩家在上面两格以上，离得近
@@ -419,7 +407,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                 RocketTimer = RocketMaxTime; // 激活火箭靴
             }
             // 激活火箭靴后用火箭靴，玩家在下方且可以打到就不用了
-            if (RocketTimer > 0 && (targetCenter.Y + 28 - NPC.Bottom.Y <= 20f || !Collision.CanHitLine(NPC.position, NPC.width, NPC.height, targetCenter - new Vector2(20, 28), player.width, player.height))) {
+            if (RocketTimer > 0 && (targetCenter.Y + 28 - NPC.Bottom.Y <= 20f || !Collision.CanHitLine(NPC.position, NPC.width, NPC.height, targetCenter - new Vector2(20, 28), Player.width, Player.height))) {
                 // 火箭靴声音和粒子
                 if (RocketSoundDelay <= 0) {
                     RocketSoundDelay = 15;
@@ -441,7 +429,7 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
                         NPC.velocity.Y -= RocketAccelerateSpeed; // 火箭加速
                     }
                     // 能看到玩家的话再长点距离
-                    else if (Collision.CanHitLine(NPC.position, NPC.width, NPC.height, targetCenter - new Vector2(20, 28), player.width, player.height) && toPlayerY < 80 && distanceXTile <= 50) {
+                    else if (Collision.CanHitLine(NPC.position, NPC.width, NPC.height, targetPosition, Player.width, Player.height) && toPlayerY < 80 && distanceXTile <= 50) {
                         NPC.velocity.Y -= RocketAccelerateSpeed; // 火箭加速
                     }
                 }
@@ -475,11 +463,11 @@ namespace Entrogic.Content.NPCs.Enemies.Corrupt.TartagliaEnemy
             var NPCOldPos = NPC.Center;
             if (pos == null) {
                 // 原版混沌精的代码
-                var PlrPosition = (player.position / 16).ToPoint();
+                var PlrPosition = (Player.position / 16).ToPoint();
                 int range = 20;
                 int num194 = 0;
                 bool flag26 = false;
-                if (Math.Abs(NPC.position.X - player.position.X) + Math.Abs(NPC.position.Y - player.position.Y) > 2000f) {
+                if (Math.Abs(NPC.position.X - Player.position.X) + Math.Abs(NPC.position.Y - Player.position.Y) > 2000f) {
                     num194 = 100;
                     flag26 = true;
                 }
