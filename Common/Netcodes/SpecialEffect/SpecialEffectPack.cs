@@ -1,8 +1,8 @@
 ﻿namespace Entrogic.Common.Netcodes.SpecialEffect
 {
-    internal class SpecialEffectPacketHandler : PacketHandler
+    internal class SpecialEffectPack : PacketHandler
     {
-        public SpecialEffectPacketHandler(ModNetHandler.EntrogicMessageType handlerType) : base(handlerType) {
+        public SpecialEffectPack(ModNetHandler.EntrogicMessageType handlerType) : base(handlerType) {
         }
 
         public override void HandlePacket(BinaryReader reader, int fromWho) {

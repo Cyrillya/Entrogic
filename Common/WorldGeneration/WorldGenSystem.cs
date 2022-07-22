@@ -30,8 +30,13 @@ namespace Entrogic.Common.WorldGeneration
             ImmortalGolemRoom.LoadWorldData(tag);
         }
 
+        public override void OnWorldLoad() {
+            if (Main.netMode is NetmodeID.MultiplayerClient) {
+                ModNetHandler.WorldData.SendGolemRoom(-1, -1);
+            }
+        }
+
         public override void Load() {
-            base.Load();
             Main.RunOnMainThread(delegate {
                 ResourceManager_SetupContentEvent();
             });

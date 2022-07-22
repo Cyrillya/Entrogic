@@ -13,15 +13,13 @@ namespace Entrogic.Content.Projectiles.Athanasy
         }
 
         public override void SetDefaults() {
-            base.SetDefaults();
-            Projectile.CloneDefaults(ProjectileID.PoisonDart);
             Projectile.width = 12;
             Projectile.height = 12;
             Projectile.aiStyle = -1;
-            Projectile.timeLeft = 550;
             Projectile.tileCollide = false;
-            Projectile.alpha = 0;
             Projectile.hide = true;
+            Projectile.hostile = true;
+            Projectile.friendly = false;
             DrawOffsetX = -70;
             DrawOriginOffsetX = 34;
             DrawOriginOffsetY = -4;
@@ -33,7 +31,7 @@ namespace Entrogic.Content.Projectiles.Athanasy
         }
 
         public ref float Timer => ref Projectile.ai[0];
-        public float rotation;
+        public ref float RecordedRotation => ref Projectile.ai[1];
         public int targetPlayer = -1;
         public float recordedYOffset;
 
@@ -46,7 +44,7 @@ namespace Entrogic.Content.Projectiles.Athanasy
 
             if (Timer == 1) {
                 Projectile.netUpdate = true;
-                rotation = Projectile.velocity.ToRotation();
+                RecordedRotation = Projectile.velocity.ToRotation();
             }
 
             if (Timer <= 5 && !Main.dedServ) {
@@ -57,31 +55,31 @@ namespace Entrogic.Content.Projectiles.Athanasy
             if (Timer <= 55f) {
                 Projectile.velocity = Vector2.Zero;
                 if (Timer <= 30f) {
-                    Projectile.velocity = rotation.ToRotationVector2() * 1.5f;
+                    Projectile.velocity = RecordedRotation.ToRotationVector2() * 1.5f;
                 }
             }
             else {
-                Projectile.velocity = rotation.ToRotationVector2() * 10f;
+                Projectile.velocity = RecordedRotation.ToRotationVector2() * 10f;
                 if (Timer <= 62) {
                     float factor = Utils.GetLerpValue(55, 62, Timer);
-                    Projectile.velocity = rotation.ToRotationVector2() * MathHelper.Lerp(1f, 10f, factor);
+                    Projectile.velocity = RecordedRotation.ToRotationVector2() * MathHelper.Lerp(1f, 10f, factor);
                 }
                 if (!Main.dedServ && Timer == 56f) {
                     for (int i = 0; i < 8; i++) {
                         float radians = 6.28f / 8f * i;
                         var velocity = Vector2.One.RotatedBy(radians) * 1.4f;
-                        var d = Dust.NewDustPerfect(Projectile.Center + rotation.ToRotationVector2() * 8f, DustID.DungeonWater, velocity, 150, Scale: 1.3f);
+                        var d = Dust.NewDustPerfect(Projectile.Center + RecordedRotation.ToRotationVector2() * 8f, DustID.DungeonWater, velocity, 150, Scale: 1.3f);
                         d.fadeIn = 0.8f;
                         d.noGravity = true;
                     }
                 }
             }
 
-            if (!Projectile.tileCollide && Timer >= 90f) {
+            if (!Projectile.tileCollide && Timer >= 120f) {
                 Projectile.tileCollide = true;
             }
 
-            Projectile.rotation = rotation;
+            Projectile.rotation = RecordedRotation;
 
             // 射出的时候才开始录残影
             if (Timer >= 62f && !Main.dedServ) {

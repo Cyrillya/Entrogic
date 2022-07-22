@@ -2,12 +2,12 @@
 
 namespace Entrogic.Common.Netcodes.PlayerStatus
 {
-    internal class BookInfoPacketHandler : PacketHandler
+    internal class BookInfoPack : PacketHandler
 	{
 		public const byte SyncPage = 1;
 		public const byte SyncName = 2;
 
-		public BookInfoPacketHandler(ModNetHandler.EntrogicMessageType handlerType) : base(handlerType) {
+		public BookInfoPack(ModNetHandler.EntrogicMessageType handlerType) : base(handlerType) {
 		}
 
 		public override void HandlePacket(BinaryReader reader, int fromWho) {

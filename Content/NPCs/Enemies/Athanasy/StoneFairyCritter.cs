@@ -1,8 +1,4 @@
-﻿using Entrogic.Content.NPCs.BaseTypes;
-using Terraria.Audio;
-using Terraria.ID;
-
-namespace Entrogic.Content.NPCs.Enemies.Athanasy
+﻿namespace Entrogic.Content.NPCs.Enemies.Athanasy
 {
     public class StoneFairyCritter : NPCBase
     {
@@ -54,6 +50,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
 							NPC.height = 20;
 							NPC.Center = position;
 							NPC.position.Y -= 8f;
+							NPC.netUpdate = true;
 						}
 
 						Rectangle targetRectangle = Utils.CenteredRectangle(TargetPosition, Vector2.One * 5f);
@@ -114,6 +111,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
 						Timer++;
 						if (Main.netMode != NetmodeID.MultiplayerClient && Timer > 200f) {
 							NPC.active = false;
+							NPC.netUpdate = true;
 
 							var tileCoord = TargetPosition.ToTileCoordinates16();
                             Tile tile = Framing.GetTileSafely(tileCoord);

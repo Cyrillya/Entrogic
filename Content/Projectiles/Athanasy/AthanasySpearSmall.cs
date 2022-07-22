@@ -1,5 +1,4 @@
-﻿using Terraria.Audio;
-using Terraria.Graphics.Shaders;
+﻿using Terraria.Graphics.Shaders;
 
 namespace Entrogic.Content.Projectiles.Athanasy
 {
@@ -12,32 +11,24 @@ namespace Entrogic.Content.Projectiles.Athanasy
         }
 
         public override void SetDefaults() {
-            base.SetDefaults();
-            Projectile.CloneDefaults(ProjectileID.PoisonDart);
             Projectile.width = 12;
             Projectile.height = 12;
             Projectile.aiStyle = -1;
-            Projectile.timeLeft = 300;
-            Projectile.tileCollide = true;
-            Projectile.alpha = 0;
-            Projectile.DamageType = DamageClass.Ranged;
+            Projectile.hostile = true;
+            Projectile.friendly = false;
             DrawOffsetX = -70;
             DrawOriginOffsetX = 34;
             DrawOriginOffsetY = -4;
         }
 
-        public override bool ShouldUpdatePosition() {
-            return true;
-        }
-
         public ref float Timer => ref Projectile.ai[0];
-        public float rotation;
+        public ref float RecordedRotation => ref Projectile.ai[1];
 
         public override void AI() {
             Timer++;
             if (Timer == 1) {
                 Projectile.netUpdate = true;
-                rotation = Projectile.velocity.ToRotation();
+                RecordedRotation = Projectile.velocity.ToRotation();
                 Projectile.velocity = -Projectile.velocity;
                 for (int i = 0; i < 8; i++) {
                     float radians = 6.28f / 8f * i;
@@ -55,22 +46,22 @@ namespace Entrogic.Content.Projectiles.Athanasy
 
             if (Timer <= 55f) {
                 if (Timer <= 20f) {
-                    Projectile.velocity = -rotation.ToRotationVector2() * 0.1f;
+                    Projectile.velocity = -RecordedRotation.ToRotationVector2() * 0.1f;
                 }
                 else if (Timer <= 40f) {
                     // Timer区间: 20-40
                     float factor = Utils.GetLerpValue(20, 40, Timer);
                     factor *= factor;
-                    Projectile.velocity = -rotation.ToRotationVector2() * MathHelper.Lerp(3f, 16f, factor);
+                    Projectile.velocity = -RecordedRotation.ToRotationVector2() * MathHelper.Lerp(3f, 16f, factor);
                 }
                 else if (Timer <= 50f) {
                     float factor = Utils.GetLerpValue(40, 50, Timer);
                     factor *= factor;
-                    Projectile.velocity = -rotation.ToRotationVector2() * MathHelper.Lerp(16f, 0.9f, factor);
+                    Projectile.velocity = -RecordedRotation.ToRotationVector2() * MathHelper.Lerp(16f, 0.9f, factor);
                 }
                 else {
                     float factor = Utils.GetLerpValue(50, 55, Timer);
-                    Projectile.velocity = -rotation.ToRotationVector2() * MathHelper.Lerp(0.9f, 12f, factor);
+                    Projectile.velocity = -RecordedRotation.ToRotationVector2() * MathHelper.Lerp(0.9f, 12f, factor);
 
                     var d = Dust.NewDustDirect(Projectile.Center, 8, 8, DustID.Stone, Alpha: 140, Scale: Main.rand.NextFloat(1.5f, 3.2f));
                     d.fadeIn = 0.4f;
@@ -78,10 +69,10 @@ namespace Entrogic.Content.Projectiles.Athanasy
                 }
             }
             else {
-                Projectile.velocity = rotation.ToRotationVector2() * 18f;
+                Projectile.velocity = RecordedRotation.ToRotationVector2() * 18f;
             }
 
-            Projectile.rotation = rotation;
+            Projectile.rotation = RecordedRotation;
             
             // 射出的时候才开始录残影
             if (Timer >= 50f && !Main.dedServ) {

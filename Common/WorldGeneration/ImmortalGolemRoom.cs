@@ -8,11 +8,13 @@ namespace Entrogic.Common.WorldGeneration
 {
     public class ImmortalGolemRoom : GenPass
     {
-        public static Rectangle TrapZone = default(Rectangle);
-        public static Rectangle BossZone = default(Rectangle);
+        public static Rectangle TrapZone = default;
+        public static Rectangle BossZone = default;
         internal static ushort BrickType;
         internal static ushort WallType;
         internal static ushort PlatformStyle;
+        public const int BossRoomWidth = 110 + 20;
+        public const int BossRoomHeight = 80 + 20;
 
         public int t;
 
@@ -157,12 +159,10 @@ namespace Entrogic.Common.WorldGeneration
             StructureGenHelper.GenerateRoom(new Rectangle(origin.X, origin.Y, 32, 16), BrickType, WallType, 0, 5); // 连接陷阱大厅与Boss大厅的通道
             progress.Set(0.5f);
 
-            int bossRoomWidth = 110 + 20;
-            int bossRoomHeight = 80 + 20;
             origin += new Point(31, 22);
-            origin.Y -= bossRoomHeight;
-            BossZone = new Rectangle((int)origin.X, (int)origin.Y, bossRoomWidth, bossRoomHeight);
-            StructureGenHelper.GenerateRoom(new Rectangle(origin.X, origin.Y, bossRoomWidth, bossRoomHeight), BrickType, WallType, 10, 10); // Boss大厅
+            origin.Y -= BossRoomHeight;
+            BossZone = new Rectangle((int)origin.X, (int)origin.Y, BossRoomWidth, BossRoomHeight);
+            StructureGenHelper.GenerateRoom(new Rectangle(origin.X, origin.Y, BossRoomWidth, BossRoomHeight), BrickType, WallType, 10, 10); // Boss大厅
 
             // 挖空通道，安置高门
             int length = origin.X - thePoint.X;

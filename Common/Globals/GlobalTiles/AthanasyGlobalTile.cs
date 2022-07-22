@@ -14,16 +14,15 @@ namespace Entrogic.Common.Globals.GlobalTiles
                 g *= 1.5f;
                 b *= 1.3f;
             }
-            //if (Main.tile[i, j].TileFrameX == 18 && Main.tile[i, j].TileFrameY == 0) {
-            //    var worldCoordCenter = new Vector2(i, j).ToWorldCoordinates(autoAddY: 16f);
-            //    float distanceFromCenter = 60f;
-            //    for (float k = 0; k <= 6.28f; k += 6.28f / 200f) {
-            //        var position = Vector2.One.RotatedBy(k) * distanceFromCenter + worldCoordCenter;
-            //        var d = Dust.NewDustPerfect(position, DustID.Torch, Alpha: 60, Scale: 1.2f);
-            //        d.noGravity = true;
-            //        d.fadeIn = 0.9f;
-            //    }
-            //}
         }
+
+        public override bool CanKillTile(int i, int j, int type, ref bool blockDamaged) =>
+            !ImmortalGolemRoom.BossZone.Contains(i, j);
+
+        public override bool CanExplode(int i, int j, int type) =>
+            !ImmortalGolemRoom.BossZone.Contains(i, j);
+
+        public override bool CanPlace(int i, int j, int type) =>
+            !ImmortalGolemRoom.BossZone.Contains(i, j);
     }
 }

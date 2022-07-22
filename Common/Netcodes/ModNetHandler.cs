@@ -1,23 +1,24 @@
 ﻿using Entrogic.Common.Netcodes.PlayerStatus;
 using Entrogic.Common.Netcodes.SpecialEffect;
+using Entrogic.Common.Netcodes.World;
 
 namespace Entrogic.Common.Netcodes
 {
     internal class ModNetHandler
     {
-        // When a lot of handlers are added, it might be wise to automate
-        // creation of them
         internal enum EntrogicMessageType : byte
         {
             Dodge,
             BookInfo,
             PlayerStat,
-            SpecialEffect
+            SpecialEffect,
+            WorldData
         }
-        internal static DodgePacketHandler Dodge = new(EntrogicMessageType.Dodge);
-        internal static BookInfoPacketHandler BookInfo = new(EntrogicMessageType.BookInfo);
-        internal static PlayerDataPacketHandler PlayerData = new(EntrogicMessageType.PlayerStat);
-        internal static SpecialEffectPacketHandler SpecialEffect = new(EntrogicMessageType.SpecialEffect);
+        internal static DodgePack Dodge = new(EntrogicMessageType.Dodge);
+        internal static BookInfoPack BookInfo = new(EntrogicMessageType.BookInfo);
+        internal static PlayerDataPack PlayerData = new(EntrogicMessageType.PlayerStat);
+        internal static SpecialEffectPack SpecialEffect = new(EntrogicMessageType.SpecialEffect);
+        internal static WorldDataPack WorldData = new(EntrogicMessageType.WorldData);
         public static void HandlePacket(BinaryReader r, int fromWho) {
             EntrogicMessageType msgType = (EntrogicMessageType)r.ReadByte();
             switch (msgType) {
@@ -32,6 +33,9 @@ namespace Entrogic.Common.Netcodes
                     break;
                 case EntrogicMessageType.SpecialEffect:
                     SpecialEffect.HandlePacket(r, fromWho);
+                    break;
+                case EntrogicMessageType.WorldData:
+                    WorldData.HandlePacket(r, fromWho);
                     break;
                 default:
                     Entrogic.Instance.LoggerWarn(string.Format("Entrogic: Unknown Message type: {0}", msgType));

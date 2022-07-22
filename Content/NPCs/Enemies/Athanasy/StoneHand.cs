@@ -1,4 +1,5 @@
-﻿using Entrogic.Content.NPCs.BaseTypes;
+﻿using Entrogic.Content.Dusts;
+using Entrogic.Content.NPCs.BaseTypes;
 
 namespace Entrogic.Content.NPCs.Enemies.Athanasy
 {
@@ -23,6 +24,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             NPC.lavaImmune = true;
             NPC.knockBackResist = 0f;
             NPC.dontTakeDamage = true;
+            NPC.friendly = false;
             // 花岗岩巨人的音效
             NPC.DeathSound = SoundID.NPCDeath43;
             NPC.HitSound = SoundID.NPCHit41;
@@ -30,33 +32,44 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
 
         private Vector2 AthanasyCenter => new(NPC.ai[2], NPC.ai[3]);
 
-        public override void OnSpawn(IEntitySource source) {
-            if (source.Context is not null && (source.Context == "Stage1" || source.Context == "Stage2") && Main.netMode != NetmodeID.Server) {
+        public override void SendExtraAI(BinaryWriter writer) {
+            writer.Write(NPC.localAI[0]);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader) {
+            NPC.localAI[0] = reader.ReadSingle();
+        }
+
+        public override void AI() {
+            if (NPC.localAI[0] < 0 && Main.netMode != NetmodeID.Server) {
+                bool stage2 = NPC.localAI[0] == -2;
                 NPC.position += NPC.netOffset;
 
                 Vector2 vec = Utils.DirectionTo(AthanasyCenter, NPC.Center) * 120f;
                 Vector2 startPosition = AthanasyCenter + vec;
-                if (source.Context == "Stage2")
+                if (stage2)
                     goto SpawnCircleDust;
                 float distance = Vector2.Distance(startPosition, NPC.Center);
 
                 Dust.QuickDustLine(startPosition, NPC.Bottom, distance / 12f, Color.SkyBlue);
 
                 SpawnCircleDust:;
-                int dusts = source.Context == "Stage2" ? 12 : 8;
+                int dusts = stage2 ? 12 : 8;
                 for (int i = 0; i < dusts; i++) {
                     float radians = 6.28f / 8f * i;
                     var velocity = Vector2.One.RotatedBy(radians) * 1.4f;
-                    var d = Dust.NewDustPerfect(NPC.Bottom, MyDustID.BlueWhiteBubble, velocity, 180, Scale: source.Context == "Stage2" ? 2f : 1f);
+                    var d = Dust.NewDustPerfect(NPC.Bottom, ModContent.DustType<BubbleCopy>(), velocity, 180, Scale: stage2 ? 2f : 1f);
                     d.fadeIn = 0.4f;
                     d.noGravity = true;
                 }
 
                 NPC.position -= NPC.netOffset;
-            }
-        }
 
-        public override void AI() {
+                NPC.localAI[0] = 0f;
+            }
+
+            NPC.velocity = Vector2.Zero;
+
             Timer++;
             if (Timer == 100 && Main.netMode != NetmodeID.Server) {
                 SoundEngine.PlaySound(SoundAssets.StoneHand, NPC.Bottom);
@@ -70,13 +83,6 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             else {
                 Dust.NewDust(NPC.BottomLeft - new Vector2(0f, 16f), NPC.width, 16, DustID.Stone);
             }
-            //else {
-            //    for (int i = 0; i < 20; i++) {
-            //        var d = Dust.NewDustDirect(NPC.BottomLeft - new Vector2(0f, 16f), NPC.width, 16, DustID.Smoke, Alpha: 50); d.noGravity = true;
-            //        d.velocity.Y = -5f + Main.rand.NextFloat() * -3f;
-            //        d.velocity.X *= 7f;
-            //    }
-            //}
             if (NPC.ai[2] == -1 && Timer >= 220) {
                 NPC.active = false;
                 NPC.life = 0;

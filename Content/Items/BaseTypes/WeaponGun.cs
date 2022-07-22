@@ -22,13 +22,15 @@ namespace Entrogic.Content.Items.BaseTypes
 
         public override bool? UseItem(Player player) {
             player.GetModPlayer<GunPlayer>().RecoilDegree += RecoilPower;
-            if (Main.netMode == NetmodeID.MultiplayerClient) {
-                ModNetHandler.PlayerData.SendRecoilDegree(-1, -1, (short)player.GetModPlayer<GunPlayer>().RecoilDegree);
+
+            if (Main.netMode == NetmodeID.Server) {
+                return base.UseItem(player);
             }
 
-            var directionVector = player.MountedCenter.DirectionTo(Main.MouseWorld);
+            var mouseWorld = player.GetModPlayer<SyncedDataPlayer>().MouseWorld;
+            var directionVector = player.MountedCenter.DirectionTo(mouseWorld);
 
-            PunchCameraModifier modifier = new(player.Center, directionVector, RecoilPower * 0.05f, 5f, 8, 600f, "Entrogic: Pistol");
+            PunchCameraModifier modifier = new(player.Center, directionVector, RecoilPower * 0.1f, 5f, 8, 600f, "Entrogic: Gun");
             Main.instance.CameraModifiers.Add(modifier);
 
             for (int i = 0; i < DustCount; i++) {

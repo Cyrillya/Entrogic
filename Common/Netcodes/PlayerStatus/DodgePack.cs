@@ -2,11 +2,11 @@
 
 namespace Entrogic.Common.Netcodes.PlayerStatus
 {
-    internal class DodgePacketHandler : PacketHandler
+    internal class DodgePack : PacketHandler
     {
         public const byte SyncContaminatedDodge = 1;
 
-        public DodgePacketHandler(ModNetHandler.EntrogicMessageType handlerType) : base(handlerType) {
+        public DodgePack(ModNetHandler.EntrogicMessageType handlerType) : base(handlerType) {
         }
 
         public override void HandlePacket(BinaryReader reader, int fromWho) {

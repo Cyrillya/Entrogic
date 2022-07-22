@@ -1,7 +1,6 @@
 ﻿using Entrogic.Common.WorldGeneration;
 using Entrogic.Content.Dusts;
 using Entrogic.Content.NPCs.Enemies.Athanasy;
-using Terraria.Audio;
 
 namespace Entrogic.Content.Projectiles.Athanasy
 {
@@ -28,13 +27,13 @@ namespace Entrogic.Content.Projectiles.Athanasy
             Projectile.scale -= 0.02f;
 
             if (Timer == 150f) {
-                Projectile.hide = true;
                 Projectile.netUpdate = true;
                 AthanasySystem.TileRunner.Run(AthanasySystem.ActuateTiles(false, 10, 90));
             }
 
             if (Timer >= 150f) {
                 Projectile.velocity = Vector2.Zero;
+                Projectile.hide = true;
             }
 
             if (Timer == 280f && Main.netMode != NetmodeID.MultiplayerClient) {
@@ -80,7 +79,8 @@ namespace Entrogic.Content.Projectiles.Athanasy
                 }
             }
 
-            if (Timer == 1080f) {
+            if (Timer >= 1080f) {
+                Projectile.netUpdate = true;
                 Projectile.Kill();
                 var spawnPosition = ImmortalGolemRoom.BossZone.Center.ToWorldCoordinates();
                 SoundEngine.PlaySound(SoundID.Roar, spawnPosition);

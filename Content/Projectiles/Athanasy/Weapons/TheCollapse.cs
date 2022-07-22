@@ -59,10 +59,12 @@ namespace Entrogic.Content.Projectiles.Athanasy.Weapons
 					Timer++;
 					if (Timer >= 30) {
 						State = AIState.Laser;
+						Projectile.netUpdate = true;
 						Timer = 0;
                     }
 					else if (Stopped) {
 						State = AIState.Ending;
+						Projectile.netUpdate = true;
 					}
 					break;
 				case AIState.Ending:
@@ -79,6 +81,7 @@ namespace Entrogic.Content.Projectiles.Athanasy.Weapons
 					if (Stopped) {
 						State = AIState.Ending;
 						Timer = 30;
+						Projectile.netUpdate = true;
 					}
 					if (Timer % 36 == 24) {
 						if (!player.CheckMana(player.HeldItem, pay: true)) {

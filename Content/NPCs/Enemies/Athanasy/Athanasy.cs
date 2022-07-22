@@ -6,6 +6,7 @@ using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.Graphics.CameraModifiers;
 using Terraria.Graphics.Shaders;
+using Terraria.ID;
 
 namespace Entrogic.Content.NPCs.Enemies.Athanasy
 {
@@ -257,6 +258,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             float distanceFromCenter = 160f;
 
             if (Timer == 10 && Main.netMode != NetmodeID.MultiplayerClient) {
+                NPC.TargetClosest();
                 float rotationAngle = MathHelper.ToRadians(25f);
                 int spears = Main.expertMode ? 3 : 2; // 单向矛数，实际矛数为 spears*2+1
                 if (Main.getGoodWorld) {
@@ -268,8 +270,9 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                         continue;
                     Vector2 rotatedVector = baseVector.RotatedBy(rotationAngle / spears * i);
                     Vector2 finalSpawnPosition = rotatedVector * distanceFromCenter + NPC.Center;
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), finalSpawnPosition, rotatedVector, SmallSpearType, spearDamage, 0f);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), finalSpawnPosition, rotatedVector, SmallSpearType, spearDamage, 0f, Main.myPlayer);
                 }
+                NPC.netUpdate = true;
             }
             if (Timer == 20) {
                 SwitchState((int)AIState.First_DecideAttack);
@@ -279,7 +282,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
         }
 
         private void First_WallSpearState() {
-            if (Timer == 0) {
+            if (Timer == 0 && Main.netMode != NetmodeID.MultiplayerClient) {
                 NPC.netUpdate = true;
                 NPC.ai[2] = Main.rand.Next(9) * NPC.ai[2]; // 随机化生成，正为左墙负为右墙
             }
@@ -290,13 +293,13 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             int top = ImmortalGolemRoom.BossZone.Top + 10;
             int bottom = ImmortalGolemRoom.BossZone.Bottom - 10;
             int distance = bottom - top;
-            
             if (Timer % 9 == Math.Abs(NPC.ai[2]) && Main.netMode != NetmodeID.MultiplayerClient) {
                 Vector2 finalSpawnPosition = new(ImmortalGolemRoom.BossZone.Left + 9, Timer + top);
                 if (!left)
                     finalSpawnPosition.X = ImmortalGolemRoom.BossZone.Right - 9;
                 finalSpawnPosition = finalSpawnPosition.ToWorldCoordinates();
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), finalSpawnPosition, new(left ? 1 : -1, 0), WallSpearType, spearDamage, 0f);
+                NPC.netUpdate = true;
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), finalSpawnPosition, new(left ? 1 : -1, 0), WallSpearType, spearDamage, 0f, Main.myPlayer);
             }
 
             if (Timer >= distance) {
@@ -316,7 +319,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             int handTimer = Main.expertMode ? 80 : 100;
             if (Main.getGoodWorld)
                 handTimer = 50;
-            if (Timer % handTimer == 0) {
+            if (Timer % handTimer == 0 && Main.netMode != NetmodeID.MultiplayerClient) {
                 Point16 center = Player.Center.ToTileCoordinates16();
                 for (int i = 0; i < 30; i++) {
                     Point tilePosition = center.ToPoint();
@@ -328,7 +331,8 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                         var tileRight = Framing.GetTileSafely(new Point(tilePosition.X + 1, tilePosition.Y));
                         if (IsSaveTile(tileLeft) && IsSaveTile(tileRight) && !WorldGen.SolidTile(tileUp)) {
                             var spawnPosition = tilePosition.ToWorldCoordinates(autoAddY: 2f).ToPoint();
-                            NPC.NewNPC(NPC.GetSource_FromAI("Stage1"), spawnPosition.X, spawnPosition.Y, StoneHandType, ai1: 80f, ai2: NPC.Center.X, ai3: NPC.Center.Y, Target: NPC.target);
+                            int n = NPC.NewNPC(NPC.GetSource_FromAI(), spawnPosition.X, spawnPosition.Y, StoneHandType, ai1: 80f, ai2: NPC.Center.X, ai3: NPC.Center.Y, Target: NPC.target);
+                            Main.npc[n].localAI[0] = -1;
                             break;
                         }
                     }
@@ -672,6 +676,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                 }
             }
             AttackIndex++;
+            NPC.netUpdate = true;
         }
 
         private void Second_StoneHandState() {
@@ -710,7 +715,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                 }
                 NPC.position -= NPC.netOffset;
             }
-            if (Timer <= 40f && NPC.ai[2] < 30f) {
+            if (Timer <= 40f && NPC.ai[2] < 30f && Main.netMode != NetmodeID.MultiplayerClient) {
                 for (int i = 0; i < 50; i++) {
                     Point tilePosition = Main.rand.NextVector2FromRectangle(rect).ToPoint();
                     var tile = Framing.GetTileSafely(tilePosition);
@@ -782,6 +787,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             if (Timer >= 72) {
                 NPC.velocity.X *= 0f;
                 SwitchState((int)AIState.Second_DecideAttack);
+                NPC.netUpdate = true;
                 NPC.ai[2] = 0;
             }
         }
@@ -939,6 +945,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             var toPlayerVector = NPC.DirectionTo(target);
 
             if (Timer == 10 && Main.netMode != NetmodeID.MultiplayerClient) {
+                NPC.TargetClosest();
                 float distanceFromCenter = 120f;
                 int spears = Main.expertMode ? 12 : 10; // 矛数
                 if (Main.getGoodWorld) { // ftw
@@ -946,6 +953,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                     distanceFromCenter += 20f;
                 }
 
+                NPC.netUpdate = true;
                 for (float r = 0; r < 6.28f; r += 6.28f / spears) {
                     Vector2 rotatedVector = toPlayerVector.RotatedBy(r);
                     Vector2 finalSpawnPosition = rotatedVector * distanceFromCenter + NPC.Center;
@@ -960,7 +968,7 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
         }
 
         private void Second_WallSpearState() {
-            if (Timer == 0) {
+            if (Timer == 0 && Main.netMode != NetmodeID.MultiplayerClient) {
                 NPC.netUpdate = true;
                 NPC.ai[2] = Main.rand.Next(11); // 随机化生成
             }
@@ -994,11 +1002,12 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             int distance = bottom - top;
 
             if (Timer % 11 == NPC.ai[2] && Main.netMode != NetmodeID.MultiplayerClient) {
+                NPC.netUpdate = true;
                 Vector2 finalSpawnPosition = new(ImmortalGolemRoom.BossZone.Left + 9, Timer + top);
                 if (!left)
                     finalSpawnPosition.X = ImmortalGolemRoom.BossZone.Right - 9;
                 finalSpawnPosition = finalSpawnPosition.ToWorldCoordinates();
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), finalSpawnPosition, new(left ? 1 : -1, 0), WallSpearType, spearDamage, 0f);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), finalSpawnPosition, new(left ? 1 : -1, 0), WallSpearType, spearDamage, 0f, Main.myPlayer);
             }
 
             if (Timer > distance) {
@@ -1016,22 +1025,24 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
             }
 
             Point16 center = Player.Center.ToTileCoordinates16();
-            for (int i = 0; i < 30; i++) {
-                Point tilePosition = center.ToPoint();
-                tilePosition.Y += i;
-                var tile = Framing.GetTileSafely(tilePosition);
-                if (IsSaveTile(tile)) {
-                    var tileUp = Framing.GetTileSafely(new Point(tilePosition.X, tilePosition.Y - 1));
-                    var tileLeft = Framing.GetTileSafely(new Point(tilePosition.X - 1, tilePosition.Y));
-                    var tileRight = Framing.GetTileSafely(new Point(tilePosition.X + 1, tilePosition.Y));
-                    if (IsSaveTile(tileLeft) && IsSaveTile(tileRight) && !WorldGen.SolidTile(tileUp)) {
-                        var spawnPosition = tilePosition.ToWorldCoordinates(autoAddY: 2f).ToPoint();
-                        NPC.NewNPC(NPC.GetSource_FromAI(), spawnPosition.X, spawnPosition.Y, StoneHandType, ai1: 80f, ai2: NPC.Center.X, ai3: NPC.Center.Y, Target: NPC.target);
-                        NPC.ai[2] = 0;
-                        GenerateHand(tilePosition.X - 2, tilePosition.Y, -1);
-                        NPC.ai[2] = 0;
-                        GenerateHand(tilePosition.X + 2, tilePosition.Y, 1);
-                        break;
+            if (Main.netMode != NetmodeID.MultiplayerClient) {
+                for (int i = 0; i < 30; i++) {
+                    Point tilePosition = center.ToPoint();
+                    tilePosition.Y += i;
+                    var tile = Framing.GetTileSafely(tilePosition);
+                    if (IsSaveTile(tile)) {
+                        var tileUp = Framing.GetTileSafely(new Point(tilePosition.X, tilePosition.Y - 1));
+                        var tileLeft = Framing.GetTileSafely(new Point(tilePosition.X - 1, tilePosition.Y));
+                        var tileRight = Framing.GetTileSafely(new Point(tilePosition.X + 1, tilePosition.Y));
+                        if (IsSaveTile(tileLeft) && IsSaveTile(tileRight) && !WorldGen.SolidTile(tileUp)) {
+                            var spawnPosition = tilePosition.ToWorldCoordinates(autoAddY: 2f).ToPoint();
+                            NPC.NewNPC(NPC.GetSource_FromAI(), spawnPosition.X, spawnPosition.Y, StoneHandType, ai1: 80f, ai2: NPC.Center.X, ai3: NPC.Center.Y, Target: NPC.target);
+                            NPC.ai[2] = 0;
+                            GenerateHand(tilePosition.X - 2, tilePosition.Y, -1);
+                            NPC.ai[2] = 0;
+                            GenerateHand(tilePosition.X + 2, tilePosition.Y, 1);
+                            break;
+                        }
                     }
                 }
             }
@@ -1062,7 +1073,8 @@ namespace Entrogic.Content.NPCs.Enemies.Athanasy
                         var tileRight = Framing.GetTileSafely(new Point(tilePosition.X + 1, tilePosition.Y));
                         if (IsSaveTile(tileLeft) && IsSaveTile(tileRight) && !WorldGen.SolidTile(tileUp)) {
                             var spawnPosition = tilePosition.ToWorldCoordinates(autoAddY: 2f).ToPoint();
-                            NPC.NewNPC(NPC.GetSource_FromAI("Stage2"), spawnPosition.X, spawnPosition.Y, StoneHandType, ai1: 40f, ai2: NPC.Center.X, ai3: NPC.Center.Y, Target: NPC.target);
+                            int n = NPC.NewNPC(NPC.GetSource_FromAI("Stage2"), spawnPosition.X, spawnPosition.Y, StoneHandType, ai1: 40f, ai2: NPC.Center.X, ai3: NPC.Center.Y, Target: NPC.target);
+                            NPC.localAI[0] = -2;
                             break;
                         }
                     }
