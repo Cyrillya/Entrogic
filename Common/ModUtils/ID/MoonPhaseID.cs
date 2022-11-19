@@ -1,8 +1,7 @@
 ﻿namespace Entrogic
 {
     /// <summary>
-    /// 项目名称：月相（Moon Phase）ID表
-    /// 版权所有：Entrogic制作组
+    /// 月相（Moon Phase）ID表
     /// </summary>
     public static class MoonPhaseID
     {
