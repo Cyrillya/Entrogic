@@ -2,8 +2,6 @@
 {
     public class TextureManager : ModSystem
     {
-        internal const string EffectBase = "Entrogic/Assets/Effects/Content/";
-
         internal const string ImageBase = "Entrogic/Assets/Images/";
         internal const string Images = ImageBase + "Miscellaneous/";
         internal const string Trailling = ImageBase + "Trail/";

@@ -1,5 +1,4 @@
 ﻿using Entrogic.Common.Globals.Players;
-using Entrogic.Common.Hooks.Items;
 using Entrogic.Interfaces.UIElements;
 
 namespace Entrogic.Content.Items.BaseTypes
@@ -9,7 +8,7 @@ namespace Entrogic.Content.Items.BaseTypes
         internal int PageMax = 1;
 
         public override void SetStaticDefaults() {
-            CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
+            SacrificeTotal = 1;
         }
         public virtual void SetDefaultsBook() { }
         public sealed override void SetDefaults() {
