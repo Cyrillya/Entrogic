@@ -1,13 +1,11 @@
-using Terraria.Audio;
-
 namespace Entrogic.Content.Projectiles.Misc.Weapons.Arcane
 {
     public class ArcaneMissle : ArcaneProjectile
     {
         public override void SetStaticDefaults() {
-            DisplayName.SetDefault("°ÂÊõ·Éµ¯");     //The English name of the Projectile
-            ProjectileID.Sets.TrailCacheLength[Type] = 20;    //The length of old position to be recorded
-            ProjectileID.Sets.TrailingMode[Type] = 0;        //The recording mode
+            DisplayName.SetDefault("°ÂÊõ·Éµ¯");
+            ProjectileID.Sets.TrailCacheLength[Type] = 20;
+            ProjectileID.Sets.TrailingMode[Type] = 0;
         }
 
         public override void ArcaneDefaults() {

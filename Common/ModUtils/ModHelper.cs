@@ -1,12 +1,11 @@
-﻿using ReLogic.Text;
-using Terraria.GameContent.UI.Chat;
-using Terraria.GameInput;
-using Terraria.UI.Chat;
+﻿using Terraria.GameInput;
 
 namespace Entrogic
 {
     public static partial class ModHelper
     {
+        #region 空间
+
         public static Rectangle GetWorldCoordinates(Rectangle rect) => new(rect.X << 4, rect.Y << 4, rect.Width << 4, rect.Height << 4);
 
         public static Rectangle ToWorldCoordinates(this Rectangle rect) => new(rect.X << 4, rect.Y << 4, rect.Width << 4, rect.Height << 4);
@@ -28,6 +27,23 @@ namespace Entrogic
         public static bool InRange(this int value, int min, int max) => value >= min && value <= max;
 
         public static bool InRange(this float value, float min, float max) => value >= min && value <= max;
+        
+        public static Vector2 ClosestPointInHitbox(Rectangle hitboxOfTarget, Vector2 desiredLocation) {
+            Vector2 offset = desiredLocation - hitboxOfTarget.Center.ToVector2();
+            offset.X = Math.Min(Math.Abs(offset.X), hitboxOfTarget.Width / 2) * Math.Sign(offset.X);
+            offset.Y = Math.Min(Math.Abs(offset.Y), hitboxOfTarget.Height / 2) * Math.Sign(offset.Y);
+            return hitboxOfTarget.Center.ToVector2() + offset;
+        }
+
+        public static Vector2 ClosestPointInHitbox(Entity entity, Vector2 desiredLocation) {
+            return ClosestPointInHitbox(entity.Hitbox, desiredLocation);
+        }
+
+        public static float Length(this Rectangle rectangle) => rectangle.Size().Length();
+
+        #endregion
+
+        #region  绘制
 
         public static void BeginGameSpriteBatch(this SpriteBatch spriteBatch, bool deferred = true, bool alphaBlend = true) =>
             spriteBatch.Begin(deferred ? SpriteSortMode.Deferred : SpriteSortMode.Immediate, alphaBlend ? BlendState.AlphaBlend : BlendState.Additive, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
@@ -39,6 +55,71 @@ namespace Entrogic
             spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle((int)position.X - borderWidth, (int)position.Y, (int)borderWidth, (int)size.Y), borderColor);
             spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle((int)position.X + (int)size.X, (int)position.Y, (int)borderWidth, (int)size.Y), borderColor);
         }
+
+        #endregion
+
+        #region 文字
+        
+        /// <summary>
+        /// 获取 HJson 文字
+        /// </summary>
+        public static string GetText(string str, params object[] arg)
+        {
+            string text = Language.GetTextValue($"Mods.Entrogic.{str}", arg);
+            return ConvertLeftRight(text);
+        }
+
+        public static string GetTextWith(string str, object arg)
+        {
+            string text = Language.GetTextValueWith($"Mods.Entrogic.{str}", arg);
+            return ConvertLeftRight(text);
+        }
+
+        public static string ConvertLeftRight(string text)
+        {
+            // 支持输入<left>和<right>，就和ItemTooltip一样（原版只有Tooltip支持）
+            if (text.Contains("<right>"))
+            {
+                InputMode inputMode = InputMode.XBoxGamepad;
+                if (PlayerInput.UsingGamepad)
+                    inputMode = InputMode.XBoxGamepadUI;
+
+                if (inputMode == InputMode.XBoxGamepadUI)
+                {
+                    KeyConfiguration keyConfiguration = PlayerInput.CurrentProfile.InputModes[inputMode];
+                    string input = PlayerInput.BuildCommand("", true, keyConfiguration.KeyStatus["MouseRight"]);
+                    input = input.Replace(": ", "");
+                    text = text.Replace("<right>", input);
+                }
+                else
+                {
+                    text = text.Replace("<right>", Language.GetTextValue("Controls.RightClick"));
+                }
+            }
+            if (text.Contains("<left>"))
+            {
+                InputMode inputMode2 = InputMode.XBoxGamepad;
+                if (PlayerInput.UsingGamepad)
+                    inputMode2 = InputMode.XBoxGamepadUI;
+
+                if (inputMode2 == InputMode.XBoxGamepadUI)
+                {
+                    KeyConfiguration keyConfiguration2 = PlayerInput.CurrentProfile.InputModes[inputMode2];
+                    string input = PlayerInput.BuildCommand("", true, keyConfiguration2.KeyStatus["MouseLeft"]);
+                    input = input.Replace(": ", "");
+                    text = text.Replace("<left>", input);
+                }
+                else
+                {
+                    text = text.Replace("<left>", Language.GetTextValue("Controls.LeftClick"));
+                }
+            }
+            return text;
+        }
+
+        #endregion
+
+        #region 光标
 
         /// <summary>
         /// 判断鼠标是否在某个矩形上。
@@ -63,12 +144,12 @@ namespace Entrogic
         /// <param name="Y">矩形纵坐标</param>
         /// <param name="width">矩形宽度</param>
         /// <param name="height">矩形高度</param>
-        /// <param name="OFFXLeft">向左偏移长度。</param>
-        /// <param name="OFFYTop">向上偏移长度。</param>
+        /// <param name="offxLeft">向左偏移长度。</param>
+        /// <param name="offyTop">向上偏移长度。</param>
         /// <returns></returns>
-        public static bool MouseInRectangle(int X, int Y, int width, int height, int OFFXLeft = 0, int OFFYTop = 0) {
+        public static bool MouseInRectangle(int X, int Y, int width, int height, int offxLeft = 0, int offyTop = 0) {
             Vector2 mountedCenter = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
-            return new Rectangle((int)mountedCenter.X, (int)mountedCenter.Y, 0, 0).Intersects(new Rectangle((int)(X + Main.screenPosition.X - OFFXLeft), (int)(Y + Main.screenPosition.Y - OFFYTop), width, height));
+            return new Rectangle((int)mountedCenter.X, (int)mountedCenter.Y, 0, 0).Intersects(new Rectangle((int)(X + Main.screenPosition.X - offxLeft), (int)(Y + Main.screenPosition.Y - offyTop), width, height));
         }
 
         /// <summary>
@@ -231,5 +312,7 @@ namespace Entrogic
 
             return false;
         }
+        
+        #endregion
     }
 }

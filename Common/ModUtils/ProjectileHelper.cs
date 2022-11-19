@@ -81,11 +81,14 @@ namespace Entrogic
             projectile.rotation += rotationOffset * projectile.direction;
             projectile.Center = armPosition + projectile.velocity * 20f;
 
+            player.ChangeDir(projectile.direction);
+            projectile.QuickHeldProjBasic(player);
+        }
+
+        public static void QuickHeldProjBasic(this Projectile projectile, Player player) {
             player.heldProj = projectile.whoAmI;
             player.SetDummyItemTime(projectile.timeLeft);
-            player.ChangeDir(projectile.direction);
-            player.direction = projectile.direction;
-            player.itemRotation = (projectile.velocity * projectile.direction).ToRotation();
+            player.itemRotation = MathHelper.WrapAngle(projectile.rotation);
         }
 
         public static void ProjectileExplode(this Projectile projectile, IEntitySource source, float statRangeX = 22f, float statRangeY = 22f) {

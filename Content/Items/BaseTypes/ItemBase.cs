@@ -4,6 +4,8 @@ namespace Entrogic.Content.Items.BaseTypes
 {
 	public abstract class ItemBase : ModItem
 	{
-		//May be used in the future.
+		public override void SetStaticDefaults() {
+			SacrificeTotal = 1;
+		}
 	}
 }

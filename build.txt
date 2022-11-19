@@ -1,7 +1,7 @@
-displayName = Entrogic 1.4 Update
+displayName = Entrogic
 author = Cyril and the Dev Team
 version = 1.0
 buildIgnore = .vs\*, Properties\*, *.csproj, *.user, obj\*, bin\*, *.config, .git\*, *.vssettings, Old\*, Interfaces\UI\GUIChat\*
 hideCode = false
 hideResources = false
-includePDB = true;
+includePDB = true

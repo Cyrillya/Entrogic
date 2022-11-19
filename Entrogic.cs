@@ -25,6 +25,7 @@ global using Terraria.GameContent.Creative;
 global using Terraria.ID;
 global using Terraria.Localization;
 global using Terraria.ModLoader;
+global using TrUtils = Terraria.Utils;
 
 namespace Entrogic
 {

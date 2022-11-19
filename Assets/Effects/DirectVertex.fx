@@ -3,6 +3,7 @@ sampler uImage1 : register(s1);
 sampler uImage2 : register(s2);
 
 float4x4 uTransform;
+float uTime = 0;
 
 struct VSInput {
     float2 Pos : POSITION0;
@@ -24,7 +25,9 @@ float3 hsv2rgb(float3 c) {
 
 float4 PixelShaderFunction(PSInput input) : COLOR0 {
     float3 coord = input.Texcoord;
-    return tex2D(uImage0, coord.xy).rgba * input.Color.rgba;
+    float x = coord.x + uTime;
+    x %= 1;
+    return tex2D(uImage0, float2(x, coord.y)).rgba * input.Color.rgba;
 }
 
 PSInput VertexShaderFunction(VSInput input) {

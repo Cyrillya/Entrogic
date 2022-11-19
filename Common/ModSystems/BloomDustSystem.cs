@@ -57,15 +57,15 @@ namespace Entrogic.Common.ModSystems
             Main.spriteBatch.BeginGameSpriteBatch(false);
 
             effect.CurrentTechnique.Passes["Bloom"].Apply();
-            effect.Parameters["uMinBrightness"].SetValue(0f);
+            effect.Parameters["uMinBrightness"].SetValue(0.2f);
             DrawDusts(); // 在RenderTarget上绘制粒子
 
             Main.spriteBatch.End();
 
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
             effect.Parameters["uScreenResolution"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight) / Main.GameViewMatrix.Zoom);
-            effect.Parameters["uRange"].SetValue(1f);
-            effect.Parameters["uIntensity"].SetValue(0.3f);
+            effect.Parameters["uRange"].SetValue(2f);
+            effect.Parameters["uIntensity"].SetValue(0.14f);
 
             effect.CurrentTechnique.Passes["GlurV"].Apply();
             graphicsDevice.SetRenderTarget(bloomTargetSwap);
@@ -112,7 +112,8 @@ namespace Entrogic.Common.ModSystems
                 return;
 
             BloomDusts = new() {
-                ModContent.DustType<BubbleCopy>()
+                ModContent.DustType<BubbleCopy>(),
+                ModContent.DustType<WhiteLingeringCopy>()
             };
         }
 

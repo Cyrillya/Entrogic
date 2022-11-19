@@ -21,6 +21,7 @@
         internal static Asset<Texture2D> BladeTrailShape3;
         internal static Asset<Texture2D> BladeTrailCover;
         internal static Asset<Texture2D> BladeTrailErosion;
+        internal static Asset<Texture2D> RainstormSpinTrail;
 
         internal static Asset<Texture2D> BookBubble;
         internal static Asset<Texture2D> BookPanel;
@@ -66,6 +67,7 @@
             BladeTrailShape3 = ModContent.Request<Texture2D>($"{Trailling}BladeTrailShape3");
             BladeTrailCover = ModContent.Request<Texture2D>($"{Trailling}BladeTrailCover");
             BladeTrailErosion = ModContent.Request<Texture2D>($"{Trailling}Extra_193");
+            RainstormSpinTrail = ModContent.Request<Texture2D>($"{Trailling}RainstormSpinTrail");
         }
 
         public override void Unload() {

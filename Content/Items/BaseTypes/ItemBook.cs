@@ -21,7 +21,6 @@ namespace Entrogic.Content.Items.BaseTypes
             Item.value = 1000;
             Item.scale = 0.75f;
             Item.rare = ItemRarityID.Quest;
-            base.SetDefaults();
             SetDefaultsBook();
         }
 

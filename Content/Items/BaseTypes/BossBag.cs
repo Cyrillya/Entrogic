@@ -14,7 +14,6 @@
 
         public sealed override void SetStaticDefaults() {
             // 自动翻译
-            DisplayName.SetDefault("{$Mods.Entrogic.CommonItemName.TreasureBag}");
             Tooltip.SetDefault("{$CommonItemTooltip.RightClickToOpen}");
 
             ItemID.Sets.PreHardmodeLikeBossBag[Type] = PreHardmode;

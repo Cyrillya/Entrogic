@@ -1,15 +1,9 @@
 ﻿using Entrogic.Interfaces.GUI;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.GameContent;
-using Terraria.ModLoader;
 using Terraria.UI;
 
 namespace Entrogic.Common.ModSystems
 {
-    public class UIHandler : ModSystem
+	public class UIHandler : ModSystem
 	{
 		public UIHandler() => Instance = this;
 		internal static UIHandler Instance;

@@ -17,9 +17,22 @@
             DrawOffsetX = -10;
         }
 
+        private bool Smashed = false;
+
+        public override bool OnTileCollide(Vector2 oldVelocity) {
+            if (CurrentAIState == AIState.Dropping && Main.myPlayer == Projectile.owner && !Smashed) {
+                Smashed = true;
+                var position = Projectile.Center;
+                Projectile.NewProjectile(Main.LocalPlayer.GetSource_ItemUse(Main.LocalPlayer.HeldItem),
+                    position, Vector2.Zero, ModContent.ProjectileType<RockFlailImpact>(),
+                    Projectile.damage, 2f, Main.myPlayer);
+            }
+            return base.OnTileCollide(oldVelocity);
+        }
+
         public override void ShootProjectile() {
-            Projectile.NewProjectile(Projectile.GetSource_FromThis("FlailProjectile"),
-                Projectile.Center, Projectile.velocity, ModContent.ProjectileType<Tornado>(),
+            Projectile.NewProjectile(Main.LocalPlayer.GetSource_ItemUse(Main.LocalPlayer.HeldItem),
+                Projectile.Center, Projectile.velocity, ModContent.ProjectileType<GolemTornado>(),
                 (int)(Projectile.damage * 0.7f), 2f, Main.myPlayer);
         }
 

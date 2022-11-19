@@ -1,4 +1,5 @@
-﻿using Terraria.Audio;
+﻿using Entrogic.Content.Dusts;
+using Terraria.Audio;
 using Terraria.GameContent.Drawing;
 using Terraria.Graphics;
 using Terraria.Graphics.Shaders;
@@ -98,7 +99,7 @@ namespace Entrogic.Content.Projectiles.Misc.Weapons.Ranged.Bullets
                 Vector2 dustVelocity = trailPosition.DirectionTo(Projectile.Center).SafeNormalize(Vector2.Zero);
                 Vector2 positionOffset = Projectile.Size / 2f;
                 for (float i = 0f; i < dustAmount; i++) {
-                    var d = Dust.NewDustDirect(Vector2.Lerp(positionOffset, Vector2.Zero, lerp) + trailPosition, Projectile.width, Projectile.height, MyDustID.WhiteLingering, 0f, 0f, 0, dustColor);
+                    var d = Dust.NewDustDirect(Vector2.Lerp(positionOffset, Vector2.Zero, lerp) + trailPosition, Projectile.width, Projectile.height, ModContent.DustType<WhiteLingeringCopy>(), 0f, 0f, 0, dustColor);
                     d.velocity *= Main.rand.NextFloat() * 0.8f;
                     d.noGravity = true;
                     d.scale = MathHelper.Lerp(0.5f, 1.5f, lerp) + Main.rand.NextFloat() * 1.2f;
