@@ -13,13 +13,13 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
 
         public override void SetDefaults() {
             Item.CloneDefaults(ItemID.ClockworkAssaultRifle);
-            Item.DefaultToRangedWeapon(ProjectileID.GelBalloon, AmmoID.Bullet, 28, 6f, true);
+            Item.DefaultToRangedWeapon(ProjectileID.GelBalloon, AmmoID.Bullet, 16, 6f, true);
             Item.damage = 34;
             Item.width = 64;
             Item.height = 36;
-            Item.useTime = 7;
+            Item.useTime = 4;
             Item.value = 140000;
-            Item.reuseDelay = 10;
+            Item.reuseDelay = 6;
             Item.rare = RarityLevelID.MiddleHM;
         }
 
@@ -29,9 +29,9 @@ namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
             position += Vector2.Normalize(velocity) * 16f; // 往枪口位置靠
             if (player.itemAnimation == Item.useAnimation - Item.useTime * 3) { // 第四下发射奥数飞弹
-                int numberProjectiles = 2 + Main.rand.Next(2); // 2 or 3 shots
+                int numberProjectiles = 1 + Main.rand.Next(3);
                 for (int i = 0; i < numberProjectiles; i++) {
-                    Vector2 perturbedSpeed = velocity.RotatedByRandom(MathHelper.ToRadians(9));
+                    Vector2 perturbedSpeed = velocity.RotatedByRandom(MathHelper.ToRadians(15));
                     var p = Projectile.NewProjectileDirect(player.GetSource_ItemUse(Item),
                                                            position,
                                                            perturbedSpeed,

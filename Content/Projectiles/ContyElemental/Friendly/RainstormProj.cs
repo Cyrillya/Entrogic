@@ -60,6 +60,14 @@
                 d.noGravity = true;
                 var d2 = Dust.CloneDust(d.dustIndex);
                 d2.noGravity = true;
+
+                if (Projectile.ai[0] % 20 == 0 && Main.myPlayer == player.whoAmI) {
+                    float ai1 = Main.rand.NextBool(2) ? 1 : -1;
+                    var velocity = player.MountedCenter.DirectionTo(Main.MouseWorld) * 12f;
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis("Rainstorm"), Projectile.Center, velocity,
+                        ModContent.ProjectileType<RainstormLightning>(), Projectile.damage, Projectile.knockBack,
+                        Projectile.owner, velocity.ToRotation(), ai1);
+                }
             }
 
             Projectile.Center = ownerMountedCenter;
@@ -115,15 +123,17 @@
                     Main.EntitySpriteDraw(tex, Projectile.Center - Main.screenPosition + new Vector2(0, Projectile.gfxOffY), rectangle, alphaColor, rotation, origin, Projectile.scale, SpriteEffects.None, 0);
                 }
             }
+            
+            if (Projectile.ai[0] > 10f) {
+                Main.spriteBatch.End();
+                Main.spriteBatch.BeginGameSpriteBatch(deferred: false, alphaBlend: false);
 
-            Main.spriteBatch.End();
-            Main.spriteBatch.BeginGameSpriteBatch(deferred: false, alphaBlend: false);
+                var triangle = PrepareTriangleList(projColor, rectangle);
+                DrawTriangle(triangle);
 
-            var triangle = PrepareTriangleList(projColor, rectangle);
-            DrawTriangle(triangle);
-
-            Main.spriteBatch.End();
-            Main.spriteBatch.BeginGameSpriteBatch();
+                Main.spriteBatch.End();
+                Main.spriteBatch.BeginGameSpriteBatch();
+            }
 
             Main.EntitySpriteDraw(tex, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY), rectangle,
                 projColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);

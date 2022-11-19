@@ -1,4 +1,7 @@
-﻿using Terraria.GameInput;
+﻿using ReLogic.Text;
+using Terraria.GameContent.UI.Chat;
+using Terraria.GameInput;
+using Terraria.UI.Chat;
 
 namespace Entrogic
 {
@@ -60,124 +63,6 @@ namespace Entrogic
 
         #region 文字
         
-        /// <summary>
-        /// 获取 HJson 文字
-        /// </summary>
-        public static string GetText(string str, params object[] arg)
-        {
-            string text = Language.GetTextValue($"Mods.Entrogic.{str}", arg);
-            return ConvertLeftRight(text);
-        }
-
-        public static string GetTextWith(string str, object arg)
-        {
-            string text = Language.GetTextValueWith($"Mods.Entrogic.{str}", arg);
-            return ConvertLeftRight(text);
-        }
-
-        public static string ConvertLeftRight(string text)
-        {
-            // 支持输入<left>和<right>，就和ItemTooltip一样（原版只有Tooltip支持）
-            if (text.Contains("<right>"))
-            {
-                InputMode inputMode = InputMode.XBoxGamepad;
-                if (PlayerInput.UsingGamepad)
-                    inputMode = InputMode.XBoxGamepadUI;
-
-                if (inputMode == InputMode.XBoxGamepadUI)
-                {
-                    KeyConfiguration keyConfiguration = PlayerInput.CurrentProfile.InputModes[inputMode];
-                    string input = PlayerInput.BuildCommand("", true, keyConfiguration.KeyStatus["MouseRight"]);
-                    input = input.Replace(": ", "");
-                    text = text.Replace("<right>", input);
-                }
-                else
-                {
-                    text = text.Replace("<right>", Language.GetTextValue("Controls.RightClick"));
-                }
-            }
-            if (text.Contains("<left>"))
-            {
-                InputMode inputMode2 = InputMode.XBoxGamepad;
-                if (PlayerInput.UsingGamepad)
-                    inputMode2 = InputMode.XBoxGamepadUI;
-
-                if (inputMode2 == InputMode.XBoxGamepadUI)
-                {
-                    KeyConfiguration keyConfiguration2 = PlayerInput.CurrentProfile.InputModes[inputMode2];
-                    string input = PlayerInput.BuildCommand("", true, keyConfiguration2.KeyStatus["MouseLeft"]);
-                    input = input.Replace(": ", "");
-                    text = text.Replace("<left>", input);
-                }
-                else
-                {
-                    text = text.Replace("<left>", Language.GetTextValue("Controls.LeftClick"));
-                }
-            }
-            return text;
-        }
-
-        #endregion
-
-        #region 光标
-
-        /// <summary>
-        /// 判断鼠标是否在某个矩形上。
-        /// </summary>
-        /// <param name="rectangle1">矩形</param>
-        /// <returns></returns>
-        public static bool MouseInRectangle(Rectangle rectangle1) => rectangle1.Intersects(new Rectangle(Main.mouseX, Main.mouseY, 1, 1));
-
-        /// <summary>
-        /// 判断鼠标是否在某个矩形上。
-        /// </summary>
-        /// <param name="X">矩形横坐标</param>
-        /// <param name="Y">矩形纵坐标</param>
-        /// <param name="width">矩形宽度</param>
-        /// <param name="height">矩形高度</param>
-        /// <returns></returns>
-        public static bool MouseInRectangle(int X, int Y, int width, int height) => new Rectangle(X, Y, width, height).Intersects(new Rectangle(Main.mouseX, Main.mouseY, 1, 1));
-        /// <summary>
-        /// 判断鼠标是否在某个矩形上。
-        /// </summary>
-        /// <param name="X">矩形横坐标</param>
-        /// <param name="Y">矩形纵坐标</param>
-        /// <param name="width">矩形宽度</param>
-        /// <param name="height">矩形高度</param>
-        /// <param name="offxLeft">向左偏移长度。</param>
-        /// <param name="offyTop">向上偏移长度。</param>
-        /// <returns></returns>
-        public static bool MouseInRectangle(int X, int Y, int width, int height, int offxLeft = 0, int offyTop = 0) {
-            Vector2 mountedCenter = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
-            return new Rectangle((int)mountedCenter.X, (int)mountedCenter.Y, 0, 0).Intersects(new Rectangle((int)(X + Main.screenPosition.X - offxLeft), (int)(Y + Main.screenPosition.Y - offyTop), width, height));
-        }
-
-        /// <summary>
-        /// 鼠标与某矩形重合后绘制鼠标旁的悬浮字
-        /// </summary>
-        /// <param name="font">字体</param>
-        /// <param name="text">文本</param>
-        /// <param name="X">矩形横坐标</param>
-        /// <param name="Y">矩形纵坐标</param>
-        /// <param name="Width">矩形宽</param>
-        /// <param name="Hegith">矩形高</param>
-        public static void DrawMouseTextOnRectangle(DynamicSpriteFont font, string text, int X, int Y, int Width, int Hegith) {
-            Vector2 mountedCenter = Main.MouseScreen;
-            if (new Rectangle((int)mountedCenter.X, (int)mountedCenter.Y, 0, 0).Intersects(new Rectangle((int)X, (int)Y, Width, Hegith))) {
-                string name = text;
-                Vector2 worldPos = new(mountedCenter.X + 15, mountedCenter.Y + 15);
-                Vector2 size = font.MeasureString(name);
-                Vector2 texPos = worldPos + new Vector2(-size.X * 0.5f, name.Length);
-                Main.spriteBatch.DrawString(font, name, new Vector2(texPos.X, texPos.Y), Color.White);
-            }
-        }
-        
-        public static Asset<Texture2D> GetTexture(string path) =>
-            ModContent.Request<Texture2D>($"{TextureManager.ImageBase}{path}", AssetRequestMode.ImmediateLoad);
-
-        public static Asset<Effect> GetEffect(string path) =>
-            ModContent.Request<Effect>($"{ShaderManager.EffectBase}{path}", AssetRequestMode.ImmediateLoad);
-
         /// <summary>
         /// 获取 HJson 文字
         /// </summary>
@@ -312,7 +197,72 @@ namespace Entrogic
 
             return false;
         }
+
+        #endregion
+
+        #region 光标
+
+        /// <summary>
+        /// 判断鼠标是否在某个矩形上。
+        /// </summary>
+        /// <param name="rectangle1">矩形</param>
+        /// <returns></returns>
+        public static bool MouseInRectangle(Rectangle rectangle1) => rectangle1.Intersects(new Rectangle(Main.mouseX, Main.mouseY, 1, 1));
+
+        /// <summary>
+        /// 判断鼠标是否在某个矩形上。
+        /// </summary>
+        /// <param name="X">矩形横坐标</param>
+        /// <param name="Y">矩形纵坐标</param>
+        /// <param name="width">矩形宽度</param>
+        /// <param name="height">矩形高度</param>
+        /// <returns></returns>
+        public static bool MouseInRectangle(int X, int Y, int width, int height) => new Rectangle(X, Y, width, height).Intersects(new Rectangle(Main.mouseX, Main.mouseY, 1, 1));
+        /// <summary>
+        /// 判断鼠标是否在某个矩形上。
+        /// </summary>
+        /// <param name="X">矩形横坐标</param>
+        /// <param name="Y">矩形纵坐标</param>
+        /// <param name="width">矩形宽度</param>
+        /// <param name="height">矩形高度</param>
+        /// <param name="offxLeft">向左偏移长度。</param>
+        /// <param name="offyTop">向上偏移长度。</param>
+        /// <returns></returns>
+        public static bool MouseInRectangle(int X, int Y, int width, int height, int offxLeft = 0, int offyTop = 0) {
+            Vector2 mountedCenter = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
+            return new Rectangle((int)mountedCenter.X, (int)mountedCenter.Y, 0, 0).Intersects(new Rectangle((int)(X + Main.screenPosition.X - offxLeft), (int)(Y + Main.screenPosition.Y - offyTop), width, height));
+        }
+
+        /// <summary>
+        /// 鼠标与某矩形重合后绘制鼠标旁的悬浮字
+        /// </summary>
+        /// <param name="font">字体</param>
+        /// <param name="text">文本</param>
+        /// <param name="X">矩形横坐标</param>
+        /// <param name="Y">矩形纵坐标</param>
+        /// <param name="Width">矩形宽</param>
+        /// <param name="Hegith">矩形高</param>
+        public static void DrawMouseTextOnRectangle(DynamicSpriteFont font, string text, int X, int Y, int Width, int Hegith) {
+            Vector2 mountedCenter = Main.MouseScreen;
+            if (new Rectangle((int)mountedCenter.X, (int)mountedCenter.Y, 0, 0).Intersects(new Rectangle((int)X, (int)Y, Width, Hegith))) {
+                string name = text;
+                Vector2 worldPos = new(mountedCenter.X + 15, mountedCenter.Y + 15);
+                Vector2 size = font.MeasureString(name);
+                Vector2 texPos = worldPos + new Vector2(-size.X * 0.5f, name.Length);
+                Main.spriteBatch.DrawString(font, name, new Vector2(texPos.X, texPos.Y), Color.White);
+            }
+        }
         
+        #endregion
+
+        #region 加载
+        
+        public static Asset<Texture2D> GetTexture(string path) =>
+            ModContent.Request<Texture2D>($"{TextureManager.ImageBase}{path}", AssetRequestMode.ImmediateLoad);
+
+        public static Asset<Effect> GetEffect(string path) =>
+            ModContent.Request<Effect>($"{ShaderManager.EffectBase}{path}", AssetRequestMode.ImmediateLoad);
+
         #endregion
     }
 }

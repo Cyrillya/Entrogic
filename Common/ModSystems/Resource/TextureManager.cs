@@ -3,7 +3,7 @@
     public class TextureManager : ModSystem
     {
         internal const string ImageBase = "Entrogic/Assets/Images/";
-        internal const string Images = ImageBase + "Miscellaneous/";
+        internal const string Images = ImageBase + "Misc/";
         internal const string Trailling = ImageBase + "Trail/";
         internal const string WorldGen = ImageBase + "WorldGeneration/";
         internal const string BookAssets = ImageBase + "BookUI/";
@@ -43,7 +43,7 @@
         }
 
         private static void SetupMiscellaneous() {
-            static void AddMisc(string name) => Miscellaneous.Add(name, ModContent.Request<Texture2D>($"Entrogic/Assets/Images/Miscellaneous/{name}"));
+            static void AddMisc(string name) => Miscellaneous.Add(name, ModContent.Request<Texture2D>($"Entrogic/Assets/Images/Misc/{name}"));
             AddMisc("ComboRing");
             AddMisc("ContaEffect");
             AddMisc("AthanasyBossRoomCutaway");
