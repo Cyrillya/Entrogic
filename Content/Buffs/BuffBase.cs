@@ -1,10 +1,6 @@
-﻿using Entrogic.Common.ModSystems;
-using Terraria.ModLoader;
+﻿namespace Entrogic.Content.Buffs;
 
-namespace Entrogic.Content.Buffs
+public abstract class BuffBase : ModBuff
 {
-    public abstract class BuffBase : ModBuff
-    {
-        //May be used in the future.
-    }
+    // May be used in the future.
 }

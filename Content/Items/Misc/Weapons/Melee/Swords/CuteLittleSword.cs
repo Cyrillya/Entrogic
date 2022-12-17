@@ -1,5 +1,5 @@
 using Entrogic.Content.Items.Misc.Materials;
-using Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords;
+using Entrogic.Content.Projectiles.Weapons.Melee.Swords;
 
 namespace Entrogic.Content.Items.Misc.Weapons.Melee.Swords
 {

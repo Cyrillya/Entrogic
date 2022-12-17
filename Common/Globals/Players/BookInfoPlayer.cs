@@ -33,10 +33,10 @@ namespace Entrogic.Common.Globals.Players
             book.CurrentPage = 1;
             book.BookName = player.HeldItem.Name;
 
-            BookUI.Texture = TextureManager.BookPanel; // 重新赋值
-            IModifyBookContent.Invoke(player.HeldItem, player, ref BookUI.Contents);
-            IModifyBookPanel.Invoke(player.HeldItem, player, ref BookUI.Texture);
-            BookUI.MaxPages = (player.HeldItem?.ModItem as ItemBook).PageMax;
+            BookGUI.Texture = TextureManager.BookPanel; // 重新赋值
+            IModifyBookContent.Invoke(player.HeldItem, player, ref BookGUI.Contents);
+            IModifyBookPanel.Invoke(player.HeldItem, player, ref BookGUI.Texture);
+            BookGUI.MaxPages = (player.HeldItem?.ModItem as ItemBook).PageMax;
 
             ModNetHandler.BookInfo.SendPage(-1, player.whoAmI, (byte)player.whoAmI, book.CurrentPage, book.IsReading);
             ModNetHandler.BookInfo.SendName(-1, player.whoAmI, (byte)player.whoAmI, book.BookName);

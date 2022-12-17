@@ -1,5 +1,5 @@
 ﻿using Entrogic.Content.Items.BaseTypes;
-using Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords.TwoHandSword;
+using Entrogic.Content.Projectiles.Weapons.Melee.Swords.TwoHandSword;
 using System.Linq;
 using Terraria.Audio;
 

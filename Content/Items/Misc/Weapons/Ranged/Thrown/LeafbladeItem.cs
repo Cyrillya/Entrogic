@@ -1,4 +1,4 @@
-using Entrogic.Content.Projectiles.Misc.Weapons.Ranged.Thrown;
+using Entrogic.Content.Projectiles.Weapons.Ranged.Thrown;
 
 namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Thrown
 {

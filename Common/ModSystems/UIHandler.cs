@@ -14,14 +14,14 @@ namespace Entrogic.Common.ModSystems
 			Book
 		}
 
-		internal BookUI BookUI;
+		internal BookGUI BookUI;
 		internal UserInterface BookInterface;
 
 		public override void Load() {
 			base.Load();
 
 			if (!Main.dedServ) {
-				BookUI = new BookUI();
+				BookUI = new BookGUI();
 				BookUI.Activate();
 				BookInterface = new UserInterface();
 			}

@@ -1,4 +1,4 @@
-﻿using Entrogic.Content.Projectiles.Misc.Weapons.Arcane;
+﻿using Entrogic.Content.Projectiles.Weapons.Arcane;
 using Terraria;
 
 namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun

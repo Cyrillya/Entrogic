@@ -1,5 +1,5 @@
 using Entrogic.Content.Items.Symbiosis;
-using Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords;
+using Entrogic.Content.Projectiles.Weapons.Melee.Swords;
 
 namespace Entrogic.Content.Items.Misc.Weapons.Melee.Swords
 {

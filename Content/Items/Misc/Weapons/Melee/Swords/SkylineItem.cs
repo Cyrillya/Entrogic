@@ -1,4 +1,4 @@
-using Entrogic.Content.Projectiles.Misc.Weapons.Melee.Swords;
+using Entrogic.Content.Projectiles.Weapons.Melee.Swords;
 using Terraria.ID;
 
 namespace Entrogic.Content.Items.Misc.Weapons.Melee.Swords

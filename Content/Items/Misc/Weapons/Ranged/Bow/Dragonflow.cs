@@ -1,4 +1,4 @@
-﻿using Entrogic.Content.Projectiles.Misc.Weapons.Ranged.Bows;
+﻿using Entrogic.Content.Projectiles.Weapons.Ranged.Bows;
 
 namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Bow
 {

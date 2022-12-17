@@ -1,5 +1,5 @@
 ﻿using Entrogic.Content.Items.Misc.Materials;
-using Entrogic.Content.Projectiles.Misc.Weapons.Ranged.Bullets;
+using Entrogic.Content.Projectiles.Weapons.Ranged.Bullets;
 
 namespace Entrogic.Content.Items.Misc.Weapons.Ranged.Gun
 {
