@@ -17,7 +17,7 @@
             Item.value = Item.sellPrice(0, 3, 0, 0);
             Item.UseSound = SoundAssets.SubmachineGun;
             RecoilPower = 6;
-            BarrelLength = 54;
+            BarrelLength = 48;
             ShootDustDegree = 30;
             DustCount = 4;
         }

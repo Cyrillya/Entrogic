@@ -1,4 +1,4 @@
-﻿namespace Entrogic.Common.Hooks.Items;
+﻿namespace Entrogic.Core.CardSystem;
 
 /// <summary>
 /// 攻击牌<br/>
@@ -12,4 +12,9 @@ public interface ICardAttack
     /// </summary>
     /// <returns>基础攻击次数</returns>
     public int GetAttackTimes();
+
+    /// <summary>
+    /// 持有手套，且卡牌为该卡牌时调用
+    /// </summary>
+    public void OnHold() {}
 }

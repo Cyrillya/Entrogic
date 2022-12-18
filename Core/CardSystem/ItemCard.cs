@@ -17,17 +17,12 @@ public abstract class ItemCard : ItemBase
     /// <summary>
     /// 卡牌稀有度
     /// </summary>
-    public short Rare;
+    public RarityID Rarity;
 
     /// <summary>
     /// 点击选择该卡牌时调用
     /// </summary>
     public virtual void OnApply() {}
-
-    /// <summary>
-    /// 持有的手套正在使用该卡牌时调用
-    /// </summary>
-    public virtual void OnHold() {}
 
     /// <summary>
     /// 设置基础属性

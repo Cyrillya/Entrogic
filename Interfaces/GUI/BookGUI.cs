@@ -8,7 +8,7 @@ namespace Entrogic.Interfaces.GUI
 {
     public class BookGUI : UIState
     {
-        public UIPanel Book;//新建UI
+        internal static bool Visible;
         internal static List<BookContent> Contents = new();
         internal static Asset<Texture2D> Texture = TextureManager.BookPanel;
         internal static int MaxPages = 1;

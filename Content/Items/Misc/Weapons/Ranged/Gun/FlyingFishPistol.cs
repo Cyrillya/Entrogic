@@ -17,7 +17,7 @@
             Item.value = Item.sellPrice(0, 1, 0, 0);
             Item.UseSound = SoundAssets.Pistol;
             RecoilPower = 16;
-            BarrelLength = 50;
+            BarrelLength = 42;
             ShootDustDegree = 30;
             DustCount = 6;
         }

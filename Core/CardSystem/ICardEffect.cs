@@ -1,4 +1,4 @@
-﻿namespace Entrogic.Common.Hooks.Items;
+﻿namespace Entrogic.Core.CardSystem;
 
 /// <summary>
 /// 行动牌<br/>

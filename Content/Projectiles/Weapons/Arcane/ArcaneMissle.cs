@@ -49,11 +49,11 @@ namespace Entrogic.Content.Projectiles.Weapons.Arcane
                 var pos = Projectile.oldPos[i] - Main.screenPosition + Projectile.Size / 2f;
                 var tex = ModHelper.GetTexture("Misc/RoundSmall").Value;
                 Main.EntitySpriteDraw(tex, pos, null, color, 0f, tex.Size() / 2f, factor, SpriteEffects.None, 0);
+
+                if (!(Main.gfxQuality >= 0.5f)) continue;
                 
-                if (Main.gfxQuality >= 0.5f) {
-                    pos = Vector2.Lerp(pos, Projectile.oldPos[i + 1] - Main.screenPosition + Projectile.Size / 2f, .5f);
-                    Main.EntitySpriteDraw(tex, pos, null, color, 0f, tex.Size() / 2f, factor, SpriteEffects.None, 0);
-                }
+                pos = Vector2.Lerp(pos, Projectile.oldPos[i + 1] - Main.screenPosition + Projectile.Size / 2f, .5f);
+                Main.EntitySpriteDraw(tex, pos, null, color, 0f, tex.Size() / 2f, factor, SpriteEffects.None, 0);
             }
 
             //Projectile.DrawShadow(lightColor, Math.Min(15, 2 + (int)Projectile.oldVelocity.Length()));

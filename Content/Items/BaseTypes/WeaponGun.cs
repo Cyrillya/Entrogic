@@ -30,21 +30,21 @@ namespace Entrogic.Content.Items.BaseTypes
             var mouseWorld = player.GetModPlayer<SyncedDataPlayer>().MouseWorld;
             var directionVector = player.MountedCenter.DirectionTo(mouseWorld);
 
-            PunchCameraModifier modifier = new(player.Center, directionVector, RecoilPower * 0.1f, 5f, 8, 600f, "Entrogic: Gun");
+            PunchCameraModifier modifier = new(player.Center, directionVector, RecoilPower * 0.1f, 5f, 8, 600f,
+                "Entrogic: Gun");
             Main.instance.CameraModifiers.Add(modifier);
 
             for (int i = 0; i < DustCount; i++) {
-                Vector2 offset = Vector2.Zero;
+                var offset = Vector2.Zero;
                 ItemLoader.HoldoutOffset(player.gravDir, Type, ref offset);
-                offset.RotatedBy(player.itemRotation);
+                offset = offset.RotatedBy(player.itemRotation);
                 offset.Y -= 4f;
 
-                var d = Dust.NewDustPerfect(player.Center + directionVector * BarrelLength + offset,
-                                    DustID.FireworksRGB,
-                                    directionVector.RotatedByRandom(MathHelper.ToRadians(ShootDustDegree)) * Main.rand.NextFloat(8, 13),
-                                    100,
-                                    new(187, 125, 70));
-                d.noGravity = true;
+                Dust.NewDustPerfect(player.MountedCenter + directionVector * BarrelLength + offset,
+                    ModContent.DustType<Dusts.Glow>(),
+                    directionVector.RotatedByRandom(MathHelper.ToRadians(ShootDustDegree)) * Main.rand.NextFloat(2, 5),
+                    125, new Color(150, 80, 40),
+                    Main.rand.NextFloat(0.2f, 0.5f));
             }
 
             return base.UseItem(player);
@@ -72,24 +72,31 @@ namespace Entrogic.Content.Items.BaseTypes
             int direction = Math.Sign(mouseWorld.X - player.MountedCenter.X);
             player.direction = direction;
 
-            player.itemRotation = (float)Math.Atan2(vectorToMouse.X * direction, vectorToMouse.Y * direction) + player.fullRotation - 1.57f;
-            if (player.gravDir == 1f) { // 修正，我也不知道原理
+            player.itemRotation = (float) Math.Atan2(vectorToMouse.X * direction, vectorToMouse.Y * direction) +
+                player.fullRotation - 1.57f;
+            if (player.gravDir == 1f) {
+                // 修正，我也不知道原理
                 player.itemRotation = 6.28f - player.itemRotation;
             }
+
             player.itemRotation += offsetRadians;
 
-            player.itemLocation.X = player.position.X + player.width * 0.5f - heldItemFrame.Width * 0.5f - player.direction * 2;
+            player.itemLocation.X = player.position.X + player.width * 0.5f - heldItemFrame.Width * 0.5f -
+                                    player.direction * 2;
             player.itemLocation.Y = player.MountedCenter.Y - heldItemFrame.Height * 0.5f;
 
             float armRotation = player.itemRotation - 1.57f * player.direction;
-            if (player.gravDir == -1f) { // 修正，我也不知道原理
+            if (player.gravDir == -1f) {
+                // 修正，我也不知道原理
                 armRotation = 3.14f - armRotation;
             }
+
             player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, armRotation);
             player.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Quarter, armRotation);
         }
 
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type,
+            ref int damage, ref float knockback) {
             Vector2 offset = Vector2.Zero;
             ItemLoader.HoldoutOffset(player.gravDir, Type, ref offset);
             position += offset;

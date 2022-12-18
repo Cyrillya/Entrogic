@@ -17,7 +17,7 @@
             Item.value = Item.sellPrice(0, 8, 0, 0);
             Item.UseSound = SoundAssets.HeavyMachineGun;
             RecoilPower = 5;
-            BarrelLength = 56;
+            BarrelLength = 50;
             ShootDustDegree = 40;
             DustCount = 3;
         }
