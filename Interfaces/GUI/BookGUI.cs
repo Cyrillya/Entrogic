@@ -1,4 +1,7 @@
-﻿using Entrogic.Common.Globals.Players;
+﻿using Entrogic.Core.Global.Resource;
+using Entrogic.Core.Netcodes;
+using Entrogic.Core.Systems.BookSystem;
+using Entrogic.Helpers;
 using Entrogic.Interfaces.UIElements;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
@@ -8,7 +11,7 @@ namespace Entrogic.Interfaces.GUI
 {
     public class BookGUI : UIState
     {
-        public UIPanel Book;//新建UI
+        internal static bool Visible;
         internal static List<BookContent> Contents = new();
         internal static Asset<Texture2D> Texture = TextureManager.BookPanel;
         internal static int MaxPages = 1;
@@ -77,7 +80,7 @@ namespace Entrogic.Interfaces.GUI
         }
 
         private void CloseBook(BookInfoPlayer book) {
-            UIHandler.Instance.HideUI(UIHandler.UI.Book);
+            Visible = false;
             book.IsReading = false;
             SendInfo(Main.LocalPlayer);
         }

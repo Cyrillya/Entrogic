@@ -1,4 +1,6 @@
-﻿namespace Entrogic.Content.Dusts
+﻿using Entrogic.Helpers.ID;
+
+namespace Entrogic.Content.Dusts
 {
     public class BubbleCopy : ModDust
 	{
