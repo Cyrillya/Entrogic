@@ -1,4 +1,4 @@
-﻿using Entrogic.Core.CardSystem;
+﻿using Entrogic.Core.Systems.CardSystem;
 using Entrogic.Interfaces.UIElements;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
@@ -14,7 +14,7 @@ public class CardDashboardGUI : UIState
     private class SelectionSlot : UIElement
     {
         private Player Player => Main.LocalPlayer;
-        private CardModPlayer ModPlayer => CardModPlayer.Get(Player);
+        private CardAttackPlayer AttackPlayer => CardAttackPlayer.Get(Player);
         private Item Item => CardModSystem.AlternativeCards[_index];
         private bool HasCard => Item != null;
 
@@ -33,8 +33,8 @@ public class CardDashboardGUI : UIState
             itemCard.OnApply();
             // 次数卡选择后设置次数
             if (itemCard is ICardAttack cardAttack) {
-                ModPlayer.SetCurrentAttackCard(Item.Clone());
-                ModPlayer.SetAttackTimes(cardAttack.GetAttackTimes());
+                AttackPlayer.SetCurrentAttackCard(Item.Clone());
+                AttackPlayer.SetAttackTimes(cardAttack.GetAttackTimes());
             }
 
             CardModSystem.ClearCard(_index);
@@ -94,7 +94,7 @@ public class CardDashboardGUI : UIState
     private ProgressBarVertical _progressBar;
 
     private Player Player => Main.LocalPlayer;
-    private CardModPlayer ModPlayer => CardModPlayer.Get(Player);
+    private CardAttackPlayer AttackPlayer => CardAttackPlayer.Get(Player);
 
     public override void OnInitialize() {
         _panel = new UIPanel {
@@ -152,8 +152,8 @@ public class CardDashboardGUI : UIState
     }
 
     private float GetAttackTimesPercent() {
-        if (ModPlayer.CurAttackTimesMax <= 0) return 0f;
-        return ModPlayer.CurAttackTimesLeft / (float) ModPlayer.CurAttackTimesMax;
+        if (AttackPlayer.CurAttackTimesMax <= 0) return 0f;
+        return AttackPlayer.CurAttackTimesLeft / (float) AttackPlayer.CurAttackTimesMax;
     }
 
     private static Texture2D RequestTextureValue(string imageName) {

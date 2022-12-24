@@ -1,4 +1,7 @@
-﻿using Entrogic.Common.Globals.Players;
+﻿using Entrogic.Core.Global.Resource;
+using Entrogic.Core.Netcodes;
+using Entrogic.Core.Systems.BookSystem;
+using Entrogic.Helpers;
 using Entrogic.Interfaces.UIElements;
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
@@ -77,7 +80,7 @@ namespace Entrogic.Interfaces.GUI
         }
 
         private void CloseBook(BookInfoPlayer book) {
-            UIHandler.Instance.HideUI(UIHandler.UI.Book);
+            Visible = false;
             book.IsReading = false;
             SendInfo(Main.LocalPlayer);
         }
